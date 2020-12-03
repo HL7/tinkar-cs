@@ -19,37 +19,37 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	/**
+    /**
      *
      * @author KWA
      */
-	public interface IFieldDefinition
-	{
-		/**
+    public interface IFieldDefinition
+    {
+        /**
          * Underlying object type such as String or Integer.
          * @return Concept designating the data type of the defined field.
          */
-		IConcept GetDataType { get; }
+        IConcept GetDataType { get; }
 
-		/**
+        /**
          * What the object represents: a String might be a URI,
          * a component identifier might represent a mapping, or an
          * integer might represent a coordinate.
          * @return Concept designating the purpose of the defined field.
          */
-		IConcept GetPurpose { get; }
+        IConcept GetPurpose { get; }
 
-		/**
+        /**
          * The context in which this specific field is used. Maybe it is the
          * "SNOMED code" in a mapping, or the location of an image if a URI.
          * @return Concept designating the use of the defined field.
          */
-		IConcept GetUse { get; }
+        IConcept GetUse { get; }
 
-		//default FieldDefinitionDTO toChangeSetThing()
-		//{
-		//    return new FieldDefinitionDTO(getDataType().componentUuids(),
-		//        getPurpose().componentUuids(), getUse().componentUuids());
-		//}
-	}
+        //$default FieldDefinitionDTO toChangeSetThing()
+        //{
+        //    return new FieldDefinitionDTO(getDataType().componentUuids(),
+        //        getPurpose().componentUuids(), getUse().componentUuids());
+        //}
+    }
 }

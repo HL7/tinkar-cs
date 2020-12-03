@@ -18,11 +18,11 @@ using System;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 * @author KWA
 	 */
-	public interface IVersion : IIdentifiedThing
-	{
-		internal IStamp Stamp { get; }
-	}
+    public interface IVersion : IIdentifiedThing
+    {
+        IStamp Stamp { get; }
+    }
 }

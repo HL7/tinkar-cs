@@ -19,48 +19,48 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 * @author KWA
 	 */
-	public interface ISemanticVersion : IVersion, ISemantic
-	{
-		IEnumerable<Object> Fields { get; }
+    public interface ISemanticVersion : IVersion, ISemantic
+    {
+        IEnumerable<Object> Fields { get; }
 
-		//default SemanticVersionDTO toChangeSetThing()
-		//{
-		//	MutableList<Object> convertedFields = Lists.mutable.empty();
-		//	fields().forEach(objectToConvert-> {
-		//		if (objectToConvert instanceof Concept concept) {
-		//			convertedFields.add(new ConceptDTO(concept.componentUuids()));
-		//		} else if (objectToConvert instanceof DefinitionForSemantic definitionForSemantic) {
-		//			convertedFields.add(new DefinitionForSemanticDTO(definitionForSemantic.componentUuids()));
-		//		} else if (objectToConvert instanceof Semantic semantic) {
-		//			convertedFields.add(new SemanticDTO(semantic.componentUuids(), semantic.definitionForSemantic(),
-		//					semantic.referencedComponent()));
-		//		} else if (objectToConvert instanceof IdentifiedThing identifiedThing) {
-		//			convertedFields.add(new IdentifiedThingDTO(identifiedThing.componentUuids()));
-		//		} else if (objectToConvert instanceof Number number) {
-		//			if (number instanceof Long) {
-		//				convertedFields.add(number.intValue());
-		//			} else if (number instanceof Double) {
-		//				convertedFields.add(number.floatValue());
-		//			} else
-		//			{
-		//				convertedFields.add(number);
-		//			}
-		//		} else if (objectToConvert instanceof String string) {
-		//			convertedFields.add(string);
-		//		} else if (objectToConvert instanceof Instant instant) {
-		//			convertedFields.add(instant);
-		//		} else
-		//		{
-		//			throw new UnsupportedOperationException("Can't convert:\n  " + objectToConvert + "\nin\n  " + this);
-		//		}
-		//	});
-		//	return new SemanticVersionDTO(componentUuids(),
-		//			definitionForSemantic(),
-		//			referencedComponent(),
-		//			stamp().toChangeSetThing(), convertedFields.toImmutable());
-		//}
-	}
+        //$default SemanticVersionDTO toChangeSetThing()
+        //{
+        //	MutableList<Object> convertedFields = Lists.mutable.empty();
+        //	fields().forEach(objectToConvert-> {
+        //		if (objectToConvert instanceof Concept concept) {
+        //			convertedFields.add(new ConceptDTO(concept.componentUuids()));
+        //		} else if (objectToConvert instanceof DefinitionForSemantic definitionForSemantic) {
+        //			convertedFields.add(new DefinitionForSemanticDTO(definitionForSemantic.componentUuids()));
+        //		} else if (objectToConvert instanceof Semantic semantic) {
+        //			convertedFields.add(new SemanticDTO(semantic.componentUuids(), semantic.definitionForSemantic(),
+        //					semantic.referencedComponent()));
+        //		} else if (objectToConvert instanceof IdentifiedThing identifiedThing) {
+        //			convertedFields.add(new IdentifiedThingDTO(identifiedThing.componentUuids()));
+        //		} else if (objectToConvert instanceof Number number) {
+        //			if (number instanceof Long) {
+        //				convertedFields.add(number.intValue());
+        //			} else if (number instanceof Double) {
+        //				convertedFields.add(number.floatValue());
+        //			} else
+        //			{
+        //				convertedFields.add(number);
+        //			}
+        //		} else if (objectToConvert instanceof String string) {
+        //			convertedFields.add(string);
+        //		} else if (objectToConvert instanceof Instant instant) {
+        //			convertedFields.add(instant);
+        //		} else
+        //		{
+        //			throw new UnsupportedOperationException("Can't convert:\n  " + objectToConvert + "\nin\n  " + this);
+        //		}
+        //	});
+        //	return new SemanticVersionDTO(componentUuids(),
+        //			definitionForSemantic(),
+        //			referencedComponent(),
+        //			stamp().toChangeSetThing(), convertedFields.toImmutable());
+        //}
+    }
 }

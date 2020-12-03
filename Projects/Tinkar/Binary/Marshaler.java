@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+package org.hl7.tinkar.binary;
 
-namespace Tinkar
-{
-    /**
-     * @author KWA
-     */
-    public interface ConceptVersion : IVersion, IConcept
-    {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
-    }
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ *  Used to indicate which instance method shall be used as the JsonMarshaler.
+ *  Annotation must be placed on the implementing class. 
+ *
+ */
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Marshaler {
+    
 }

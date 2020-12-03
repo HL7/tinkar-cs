@@ -18,22 +18,22 @@ using System;
 namespace Tinkar
 {
 
-/**
- *
- * @author KWA
- */
-public interface DefinitionForSemanticChronology : 
-    IChronology<DefinitionForSemanticVersion>, 
-    IDefinitionForSemantic 
-{
-     //default DefinitionForSemanticChronologyDTO toChangeSetThing() {
-     //     MutableList<DefinitionForSemanticVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());
-     //     for (DefinitionForSemanticVersion definitionVersion : versions()) {
-     //          versions.add(definitionVersion.toChangeSetThing());
-     //     }
-     //     return new DefinitionForSemanticChronologyDTO(componentUuids(),
-     //             chronologySet().componentUuids(),
-     //             versions.toImmutable());
-     //}
-}
+    /**
+     *
+     * @author KWA
+     */
+    public interface IDefinitionForSemanticChronology :
+        IChronology<IDefinitionForSemanticVersion>,
+        IDefinitionForSemantic
+    {
+        //$default DefinitionForSemanticChronologyDTO toChangeSetThing() {
+        //     MutableList<DefinitionForSemanticVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());
+        //     for (DefinitionForSemanticVersion definitionVersion : versions()) {
+        //          versions.add(definitionVersion.toChangeSetThing());
+        //     }
+        //     return new DefinitionForSemanticChronologyDTO(componentUuids(),
+        //             chronologySet().componentUuids(),
+        //             versions.toImmutable());
+        //}
+    }
 }

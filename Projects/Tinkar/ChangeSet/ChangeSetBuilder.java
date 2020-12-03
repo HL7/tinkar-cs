@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+package org.hl7.tinkar.changeset;
 
-namespace Tinkar
-{
-    /**
-     * @author KWA
-     */
-    public interface ConceptVersion : IVersion, IConcept
-    {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
+import java.util.ArrayList;
+
+/**
+ *
+ * @author kec
+ */
+public class ChangeSetBuilder {
+    ArrayList<ChangeSetThing> changeSetObjects = new ArrayList();
+
+
+    public ChangeSetBuilder add(ChangeSetThing changeSetObject) {
+        changeSetObjects.add(changeSetObject);
+        return this;
     }
+    
+    public String build() {
+        throw new UnsupportedOperationException();
+    }
+    
 }

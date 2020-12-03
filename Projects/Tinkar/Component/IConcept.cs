@@ -18,10 +18,10 @@ using System;
 namespace Tinkar
 {
 
-	/**
+    /**
      * @author kwa
      */
-	public interface IConcept : IIdentifiedThing
-	{
-	}
+    public interface IConcept : IIdentifiedThing
+    {
+    }
 }

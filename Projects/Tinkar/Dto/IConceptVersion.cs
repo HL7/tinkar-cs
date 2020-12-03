@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2020-2021 HL7.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,18 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
-    public interface ConceptVersion : IVersion, IConcept
+    public interface IConceptVersion
     {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
     }
 }

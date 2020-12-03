@@ -23,12 +23,12 @@ namespace Tinkar
      *
      * @author KWA
      */
-    public interface DefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
+    public interface IDefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
     {
         IEnumerable<IFieldDefinition> FieldDefinitions { get; }
         IConcept referencedComponentPurpose { get; }
 
-        //default DefinitionForSemanticVersionDTO toChangeSetThing() {
+        //$default DefinitionForSemanticVersionDTO toChangeSetThing() {
         //    MutableList<FieldDefinitionDTO> fields = Lists.mutable.ofInitialCapacity(fieldDefinitions().size());
         //    for (FieldDefinition fieldDefinition : fieldDefinitions()) {
         //        fields.add(fieldDefinition.toChangeSetThing());

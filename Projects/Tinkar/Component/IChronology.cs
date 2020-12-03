@@ -19,14 +19,14 @@ using System.Collections.Generic;
 namespace Tinkar
 {
 
-	/**
+    /**
      *
      * @author KWA
      */
-	public interface IChronology<Version> : IIdentifiedThing
-	    where Version : IVersion
-	{
-		IIdentifiedThing ChronologySet { get; }
-		IEnumerable<Version> Versions { get; }
-	}
+    public interface IChronology<Version> : IIdentifiedThing
+        where Version : IVersion
+    {
+        IIdentifiedThing ChronologySet { get; }
+        IEnumerable<Version> Versions { get; }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,10 @@ using System;
 namespace Tinkar
 {
     /**
-     * @author KWA
-     */
-    public interface ConceptVersion : IVersion, IConcept
+	 *
+	 * @author kec
+	 */
+    public interface IChangeSetThing
     {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
     }
 }

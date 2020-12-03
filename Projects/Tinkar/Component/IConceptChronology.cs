@@ -24,7 +24,7 @@ namespace Tinkar
      */
     public interface IConceptChronology : IChronology<ConceptVersion>, IConcept
     {
-        //default ConceptChronologyDTO toChangeSetThing() {
+        //$default ConceptChronologyDTO toChangeSetThing() {
         //     MutableList<ConceptVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());
         //     for (ConceptVersion conceptVersion : versions()) {
         //          versions.add(conceptVersion.toChangeSetThing());

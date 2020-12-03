@@ -18,25 +18,25 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	/**
+    /**
      *
      * @author KWA
      */
-	public interface ISemanticChronology : 
+    public interface ISemanticChronology :
         IChronology<ISemanticVersion>,
         ISemantic
-	{
-		//default SemanticChronologyDTO toChangeSetThing()
-		//{
-		//    MutableList<SemanticVersionDTO> changeSetVersions = Lists.mutable.ofInitialCapacity(versions().size());
-		//    for (SemanticVersion semanticVersion :
-		//    versions()) {
-		//        changeSetVersions.add(semanticVersion.toChangeSetThing());
-		//    }
-		//    return new SemanticChronologyDTO(componentUuids(),
-		//        definitionForSemantic(),
-		//        referencedComponent(),
-		//        changeSetVersions.toImmutable());
-		//}
-	}
+    {
+        //$default SemanticChronologyDTO toChangeSetThing()
+        //{
+        //    MutableList<SemanticVersionDTO> changeSetVersions = Lists.mutable.ofInitialCapacity(versions().size());
+        //    for (SemanticVersion semanticVersion :
+        //    versions()) {
+        //        changeSetVersions.add(semanticVersion.toChangeSetThing());
+        //    }
+        //    return new SemanticChronologyDTO(componentUuids(),
+        //        definitionForSemantic(),
+        //        referencedComponent(),
+        //        changeSetVersions.toImmutable());
+        //}
+    }
 }

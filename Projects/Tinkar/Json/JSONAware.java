@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+package org.hl7.tinkar.json;
 
-namespace Tinkar
-{
+/**
+ * Original obtained from: https://github.com/fangyidong/json-simple under
+ * Apache 2 license Original project had no support for Java Platform Module
+ * System, and not updated for 8 years. Integrated here to integrate with Java
+ * Platform Module System.  *
+ * Beans that support customized output of JSON text shall implement this
+ * interface.
+ *
+ * @author FangYidong<fangyidong@yahoo.com.cn>
+ */
+public interface JSONAware {
+
     /**
-     * @author KWA
+     * @return JSON text
      */
-    public interface ConceptVersion : IVersion, IConcept
-    {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
-    }
+    String toJSONString();
 }
