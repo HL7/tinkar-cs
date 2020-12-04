@@ -22,23 +22,19 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record SemanticVersionDTO : BaseDTO, 
+    public record SemanticVersionDTO(
+                IEnumerable<Guid> ComponentUuids,
+                IEnumerable<Guid> DefinitionForSemanticUuids,
+                IEnumerable<Guid> ReferencedComponentUuids,
+                StampDTO StampDTO,
+                IEnumerable<Object> Fields
+            ) : BaseDTO,
         ISemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
         private const int MarshalVersion = 1;
-
-        public IEnumerable<Object> Fields { get; init; }
-
-        public IIdentifiedThing ReferencedComponent { get; init; }
-
-        public IDefinitionForSemantic DefinitionForSemantic { get; init; }
-
-        public IEnumerable<Guid> ComponentUuids { get; init; }
-
-        public IStamp Stamp { get; init; }
 
         //$public SemanticVersionDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
         //                          IdentifiedThing referencedComponent, Stamp stamp, IEnumerable<Object> fields) {
@@ -48,15 +44,9 @@ namespace Tinkar
         //            stamp.toChangeSetThing(), fields);
         //}
 
-        //@Override
-        //public IdentifiedThing referencedComponent() {
-        //    return new IdentifiedThingDTO(referencedComponentUuids);
-        //}
-
-        //@Override
-        //public DefinitionForSemantic definitionForSemantic() {
-        //    return new DefinitionForSemanticDTO(definitionForSemanticUuids);
-        //}
+        public IStamp Stamp => this.StampDTO;
+        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -80,25 +70,18 @@ namespace Tinkar
         //}
 
         //@SemanticVersionUnmarshaler
-        //public static SemanticVersionDTO make(TinkarInput input,
-        //                                      IEnumerable<Guid> componentUuids,
-        //                                      IEnumerable<Guid> definitionForSemanticUuids,
-        //                                      IEnumerable<Guid> referencedComponentUuids) {
-        //    try {
-        //        int objectMarshalVersion = input.ReadInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            return new SemanticVersionDTO(componentUuids,
-        //                    definitionForSemanticUuids,
-        //                    referencedComponentUuids,
-        //                    StampDTO.make(in),
-        //                    input.ReadImmutableObjectList());
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static SemanticVersionDTO Make(TinkarInput input,
+                                              IEnumerable<Guid> componentUuids,
+                                              IEnumerable<Guid> definitionForSemanticUuids,
+                                              IEnumerable<Guid> referencedComponentUuids)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            return new SemanticVersionDTO(componentUuids,
+                    definitionForSemanticUuids,
+                    referencedComponentUuids,
+                    StampDTO.Make(input),
+                    input.ReadImmutableObjectList());
+        }
 
         //@Override
         //@Marshaler

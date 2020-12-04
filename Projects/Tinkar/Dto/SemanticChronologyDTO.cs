@@ -15,31 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 *
 	 * @author kec
 	 */
-	public record SemanticChronologyDTO : BaseDTO, 
-        ISemanticChronology, 
-        IChangeSetThing, 
-        IJsonMarshalable, 
+    public record SemanticChronologyDTO(
+        IEnumerable<Guid> ComponentUuids,
+        IEnumerable<Guid> DefinitionForSemanticUuids,
+        IEnumerable<Guid> ReferencedComponentUuids,
+        IEnumerable<SemanticVersionDTO> SemanticVersions) : BaseDTO,
+        ISemanticChronology<DefinitionForSemanticDTO>,
+        IChangeSetThing,
+        IJsonMarshalable,
         IMarshalable
-	{
+    {
 
-		private const int MarshalVersion = 1;
-
-        public IIdentifiedThing ChronologySet {get; init; }
-
-        public IEnumerable<ISemanticVersion> Versions {get; init; }
-
-        public IIdentifiedThing ReferencedComponent {get; init; }
-
-        public IDefinitionForSemantic DefinitionForSemantic {get; init; }
-
-        public IEnumerable<Guid> ComponentUuids {get; init; }
+        private const int MarshalVersion = 1;
 
         //$public SemanticChronologyDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
         //                          IdentifiedThing referencedComponent, IEnumerable<SemanticVersionDTO> semanticVersions) {
@@ -49,15 +44,8 @@ namespace Tinkar
         //            semanticVersions);
         //}
 
-        //@Override
-        //public IdentifiedThing referencedComponent() {
-        //    return new IdentifiedThingDTO(referencedComponentUuids);
-        //}
-
-        //@Override
-        //public DefinitionForSemantic definitionForSemantic() {
-        //    return new DefinitionForSemanticDTO(definitionForSemanticUuids);
-        //}
+        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -86,23 +74,17 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static SemanticChronologyDTO make(TinkarInput input) {
-        //    try {
-        //        int objectMarshalVersion = input.ReadInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-        //            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
-        //            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
-        //            return new SemanticChronologyDTO(
-        //                    componentUuids, definitionForSemanticUuids, referencedComponentUuids,
-        //                    input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids));
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static SemanticChronologyDTO Make(TinkarInput input)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
+            return new SemanticChronologyDTO(
+                    componentUuids, definitionForSemanticUuids, referencedComponentUuids,
+                    input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids)
+                    );
+        }
 
         //@Override
         //@Marshaler
@@ -118,14 +100,10 @@ namespace Tinkar
         //    }
         //}
 
-        //@Override
-        //public IEnumerable<SemanticVersion> versions() {
-        //    return semanticVersions.collect(semanticVersionDTO ->  semanticVersionDTO);
-        //}
+        public IEnumerable<ISemanticVersion> Versions => 
+            SemanticVersions.Select( (dto) => (ISemanticVersion) dto);
 
-        //@Override
-        //public DefinitionForSemanticDTO chronologySet() {
-        //    return new DefinitionForSemanticDTO(definitionForSemanticUuids);
-        //}
+        public DefinitionForSemanticDTO ChronologySet => 
+            new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
     }
 }

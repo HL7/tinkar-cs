@@ -26,7 +26,7 @@ namespace Tinkar
     public interface IDefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
     {
         IEnumerable<IFieldDefinition> FieldDefinitions { get; }
-        IConcept referencedComponentPurpose { get; }
+        IConcept ReferencedComponentPurpose { get; }
 
         //$default DefinitionForSemanticVersionDTO toChangeSetThing() {
         //    MutableList<FieldDefinitionDTO> fields = Lists.mutable.ofInitialCapacity(fieldDefinitions().size());

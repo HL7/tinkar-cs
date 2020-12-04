@@ -23,10 +23,11 @@ namespace Tinkar
      *
      * @author KWA
      */
-    public interface IChronology<Version> : IIdentifiedThing
-        where Version : IVersion
+    public interface IChronology<TVersion, TIdentifiedThing> : IIdentifiedThing
+        where TVersion : IVersion
+        where TIdentifiedThing : IIdentifiedThing
     {
-        IIdentifiedThing ChronologySet { get; }
-        IEnumerable<Version> Versions { get; }
+        TIdentifiedThing ChronologySet { get; }
+        IEnumerable<TVersion> Versions { get; }
     }
 }

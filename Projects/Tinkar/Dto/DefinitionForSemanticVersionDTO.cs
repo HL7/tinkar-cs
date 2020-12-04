@@ -16,43 +16,36 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 *
 	 * @author kec
 	 */
-	public record DefinitionForSemanticVersionDTO : BaseDTO, 
+    public record DefinitionForSemanticVersionDTO(
+            IEnumerable<Guid> ComponentUuids,
+            StampDTO StampDTO,
+            IEnumerable<Guid> ReferencedComponentPurposeUuids,
+            IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs) : BaseDTO,
         IDefinitionForSemanticVersion,
-		IChangeSetThing,
-		IJsonMarshalable,
-		IMarshalable
-	{
-		private const int MarshalVersion = 1;
-
-        public IEnumerable<IFieldDefinition> FieldDefinitions {get; init; }
-
-        public IConcept referencedComponentPurpose {get; init; }
-
-        public IEnumerable<Guid> ComponentUuids {get; init; }
-
-        public IStamp Stamp { get; init; }
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable
+    {
+        private const int MarshalVersion = 1;
 
         //$@Override
-        //public Concept referencedComponentPurpose() {
-        //    return new ConceptDTO(referencedComponentPurposeUuids);
-        //}
+        public IConcept ReferencedComponentPurpose =>
+            new ConceptDTO(ReferencedComponentPurposeUuids);
 
         //@Override
-        //public Stamp stamp() {
-        //    return stampDTO;
-        //}
+        public IStamp Stamp => StampDTO;
 
         //@Override
-        //public IEnumerable<FieldDefinition> fieldDefinitions() {
-        //    return fieldDefinitionDTOS.collect(fieldDefinitionDTO -> (FieldDefinition) fieldDefinitionDTO);
-        //}
+        public IEnumerable<IFieldDefinition> FieldDefinitions =>
+            FieldDefinitionDTOs.Select((dto) => (IFieldDefinition)dto);
 
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO using JSON
@@ -88,21 +81,15 @@ namespace Tinkar
         // * @return
         // */
         //@VersionUnmarshaler
-        //public static DefinitionForSemanticVersionDTO make(TinkarInput input, IEnumerable<Guid> componentUuids) {
-        //    try {
-        //        int objectMarshalVersion = input.ReadInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            return new DefinitionForSemanticVersionDTO(componentUuids,
-        //                    StampDTO.make(in),
-        //                    input.ReadImmutableUuidList(),
-        //                    input.ReadFieldDefinitionList());
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static DefinitionForSemanticVersionDTO Make(TinkarInput input,
+            IEnumerable<Guid> componentUuids)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            return new DefinitionForSemanticVersionDTO(componentUuids,
+                    StampDTO.Make(input),
+                    input.ReadImmutableUuidList(),
+                    input.ReadFieldDefinitionList());
+        }
 
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO

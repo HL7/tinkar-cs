@@ -32,6 +32,13 @@ namespace Tinkar
             this.reader = new BinaryReader(inStream);
         }
 
+        /// <summary>
+        /// Read string.
+        /// Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
+        /// </summary>
+        /// <returns></returns>
+        public String ReadUTF() => this.reader.ReadString();
+
         public IEnumerable<Guid> ReadImmutableUuidList() => this.ReadUuidArray();
 
         /// <summary>
@@ -98,7 +105,7 @@ namespace Tinkar
             return new TinkarInput(bais);
         }
 
-        public IEnumerable<FieldDefinitionDTO> readFieldDefinitionList()
+        public IEnumerable<FieldDefinitionDTO> ReadFieldDefinitionList()
         {
             try
             {
@@ -133,49 +140,52 @@ namespace Tinkar
             }
         }
 
-        //public IEnumerable<DefinitionForSemanticVersionDTO> readDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
-        //{
-        //    try
-        //    {
-        //        int length = ReadInt();
-        //        DefinitionForSemanticVersionDTO[] array = new DefinitionForSemanticVersionDTO[length];
-        //        for (int i = 0; i < length; i++)
-        //        {
-        //            array[i] = DefinitionForSemanticVersionDTO.make(this, componentUuids);
-        //        }
-        //        return Lists.immutable.of(array);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
+        {
+            throw new NotImplementedException();
+            //    try
+            //    {
+            //        int length = ReadInt();
+            //        DefinitionForSemanticVersionDTO[] array = new DefinitionForSemanticVersionDTO[length];
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            array[i] = DefinitionForSemanticVersionDTO.make(this, componentUuids);
+            //        }
+            //        return Lists.immutable.of(array);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new UncheckedIOException(ex);
+            //    }
+        }
 
-        //public IEnumerable<SemanticVersionDTO> readSemanticVersionList(IEnumerable<Guid> componentUuids,
-        //                                                                 IEnumerable<Guid> definitionForSemanticUuids,
-        //                                                                 IEnumerable<Guid> referencedComponentUuids)
-        //{
-        //    try
-        //    {
-        //        int length = ReadInt();
-        //        SemanticVersionDTO[] array = new SemanticVersionDTO[length];
-        //        for (int i = 0; i < length; i++)
-        //        {
-        //            array[i] = SemanticVersionDTO.make(this, componentUuids,
-        //                    definitionForSemanticUuids, referencedComponentUuids);
-        //        }
-        //        return Lists.immutable.of(array);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(IEnumerable<Guid> componentUuids,
+                                                                         IEnumerable<Guid> definitionForSemanticUuids,
+                                                                         IEnumerable<Guid> referencedComponentUuids)
+        {
+            throw new NotImplementedException();
+            //    try
+            //    {
+            //        int length = ReadInt();
+            //        SemanticVersionDTO[] array = new SemanticVersionDTO[length];
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            array[i] = SemanticVersionDTO.make(this, componentUuids,
+            //                    definitionForSemanticUuids, referencedComponentUuids);
+            //        }
+            //        return Lists.immutable.of(array);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new UncheckedIOException(ex);
+            //    }
+        }
 
-        //public IEnumerable<Object> readImmutableObjectList()
-        //{
-        //    return Lists.immutable.of(readObjectArray());
-        //}
+        public IEnumerable<Object> ReadImmutableObjectList()
+        {
+            throw new NotImplementedException();
+            //return Lists.immutable.of(readObjectArray());
+        }
 
         //public Object[] readObjectArray()
         //{

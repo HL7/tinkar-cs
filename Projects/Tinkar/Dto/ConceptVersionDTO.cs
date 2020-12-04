@@ -18,20 +18,16 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptVersionDTO : BaseDTO, 
+    public record ConceptVersionDTO(IEnumerable<Guid> ComponentUuids, 
+            StampDTO StampDTO) : BaseDTO, 
         IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
         private const int MarshalVersion = 1;
-        public IStamp Stamp { get; init; }
-        public IEnumerable<Guid> ComponentUuids { get; init; }
 
-        //$@Override
-        //public Stamp stamp() {
-        //    return stampDTO;
-        //}
+        public IStamp Stamp => this.StampDTO;
 
         ///**
         // * Marshaler for ConceptVersionDTO using JSON
@@ -70,11 +66,7 @@ namespace Tinkar
             try
             {
                 CheckMarshallVersion(input, MarshalVersion);
-                return new ConceptVersionDTO
-                {
-                    ComponentUuids = componentUuids,
-                    Stamp = StampDTO.Make(input)
-                };
+                return new ConceptVersionDTO(componentUuids, StampDTO.Make(input));
             }
             catch (Exception ex)
             {

@@ -22,9 +22,10 @@ namespace Tinkar
      *
      * @author KWA
      */
-    public interface ISemanticChronology :
-        IChronology<ISemanticVersion>,
+    public interface ISemanticChronology<TIdentifiedThing> :
+        IChronology<ISemanticVersion, TIdentifiedThing>,
         ISemantic
+        where TIdentifiedThing : IIdentifiedThing
     {
         //$default SemanticChronologyDTO toChangeSetThing()
         //{

@@ -29,9 +29,9 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
-        public IConcept DataType => new ConceptDTO { ComponentUuids = DataTypeUuids };
-        public IConcept Purpose => new ConceptDTO { ComponentUuids = PurposeUuids };
-        public IConcept Use => new ConceptDTO { ComponentUuids = UseUuids };
+        public IConcept DataType => new ConceptDTO(DataTypeUuids);
+        public IConcept Purpose => new ConceptDTO(PurposeUuids);
+        public IConcept Use => new ConceptDTO(UseUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer) {

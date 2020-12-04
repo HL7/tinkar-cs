@@ -21,7 +21,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record StampCommentDTO : BaseDTO, 
+    public record StampCommentDTO(StampDTO StampDTO, String Comment) : BaseDTO,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -29,21 +29,7 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
-        public IStamp Stamp {get; init; }
-
-        public String Comment {get; init; }
-
-        //$@Override
-        //public Stamp stamp()
-        //{
-        //	return stampDTO;
-        //}
-
-        //@Override
-        //public String comment()
-        //{
-        //	return comment;
-        //}
+        public IStamp Stamp => this.StampDTO;
 
         ///**
         //    * Marshal method for StampCommentDTO using JSON
@@ -77,28 +63,15 @@ namespace Tinkar
         //    * @param in
         //    * @return
         //    */
+
         //@Unmarshaler
-        //public static StampCommentDTO make(TinkarInput input)
-        //{
-        //	try
-        //	{
-        //		int objectMarshalVersion = input.ReadInt();
-        //		if (objectMarshalVersion == marshalVersion)
-        //		{
-        //			return new StampCommentDTO(
-        //					StampDTO.make(in),
-        //					input.ReadUTF());
-        //		}
-        //		else
-        //		{
-        //			throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //		}
-        //	}
-        //	catch (Exception ex)
-        //	{
-        //		throw new UncheckedIOException(ex);
-        //	}
-        //}
+        public static StampCommentDTO make(TinkarInput input)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            return new StampCommentDTO(
+                StampDTO.Make(input),
+                input.ReadUTF());
+        }
 
         ///**
         //    * Marshal method for StampCommentDTO

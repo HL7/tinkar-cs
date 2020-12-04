@@ -30,10 +30,10 @@ namespace Tinkar
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
-        IConceptChronology
+        IConceptChronology<IConcept>
     {
         private const int MarshalVersion = 1;
-        public IIdentifiedThing ChronologySet => new ConceptDTO { ComponentUuids = ChronologySetUuids };
+        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
         public IEnumerable<IConceptVersion> Versions
         {
@@ -65,19 +65,12 @@ namespace Tinkar
         //@Unmarshaler
         public static ConceptChronologyDTO make(TinkarInput input)
         {
-            try
-            {
-                CheckMarshallVersion(input, MarshalVersion);
-                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-                return new ConceptChronologyDTO(componentUuids,
-                    input.ReadImmutableUuidList(),
-                    input.ReadConceptVersionList(componentUuids)
-                );
-            }
-            catch (Exception ex)
-            {
-                throw new MarshalExceptionUnchecked(ex);
-            }
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            return new ConceptChronologyDTO(componentUuids,
+                input.ReadImmutableUuidList(),
+                input.ReadConceptVersionList(componentUuids)
+            );
         }
 
         //@Override

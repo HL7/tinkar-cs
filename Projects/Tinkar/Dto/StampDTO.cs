@@ -25,16 +25,16 @@ namespace Tinkar
             IEnumerable<Guid> ModuleUuids,
             IEnumerable<Guid> PathUuids
         ) : BaseDTO,
-        IChangeSetThing, 
-        IJsonMarshalable, 
-        IMarshalable, 
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable,
         IStamp
     {
         private const int MarshalVersion = 1;
-        public IConcept Status => new ConceptDTO { ComponentUuids = StatusUuids };
-        public IConcept Author => new ConceptDTO { ComponentUuids = AuthorUuids };
-        public IConcept Module => new ConceptDTO { ComponentUuids = ModuleUuids };
-        public IConcept Path => new ConceptDTO { ComponentUuids = PathUuids };
+        public IConcept Status => new ConceptDTO(StatusUuids);
+        public IConcept Author => new ConceptDTO(AuthorUuids);
+        public IConcept Module => new ConceptDTO(ModuleUuids);
+        public IConcept Path => new ConceptDTO(PathUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer)
@@ -61,20 +61,14 @@ namespace Tinkar
         //@Unmarshaler
         public static StampDTO Make(TinkarInput input)
         {
-            try
-            {
-                CheckMarshallVersion(input, MarshalVersion);
-                return new StampDTO(
-                    input.ReadImmutableUuidList(),
-                    input.ReadInstant(),
-                    input.ReadImmutableUuidList(),
-                    input.ReadImmutableUuidList(),
-                    input.ReadImmutableUuidList());
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            CheckMarshallVersion(input, MarshalVersion);
+            return new StampDTO(
+                input.ReadImmutableUuidList(),
+                input.ReadInstant(),
+                input.ReadImmutableUuidList(),
+                input.ReadImmutableUuidList(),
+                input.ReadImmutableUuidList()
+                );
         }
 
         //@Override

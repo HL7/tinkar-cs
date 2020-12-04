@@ -22,9 +22,10 @@ namespace Tinkar
      *
      * @author KWA
      */
-    public interface IDefinitionForSemanticChronology :
-        IChronology<IDefinitionForSemanticVersion>,
+    public interface IDefinitionForSemanticChronology<TIdentifiedThing> :
+        IChronology<IDefinitionForSemanticVersion, TIdentifiedThing>,
         IDefinitionForSemantic
+        where TIdentifiedThing : IIdentifiedThing
     {
         //$default DefinitionForSemanticChronologyDTO toChangeSetThing() {
         //     MutableList<DefinitionForSemanticVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());

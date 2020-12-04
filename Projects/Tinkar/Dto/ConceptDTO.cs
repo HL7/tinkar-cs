@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptDTO : BaseDTO, 
+    public record ConceptDTO(IEnumerable<Guid> ComponentUuids) : BaseDTO,
         IConcept,
         IJsonMarshalable,
         IMarshalable
     {
         private const int MarshalVersion = 1;
-
-        public IEnumerable<Guid> ComponentUuids { get; init; }
 
         //$@Override
         //public void jsonMarshal(Writer writer) {
@@ -29,17 +27,9 @@ namespace Tinkar
         //@Unmarshaler
         public static ConceptDTO Make(TinkarInput input)
         {
-            try
-            {
-                CheckMarshallVersion(input, MarshalVersion);
-
-                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-                return new ConceptDTO { ComponentUuids = componentUuids};
-            }
-            catch (Exception ex)
-            {
-                throw new MarshalExceptionUnchecked(ex);
-            }
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            return new ConceptDTO(componentUuids);
         }
 
         //@Override

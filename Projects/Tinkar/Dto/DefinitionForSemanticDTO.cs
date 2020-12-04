@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	public record DefinitionForSemanticDTO(IEnumerable<Guid> ComponentUuids) : BaseDTO, 
+    public record DefinitionForSemanticDTO(IEnumerable<Guid> ComponentUuids) : BaseDTO,
         IDefinitionForSemantic,
-		IJsonMarshalable,
-		IMarshalable
-	{
-		private const int MarshalVersion = 1;
+        IJsonMarshalable,
+        IMarshalable
+    {
+        private const int MarshalVersion = 1;
 
         //$@Override
         //public void jsonMarshal(Writer writer) {
@@ -25,19 +25,12 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static DefinitionForSemanticDTO make(TinkarInput input) {
-        //    try {
-        //        int objectMarshalVersion = input.ReadInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-        //            return new DefinitionForSemanticDTO(componentUuids);
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        public static DefinitionForSemanticDTO make(TinkarInput input)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            return new DefinitionForSemanticDTO(componentUuids);
+        }
 
         //@Override
         //@Marshaler

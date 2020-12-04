@@ -15,36 +15,29 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 *
 	 * @author kec
 	 */
-	public record DefinitionForSemanticChronologyDTO : BaseDTO, 
-        IDefinitionForSemanticChronology,
-		IChangeSetThing,
-		IJsonMarshalable,
-		IMarshalable
-	{
-		private const int MarshalVersion = 1;
+    public record DefinitionForSemanticChronologyDTO(
+            IEnumerable<Guid> ComponentUuids,
+            IEnumerable<Guid> ChronologySetUuids,
+            IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions) : BaseDTO,
+        IDefinitionForSemanticChronology<IConcept>,
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable
+    {
+        private const int MarshalVersion = 1;
 
-        public IIdentifiedThing ChronologySet {get; init; }
+        public IEnumerable<IDefinitionForSemanticVersion> Versions =>
+            this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
 
-        public IEnumerable<IDefinitionForSemanticVersion> Versions {get; init; }
-
-        public IEnumerable<Guid> ComponentUuids {get; init; }
-
-        //$@Override
-        //public IEnumerable<DefinitionForSemanticVersion> versions() {
-        //    return definitionVersions.collect(definitionForSemanticVersionDTO -> (DefinitionForSemanticVersion) definitionForSemanticVersionDTO);
-        //}
-
-        //@Override
-        //public Concept chronologySet() {
-        //    return new ConceptDTO(chronologySetUuids);
-        //}
+        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -65,20 +58,16 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static DefinitionForSemanticChronologyDTO make(TinkarInput input) {
-        //    try {
-        //        int objectMarshalVersion = input.ReadInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-        //            return new DefinitionForSemanticChronologyDTO(
-        //                    componentUuids, input.ReadImmutableUuidList(), input.readDefinitionForSemanticVersionList(componentUuids));
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static DefinitionForSemanticChronologyDTO make(TinkarInput input)
+        {
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            return new DefinitionForSemanticChronologyDTO(
+                    componentUuids, 
+                    input.ReadImmutableUuidList(), 
+                    input.ReadDefinitionForSemanticVersionList(componentUuids)
+                    );
+        }
 
         //@Override
         //@Marshaler

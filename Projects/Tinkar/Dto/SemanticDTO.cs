@@ -38,19 +38,11 @@ namespace Tinkar
         //$@Unmarshaler
         public static SemanticDTO Make(TinkarInput input)
         {
-            try
-            {
-                CheckMarshallVersion(input, MarshalVersion);
-
-                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-                IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
-                IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
-                return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
-            }
-            catch (Exception ex)
-            {
-                throw new MarshalExceptionUnchecked(ex);
-            }
+            CheckMarshallVersion(input, MarshalVersion);
+            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
+            return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
         }
 
         //$@Override
