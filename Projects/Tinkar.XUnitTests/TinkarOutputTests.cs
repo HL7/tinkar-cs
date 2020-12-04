@@ -21,10 +21,10 @@ namespace Tinkar.XUnitTests
                 ms.Position = 0;
 
                 Assert.True(ms.Length == 4);
-                Assert.True(ms.ReadByte() == 1);
-                Assert.True(ms.ReadByte() == 2);
-                Assert.True(ms.ReadByte() == 3);
                 Assert.True(ms.ReadByte() == 4);
+                Assert.True(ms.ReadByte() == 3);
+                Assert.True(ms.ReadByte() == 2);
+                Assert.True(ms.ReadByte() == 1);
             }
 
             {
@@ -38,10 +38,10 @@ namespace Tinkar.XUnitTests
                 ms.Position = 0;
 
                 Assert.True(ms.Length == 4);
-                Assert.True(ms.ReadByte() == 0xf1);
-                Assert.True(ms.ReadByte() == 0xf2);
-                Assert.True(ms.ReadByte() == 0xf3);
                 Assert.True(ms.ReadByte() == 0x74);
+                Assert.True(ms.ReadByte() == 0xf3);
+                Assert.True(ms.ReadByte() == 0xf2);
+                Assert.True(ms.ReadByte() == 0xf1);
             }
         }
 
@@ -63,14 +63,14 @@ namespace Tinkar.XUnitTests
                 ms.Position = 0;
 
                 Assert.True(ms.Length == 8);
-                Assert.True(ms.ReadByte() == 1);
-                Assert.True(ms.ReadByte() == 2);
-                Assert.True(ms.ReadByte() == 3);
-                Assert.True(ms.ReadByte() == 4);
-                Assert.True(ms.ReadByte() == 5);
-                Assert.True(ms.ReadByte() == 6);
-                Assert.True(ms.ReadByte() == 7);
                 Assert.True(ms.ReadByte() == 8);
+                Assert.True(ms.ReadByte() == 7);
+                Assert.True(ms.ReadByte() == 6);
+                Assert.True(ms.ReadByte() == 5);
+                Assert.True(ms.ReadByte() == 4);
+                Assert.True(ms.ReadByte() == 3);
+                Assert.True(ms.ReadByte() == 2);
+                Assert.True(ms.ReadByte() == 1);
             }
 
             {
@@ -88,14 +88,14 @@ namespace Tinkar.XUnitTests
                 ms.Position = 0;
 
                 Assert.True(ms.Length == 8);
-                Assert.True(ms.ReadByte() == 0xf1);
-                Assert.True(ms.ReadByte() == 0xf2);
-                Assert.True(ms.ReadByte() == 0xf3);
-                Assert.True(ms.ReadByte() == 0xf4);
-                Assert.True(ms.ReadByte() == 0xf5);
-                Assert.True(ms.ReadByte() == 0xf6);
-                Assert.True(ms.ReadByte() == 0xf7);
                 Assert.True(ms.ReadByte() == 0x78);
+                Assert.True(ms.ReadByte() == 0xf7);
+                Assert.True(ms.ReadByte() == 0xf6);
+                Assert.True(ms.ReadByte() == 0xf5);
+                Assert.True(ms.ReadByte() == 0xf4);
+                Assert.True(ms.ReadByte() == 0xf3);
+                Assert.True(ms.ReadByte() == 0xf2);
+                Assert.True(ms.ReadByte() == 0xf1);
             }
         }
 
@@ -128,10 +128,10 @@ namespace Tinkar.XUnitTests
                 ti.WriteUuidList(new Guid[] {g1});
                 ms.Position = 0;
                 Assert.True(ms.Length == 20);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 1);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
 
                 Assert.True(ms.ReadByte() == 1);
                 Assert.True(ms.ReadByte() == 2);
@@ -158,10 +158,10 @@ namespace Tinkar.XUnitTests
                 ti.WriteUuidList(new Guid[] { g1 });
                 ms.Position = 0;
                 Assert.True(ms.Length == 20);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 1);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
 
                 Assert.True(ms.ReadByte() == 0xf0);
                 Assert.True(ms.ReadByte() == 0xf1);
@@ -189,10 +189,10 @@ namespace Tinkar.XUnitTests
                 ti.WriteUuidList(new Guid[] { g1, g2 });
                 ms.Position = 0;
                 Assert.True(ms.Length == 36);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 2);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
-                Assert.True(ms.ReadByte() == 0);
 
                 Assert.True(ms.ReadByte() == 1);
                 Assert.True(ms.ReadByte() == 2);
