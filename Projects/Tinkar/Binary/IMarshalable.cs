@@ -23,51 +23,31 @@ namespace Tinkar
      * Template for marshalable class implementations classes
      *
 
-     private static final int marshalVersion = 1;
+     private static final int MarshalVersion = 1;
 
      // Using a static method rather than a constructor eliminates the need for
      // a readResolve method, but allows the implementation to decide how
      // to handle special cases.
 
         public static StampDTO Make(TinkarInput input) {
-                int objectMarshalVersion = input.ReadInt();
-                switch (objectMarshalVersion) {
-                    case marshalVersion:
-                        throw new UnsupportedOperationException();
-                        break;
-                    default:
-                        throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-                }
-            } catch (Exception ex) {
-                throw new UncheckedIOException(ex);
-            }
+            CheckMarshalVersion(input, MarshalVersion);
+            ...
         }
 
-        @Override
-        @Marshaler
-        public void marshal(TinkarOutput out) {
-            try {
-                out.writeInt(marshalVersion);
-                throw new UnsupportedOperationException();
-            } catch (Exception ex) {
-                throw new UncheckedIOException(ex);
-            }
+        public void Marshal(TinkarOutput output) {
+            WriteMarshalVersion(output, MarshalVersion);
+            throw new UnsupportedOperationException();
         }
-
-
-
      *
      *
      */
     public interface IMarshalable
     {
-        //$@Marshaler
-
-        //void marshal(TinkarOutput out);
+        void Marshal(TinkarOutput output);
 
         //    default TinkarByteArrayOutput marshal()
         //{
-        //    TinkarByteArrayOutput byteArrayOutput = TinkarByteArrayOutput.make();
+        //    TinkarByteArrayOutput byteArrayOutput = TinkarByteArrayOutput.Make();
         //    marshal(byteArrayOutput);
         //    return byteArrayOutput;
         //}
@@ -79,7 +59,7 @@ namespace Tinkar
 
         //static <T> T makeVersion(Class<T> objectClass, byte[] input, IEnumerable<Guid> componentUuids)
         //{
-        //    return makeVersion(objectClass, TinkarInput.make(input), componentUuids);
+        //    return makeVersion(objectClass, TinkarInput.Make(input), componentUuids);
         //}
 
         //static <T> T makeSemanticVersion(Class<T> objectClass, TinkarInput input, IEnumerable<Guid> componentUuids,
@@ -111,7 +91,7 @@ namespace Tinkar
         //    }
         //}
 
-        //static <T> T make(Class<T> objectClass, TinkarInput input)
+        //static <T> T Make(Class<T> objectClass, TinkarInput input)
         //{
         //    try
         //    {
@@ -125,14 +105,14 @@ namespace Tinkar
         //    }
         //}
 
-        //static <T> T make(Class<T> objectClass, byte[] input)
+        //static <T> T Make(Class<T> objectClass, byte[] input)
         //{
-        //    return make(objectClass, TinkarInput.make(input));
+        //    return Make(objectClass, TinkarInput.Make(input));
         //}
 
-        //static <T> T make(Class<T> objectClass, TinkarByteArrayOutput output)
+        //static <T> T Make(Class<T> objectClass, TinkarByteArrayOutput output)
         //{
-        //    return make(objectClass, TinkarInput.make(output));
+        //    return Make(objectClass, TinkarInput.Make(output));
         //}
 
         //static <T> T unmarshal(Class<T> objectClass, Class<? extends Annotation> annotationClass,

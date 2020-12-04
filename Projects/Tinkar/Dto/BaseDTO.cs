@@ -9,11 +9,17 @@ namespace Tinkar
 {
     public abstract record BaseDTO
     {
-        protected static void CheckMarshallVersion(TinkarInput input, 
+        protected static void WriteMarshalVersion(TinkarOutput output,
             Int32 marshalVersion)
         {
+            output.WriteInt(marshalVersion);
+        }
+
+        protected static void CheckMarshalVersion(TinkarInput input,
+                Int32 MarshalVersion)
+        {
             int objectMarshalVersion = input.ReadInt();
-            if (objectMarshalVersion != marshalVersion)
+            if (objectMarshalVersion != MarshalVersion)
                 throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         }
     }

@@ -19,28 +19,33 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static ConceptDTO make(JSONObject jsonObject) {
+        //public static ConceptDTO Make(JSONObject jsonObject) {
         //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new ConceptDTO(componentUuids);
         //}
 
-        //@Unmarshaler
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static ConceptDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             return new ConceptDTO(componentUuids);
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(componentUuids);
-        //    } catch (Exception ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.ComponentUuids);
+        }
     }
 }

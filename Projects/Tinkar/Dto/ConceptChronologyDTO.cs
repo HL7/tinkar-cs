@@ -36,8 +36,8 @@ namespace Tinkar
         private const int MarshalVersion = 1;
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
-    public IEnumerable<IConceptVersion> Versions =>
-        this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
+        public IEnumerable<IConceptVersion> Versions =>
+            this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -50,17 +50,22 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static ConceptChronologyDTO make(JSONObject jsonObject) {
+        //public static ConceptChronologyDTO Make(JSONObject jsonObject) {
         //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new ConceptChronologyDTO(componentUuids,
         //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
         //                    jsonObject.asConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, componentUuids));
         //}
 
-        //@Unmarshaler
-        public static ConceptChronologyDTO make(TinkarInput input)
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static ConceptChronologyDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             return new ConceptChronologyDTO(componentUuids,
                 input.ReadImmutableUuidList(),
@@ -68,19 +73,19 @@ namespace Tinkar
             );
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(componentUuids);
-        //        out.writeUuidList(chronologySetUuids);
-        //        // Note that the componentIds are not written redundantly
-        //        // in writeConceptVersionList...
-        //        out.writeConceptVersionList(conceptVersions);
-        //    } catch (Exception ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.ComponentUuids);
+            output.WriteUuidList(this.ChronologySetUuids);
+            // Note that the componentIds are not written redundantly
+            // in writeConceptVersionList...
+            output.WriteMarshalableList(this.ConceptVersions);
+        }
     }
 }

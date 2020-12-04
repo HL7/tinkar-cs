@@ -44,18 +44,23 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static FieldDefinitionDTO make(JSONObject jsonObject) {
+        //public static FieldDefinitionDTO Make(JSONObject jsonObject) {
         //    return new FieldDefinitionDTO(jsonObject.asImmutableUuidList(ComponentFieldForJson.DATATYPE_UUIDS),
         //            jsonObject.asImmutableUuidList(ComponentFieldForJson.PURPOSE_UUIDS),
         //            jsonObject.asImmutableUuidList(ComponentFieldForJson.USE_UUIDS));
         //}
 
-        //@Unmarshaler
-        public static FieldDefinitionDTO make(TinkarInput input)
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static FieldDefinitionDTO Make(TinkarInput input)
         {
             try
             {
-                CheckMarshallVersion(input, MarshalVersion);
+                CheckMarshalVersion(input, MarshalVersion);
                 return new FieldDefinitionDTO(input.ReadImmutableUuidList(),
                     input.ReadImmutableUuidList(),
                     input.ReadImmutableUuidList());
@@ -66,17 +71,17 @@ namespace Tinkar
             }
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(dataTypeUuids);
-        //        out.writeUuidList(purposeUuids);
-        //        out.writeUuidList(useUuids);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.DataTypeUuids);
+            output.WriteUuidList(this.PurposeUuids);
+            output.WriteUuidList(this.UseUuids);
+        }
     }
 }

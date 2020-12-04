@@ -16,62 +16,49 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 namespace Tinkar
 {
-	/**
-		 *
-		 * @author kec
-		 */
-	public class TinkarOutput
+    public class TinkarOutput
     {
         private BinaryWriter writer;
-		public TinkarOutput(Stream outStream)
-		{
+
+        public TinkarOutput(Stream outStream)
+        {
             this.writer = new BinaryWriter(outStream);
-		}
+        }
+
+        /// <summary>
+        /// Write boolean to output stream.
+        /// </summary>
+        /// <returns></returns>
+        public void WriteBoolean(Boolean value) => this.writer.Write(value);
+
+        /// <summary>
+        /// Write float to output stream.
+        /// </summary>
+        /// <returns></returns>
+        public void WriteFloat(float value)
+        {
+            Int32 v = BitConverter.SingleToInt32Bits(value);
+            this.writer.Write(IPAddress.HostToNetworkOrder(v));
+        }
 
         /// <summary>
         /// Write little endian Int32 to output stream.
         /// </summary>
         /// <returns></returns>
-        public void WriteInt(Int32 value)
-        {
-            this.writer.Write((byte) value);
-            this.writer.Write((byte) (value >> 8));
-            this.writer.Write((byte)(value >> 16));
-            this.writer.Write((byte)(value >> 24));
-		}
+        public void WriteInt(Int32 value) =>
+            this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
         /// <summary>
         /// Write little endian Int64 to output stream.
         /// </summary>
         /// <returns></returns>
-        public void WriteLong(Int64 value)
-        {
-            this.writer.Write((byte)value);
-            this.writer.Write((byte)(value >> 8));
-            this.writer.Write((byte)(value >> 16));
-            this.writer.Write((byte)(value >> 24));
-			this.writer.Write((byte)(value >> 32));
-			this.writer.Write((byte)(value >> 40));
-			this.writer.Write((byte)(value >> 48));
-            this.writer.Write((byte)(value >> 56));
-        }
-
-        public void WriteUuidArray(Guid[] array)
-        {
-            try
-            {
-                this.WriteInt(array.Length);
-                foreach (Guid uuid in array)
-                    this.writer.Write(uuid.ToByteArray());
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
-        }
+        public void WriteLong(Int64 value) =>
+            this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
         /**
          * Always convert to UTC...
@@ -79,164 +66,137 @@ namespace Tinkar
          */
         public void WriteInstant(DateTime instant)
         {
-            try
+            this.WriteLong(instant.EpochSecond());
+            this.WriteInt(instant.Nano());
+        }
+
+        public void WriteMarshalableList(IEnumerable<IMarshalable> items)
+        {
+            this.WriteInt(items.Count());
+            foreach (IMarshalable version in items)
+                version.Marshal(this);
+        }
+
+        private void WriteField(Object field)
+        {
+            switch (field)
             {
-                this.WriteLong(instant.EpochSecond());
-                this.WriteInt(instant.Nano());
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
+                case Boolean item:
+                    this.WriteFieldType(FieldDataType.BooleanType);
+                    this.WriteBoolean(item);
+                    break;
+
+                case byte[] item:
+                    this.WriteFieldType(FieldDataType.ByteArrayType);
+                    this.WriteInt(item.Length);
+                    this.writer.Write(item);
+                    break;
+
+                case Single item:
+                    this.WriteFieldType(FieldDataType.FloatType);
+                    this.WriteFloat(item);
+                    break;
+
+                case Double item:
+                    this.WriteFieldType(FieldDataType.FloatType);
+                    this.writer.Write((float)item);
+                    break;
+
+                case Int32 int32Item:
+                    this.WriteFieldType(FieldDataType.IntegerType);
+                    this.writer.Write(int32Item);
+                    break;
+
+                case Int64 item:
+                    this.WriteFieldType(FieldDataType.IntegerType);
+                    this.writer.Write((Int32)item);
+                    break;
+
+                case String item:
+                    this.WriteFieldType(FieldDataType.StringType);
+                    this.writer.Write(item);
+                    break;
+
+                case DateTime item:
+                    this.WriteFieldType(FieldDataType.InstantType);
+                    this.WriteInstant(item);
+                    break;
+
+                case Object[] item:
+                    this.WriteFieldType(FieldDataType.ObjectArrayType);
+                    this.WriteObjectList(item);
+                    break;
+
+                case ConceptDTO item:
+                    this.WriteFieldType(FieldDataType.ConceptType);
+                    item.Marshal(this);
+                    break;
+
+                case ConceptChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.ConceptChronologyType);
+                    item.Marshal(this);
+                    break;
+
+                case SemanticDTO item:
+                    this.WriteFieldType(FieldDataType.SemanticType);
+                    item.Marshal(this);
+                    break;
+
+                case SemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.SemanticChronologyType);
+                    item.Marshal(this);
+                    break;
+
+                case DefinitionForSemanticDTO item:
+                    this.WriteFieldType(FieldDataType.DefinitionForSymanticType);
+                    item.Marshal(this);
+                    break;
+
+                case DefinitionForSemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.DefinitionForSymanticType);
+                    item.Marshal(this);
+                    break;
+
+                case IIdentifiedThing item:
+                    this.WriteFieldType(FieldDataType.IdentifiedThingType);
+                    this.WriteIdentifiedThing(item);
+                    break;
+
+                case DigraphDTO item:
+                    this.WriteDigraph();
+                    break;
+
+                default:
+                    throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
             }
         }
 
-        //public void writeFieldDefinitionList(IEnumerable<FieldDefinitionDTO> fieldDefinitions) {
-        //    try {
-        //        writeInt(fieldDefinitions.size());
-        //        for (FieldDefinitionDTO fieldDefinition: fieldDefinitions) {
-        //            fieldDefinition.marshal(this);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
 
-        //public void writeConceptVersionList(IEnumerable<ConceptVersionDTO> versions) {
-        //    try {
-        //        writeInt(versions.size());
-        //        for (ConceptVersionDTO version: versions) {
-        //            version.marshal(this);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        private void WriteIdentifiedThing(IIdentifiedThing thing) => this.WriteUuidList(thing.ComponentUuids);
 
-        //public void writeDefinitionForSemanticVersionList(IEnumerable<DefinitionForSemanticVersionDTO> versions) {
-        //    try {
-        //        writeInt(versions.size());
-        //        for (DefinitionForSemanticVersionDTO version: versions) {
-        //            version.marshal(this);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Read string.
+        /// Note: BinaryWriter.WriteString is supposed to be identical to java WriteUTF().
+        /// </summary>
+        /// <returns></returns>
+        public void WriteUTF(String s) => this.writer.Write(s);
 
-        //public void writeSemanticVersionList(IEnumerable<SemanticVersionDTO> versions) {
-        //    try {
-        //        writeInt(versions.size());
-        //        for (SemanticVersionDTO version: versions) {
-        //            version.marshal(this);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        private void WriteDigraph() => throw new UnsupportedOperationException("WriteDigraph");
+        private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((byte)fieldType);
+        private void WriteByte(byte value) => this.writer.Write(value);
 
-        //private void writeField(Object object) {
-        //    FieldDataType fieldDataType = FieldDataType.getFieldDataType(object);
-        //    try {
-        //        switch (fieldDataType) {
-        //            case BOOLEAN -> writeBoolean((boolean) object, fieldDataType);
-        //            case BYTE_ARRAY -> writeByteArray((byte[]) object, fieldDataType);
-        //            case DIGRAPH -> writeDigraph();
-        //            case FLOAT -> writeFloat((Number) object, fieldDataType);
-        //            case INTEGER -> writeInteger((Number) object, fieldDataType);
-        //            case OBJECT_ARRAY -> writeObjectArray((Object[]) object, fieldDataType);
-        //            case STRING -> writeString((String) object, fieldDataType);
-        //            case INSTANT -> writeInstant((Instant) object, fieldDataType);
-        //            case IDENTIFIED_THING -> writeIdentifiedThing((IdentifiedThing) object, fieldDataType);
-        //            case CONCEPT,
-        //                    CONCEPT_CHRONOLOGY,
-        //                    DEFINITION_FOR_SEMANTIC,
-        //                    DEFINITION_FOR_SEMANTIC_CHRONOLOGY,
-        //                    SEMANTIC,
-        //                    SEMANTIC_CHRONOLOGY -> writeMarshalableObject((Marshalable) object);
+        public void WriteUuidList(IEnumerable<Guid> statusUuids)
+        {
+            this.WriteInt(statusUuids.Count());
+            foreach (Guid statusUuid in statusUuids)
+                this.writer.Write(statusUuid.ToByteArray());
+        }
 
-        //            default -> throw new UnsupportedOperationException("writeField can't handle: " + object + " " + fieldDataType);
-        //        }
-        //    } catch (IOException e) {
-        //        throw new UncheckedIOException(e);
-        //    }
-        //}
-
-
-        //private void writeInstant(Instant instant, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeInstant(instant);
-        //}
-
-        //private void writeIdentifiedThing(IdentifiedThing object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeUuidList(object.componentUuids());
-        //}
-        //private void writeMarshalableObject(Marshalable object) throws IOException {
-        //    FieldDataType dataType = FieldDataType.getFieldDataType(object);
-        //    this.writeByte(dataType.token);
-        //    object.marshal(this);
-        //}
-
-        //private void writeString(String object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeUTF(object);
-        //}
-
-        //private void writeObjectArray(Object[] object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    Object[] objects = object;
-        //    writeInt(objects.length);
-        //    for (int i = 0; i < objects.length; i++) {
-        //        writeField(objects[i]);
-        //    }
-        //}
-
-        //private void writeInteger(Number object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeInt(object.intValue());
-        //}
-
-        //private void writeFloat(Number object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeFloat(object.floatValue());
-        //}
-
-        //private void writeDigraph() {
-        //    throw new UnsupportedOperationException();
-        //}
-
-        //private void writeByteArray(byte[] object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeInt(object.length);
-        //    write(object);
-        //}
-
-        //private void writeBoolean(boolean object, FieldDataType fieldDataType) throws IOException {
-        //    writeByte(fieldDataType.token);
-        //    writeBoolean(object);
-        //}
-
-        //public void writeUuidList(IEnumerable<Guid> statusUuids) {
-        //    writeUuidArray(statusUuids.toArray(new Guid[statusUuids.size()]));
-        //}
-
-        //public void writeObjectArray(Object[] fields) {
-        //    try {
-        //        writeInt(fields.length);
-        //        for (Object object : fields) {
-        //            writeField(object);
-        //        }
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
-
-        //public void writeObjectList(IEnumerable<Object> fields) {
-        //    writeObjectList(fields.castToList());
-        //}
-
-        //public void writeObjectList(List<Object> fields) {
-        //    writeObjectArray(fields.toArray());
-        //}
+        public void WriteObjectList(IEnumerable<Object> fields)
+        {
+            this.WriteInt(fields.Count());
+            foreach (Object field in fields)
+                this.WriteField(field);
+        }
     }
 }

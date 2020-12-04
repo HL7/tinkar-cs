@@ -56,7 +56,7 @@ namespace Tinkar
         //    final JSONObject json = new JSONObject();
         //    json.put(ComponentFieldForJson.STAMP, stampDTO);
         //    json.put(REFERENCED_COMPONENT_PURPOSE_UUIDS, referencedComponentPurposeUuids);
-        //    json.put(FIELD_DEFINITIONS, fieldDefinitionDTOS);
+        //    json.put(FIELD_DEFINITIONS, FieldDefinitionDTOs);
         //    json.writeJSONString(writer);
         //}
 
@@ -67,9 +67,9 @@ namespace Tinkar
         // * @return
         // */
         //@JsonVersionUnmarshaler
-        //public static DefinitionForSemanticVersionDTO make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
+        //public static DefinitionForSemanticVersionDTO Make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
         //    return new DefinitionForSemanticVersionDTO(componentUuids,
-        //            StampDTO.make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)),
+        //            StampDTO.Make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)),
         //            jsonObject.asImmutableUuidList(REFERENCED_COMPONENT_PURPOSE_UUIDS),
         //            jsonObject.asFieldDefinitionList(FIELD_DEFINITIONS));
         //}
@@ -84,7 +84,7 @@ namespace Tinkar
         public static DefinitionForSemanticVersionDTO Make(TinkarInput input,
             IEnumerable<Guid> componentUuids)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             return new DefinitionForSemanticVersionDTO(componentUuids,
                     StampDTO.Make(input),
                     input.ReadImmutableUuidList(),
@@ -95,17 +95,12 @@ namespace Tinkar
         // * Marshal method for DefinitionForSemanticVersionDTO
         // * @param out
         // */
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        stampDTO.marshal(out);
-        //        out.writeUuidList(referencedComponentPurposeUuids);
-        //        out.writeFieldDefinitionList(fieldDefinitionDTOS);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            this.StampDTO.Marshal(output);
+            output.WriteUuidList(this.ReferencedComponentPurposeUuids);
+            output.WriteMarshalableList(this.FieldDefinitionDTOs);
+        }
     }
 }

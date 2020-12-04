@@ -50,36 +50,41 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static DefinitionForSemanticChronologyDTO make(JSONObject jsonObject) {
+        //public static DefinitionForSemanticChronologyDTO Make(JSONObject jsonObject) {
         //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new DefinitionForSemanticChronologyDTO(componentUuids,
         //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
         //                    jsonObject.asDefinitionForSemanticVersionList(ComponentFieldForJson.DEFINITION_VERSIONS, componentUuids));
         //}
 
-        //@Unmarshaler
-        public static DefinitionForSemanticChronologyDTO make(TinkarInput input)
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static DefinitionForSemanticChronologyDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             return new DefinitionForSemanticChronologyDTO(
-                    componentUuids, 
-                    input.ReadImmutableUuidList(), 
+                    componentUuids,
+                    input.ReadImmutableUuidList(),
                     input.ReadDefinitionForSemanticVersionList(componentUuids)
                     );
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(componentUuids);
-        //        out.writeUuidList(chronologySetUuids);
-        //        out.writeDefinitionForSemanticVersionList(definitionVersions);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.ComponentUuids);
+            output.WriteUuidList(this.ChronologySetUuids);
+            output.WriteMarshalableList(this.DefinitionVersions);
+        }
     }
 }

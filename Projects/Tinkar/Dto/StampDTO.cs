@@ -49,7 +49,7 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static StampDTO make(JSONObject jsonObject)
+        //public static StampDTO Make(JSONObject jsonObject)
         //{
         //	return new StampDTO(jsonObject.asImmutableUuidList(STATUS_UUIDS),
         //			jsonObject.asInstant(TIME),
@@ -58,10 +58,15 @@ namespace Tinkar
         //			jsonObject.asImmutableUuidList(PATH_UUIDS));
         //}
 
-        //@Unmarshaler
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static StampDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             return new StampDTO(
                 input.ReadImmutableUuidList(),
                 input.ReadInstant(),
@@ -71,24 +76,19 @@ namespace Tinkar
                 );
         }
 
-        //@Override
-        //@Marshaler
-
-        //public void marshal(TinkarOutput out)
-        //{
-        //	try
-        //	{
-        //           out.writeInt(marshalVersion);
-        //           out.writeUuidList(statusUuids);
-        //           out.writeInstant(time);
-        //           out.writeUuidList(authorUuids);
-        //           out.writeUuidList(moduleUuids);
-        //           out.writeUuidList(pathUuids);
-        //	}
-        //	catch (Exception ex)
-        //	{
-        //		throw new UncheckedIOException(ex);
-        //	}
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.StatusUuids);
+            output.WriteInstant(this.Time);
+            output.WriteUuidList(this.AuthorUuids);
+            output.WriteUuidList(this.ModuleUuids);
+            output.WriteUuidList(this.PathUuids);
+        }
     }
 }

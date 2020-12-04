@@ -12,9 +12,27 @@ namespace Tinkar
 	 * If there is compelling use for a more precise data type (such as Instant), they can be added when a
 	 * agreed business need and use case are identified..
 	 */
-	public enum FieldDataType
-	{
-		//$STRING((byte) 0, String.class, UUID.fromString("601135f2-2bad-11eb-adc1-0242ac120002")),
+	public enum FieldDataType : byte
+    {
+        StringType = 0,
+        IntegerType = 1,
+        FloatType = 2,
+        BooleanType = 3,
+		ByteArrayType = 4,
+		ObjectArrayType = 5,
+        DiGraphType = 6,
+        InstantType = 7,
+		ConceptChronologyType = 8,
+        ConceptType = 9,
+		DefinitionForSemanticChronologyType = 10,
+		DefinitionForSymanticType = 11,
+		SemanticChronologyType = 12,
+		SemanticType = 13,
+
+		// Identified thing needs to go last...
+		IdentifiedThingType = Byte.MaxValue,
+
+        //$STRING((byte) 0, String.class, UUID.fromString("601135f2-2bad-11eb-adc1-0242ac120002")),
 		//INTEGER((byte) 1, Integer.class,  UUID.fromString("60113822-2bad-11eb-adc1-0242ac120002")),
 		//FLOAT((byte) 2, Float.class,   UUID.fromString("6011391c-2bad-11eb-adc1-0242ac120002")),
 		//BOOLEAN((byte) 3, Boolean.class, UUID.fromString("601139ee-2bad-11eb-adc1-0242ac120002")),

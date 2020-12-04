@@ -78,13 +78,13 @@ public class JSONValue {
      */
     public static void writeJSONString(Object value, Writer out) throws IOException {
         if (value == null) {
-            out.write("null");
+            output.Write("null");
         } else if (value instanceof String string) {
             writeQuotedString(out, escape(string));
         } else if (value instanceof Number num) {
             handleNumber(num, out);
         } else if (value instanceof Boolean) {
-            out.write(value.toString());
+            output.Write(value.toString());
         } else if (value instanceof UUID) {
             writeQuotedString(out, value.toString());
         } else if (value instanceof Instant) {
@@ -92,7 +92,7 @@ public class JSONValue {
         } else if ((value instanceof JSONStreamAware)) {
             ((JSONStreamAware) value).writeJSONString(out);
         } else if ((value instanceof JSONAware)) {
-            out.write(((JSONAware) value).toJSONString());
+            output.Write(((JSONAware) value).toJSONString());
         } else if (value instanceof Map map) {
             JSONObject.writeJSONString(map, out);
         } else if (value.getClass().isArray()) {
@@ -100,9 +100,9 @@ public class JSONValue {
         } else if (value instanceof Collection collection) {
             JSONArray.writeJSONString(collection, out);
         } else if (value instanceof JsonMarshalable marshalable) {
-            out.write(marshalable.toJsonString());
+            output.Write(marshalable.toJsonString());
         } else {
-            out.write(value.toString());
+            output.Write(value.toString());
         }
     }
 
@@ -132,25 +132,25 @@ public class JSONValue {
     private static void handleNumber(Number num, Writer out) throws IOException {
         if (num instanceof Double double1) {
             if (double1.isInfinite() || double1.isNaN()) {
-                out.write("null");
+                output.Write("null");
             } else {
-                out.write(num.toString());
+                output.Write(num.toString());
             }
         } else if (num instanceof Float float1) {
             if (float1.isInfinite() || float1.isNaN()) {
-                out.write("null");
+                output.Write("null");
             } else {
-                out.write(num.toString());
+                output.Write(num.toString());
             }
         } else {
-            out.write(num.toString());
+            output.Write(num.toString());
         }
     }
 
     public static void writeQuotedString(Writer out, String s) throws IOException {
-        out.write('\"');
-        out.write(s);
-        out.write('\"');
+        output.Write('\"');
+        output.Write(s);
+        output.Write('\"');
     }
 
     /**

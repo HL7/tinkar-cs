@@ -24,7 +24,8 @@ namespace Tinkar
      * @author kec
      */
     public record IdentifiedThingDTO(IEnumerable<Guid> ComponentUuids) :
-     IIdentifiedThing, IChangeSetThing
+        IIdentifiedThing, 
+        IChangeSetThing
     {
     }
 }

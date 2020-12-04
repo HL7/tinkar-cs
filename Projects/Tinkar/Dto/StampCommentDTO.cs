@@ -51,10 +51,10 @@ namespace Tinkar
         //    * @return
         //    */
         //@JsonChronologyUnmarshaler
-        //public static StampCommentDTO make(JSONObject jsonObject)
+        //public static StampCommentDTO Make(JSONObject jsonObject)
         //{
         //	return new StampCommentDTO(
-        //			StampDTO.make((JSONObject)jsonObject.get(ComponentFieldForJson.STAMP)),
+        //			StampDTO.Make((JSONObject)jsonObject.get(ComponentFieldForJson.STAMP)),
         //			(String)jsonObject.get(ComponentFieldForJson.COMMENT));
         //}
 
@@ -64,34 +64,30 @@ namespace Tinkar
         //    * @return
         //    */
 
-        //@Unmarshaler
-        public static StampCommentDTO make(TinkarInput input)
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static StampCommentDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             return new StampCommentDTO(
                 StampDTO.Make(input),
                 input.ReadUTF());
         }
 
-        ///**
-        //    * Marshal method for StampCommentDTO
-        //    * @param out
-        //    */
-        //@Override
-        //@Marshaler
-
-        //public void marshal(TinkarOutput out)
-        //{
-        //	try
-        //	{
-        //           out.writeInt(marshalVersion);
-        //		stampDTO.marshal(out);
-        //           out.writeUTF(comment);
-        //	}
-        //	catch (Exception ex)
-        //	{
-        //		throw new UncheckedIOException(ex);
-        //	}
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            this.StampDTO.Marshal(output);
+            output.WriteUTF(this.Comment);
+        }
     }
 }

@@ -18,8 +18,8 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptVersionDTO(IEnumerable<Guid> ComponentUuids, 
-            StampDTO StampDTO) : BaseDTO, 
+    public record ConceptVersionDTO(IEnumerable<Guid> ComponentUuids,
+            StampDTO StampDTO) : BaseDTO,
         IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
@@ -48,10 +48,10 @@ namespace Tinkar
         // * @return
         // */
         //@JsonVersionUnmarshaler
-        //public static ConceptVersionDTO make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
+        //public static ConceptVersionDTO Make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
         //    return new ConceptVersionDTO(
         //            componentUuids,
-        //            StampDTO.make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)));
+        //            StampDTO.Make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)));
         //}
 
         ///**
@@ -65,7 +65,7 @@ namespace Tinkar
         {
             try
             {
-                CheckMarshallVersion(input, MarshalVersion);
+                CheckMarshalVersion(input, MarshalVersion);
                 return new ConceptVersionDTO(componentUuids, StampDTO.Make(input));
             }
             catch (Exception ex)
@@ -78,17 +78,12 @@ namespace Tinkar
         // * Version marshaler for ConceptVersionDTO
         // * @param out
         // */
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        // note that componentUuids are not written redundantly here,
-        //        // they are written with the ConceptChronologyDTO...
-        //        stampDTO.marshal(out);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            // note that componentUuids are not written redundantly here,
+            // they are written with the ConceptChronologyDTO...
+            this.StampDTO.Marshal(output);
+        }
     }
 }

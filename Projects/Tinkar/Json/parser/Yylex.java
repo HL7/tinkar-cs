@@ -359,7 +359,7 @@ class Yylex {
     private boolean zzRefill() {
 
         try {
-            /* first: make room (if you can) */
+            /* first: Make room (if you can) */
             if (zzStartRead > 0) {
                 System.arraycopy(zzBuffer, zzStartRead,
                         zzBuffer, 0,

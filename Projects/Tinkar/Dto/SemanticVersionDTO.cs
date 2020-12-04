@@ -57,7 +57,7 @@ namespace Tinkar
         //}
 
         //@JsonSemanticVersionUnmarshaler
-        //public static SemanticVersionDTO make(JSONObject jsonObject,
+        //public static SemanticVersionDTO Make(JSONObject jsonObject,
         //                                      IEnumerable<Guid> componentUuids,
         //                                      IEnumerable<Guid> definitionForSemanticUuids,
         //                                      IEnumerable<Guid> referencedComponentUuids) {
@@ -65,7 +65,7 @@ namespace Tinkar
         //    return new SemanticVersionDTO(componentUuids,
         //            definitionForSemanticUuids,
         //            referencedComponentUuids,
-        //            StampDTO.make(jsonStampObject),
+        //            StampDTO.Make(jsonStampObject),
         //            jsonObject.asImmutableObjectList(FIELDS));
         //}
 
@@ -75,7 +75,7 @@ namespace Tinkar
                                               IEnumerable<Guid> definitionForSemanticUuids,
                                               IEnumerable<Guid> referencedComponentUuids)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             return new SemanticVersionDTO(componentUuids,
                     definitionForSemanticUuids,
                     referencedComponentUuids,
@@ -83,17 +83,12 @@ namespace Tinkar
                     input.ReadImmutableObjectList());
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        stampDTO.marshal(out);
-        //        out.writeObjectList(fields);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            this.StampDTO.Marshal(output);
+            output.WriteObjectList(this.Fields);
+        }
 
         //@Override
         //public Stamp stamp() {

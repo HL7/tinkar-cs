@@ -27,7 +27,7 @@ namespace Tinkar
      * a readResolve method, but allows the implementation to decide how // to
      * handle special cases.
      *
-     * @JsonUnmarshaler public static Object make(JSONObject jsonObject) {
+     * @JsonUnmarshaler public static Object Make(JSONObject jsonObject) {
      *
      * }
      *
@@ -96,7 +96,7 @@ namespace Tinkar
         //    }
         //}
 
-        //static <T> T make(Class<T> objectClass, String makerString)
+        //static <T> T Make(Class<T> objectClass, String makerString)
         //{
         //    try
         //    {

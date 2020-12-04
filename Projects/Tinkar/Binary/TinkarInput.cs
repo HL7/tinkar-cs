@@ -16,6 +16,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 namespace Tinkar
 {
@@ -45,25 +47,15 @@ namespace Tinkar
         /// Read little endian Int32 from input stream.
         /// </summary>
         /// <returns></returns>
-        public Int32 ReadInt()
-        {
-            byte[] bytes = this.reader.ReadBytes(4);
-            return bytes[0] |
-                   bytes[1] << 8 |
-                   bytes[2] << 16 |
-                   bytes[3] << 24;
-        }
+        public Int32 ReadInt() => 
+            IPAddress.NetworkToHostOrder(reader.ReadInt32());
 
         /// <summary>
         /// Read little endian Int64 from input stream.
         /// </summary>
         /// <returns></returns>
-        public Int64 ReadLong()
-        {
-            UInt64 lsInt = (UInt64)(UInt32)this.ReadInt();
-            UInt64 msInt = (UInt64)(UInt32)this.ReadInt();
-            return (Int64)(lsInt | msInt << 32);
-        }
+        public Int64 ReadLong() =>
+                IPAddress.NetworkToHostOrder(reader.ReadInt64());
 
         public Guid[] ReadUuidArray()
         {
@@ -113,7 +105,7 @@ namespace Tinkar
                 FieldDefinitionDTO[] array = new FieldDefinitionDTO[length];
                 for (int i = 0; i < length; i++)
                 {
-                    //            array[i] = FieldDefinitionDTO.make(this);
+                    //            array[i] = FieldDefinitionDTO.Make(this);
                 }
                 return array;
             }
@@ -142,21 +134,12 @@ namespace Tinkar
 
         public IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
         {
-            throw new NotImplementedException();
-            //    try
-            //    {
-            //        int length = ReadInt();
-            //        DefinitionForSemanticVersionDTO[] array = new DefinitionForSemanticVersionDTO[length];
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            array[i] = DefinitionForSemanticVersionDTO.make(this, componentUuids);
-            //        }
-            //        return Lists.immutable.of(array);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw new UncheckedIOException(ex);
-            //    }
+            Int32 length = this.ReadInt();
+
+            // Generate array to avoid multiple enumerations of componentUuids.
+            Guid[] componentUuidArr = componentUuids.ToArray();
+            for (int i = 0; i < length; i++)
+                yield return DefinitionForSemanticVersionDTO.Make(this, componentUuidArr);
         }
 
         public IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(IEnumerable<Guid> componentUuids,
@@ -170,7 +153,7 @@ namespace Tinkar
             //        SemanticVersionDTO[] array = new SemanticVersionDTO[length];
             //        for (int i = 0; i < length; i++)
             //        {
-            //            array[i] = SemanticVersionDTO.make(this, componentUuids,
+            //            array[i] = SemanticVersionDTO.Make(this, componentUuids,
             //                    definitionForSemanticUuids, referencedComponentUuids);
             //        }
             //        return Lists.immutable.of(array);
@@ -237,12 +220,12 @@ namespace Tinkar
         //        {
         //            return switch (dataType)
         //            {
-        //                case CONCEPT_CHRONOLOGY -> ConceptChronologyDTO.make(this);
-        //                case CONCEPT -> ConceptDTO.make(this);
-        //                case DEFINITION_FOR_SEMANTIC_CHRONOLOGY -> DefinitionForSemanticChronologyDTO.make(this);
-        //                case DEFINITION_FOR_SEMANTIC -> DefinitionForSemanticDTO.make(this);
-        //                case SEMANTIC_CHRONOLOGY -> SemanticChronologyDTO.make(this);
-        //                case SEMANTIC -> SemanticDTO.make(this);
+        //                case CONCEPT_CHRONOLOGY -> ConceptChronologyDTO.Make(this);
+        //                case CONCEPT -> ConceptDTO.Make(this);
+        //                case DEFINITION_FOR_SEMANTIC_CHRONOLOGY -> DefinitionForSemanticChronologyDTO.Make(this);
+        //                case DEFINITION_FOR_SEMANTIC -> DefinitionForSemanticDTO.Make(this);
+        //                case SEMANTIC_CHRONOLOGY -> SemanticChronologyDTO.Make(this);
+        //                case SEMANTIC -> SemanticDTO.Make(this);
         //                default -> throw new UnsupportedOperationException("TinkarInput does know how to unmarshal: " + dataType);
         //            };
         //        }

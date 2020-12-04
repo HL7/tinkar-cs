@@ -74,28 +74,28 @@ public class JSONObject extends HashMap<String, Object>
     public static void writeJSONString(Map<String, Object> map, Writer out) {
         try {
             if (map == null) {
-                out.write("null");
+                output.Write("null");
                 return;
             }
 
             boolean first = true;
             Iterator<Entry<String, Object>> iter = map.entrySet().stream().sorted(Map.Entry.comparingByKey()).iterator();
 
-            out.write('{');
+            output.Write('{');
             while (iter.hasNext()) {
                 if (first) {
                     first = false;
                 } else {
-                    out.write(',');
+                    output.Write(',');
                 }
                 Map.Entry<String, Object> entry = iter.next();
-                out.write('\"');
-                out.write(escape(String.valueOf(entry.getKey())));
-                out.write('\"');
-                out.write(':');
+                output.Write('\"');
+                output.Write(escape(String.valueOf(entry.getKey())));
+                output.Write('\"');
+                output.Write(':');
                 JSONValue.writeJSONString(entry.getValue(), out);
             }
-            out.write('}');
+            output.Write('}');
         } catch (Exception ex) {
             throw new UncheckedIOException(ex);
         }
@@ -178,7 +178,7 @@ public class JSONObject extends HashMap<String, Object>
         JSONArray jsonArray = (JSONArray) get(key);
         FieldDefinitionDTO[] array = new FieldDefinitionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = FieldDefinitionDTO.make((JSONObject) jsonArray.get(i));
+            array[i] = FieldDefinitionDTO.Make((JSONObject) jsonArray.get(i));
         }
         return Lists.immutable.of(array);
     }
@@ -191,7 +191,7 @@ public class JSONObject extends HashMap<String, Object>
         JSONArray jsonArray = (JSONArray) get(key);
         ConceptVersionDTO[] array = new ConceptVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = ConceptVersionDTO.make((JSONObject) jsonArray.get(i), componentUuids);
+            array[i] = ConceptVersionDTO.Make((JSONObject) jsonArray.get(i), componentUuids);
         }
         return Lists.immutable.of(array);
     }
@@ -200,7 +200,7 @@ public class JSONObject extends HashMap<String, Object>
         JSONArray jsonArray = (JSONArray) get(key);
         DefinitionForSemanticVersionDTO[] array = new DefinitionForSemanticVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = DefinitionForSemanticVersionDTO.make((JSONObject) jsonArray.get(i), componentUuids);
+            array[i] = DefinitionForSemanticVersionDTO.Make((JSONObject) jsonArray.get(i), componentUuids);
         }
         return Lists.immutable.of(array);
     }
@@ -233,7 +233,7 @@ public class JSONObject extends HashMap<String, Object>
         if (jsonObject.containsKey(ComponentFieldForJson.CLASS)) {
             try {
                 String className = (String) jsonObject.get(ComponentFieldForJson.CLASS);
-                array[i] = JsonMarshalable.make(Class.forName(className), jsonObject.toJSONString());
+                array[i] = JsonMarshalable.Make(Class.forName(className), jsonObject.toJSONString());
             } catch (ClassNotFoundException e) {
                 throw new UnsupportedOperationException("JSON object has no class... " + jsonObject, e);
             }
@@ -248,7 +248,7 @@ public class JSONObject extends HashMap<String, Object>
         JSONArray jsonArray = (JSONArray) get(key);
         SemanticVersionDTO[] array = new SemanticVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = SemanticVersionDTO.make((JSONObject) jsonArray.get(i), componentUuids,
+            array[i] = SemanticVersionDTO.Make((JSONObject) jsonArray.get(i), componentUuids,
                     definitionForSemanticUuids,
                     referencedComponentUuids);
         }

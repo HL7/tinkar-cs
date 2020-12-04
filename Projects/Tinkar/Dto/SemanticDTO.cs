@@ -28,34 +28,39 @@ namespace Tinkar
         //}
 
         //$@JsonChronologyUnmarshaler
-        //public static SemanticDTO make(JSONObject jsonObject) {
+        //public static SemanticDTO Make(JSONObject jsonObject) {
         //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    IEnumerable<Guid> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
         //    IEnumerable<Guid> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
         //    return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
         //}
 
-        //$@Unmarshaler
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static SemanticDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
             IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
             return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
         }
 
-        //$@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(componentUuids);
-        //        out.writeUuidList(definitionForSemanticUuids);
-        //        out.writeUuidList(referencedComponentUuids);
-        //    } catch (Exception ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.ComponentUuids);
+            output.WriteUuidList(this.DefinitionForSemanticUuids);
+            output.WriteUuidList(this.ReferencedComponentUuids);
+        }
     }
 }

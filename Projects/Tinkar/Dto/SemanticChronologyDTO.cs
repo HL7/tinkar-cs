@@ -59,7 +59,7 @@ namespace Tinkar
         //}
 
         //@JsonChronologyUnmarshaler
-        //public static SemanticChronologyDTO make(JSONObject jsonObject) {
+        //public static SemanticChronologyDTO Make(JSONObject jsonObject) {
         //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    IEnumerable<Guid> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
         //    IEnumerable<Guid> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
@@ -73,10 +73,15 @@ namespace Tinkar
         //            );
         //}
 
-        //@Unmarshaler
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static SemanticChronologyDTO Make(TinkarInput input)
         {
-            CheckMarshallVersion(input, MarshalVersion);
+            CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
             IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
@@ -86,24 +91,24 @@ namespace Tinkar
                     );
         }
 
-        //@Override
-        //@Marshaler
-        //public void marshal(TinkarOutput out) {
-        //    try {
-        //        out.writeInt(marshalVersion);
-        //        out.writeUuidList(componentUuids);
-        //        out.writeUuidList(definitionForSemanticUuids);
-        //        out.writeUuidList(referencedComponentUuids);
-        //        out.writeSemanticVersionList(semanticVersions);
-        //    } catch (Exception ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// $NotTested
+        /// </summary>
+        /// <param name="output">output data stream</param>
+        public void Marshal(TinkarOutput output)
+        {
+            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteUuidList(this.ComponentUuids);
+            output.WriteUuidList(this.DefinitionForSemanticUuids);
+            output.WriteUuidList(this.ReferencedComponentUuids);
+            output.WriteMarshalableList(this.SemanticVersions);
+        }
 
         public IEnumerable<ISemanticVersion> Versions =>
-            this.SemanticVersions.Select( (dto) => (ISemanticVersion) dto);
+            this.SemanticVersions.Select((dto) => (ISemanticVersion)dto);
 
-        public DefinitionForSemanticDTO ChronologySet => 
+        public DefinitionForSemanticDTO ChronologySet =>
             new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
     }
 }

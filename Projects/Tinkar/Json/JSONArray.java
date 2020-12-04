@@ -68,30 +68,30 @@ public class JSONArray extends ArrayList<Object> implements JSONAware, JSONStrea
      */
     public static void writeJSONString(Collection<Object> collection, Writer out) throws IOException {
         if (collection == null) {
-            out.write("null");
+            output.Write("null");
             return;
         }
 
         boolean first = true;
         Iterator<Object> iter = collection.iterator();
 
-        out.write('[');
+        output.Write('[');
         while (iter.hasNext()) {
             if (first) {
                 first = false;
             } else {
-                out.write(',');
+                output.Write(',');
             }
 
             Object value = iter.next();
             if (value == null) {
-                out.write("null");
+                output.Write("null");
                 continue;
             }
 
             JSONValue.writeJSONString(value, out);
         }
-        out.write(']');
+        output.Write(']');
     }
 
     @Override
@@ -126,21 +126,21 @@ public class JSONArray extends ArrayList<Object> implements JSONAware, JSONStrea
 
     public static void writeArray(Object arrayObject, Writer out) throws IOException {
         if (arrayObject == null) {
-            out.write("null");
+            output.Write("null");
         } else if (arrayObject.getClass().isArray()) {
             int length = Array.getLength(arrayObject);
 
             if (length == 0) {
-                out.write("[]");
+                output.Write("[]");
             } else {
-                out.write("[");
+                output.Write("[");
                 Class<?> componentType = arrayObject.getClass().getComponentType();
                 if (char.class.equals(componentType)) {
                     writeWithQuotes(arrayObject, out, length);
                 } else {
                     write(arrayObject, out, length);
                 }
-                out.write("]");
+                output.Write("]");
             }
         } else {
             throw new IllegalStateException("Expecting an array. Found: " + arrayObject);
@@ -148,23 +148,23 @@ public class JSONArray extends ArrayList<Object> implements JSONAware, JSONStrea
     }
 
     private static void write(Object arrayObject, Writer out, int length) throws IOException {
-        out.write(String.valueOf(Array.get(arrayObject, 0)));
+        output.Write(String.valueOf(Array.get(arrayObject, 0)));
         for (int i = 1; i < length; i++) {
-            out.write(",");
-            out.write(String.valueOf(Array.get(arrayObject, i)));
+            output.Write(",");
+            output.Write(String.valueOf(Array.get(arrayObject, i)));
         }
     }
 
     private static void writeWithQuotes(Object arrayObject, Writer out, int length) throws IOException {
-        out.write('"');
+        output.Write('"');
         JSONValue.writeJSONString(Array.get(arrayObject, 0), out);
-        out.write('"');
+        output.Write('"');
 
         for (int i = 1; i < length; i++) {
-            out.write(",");
-            out.write('"');
+            output.Write(",");
+            output.Write('"');
             JSONValue.writeJSONString(Array.get(arrayObject, i), out);
-            out.write('"');
+            output.Write('"');
         }
     }
 
@@ -294,19 +294,19 @@ public class JSONArray extends ArrayList<Object> implements JSONAware, JSONStrea
 
     public static void writeJSONString(Object[] array, Writer out) throws IOException {
         if (array == null) {
-            out.write("null");
+            output.Write("null");
         } else if (array.length == 0) {
-            out.write("[]");
+            output.Write("[]");
         } else {
-            out.write("[");
+            output.Write("[");
             JSONValue.writeJSONString(array[0], out);
 
             for (int i = 1; i < array.length; i++) {
-                out.write(",");
+                output.Write(",");
                 JSONValue.writeJSONString(array[i], out);
             }
 
-            out.write("]");
+            output.Write("]");
         }
     }
 
