@@ -22,13 +22,14 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-	public record SemanticChronologyDTO : ISemanticChronology, 
+	public record SemanticChronologyDTO : BaseDTO, 
+        ISemanticChronology, 
         IChangeSetThing, 
         IJsonMarshalable, 
         IMarshalable
 	{
 
-		private const int marshalVersion = 1;
+		protected override int MarshalVersion => 1;
 
         public IIdentifiedThing ChronologySet {get; init; }
 
@@ -40,8 +41,8 @@ namespace Tinkar
 
         public IEnumerable<Guid> ComponentUuids {get; init; }
 
-        //$public SemanticChronologyDTO(ImmutableList<UUID> componentUuids, DefinitionForSemantic definitionForSemantic,
-        //                          IdentifiedThing referencedComponent, ImmutableList<SemanticVersionDTO> semanticVersions) {
+        //$public SemanticChronologyDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
+        //                          IdentifiedThing referencedComponent, IEnumerable<SemanticVersionDTO> semanticVersions) {
         //    this(componentUuids,
         //            definitionForSemantic.componentUuids(),
         //            referencedComponent.componentUuids(),
@@ -71,9 +72,9 @@ namespace Tinkar
 
         //@JsonChronologyUnmarshaler
         //public static SemanticChronologyDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    ImmutableList<UUID> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
-        //    ImmutableList<UUID> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
+        //    IEnumerable<Guid> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
         //    return new SemanticChronologyDTO(componentUuids,
         //            definitionForSemanticUuids,
         //            referencedComponentUuids,
@@ -85,20 +86,20 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static SemanticChronologyDTO make(TinkarInput in) {
+        //public static SemanticChronologyDTO make(TinkarInput input) {
         //    try {
-        //        int objectMarshalVersion = in.readInt();
+        //        int objectMarshalVersion = input.ReadInt();
         //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
-        //            ImmutableList<UUID> definitionForSemanticUuids = in.readImmutableUuidList();
-        //            ImmutableList<UUID> referencedComponentUuids = in.readImmutableUuidList();
+        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+        //            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
+        //            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
         //            return new SemanticChronologyDTO(
         //                    componentUuids, definitionForSemanticUuids, referencedComponentUuids,
-        //                    in.readSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids));
+        //                    input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids));
         //        } else {
         //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //        }
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
@@ -112,13 +113,13 @@ namespace Tinkar
         //        out.writeUuidList(definitionForSemanticUuids);
         //        out.writeUuidList(referencedComponentUuids);
         //        out.writeSemanticVersionList(semanticVersions);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
 
         //@Override
-        //public ImmutableList<SemanticVersion> versions() {
+        //public IEnumerable<SemanticVersion> versions() {
         //    return semanticVersions.collect(semanticVersionDTO ->  semanticVersionDTO);
         //}
 

@@ -22,12 +22,13 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-	public record DefinitionForSemanticChronologyDTO : IDefinitionForSemanticChronology,
+	public record DefinitionForSemanticChronologyDTO : BaseDTO, 
+        IDefinitionForSemanticChronology,
 		IChangeSetThing,
 		IJsonMarshalable,
 		IMarshalable
 	{
-		private const int marshalVersion = 1;
+		protected override int MarshalVersion => 1;
 
         public IIdentifiedThing ChronologySet {get; init; }
 
@@ -36,7 +37,7 @@ namespace Tinkar
         public IEnumerable<Guid> ComponentUuids {get; init; }
 
         //$@Override
-        //public ImmutableList<DefinitionForSemanticVersion> versions() {
+        //public IEnumerable<DefinitionForSemanticVersion> versions() {
         //    return definitionVersions.collect(definitionForSemanticVersionDTO -> (DefinitionForSemanticVersion) definitionForSemanticVersionDTO);
         //}
 
@@ -57,24 +58,24 @@ namespace Tinkar
 
         //@JsonChronologyUnmarshaler
         //public static DefinitionForSemanticChronologyDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new DefinitionForSemanticChronologyDTO(componentUuids,
         //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
         //                    jsonObject.asDefinitionForSemanticVersionList(ComponentFieldForJson.DEFINITION_VERSIONS, componentUuids));
         //}
 
         //@Unmarshaler
-        //public static DefinitionForSemanticChronologyDTO make(TinkarInput in) {
+        //public static DefinitionForSemanticChronologyDTO make(TinkarInput input) {
         //    try {
-        //        int objectMarshalVersion = in.readInt();
+        //        int objectMarshalVersion = input.ReadInt();
         //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
+        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
         //            return new DefinitionForSemanticChronologyDTO(
-        //                    componentUuids, in.readImmutableUuidList(), in.readDefinitionForSemanticVersionList(componentUuids));
+        //                    componentUuids, input.ReadImmutableUuidList(), input.readDefinitionForSemanticVersionList(componentUuids));
         //        } else {
         //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //        }
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
@@ -87,7 +88,7 @@ namespace Tinkar
         //        out.writeUuidList(componentUuids);
         //        out.writeUuidList(chronologySetUuids);
         //        out.writeDefinitionForSemanticVersionList(definitionVersions);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}

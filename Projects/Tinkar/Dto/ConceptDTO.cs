@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-public record ConceptDTO : IConcept, 
-    IJsonMarshalable, 
-    IMarshalable 
-{
-    private const int marshalVersion = 1;
+    public record ConceptDTO : BaseDTO, 
+        IConcept,
+        IJsonMarshalable,
+        IMarshalable
+    {
+        protected override int MarshalVersion => 1;
 
-        public IEnumerable<Guid> ComponentUuids {get; init; }
+        public IEnumerable<Guid> ComponentUuids { get; init; }
 
         //$@Override
         //public void jsonMarshal(Writer writer) {
@@ -21,24 +22,27 @@ public record ConceptDTO : IConcept,
 
         //@JsonChronologyUnmarshaler
         //public static ConceptDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new ConceptDTO(componentUuids);
         //}
 
         //@Unmarshaler
-        //public static ConceptDTO make(TinkarInput in) {
-        //    try {
-        //        int objectMarshalVersion = in.readInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
-        //            return new ConceptDTO(componentUuids);
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (IOException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        public static ConceptDTO Make(TinkarInput input)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+                return new ConceptDTO { ComponentUuids = componentUuids};
+            }
+            catch (Exception ex)
+            {
+                throw new MarshalExceptionUnchecked(ex);
+            }
+        }
 
         //@Override
         //@Marshaler
@@ -46,7 +50,7 @@ public record ConceptDTO : IConcept,
         //    try {
         //        out.writeInt(marshalVersion);
         //        out.writeUuidList(componentUuids);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new MarshalExceptionUnchecked(ex);
         //    }
         //}

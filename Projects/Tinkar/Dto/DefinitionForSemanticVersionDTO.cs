@@ -23,12 +23,13 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-	public record DefinitionForSemanticVersionDTO : IDefinitionForSemanticVersion,
+	public record DefinitionForSemanticVersionDTO : BaseDTO, 
+        IDefinitionForSemanticVersion,
 		IChangeSetThing,
 		IJsonMarshalable,
 		IMarshalable
 	{
-		private const int marshalVersion = 1;
+		protected override int MarshalVersion => 1;
 
         public IEnumerable<IFieldDefinition> FieldDefinitions {get; init; }
 
@@ -49,7 +50,7 @@ namespace Tinkar
         //}
 
         //@Override
-        //public ImmutableList<FieldDefinition> fieldDefinitions() {
+        //public IEnumerable<FieldDefinition> fieldDefinitions() {
         //    return fieldDefinitionDTOS.collect(fieldDefinitionDTO -> (FieldDefinition) fieldDefinitionDTO);
         //}
 
@@ -73,7 +74,7 @@ namespace Tinkar
         // * @return
         // */
         //@JsonVersionUnmarshaler
-        //public static DefinitionForSemanticVersionDTO make(JSONObject jsonObject, ImmutableList<UUID> componentUuids) {
+        //public static DefinitionForSemanticVersionDTO make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
         //    return new DefinitionForSemanticVersionDTO(componentUuids,
         //            StampDTO.make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)),
         //            jsonObject.asImmutableUuidList(REFERENCED_COMPONENT_PURPOSE_UUIDS),
@@ -87,18 +88,18 @@ namespace Tinkar
         // * @return
         // */
         //@VersionUnmarshaler
-        //public static DefinitionForSemanticVersionDTO make(TinkarInput in, ImmutableList<UUID> componentUuids) {
+        //public static DefinitionForSemanticVersionDTO make(TinkarInput input, IEnumerable<Guid> componentUuids) {
         //    try {
-        //        int objectMarshalVersion = in.readInt();
+        //        int objectMarshalVersion = input.ReadInt();
         //        if (objectMarshalVersion == marshalVersion) {
         //            return new DefinitionForSemanticVersionDTO(componentUuids,
         //                    StampDTO.make(in),
-        //                    in.readImmutableUuidList(),
-        //                    in.readFieldDefinitionList());
+        //                    input.ReadImmutableUuidList(),
+        //                    input.ReadFieldDefinitionList());
         //        } else {
         //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //        }
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
@@ -115,7 +116,7 @@ namespace Tinkar
         //        stampDTO.marshal(out);
         //        out.writeUuidList(referencedComponentPurposeUuids);
         //        out.writeFieldDefinitionList(fieldDefinitionDTOS);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}

@@ -14,52 +14,27 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record StampDTO : IChangeSetThing, IJsonMarshalable, IMarshalable, IStamp
+    public record StampDTO : BaseDTO, ,
+        IChangeSetThing, 
+        IJsonMarshalable, 
+        IMarshalable, 
+        IStamp
     {
-        private const int marshalVersion = 1;
-
-        public IConcept Status { get; init; }
-
+        protected override int MarshalVersion => 1;
+        public IEnumerable<Guid> StatusUuids { get; init; }
         public DateTime Time { get; init; }
+        public IEnumerable<Guid> AuthorUuids { get; init; }
+        public IEnumerable<Guid> ModuleUuids { get; init; }
+        public IEnumerable<Guid> PathUuids { get; init; }
 
-        public IConcept Author { get; init; }
-
-        public IConcept Module { get; init; }
-
-        public IConcept Path { get; init; }
-
-        //@Override
-        //public Concept status()
-        //{
-        //	return new ConceptDTO(statusUuids);
-        //}
-
-        //@Override
-        //public Instant time()
-        //{
-        //	return time;
-        //}
-
-        //@Override
-        //public Concept author()
-        //{
-        //	return new ConceptDTO(authorUuids);
-        //}
-
-        //@Override
-        //public Concept module()
-        //{
-        //	return new ConceptDTO(moduleUuids);
-        //}
-
-        //@Override
-        //public Concept path()
-        //{
-        //	return new ConceptDTO(pathUuids);
-        //}
+        public IConcept Status => new ConceptDTO { ComponentUuids = StatusUuids };
+        public IConcept Author => new ConceptDTO { ComponentUuids = AuthorUuids };
+        public IConcept Module() => new ConceptDTO { ComponentUuids = ModuleUuids };
+        public IConcept Path() => new ConceptDTO { ComponentUuids = PathUuids };
 
         //@Override
         //public void jsonMarshal(Writer writer)
@@ -84,30 +59,28 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static StampDTO make(TinkarInput in)
-        //{
-        //	try
-        //	{
-        //		int objectMarshalVersion = in.readInt();
-        //		if (objectMarshalVersion == marshalVersion)
-        //		{
-        //			return new StampDTO(
-        //					in.readImmutableUuidList(),
-        //					in.readInstant(),
-        //					in.readImmutableUuidList(),
-        //					in.readImmutableUuidList(),
-        //					in.readImmutableUuidList());
-        //		}
-        //		else
-        //		{
-        //			throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //		}
-        //	}
-        //	catch (IOException ex)
-        //	{
-        //		throw new UncheckedIOException(ex);
-        //	}
-        //}
+        public static StampDTO Make(TinkarInput input)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                return new StampDTO
+                {
+                        input.ReadImmutableUuidList(),
+                        input.ReadInstant(),
+                        input.ReadImmutableUuidList(),
+                        input.ReadImmutableUuidList(),
+                        input.ReadImmutableUuidList()
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new UncheckedIOException(ex);
+            }
+        }
 
         //@Override
         //@Marshaler
@@ -123,7 +96,7 @@ namespace Tinkar
         //           out.writeUuidList(moduleUuids);
         //           out.writeUuidList(pathUuids);
         //	}
-        //	catch (IOException ex)
+        //	catch (Exception ex)
         //	{
         //		throw new UncheckedIOException(ex);
         //	}

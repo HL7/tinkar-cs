@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record SemanticDTO : IJsonMarshalable, IMarshalable, ISemantic
+    public record SemanticDTO : BaseDTO, 
+        IJsonMarshalable, 
+        IMarshalable, 
+        ISemantic
     {
-        private const int marshalVersion = 1;
+        protected override int MarshalVersion => 1;
 
         public IIdentifiedThing ReferencedComponent { get; init; }
 
@@ -35,28 +38,31 @@ namespace Tinkar
 
         //$@JsonChronologyUnmarshaler
         //public static SemanticDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    ImmutableList<UUID> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
-        //    ImmutableList<UUID> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> definitionForSemanticUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
+        //    IEnumerable<Guid> referencedComponentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS);
         //    return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
         //}
 
         //$@Unmarshaler
-        //public static SemanticDTO make(TinkarInput in) {
-        //    try {
-        //        int objectMarshalVersion = in.readInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
-        //            ImmutableList<UUID> definitionForSemanticUuids = in.readImmutableUuidList();
-        //            ImmutableList<UUID> referencedComponentUuids = in.readImmutableUuidList();
-        //            return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (IOException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        public static SemanticDTO Make(TinkarInput input)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+                IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
+                IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
+                return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
+            }
+            catch (Exception ex)
+            {
+                throw new MarshalExceptionUnchecked(ex);
+            }
+        }
 
         //$@Override
         //@Marshaler
@@ -66,7 +72,7 @@ namespace Tinkar
         //        out.writeUuidList(componentUuids);
         //        out.writeUuidList(definitionForSemanticUuids);
         //        out.writeUuidList(referencedComponentUuids);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new MarshalExceptionUnchecked(ex);
         //    }
         //}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
-    public interface IConceptVersion : IVersion, 
-        IConcept
+    public class MarshalExceptionUnchecked : Exception
     {
-        //$default ConceptVersionDTO toChangeSetThing()
+        public MarshalExceptionUnchecked(Exception e) : base(e.Message, e)
+        {
+        }
+
+        public MarshalExceptionUnchecked(String message) : base(message)
+        {
+        }
+
+        //$public MarshalExceptionUnchecked(Throwable cause)
         //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
+        //    super(cause);
         //}
     }
 }

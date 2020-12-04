@@ -58,8 +58,8 @@ namespace Tinkar
 
 
         //static <T> T makeSemanticVersion(Class<T> objectClass, String makerString,
-        //    ImmutableList<UUID> componentUuidList,
-        //    ImmutableList<UUID> definitionForSemanticUuids, ImmutableList<UUID> referencedComponentUuids)
+        //    IEnumerable<Guid> componentUuidList,
+        //    IEnumerable<Guid> definitionForSemanticUuids, IEnumerable<Guid> referencedComponentUuids)
         //{
         //    try
         //    {
@@ -80,7 +80,7 @@ namespace Tinkar
         //}
 
 
-        //static <T> T makeVersion(Class<T> objectClass, String makerString, ImmutableList<UUID> componentUuidList)
+        //static <T> T makeVersion(Class<T> objectClass, String makerString, IEnumerable<Guid> componentUuidList)
         //{
         //    try
         //    {

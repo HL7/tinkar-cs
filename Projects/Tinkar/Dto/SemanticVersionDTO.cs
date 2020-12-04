@@ -22,12 +22,13 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record SemanticVersionDTO : ISemanticVersion,
+    public record SemanticVersionDTO : BaseDTO, 
+        ISemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
-        private const int marshalVersion = 1;
+        protected override int MarshalVersion => 1;
 
         public IEnumerable<Object> Fields { get; init; }
 
@@ -39,8 +40,8 @@ namespace Tinkar
 
         public IStamp Stamp { get; init; }
 
-        //$public SemanticVersionDTO(ImmutableList<UUID> componentUuids, DefinitionForSemantic definitionForSemantic,
-        //                          IdentifiedThing referencedComponent, Stamp stamp, ImmutableList<Object> fields) {
+        //$public SemanticVersionDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
+        //                          IdentifiedThing referencedComponent, Stamp stamp, IEnumerable<Object> fields) {
         //    this(componentUuids,
         //            definitionForSemantic.componentUuids(),
         //            referencedComponent.componentUuids(),
@@ -67,9 +68,9 @@ namespace Tinkar
 
         //@JsonSemanticVersionUnmarshaler
         //public static SemanticVersionDTO make(JSONObject jsonObject,
-        //                                      ImmutableList<UUID> componentUuids,
-        //                                      ImmutableList<UUID> definitionForSemanticUuids,
-        //                                      ImmutableList<UUID> referencedComponentUuids) {
+        //                                      IEnumerable<Guid> componentUuids,
+        //                                      IEnumerable<Guid> definitionForSemanticUuids,
+        //                                      IEnumerable<Guid> referencedComponentUuids) {
         //    JSONObject jsonStampObject = (JSONObject) jsonObject.get(ComponentFieldForJson.STAMP);
         //    return new SemanticVersionDTO(componentUuids,
         //            definitionForSemanticUuids,
@@ -79,22 +80,22 @@ namespace Tinkar
         //}
 
         //@SemanticVersionUnmarshaler
-        //public static SemanticVersionDTO make(TinkarInput in,
-        //                                      ImmutableList<UUID> componentUuids,
-        //                                      ImmutableList<UUID> definitionForSemanticUuids,
-        //                                      ImmutableList<UUID> referencedComponentUuids) {
+        //public static SemanticVersionDTO make(TinkarInput input,
+        //                                      IEnumerable<Guid> componentUuids,
+        //                                      IEnumerable<Guid> definitionForSemanticUuids,
+        //                                      IEnumerable<Guid> referencedComponentUuids) {
         //    try {
-        //        int objectMarshalVersion = in.readInt();
+        //        int objectMarshalVersion = input.ReadInt();
         //        if (objectMarshalVersion == marshalVersion) {
         //            return new SemanticVersionDTO(componentUuids,
         //                    definitionForSemanticUuids,
         //                    referencedComponentUuids,
         //                    StampDTO.make(in),
-        //                    in.readImmutableObjectList());
+        //                    input.ReadImmutableObjectList());
         //        } else {
         //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //        }
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
@@ -106,7 +107,7 @@ namespace Tinkar
         //        out.writeInt(marshalVersion);
         //        stampDTO.marshal(out);
         //        out.writeObjectList(fields);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}

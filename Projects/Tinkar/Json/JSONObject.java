@@ -23,7 +23,7 @@ import java.time.Instant;
 import java.util.*;
 
 import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.IEnumerable;
 import org.hl7.tinkar.dto.ConceptVersionDTO;
 import org.hl7.tinkar.dto.DefinitionForSemanticVersionDTO;
 
@@ -96,7 +96,7 @@ public class JSONObject extends HashMap<String, Object>
                 JSONValue.writeJSONString(entry.getValue(), out);
             }
             out.write('}');
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new UncheckedIOException(ex);
         }
     }
@@ -161,7 +161,7 @@ public class JSONObject extends HashMap<String, Object>
         return JSONValue.escape(s);
     }
 
-    public ImmutableList<UUID> asImmutableUuidList(String key) {
+    public IEnumerable<Guid> asImmutableUuidList(String key) {
         return Lists.immutable.of(asUuidArray(key));
     }
 
@@ -174,7 +174,7 @@ public class JSONObject extends HashMap<String, Object>
         return array;
     }
 
-    public ImmutableList<FieldDefinitionDTO> asFieldDefinitionList(String key) {
+    public IEnumerable<FieldDefinitionDTO> asFieldDefinitionList(String key) {
         JSONArray jsonArray = (JSONArray) get(key);
         FieldDefinitionDTO[] array = new FieldDefinitionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
@@ -187,7 +187,7 @@ public class JSONObject extends HashMap<String, Object>
         return Instant.parse((String) get(key));
     }
 
-    public ImmutableList<ConceptVersionDTO> asConceptVersionList(String key, ImmutableList<UUID> componentUuids) {
+    public IEnumerable<ConceptVersionDTO> asConceptVersionList(String key, IEnumerable<Guid> componentUuids) {
         JSONArray jsonArray = (JSONArray) get(key);
         ConceptVersionDTO[] array = new ConceptVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
@@ -196,7 +196,7 @@ public class JSONObject extends HashMap<String, Object>
         return Lists.immutable.of(array);
     }
 
-    public ImmutableList<DefinitionForSemanticVersionDTO> asDefinitionForSemanticVersionList(String key, ImmutableList<UUID> componentUuids) {
+    public IEnumerable<DefinitionForSemanticVersionDTO> asDefinitionForSemanticVersionList(String key, IEnumerable<Guid> componentUuids) {
         JSONArray jsonArray = (JSONArray) get(key);
         DefinitionForSemanticVersionDTO[] array = new DefinitionForSemanticVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
@@ -207,7 +207,7 @@ public class JSONObject extends HashMap<String, Object>
 
 
 
-    public ImmutableList<Object> asImmutableObjectList(String key) {
+    public IEnumerable<Object> asImmutableObjectList(String key) {
         JSONArray jsonArray = (JSONArray) get(key);
         Object[] array = new Object[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {
@@ -242,9 +242,9 @@ public class JSONObject extends HashMap<String, Object>
         }
     }
 
-    public ImmutableList<SemanticVersionDTO> asSemanticVersionList(String key, ImmutableList<UUID> componentUuids,
-                                                                   ImmutableList<UUID> definitionForSemanticUuids,
-                                                                   ImmutableList<UUID> referencedComponentUuids) {
+    public IEnumerable<SemanticVersionDTO> asSemanticVersionList(String key, IEnumerable<Guid> componentUuids,
+                                                                   IEnumerable<Guid> definitionForSemanticUuids,
+                                                                   IEnumerable<Guid> referencedComponentUuids) {
         JSONArray jsonArray = (JSONArray) get(key);
         SemanticVersionDTO[] array = new SemanticVersionDTO[jsonArray.size()];
         for (int i = 0; i < array.length; i++) {

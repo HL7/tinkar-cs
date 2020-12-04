@@ -18,12 +18,13 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptVersionDTO : ConceptVersion,
+    public record ConceptVersionDTO : BaseDTO, 
+        IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
-        private const int marshalVersion = 1;
+        protected override int MarshalVersion => 1;
         public IStamp Stamp { get; init; }
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
@@ -51,7 +52,7 @@ namespace Tinkar
         // * @return
         // */
         //@JsonVersionUnmarshaler
-        //public static ConceptVersionDTO make(JSONObject jsonObject, ImmutableList<UUID> componentUuids) {
+        //public static ConceptVersionDTO make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
         //    return new ConceptVersionDTO(
         //            componentUuids,
         //            StampDTO.make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)));
@@ -59,23 +60,30 @@ namespace Tinkar
 
         ///**
         // * Version unmarshaler for ConceptVersionDTO.
-        // * @param in
+        // * @param input
         // * @param componentUuids
         // * @return new instance of ConceptVersionDTO created from the input.
         // */
         //@VersionUnmarshaler
-        //public static ConceptVersionDTO make(TinkarInput in, ImmutableList<UUID> componentUuids) {
-        //    try {
-        //        int objectMarshalVersion = in.readInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            return new ConceptVersionDTO(componentUuids, StampDTO.make(in));
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (IOException ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static ConceptVersionDTO make(TinkarInput input, IEnumerable<Guid> componentUuids)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                return new ConceptVersionDTO
+                {
+                    ComponentUuids = componentUuids,
+                    Stamp = StampDTO.Make(input)
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new UncheckedIOException(ex);
+            }
+        }
 
         ///**
         // * Version marshaler for ConceptVersionDTO
@@ -89,7 +97,7 @@ namespace Tinkar
         //        // note that componentUuids are not written redundantly here,
         //        // they are written with the ConceptChronologyDTO...
         //        stampDTO.marshal(out);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}

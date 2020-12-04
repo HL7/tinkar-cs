@@ -1,0 +1,11 @@
+﻿1) Java instant. Currently Instant nano seconds is serialized.
+   C# DateTime only resolved to 100 nanoseconds, so any conversion 
+   between c# and java will lose precision of nanosecond.
+   Do we need fractional second resolution in time? If we do, can we resolve to
+   millisconds or 100 nanoseconds? If not, then we need C# instant class.
+
+2) Porting is being done to C# 9.0 and .net core 5.0. Do we need 4.7.X framework version?
+   .net 5 has Records and default interface methods.
+
+3) How strict should java and csharp extensions map?
+   i.e. can we get rid of UncheckedIOException and such?

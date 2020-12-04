@@ -21,12 +21,13 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record StampCommentDTO : IChangeSetThing,
-    IJsonMarshalable,
-    IMarshalable,
-    IStampComment
+    public record StampCommentDTO : BaseDTO, 
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable,
+        IStampComment
     {
-        private const int marshalVersion = 1;
+        protected override int MarshalVersion => 1;
 
         public IStamp Stamp {get; init; }
 
@@ -77,23 +78,23 @@ namespace Tinkar
         //    * @return
         //    */
         //@Unmarshaler
-        //public static StampCommentDTO make(TinkarInput in)
+        //public static StampCommentDTO make(TinkarInput input)
         //{
         //	try
         //	{
-        //		int objectMarshalVersion = in.readInt();
+        //		int objectMarshalVersion = input.ReadInt();
         //		if (objectMarshalVersion == marshalVersion)
         //		{
         //			return new StampCommentDTO(
         //					StampDTO.make(in),
-        //					in.readUTF());
+        //					input.ReadUTF());
         //		}
         //		else
         //		{
         //			throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //		}
         //	}
-        //	catch (IOException ex)
+        //	catch (Exception ex)
         //	{
         //		throw new UncheckedIOException(ex);
         //	}
@@ -114,7 +115,7 @@ namespace Tinkar
         //		stampDTO.marshal(out);
         //           out.writeUTF(comment);
         //	}
-        //	catch (IOException ex)
+        //	catch (Exception ex)
         //	{
         //		throw new UncheckedIOException(ex);
         //	}

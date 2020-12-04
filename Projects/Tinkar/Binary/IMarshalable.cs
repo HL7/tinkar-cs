@@ -30,9 +30,9 @@ namespace Tinkar
      // to handle special cases.
 
         @Unmarshaler
-        public static StampDTO make(TinkarInput in) {
+        public static StampDTO make(TinkarInput input) {
             try {
-                int objectMarshalVersion = in.readInt();
+                int objectMarshalVersion = input.ReadInt();
                 switch (objectMarshalVersion) {
                     case marshalVersion:
                         throw new UnsupportedOperationException();
@@ -40,7 +40,7 @@ namespace Tinkar
                     default:
                         throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
                 }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 throw new UncheckedIOException(ex);
             }
         }
@@ -51,7 +51,7 @@ namespace Tinkar
             try {
                 out.writeInt(marshalVersion);
                 throw new UnsupportedOperationException();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 throw new UncheckedIOException(ex);
             }
         }
@@ -74,18 +74,18 @@ namespace Tinkar
         //    return byteArrayOutput;
         //}
 
-        //static <T> T makeVersion(Class<T> objectClass, TinkarByteArrayOutput output, ImmutableList<UUID> componentUuids)
+        //static <T> T makeVersion(Class<T> objectClass, TinkarByteArrayOutput output, IEnumerable<Guid> componentUuids)
         //{
         //    return makeVersion(objectClass, output.getBytes(), componentUuids);
         //}
 
-        //static <T> T makeVersion(Class<T> objectClass, byte[] input, ImmutableList<UUID> componentUuids)
+        //static <T> T makeVersion(Class<T> objectClass, byte[] input, IEnumerable<Guid> componentUuids)
         //{
         //    return makeVersion(objectClass, TinkarInput.make(input), componentUuids);
         //}
 
-        //static <T> T makeSemanticVersion(Class<T> objectClass, TinkarInput input, ImmutableList<UUID> componentUuids,
-        //    ImmutableList<UUID> definitionForSemanticUuids, ImmutableList<UUID> referencedComponentUuids)
+        //static <T> T makeSemanticVersion(Class<T> objectClass, TinkarInput input, IEnumerable<Guid> componentUuids,
+        //    IEnumerable<Guid> definitionForSemanticUuids, IEnumerable<Guid> referencedComponentUuids)
         //{
         //    try
         //    {
@@ -99,7 +99,7 @@ namespace Tinkar
         //    }
         //}
 
-        //static <T> T makeVersion(Class<T> objectClass, TinkarInput input, ImmutableList<UUID> componentUuids)
+        //static <T> T makeVersion(Class<T> objectClass, TinkarInput input, IEnumerable<Guid> componentUuids)
         //{
         //    try
         //    {

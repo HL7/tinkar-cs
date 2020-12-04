@@ -18,31 +18,26 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	/**
+    /**
 	 *
 	 * @author kec
 	 */
-	public record ConceptChronologyDTO : IChangeSetThing,
-		IJsonMarshalable,
-		IMarshalable,
-		IConceptChronology
-	{
-		private const int marshalVersion = 1;
+    public record ConceptChronologyDTO : BaseDTO,
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable,
+        IConceptChronology
+    {
+        protected override int MarshalVersion => 1;
 
-        public IIdentifiedThing ChronologySet {get; init; }
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+        public IEnumerable<Guid> ChronologySetUuids { get; init; }
+        public IEnumerable<ConceptVersionDTO> ConceptVersions { get; init; }
 
-        public IEnumerable<ConceptVersion> Versions {get; init; }
-
-        public IEnumerable<Guid> ComponentUuids {get; init; }
-
-
-        //$@Override
-        //public Concept chronologySet() {
-        //    return new ConceptDTO(chronologySetUuids);
-        //}
+        public IConcept ChronologySet => new ConceptDTO { ComponentUuids = chronologySetUuids };
 
         //@Override
-        //public ImmutableList<ConceptVersion> versions() {
+        //public IEnumerable<ConceptVersion> versions() {
         //    return conceptVersions.collect(conceptVersionDTO -> (ConceptVersion) conceptVersionDTO);
         //}
 
@@ -58,27 +53,33 @@ namespace Tinkar
 
         //@JsonChronologyUnmarshaler
         //public static ConceptChronologyDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new ConceptChronologyDTO(componentUuids,
         //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
         //                    jsonObject.asConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, componentUuids));
         //}
 
         //@Unmarshaler
-        //public static ConceptChronologyDTO make(TinkarInput in) {
-        //    try {
-        //        int objectMarshalVersion = in.readInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
-        //            return new ConceptChronologyDTO(
-        //                    componentUuids, in.readImmutableUuidList(), in.readConceptVersionList(componentUuids));
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (IOException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        public static ConceptChronologyDTO make(TinkarInput input)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                return new ConceptChronologyDTO
+                {
+                    ComponentUuids = input.ReadImmutableUuidList(),
+                    ChronologySetUuids = input.ReadImmutableUuidList(),
+                    ConceptVersions = input.ReadConceptVersionList(componentUuids)
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new MarshalExceptionUnchecked(ex);
+            }
+        }
 
         //@Override
         //@Marshaler
@@ -90,7 +91,7 @@ namespace Tinkar
         //        // Note that the componentIds are not written redundantly
         //        // in writeConceptVersionList...
         //        out.writeConceptVersionList(conceptVersions);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new MarshalExceptionUnchecked(ex);
         //    }
         //}

@@ -29,7 +29,7 @@ namespace Tinkar
          * Underlying object type such as String or Integer.
          * @return Concept designating the data type of the defined field.
          */
-        IConcept GetDataType { get; }
+        IConcept DataType { get; }
 
         /**
          * What the object represents: a String might be a URI,
@@ -37,14 +37,14 @@ namespace Tinkar
          * integer might represent a coordinate.
          * @return Concept designating the purpose of the defined field.
          */
-        IConcept GetPurpose { get; }
+        IConcept Purpose { get; }
 
         /**
          * The context in which this specific field is used. Maybe it is the
          * "SNOMED code" in a mapping, or the location of an image if a URI.
          * @return Concept designating the use of the defined field.
          */
-        IConcept GetUse { get; }
+        IConcept Use { get; }
 
         //$default FieldDefinitionDTO toChangeSetThing()
         //{

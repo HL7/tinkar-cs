@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	public record DefinitionForSemanticDTO : IDefinitionForSemantic,
+	public record DefinitionForSemanticDTO : BaseDTO, 
+        IDefinitionForSemantic,
 		IJsonMarshalable,
 		IMarshalable
 	{
-		private const int marshalVersion = 1;
+		protected override int MarshalVersion => 1;
 
         public IEnumerable<Guid> ComponentUuids {get; init; }
 
@@ -21,21 +22,21 @@ namespace Tinkar
 
         //@JsonChronologyUnmarshaler
         //public static DefinitionForSemanticDTO make(JSONObject jsonObject) {
-        //    ImmutableList<UUID> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
+        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
         //    return new DefinitionForSemanticDTO(componentUuids);
         //}
 
         //@Unmarshaler
-        //public static DefinitionForSemanticDTO make(TinkarInput in) {
+        //public static DefinitionForSemanticDTO make(TinkarInput input) {
         //    try {
-        //        int objectMarshalVersion = in.readInt();
+        //        int objectMarshalVersion = input.ReadInt();
         //        if (objectMarshalVersion == marshalVersion) {
-        //            ImmutableList<UUID> componentUuids = in.readImmutableUuidList();
+        //            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
         //            return new DefinitionForSemanticDTO(componentUuids);
         //        } else {
         //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         //        }
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new MarshalExceptionUnchecked(ex);
         //    }
         //}
@@ -46,7 +47,7 @@ namespace Tinkar
         //    try {
         //        out.writeInt(marshalVersion);
         //        out.writeUuidList(componentUuids);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new MarshalExceptionUnchecked(ex);
         //    }
         //}

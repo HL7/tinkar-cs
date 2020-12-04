@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Tinkar
 {
-	public record FieldDefinitionDTO : IFieldDefinition,
-	    IChangeSetThing,
-	    IJsonMarshalable,
-	    IMarshalable
-	{
+    public record FieldDefinitionDTO : BaseDTO, 
+        IFieldDefinition,
+        IChangeSetThing,
+        IJsonMarshalable,
+        IMarshalable
+    {
+        protected override int MarshalVersion => 1;
 
-		private const int marshalVersion = 1;
+        public IEnumerable<Guid> DataTypeUuids { get; init; }
+        public IEnumerable<Guid> PurposeUuids { get; init; }
+        public IEnumerable<Guid> UseUuids { get; init; }
 
-        public IConcept GetDataType {get; init; }
-
-        public IConcept GetPurpose {get; init; }
-
-        public IConcept GetUse {get; init; }
-
-
-        //@Override
-        //public Concept getDataType() {
-        //    return new ConceptDTO(dataTypeUuids);
-        //}
+        public IConcept DataType => new ConceptDTO { ComponentUuids = DataTypeUuids };
+        public IConcept Purpose => new ConceptDTO { ComponentUuids = PurposeUuids };
+        public IConcept Use => new ConceptDTO { ComponentUuids = UseUuids };
 
         //@Override
         //public Concept getPurpose() {
@@ -65,21 +63,26 @@ namespace Tinkar
         //}
 
         //@Unmarshaler
-        //public static FieldDefinitionDTO make(TinkarInput in) {
-        //    try {
-        //        int objectMarshalVersion = in.readInt();
-        //        if (objectMarshalVersion == marshalVersion) {
-        //            return new FieldDefinitionDTO(
-        //                    in.readImmutableUuidList(),
-        //                    in.readImmutableUuidList(),
-        //                    in.readImmutableUuidList());
-        //        } else {
-        //            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        //        }
-        //    } catch (IOException ex) {
-        //        throw new UncheckedIOException(ex);
-        //    }
-        //}
+        public static FieldDefinitionDTO make(TinkarInput input)
+        {
+            try
+            {
+                int objectMarshalVersion = input.ReadInt();
+                if (objectMarshalVersion != marshalVersion)
+                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+
+                return new FieldDefinitionDTO
+                {
+                    DataTypeUuids = input.ReadImmutableUuidList(),
+                    PurposeUuids = input.ReadImmutableUuidList(),
+                    UseUuids = input.ReadImmutableUuidList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new UncheckedIOException(ex);
+            }
+        }
 
         //@Override
         //@Marshaler
@@ -89,7 +92,7 @@ namespace Tinkar
         //        out.writeUuidList(dataTypeUuids);
         //        out.writeUuidList(purposeUuids);
         //        out.writeUuidList(useUuids);
-        //    } catch (IOException ex) {
+        //    } catch (Exception ex) {
         //        throw new UncheckedIOException(ex);
         //    }
         //}
