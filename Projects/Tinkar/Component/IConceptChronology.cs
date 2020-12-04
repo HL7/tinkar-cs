@@ -22,7 +22,7 @@ namespace Tinkar
      *
      * @author KWA
      */
-    public interface IConceptChronology : IChronology<ConceptVersion>, IConcept
+    public interface IConceptChronology : IChronology<IConceptVersion>, IConcept
     {
         //$default ConceptChronologyDTO toChangeSetThing() {
         //     MutableList<ConceptVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());

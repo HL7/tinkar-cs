@@ -3,28 +3,19 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record SemanticDTO : BaseDTO, 
-        IJsonMarshalable, 
-        IMarshalable, 
+    public record SemanticDTO(
+            IEnumerable<Guid> ComponentUuids,
+            IEnumerable<Guid> DefinitionForSemanticUuids,
+            IEnumerable<Guid> ReferencedComponentUuids
+        ) : BaseDTO,
+        IJsonMarshalable,
+        IMarshalable,
         ISemantic
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
 
-        public IIdentifiedThing ReferencedComponent { get; init; }
-
-        public IDefinitionForSemantic DefinitionForSemantic { get; init; }
-
-        public IEnumerable<Guid> ComponentUuids { get; init; }
-
-        //$@Override
-        //public IdentifiedThing referencedComponent() {
-        //    return new IdentifiedThingDTO(referencedComponentUuids);
-        //}
-
-        //$@Override
-        //public DefinitionForSemantic definitionForSemantic() {
-        //    return new DefinitionForSemanticDTO(definitionForSemanticUuids);
-        //}
+        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         //$@Override
         //public void jsonMarshal(Writer writer) {
@@ -49,9 +40,7 @@ namespace Tinkar
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+                CheckMarshallVersion(input, MarshalVersion);
 
                 IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
                 IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();

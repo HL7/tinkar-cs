@@ -19,31 +19,19 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record FieldDefinitionDTO : BaseDTO, 
+    public record FieldDefinitionDTO(IEnumerable<Guid> DataTypeUuids,
+                                    IEnumerable<Guid> PurposeUuids,
+                                    IEnumerable<Guid> UseUuids) : BaseDTO,
         IFieldDefinition,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
-        protected override int MarshalVersion => 1;
-
-        public IEnumerable<Guid> DataTypeUuids { get; init; }
-        public IEnumerable<Guid> PurposeUuids { get; init; }
-        public IEnumerable<Guid> UseUuids { get; init; }
+        private const int MarshalVersion = 1;
 
         public IConcept DataType => new ConceptDTO { ComponentUuids = DataTypeUuids };
         public IConcept Purpose => new ConceptDTO { ComponentUuids = PurposeUuids };
         public IConcept Use => new ConceptDTO { ComponentUuids = UseUuids };
-
-        //@Override
-        //public Concept getPurpose() {
-        //    return new ConceptDTO(purposeUuids);
-        //}
-
-        //@Override
-        //public Concept getUse() {
-        //    return new ConceptDTO(useUuids);
-        //}
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -67,16 +55,10 @@ namespace Tinkar
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-
-                return new FieldDefinitionDTO
-                {
-                    DataTypeUuids = input.ReadImmutableUuidList(),
-                    PurposeUuids = input.ReadImmutableUuidList(),
-                    UseUuids = input.ReadImmutableUuidList()
-                };
+                CheckMarshallVersion(input, MarshalVersion);
+                return new FieldDefinitionDTO(input.ReadImmutableUuidList(),
+                    input.ReadImmutableUuidList(),
+                    input.ReadImmutableUuidList());
             }
             catch (Exception ex)
             {

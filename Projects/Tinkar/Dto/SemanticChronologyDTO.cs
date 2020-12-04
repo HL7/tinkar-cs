@@ -29,7 +29,7 @@ namespace Tinkar
         IMarshalable
 	{
 
-		protected override int MarshalVersion => 1;
+		private const int MarshalVersion = 1;
 
         public IIdentifiedThing ChronologySet {get; init; }
 

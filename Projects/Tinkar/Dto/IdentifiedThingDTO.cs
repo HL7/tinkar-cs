@@ -23,12 +23,8 @@ namespace Tinkar
      *
      * @author kec
      */
-    public record IdentifiedThingDTO :
+    public record IdentifiedThingDTO(IEnumerable<Guid> ComponentUuids) :
      IIdentifiedThing, IChangeSetThing
     {
-        /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids
-        /// </summary>
-        public IEnumerable<Guid> ComponentUuids {get; init; }
     }
 }

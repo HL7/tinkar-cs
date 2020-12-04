@@ -8,7 +8,7 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
 
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
@@ -31,9 +31,7 @@ namespace Tinkar
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
+                CheckMarshallVersion(input, MarshalVersion);
 
                 IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
                 return new ConceptDTO { ComponentUuids = componentUuids};

@@ -27,7 +27,7 @@ namespace Tinkar
         IMarshalable,
         IStampComment
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
 
         public IStamp Stamp {get; init; }
 

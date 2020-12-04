@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-	public record DefinitionForSemanticDTO : BaseDTO, 
+	public record DefinitionForSemanticDTO(IEnumerable<Guid> ComponentUuids) : BaseDTO, 
         IDefinitionForSemantic,
 		IJsonMarshalable,
 		IMarshalable
 	{
-		protected override int MarshalVersion => 1;
-
-        public IEnumerable<Guid> ComponentUuids {get; init; }
+		private const int MarshalVersion = 1;
 
         //$@Override
         //public void jsonMarshal(Writer writer) {

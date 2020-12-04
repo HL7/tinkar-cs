@@ -24,7 +24,7 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
         public IStamp Stamp { get; init; }
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
@@ -65,14 +65,11 @@ namespace Tinkar
         // * @return new instance of ConceptVersionDTO created from the input.
         // */
         //@VersionUnmarshaler
-        public static ConceptVersionDTO make(TinkarInput input, IEnumerable<Guid> componentUuids)
+        public static ConceptVersionDTO Make(TinkarInput input, IEnumerable<Guid> componentUuids)
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-
+                CheckMarshallVersion(input, MarshalVersion);
                 return new ConceptVersionDTO
                 {
                     ComponentUuids = componentUuids,

@@ -18,23 +18,23 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record StampDTO : BaseDTO, ,
+    public record StampDTO(
+            IEnumerable<Guid> StatusUuids,
+            DateTime Time,
+            IEnumerable<Guid> AuthorUuids,
+            IEnumerable<Guid> ModuleUuids,
+            IEnumerable<Guid> PathUuids
+        ) : BaseDTO,
         IChangeSetThing, 
         IJsonMarshalable, 
         IMarshalable, 
         IStamp
     {
-        protected override int MarshalVersion => 1;
-        public IEnumerable<Guid> StatusUuids { get; init; }
-        public DateTime Time { get; init; }
-        public IEnumerable<Guid> AuthorUuids { get; init; }
-        public IEnumerable<Guid> ModuleUuids { get; init; }
-        public IEnumerable<Guid> PathUuids { get; init; }
-
+        private const int MarshalVersion = 1;
         public IConcept Status => new ConceptDTO { ComponentUuids = StatusUuids };
         public IConcept Author => new ConceptDTO { ComponentUuids = AuthorUuids };
-        public IConcept Module() => new ConceptDTO { ComponentUuids = ModuleUuids };
-        public IConcept Path() => new ConceptDTO { ComponentUuids = PathUuids };
+        public IConcept Module => new ConceptDTO { ComponentUuids = ModuleUuids };
+        public IConcept Path => new ConceptDTO { ComponentUuids = PathUuids };
 
         //@Override
         //public void jsonMarshal(Writer writer)
@@ -63,18 +63,13 @@ namespace Tinkar
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-
-                return new StampDTO
-                {
-                        input.ReadImmutableUuidList(),
-                        input.ReadInstant(),
-                        input.ReadImmutableUuidList(),
-                        input.ReadImmutableUuidList(),
-                        input.ReadImmutableUuidList()
-                }
+                CheckMarshallVersion(input, MarshalVersion);
+                return new StampDTO(
+                    input.ReadImmutableUuidList(),
+                    input.ReadInstant(),
+                    input.ReadImmutableUuidList(),
+                    input.ReadImmutableUuidList(),
+                    input.ReadImmutableUuidList());
             }
             catch (Exception ex)
             {

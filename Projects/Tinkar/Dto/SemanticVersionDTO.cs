@@ -28,7 +28,7 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
 
         public IEnumerable<Object> Fields { get; init; }
 

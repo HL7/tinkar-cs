@@ -22,24 +22,27 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record ConceptChronologyDTO : BaseDTO,
+    public record ConceptChronologyDTO(
+            IEnumerable<Guid> ComponentUuids,
+            IEnumerable<Guid> ChronologySetUuids,
+            IEnumerable<ConceptVersionDTO> ConceptVersions
+        ) : BaseDTO,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
         IConceptChronology
     {
-        protected override int MarshalVersion => 1;
+        private const int MarshalVersion = 1;
+        public IIdentifiedThing ChronologySet => new ConceptDTO { ComponentUuids = ChronologySetUuids };
 
-        public IEnumerable<Guid> ComponentUuids { get; init; }
-        public IEnumerable<Guid> ChronologySetUuids { get; init; }
-        public IEnumerable<ConceptVersionDTO> ConceptVersions { get; init; }
-
-        public IConcept ChronologySet => new ConceptDTO { ComponentUuids = chronologySetUuids };
-
-        //@Override
-        //public IEnumerable<ConceptVersion> versions() {
-        //    return conceptVersions.collect(conceptVersionDTO -> (ConceptVersion) conceptVersionDTO);
-        //}
+        public IEnumerable<IConceptVersion> Versions
+        {
+            get
+            {
+                foreach (ConceptVersionDTO item in ConceptVersions)
+                    yield return (IConceptVersion)item;
+            }
+        }
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -64,16 +67,12 @@ namespace Tinkar
         {
             try
             {
-                int objectMarshalVersion = input.ReadInt();
-                if (objectMarshalVersion != marshalVersion)
-                    throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-
-                return new ConceptChronologyDTO
-                {
-                    ComponentUuids = input.ReadImmutableUuidList(),
-                    ChronologySetUuids = input.ReadImmutableUuidList(),
-                    ConceptVersions = input.ReadConceptVersionList(componentUuids)
-                };
+                CheckMarshallVersion(input, MarshalVersion);
+                IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+                return new ConceptChronologyDTO(componentUuids,
+                    input.ReadImmutableUuidList(),
+                    input.ReadConceptVersionList(componentUuids)
+                );
             }
             catch (Exception ex)
             {

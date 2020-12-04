@@ -117,7 +117,7 @@ namespace Tinkar
         }
 
 
-        public IEnumerable<ConceptVersionDTO> readConceptVersionList(IEnumerable<Guid> componentUuids)
+        public IEnumerable<ConceptVersionDTO> ReadConceptVersionList(IEnumerable<Guid> componentUuids)
         {
             try
             {
