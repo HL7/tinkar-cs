@@ -28,7 +28,7 @@ namespace Tinkar
         private BinaryWriter writer;
 		public TinkarOutput(Stream outStream)
 		{
-            writer = new BinaryWriter(outStream);
+            this.writer = new BinaryWriter(outStream);
 		}
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Tinkar
         {
             try
             {
-                WriteLong(instant.EpochSecond());
-                WriteInt(instant.Nano());
+                this.WriteLong(instant.EpochSecond());
+                this.WriteInt(instant.Nano());
             }
             catch (Exception ex)
             {

@@ -38,14 +38,14 @@ namespace Tinkar
 
         //$@Override
         public IConcept ReferencedComponentPurpose =>
-            new ConceptDTO(ReferencedComponentPurposeUuids);
+            new ConceptDTO(this.ReferencedComponentPurposeUuids);
 
         //@Override
-        public IStamp Stamp => StampDTO;
+        public IStamp Stamp => this.StampDTO;
 
         //@Override
         public IEnumerable<IFieldDefinition> FieldDefinitions =>
-            FieldDefinitionDTOs.Select((dto) => (IFieldDefinition)dto);
+            this.FieldDefinitionDTOs.Select((dto) => (IFieldDefinition)dto);
 
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO using JSON

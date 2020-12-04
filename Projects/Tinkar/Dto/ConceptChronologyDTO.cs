@@ -39,7 +39,7 @@ namespace Tinkar
         {
             get
             {
-                foreach (ConceptVersionDTO item in ConceptVersions)
+                foreach (ConceptVersionDTO item in this.ConceptVersions)
                     yield return (IConceptVersion)item;
             }
         }

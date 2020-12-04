@@ -100,8 +100,8 @@ namespace Tinkar
         //    }
         //}
 
-        public IEnumerable<ISemanticVersion> Versions => 
-            SemanticVersions.Select( (dto) => (ISemanticVersion) dto);
+        public IEnumerable<ISemanticVersion> Versions =>
+            this.SemanticVersions.Select( (dto) => (ISemanticVersion) dto);
 
         public DefinitionForSemanticDTO ChronologySet => 
             new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);

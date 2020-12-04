@@ -69,7 +69,7 @@ namespace Tinkar
         {
             try
             {
-                int length = ReadInt();
+                int length = this.ReadInt();
                 Guid[] array = new Guid[length];
                 for (int i = 0; i < length; i++)
                     array[i] = new Guid(this.reader.ReadBytes(16));
@@ -109,7 +109,7 @@ namespace Tinkar
         {
             try
             {
-                int length = ReadInt();
+                int length = this.ReadInt();
                 FieldDefinitionDTO[] array = new FieldDefinitionDTO[length];
                 for (int i = 0; i < length; i++)
                 {
@@ -128,7 +128,7 @@ namespace Tinkar
         {
             try
             {
-                int length = ReadInt();
+                int length = this.ReadInt();
                 ConceptVersionDTO[] array = new ConceptVersionDTO[length];
                 for (int i = 0; i < length; i++)
                     array[i] = ConceptVersionDTO.Make(this, componentUuids);
@@ -258,6 +258,6 @@ namespace Tinkar
         //return objects;
         //    }
 
-        byte[] ReadByteArray() => this.reader.ReadBytes(ReadInt());
+        byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt());
     }
 }

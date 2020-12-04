@@ -32,7 +32,7 @@ namespace Tinkar
 			this.byteArrayOutputStream = byteArrayOutputStream;
 		}
 
-		public byte[] getBytes() => byteArrayOutputStream.ToArray();
+		public byte[] getBytes() => this.byteArrayOutputStream.ToArray();
 
 		public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
 

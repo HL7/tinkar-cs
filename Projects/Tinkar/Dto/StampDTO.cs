@@ -31,10 +31,10 @@ namespace Tinkar
         IStamp
     {
         private const int MarshalVersion = 1;
-        public IConcept Status => new ConceptDTO(StatusUuids);
-        public IConcept Author => new ConceptDTO(AuthorUuids);
-        public IConcept Module => new ConceptDTO(ModuleUuids);
-        public IConcept Path => new ConceptDTO(PathUuids);
+        public IConcept Status => new ConceptDTO(this.StatusUuids);
+        public IConcept Author => new ConceptDTO(this.AuthorUuids);
+        public IConcept Module => new ConceptDTO(this.ModuleUuids);
+        public IConcept Path => new ConceptDTO(this.PathUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer)
