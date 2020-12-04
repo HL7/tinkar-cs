@@ -29,9 +29,7 @@ namespace Tinkar
      // a readResolve method, but allows the implementation to decide how
      // to handle special cases.
 
-        @Unmarshaler
-        public static StampDTO make(TinkarInput input) {
-            try {
+        public static StampDTO Make(TinkarInput input) {
                 int objectMarshalVersion = input.ReadInt();
                 switch (objectMarshalVersion) {
                     case marshalVersion:

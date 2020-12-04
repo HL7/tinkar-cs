@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tinkar
 {
@@ -35,14 +36,8 @@ namespace Tinkar
         private const int MarshalVersion = 1;
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
-        public IEnumerable<IConceptVersion> Versions
-        {
-            get
-            {
-                foreach (ConceptVersionDTO item in this.ConceptVersions)
-                    yield return (IConceptVersion)item;
-            }
-        }
+    public IEnumerable<IConceptVersion> Versions =>
+        this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
