@@ -57,6 +57,24 @@ namespace Tinkar.XUnitTests
                     new Guid[] { this.j1, this.j2, this.j3, this.j4 }
                 );
                 StampDTO b = new StampDTO(
+                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                    new DateTime(2001, 1, 1),
+                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
+                    new Guid[] { this.i1, this.i2, this.i3, this.i4 },
+                    new Guid[] { this.j1, this.j2, this.j3, this.j4 }
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                StampDTO a = new StampDTO(
+                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                    time,
+                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
+                    new Guid[] { this.i1, this.i2, this.i3, this.i4 },
+                    new Guid[] { this.j1, this.j2, this.j3, this.j4 }
+                );
+                StampDTO b = new StampDTO(
                     new Guid[] { this.g2, this.g2, this.g3, this.g4 },
                     time,
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },

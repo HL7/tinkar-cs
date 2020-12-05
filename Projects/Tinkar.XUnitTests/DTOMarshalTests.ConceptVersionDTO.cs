@@ -8,42 +8,110 @@ namespace Tinkar.XUnitTests
 {
     public partial class DTOMarshalTests
     {
-        //[Fact]
-        //public void ConceptVersionDTOFieldsTest()
-        //{
-        //    ConceptVersionDTO dtoStart = new ConceptVersionDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-        //    Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
-        //}
+        [Fact]
+        public void ConceptVersionDTOFieldsTest()
+        {
+            DateTime time = new DateTime(2020, 12, 31);
 
-        //[Fact]
-        //public void ConceptVersionDTOIsEquivalentTest()
-        //{
-        //    {
-        //        ConceptVersionDTO a = new ConceptVersionDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-        //        ConceptVersionDTO b = new ConceptVersionDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-        //        Assert.True(a.IsEquivalent(b));
-        //    }
+            ConceptVersionDTO dtoStart = new ConceptVersionDTO(
+                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                new StampDTO(
+                    new Guid[] { this.g2, this.g3, this.g4 },
+                    time,
+                    new Guid[] { this.h3, this.h4 },
+                    new Guid[] { this.i4 },
+                    new Guid[] { this.j2, this.j3, this.j4 }
+                )
+                );
+            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
+            Assert.True(dtoStart.StampDTO.IsEquivalent(
+                        new StampDTO(
+                            new Guid[] { this.g2, this.g3, this.g4 },
+                            time,
+                            new Guid[] { this.h3, this.h4 },
+                            new Guid[] { this.i4 },
+                            new Guid[] { this.j2, this.j3, this.j4 }
+                        )
+                ));
+        }
 
-        //    {
-        //        ConceptVersionDTO a = new ConceptVersionDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-        //        ConceptVersionDTO b = new ConceptVersionDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
-        //}
+        [Fact]
+        public void ConceptVersionDTOIsEquivalentTest()
+        {
+            DateTime time = new DateTime(2020, 12, 31);
+            {
+                ConceptVersionDTO a = new ConceptVersionDTO(
+                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                    new StampDTO(
+                            new Guid[] { this.g2, this.g3, this.g4 },
+                            time,
+                            new Guid[] { this.h3, this.h4 },
+                            new Guid[] { this.i4 },
+                            new Guid[] { this.j2, this.j3, this.j4 }
+                        )
+                    );
+                ConceptVersionDTO b = new ConceptVersionDTO(
+                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                    new StampDTO(
+                        new Guid[] { this.g2, this.g3, this.g4 },
+                        time,
+                        new Guid[] { this.h3, this.h4 },
+                        new Guid[] { this.i4 },
+                        new Guid[] { this.j2, this.j3, this.j4 }
+                    )
+                    );
+                Assert.True(a.IsEquivalent(b));
+            }
 
-        //[Fact]
-        //public void ConceptVersionDTOMarshalTest()
-        //{
-        //    ConceptVersionDTO dtoStart = new ConceptVersionDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+            {
+                ConceptVersionDTO a = new ConceptVersionDTO(
+                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                    new StampDTO(
+                        new Guid[] { this.g2, this.g3, this.g4 },
+                        time,
+                        new Guid[] { this.h3, this.h4 },
+                        new Guid[] { this.i4 },
+                        new Guid[] { this.j2, this.j3, this.j4 }
+                    )
+                    );
 
-        //    MemoryStream ms = new MemoryStream();
-        //    TinkarOutput output = new TinkarOutput(ms);
-        //    output.WriteField(dtoStart);
+                ConceptVersionDTO b = new ConceptVersionDTO(
+                    new Guid[] { this.g2, this.g1, this.g3, this.g4 },
+                    new StampDTO(
+                        new Guid[] { this.g2, this.g3, this.g4 },
+                        time,
+                        new Guid[] { this.h3, this.h4 },
+                        new Guid[] { this.i4 },
+                        new Guid[] { this.j2, this.j3, this.j4 }
+                    )
+                    );
+                Assert.False(a.IsEquivalent(b));
+            }
+        }
 
-        //    ms.Position = 0;
-        //    TinkarInput input = new TinkarInput(ms);
-        //    ConceptVersionDTO dtoRead = (ConceptVersionDTO) input.ReadField();
-        //    Assert.True(dtoStart.IsEquivalent(dtoRead));
-        //}
+        [Fact]
+        public void ConceptVersionDTOMarshalTest()
+        {
+            ConceptVersionDTO dtoStart = new ConceptVersionDTO(
+                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                new StampDTO(
+                    new Guid[] { this.g2, this.g3, this.g4 },
+                    new DateTime(1990, 3, 4),
+                    new Guid[] { this.h3, this.h4 },
+                    new Guid[] { this.i4 },
+                    new Guid[] { this.j2, this.j3, this.j4 }
+                )
+                );
+
+            MemoryStream ms = new MemoryStream();
+            TinkarOutput output = new TinkarOutput(ms);
+            dtoStart.Marshal(output);
+
+            ms.Position = 0;
+            TinkarInput input = new TinkarInput(ms);
+            ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
+                new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+            Assert.True(dtoStart.IsEquivalent(dtoRead));
+        }
     }
 }
