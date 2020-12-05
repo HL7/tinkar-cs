@@ -3,19 +3,81 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record SemanticDTO(
-            IEnumerable<Guid> ComponentUuids,
-            IEnumerable<Guid> DefinitionForSemanticUuids,
-            IEnumerable<Guid> ReferencedComponentUuids
-        ) : BaseDTO<SemanticDTO>,
+    public record SemanticDTO : BaseDTO<SemanticDTO>,
         IJsonMarshalable,
         IMarshalable,
         ISemantic
     {
         private const int MarshalVersion = 1;
 
+        /// <summary>
+        /// Implementation of IIentifiedThing.ComponentUuids
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// Implementation of ISemantic.ReferencedComponent
+        /// </summary>
         public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+
+        /// <summary>
+        /// Implementation of ISemantic.DefinitionForSemantic
+        /// </summary>
         public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+
+        /// <summary>
+        /// Guids for DefinitionForSemantic
+        /// </summary>
+        public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
+
+        /// <summary>
+        /// Guids for ReferencedComponent
+        /// </summary>
+        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemanticUuids</param>
+        /// <param name="referencedComponentUuids">ReferencedComponentUuids</param>
+        public SemanticDTO(
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids
+        )
+        {
+            this.ComponentUuids = componentUuids;
+            this.DefinitionForSemanticUuids = definitionForSemanticUuids;
+            this.ReferencedComponentUuids = referencedComponentUuids;
+        }
+
+        /// <summary>
+        /// Compares this to another item.
+        /// </summary>
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(SemanticDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
+                                             this.DefinitionForSemanticUuids.GetHashCode() ^
+                                             this.ReferencedComponentUuids.GetHashCode();
 
         //$@Override
         //public void jsonMarshal(Writer writer) {

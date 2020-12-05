@@ -23,11 +23,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record SemanticChronologyDTO(
-        IEnumerable<Guid> ComponentUuids,
-        IEnumerable<Guid> DefinitionForSemanticUuids,
-        IEnumerable<Guid> ReferencedComponentUuids,
-        IEnumerable<SemanticVersionDTO> SemanticVersions) :
+    public record SemanticChronologyDTO :
         BaseDTO<SemanticChronologyDTO>,
         ISemanticChronology<DefinitionForSemanticDTO>,
         IChangeSetThing,
@@ -37,16 +33,96 @@ namespace Tinkar
 
         private const int MarshalVersion = 1;
 
-        //$public SemanticChronologyDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
-        //                          IdentifiedThing referencedComponent, IEnumerable<SemanticVersionDTO> semanticVersions) {
-        //    this(componentUuids,
-        //            definitionForSemantic.componentUuids(),
-        //            referencedComponent.componentUuids(),
-        //            semanticVersions);
-        //}
+        /// <summary>
+        /// Uuids for DefinitionForSemantic
+        /// </summary>
+        public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
 
+        /// <summary>
+        /// Uuids for ReferencedComponent
+        /// </summary>
+        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        public IEnumerable<SemanticVersionDTO> SemanticVersions { get; init; }
+
+        /// <summary>
+        /// Implements IIdentifiedThing.ComponendUuids
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// Implements ISemantic.ReferencedComponent
+        /// </summary>
         public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+
+        /// <summary>
+        /// Implements ISemantic.DefinitionForSemantic
+        /// </summary>
         public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="definitionForSemanticUuids">definitionForSemanticUuids</param>
+        /// <param name="referencedComponentUuids">ReferencedComponentUuids</param>
+        /// <param name="semanticVersions">SemanticVersions</param>
+        public SemanticChronologyDTO(
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids,
+            IEnumerable<SemanticVersionDTO> semanticVersions)
+        {
+            this.ComponentUuids = componentUuids;
+            this.DefinitionForSemanticUuids = definitionForSemanticUuids;
+            this.ReferencedComponentUuids = referencedComponentUuids;
+            this.SemanticVersions = semanticVersions;
+        }
+
+        public SemanticChronologyDTO(IEnumerable<Guid> componentUuids,
+                                  IDefinitionForSemantic definitionForSemantic,
+                                  IIdentifiedThing referencedComponent,
+                                  IEnumerable<SemanticVersionDTO> semanticVersions) :
+                this(componentUuids,
+                     definitionForSemantic.ComponentUuids,
+                     referencedComponent.ComponentUuids,
+                     semanticVersions)
+        {
+        }
+
+        /// <summary>
+        /// Compares this to another item.
+        /// </summary>
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(SemanticChronologyDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareSequence(this.SemanticVersions, other.SemanticVersions);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
+                                             this.DefinitionForSemanticUuids.GetHashCode() ^
+                                             this.ReferencedComponentUuids.GetHashCode() ^
+                                             this.SemanticVersions.GetHashCode();
 
         //@Override
         //public void jsonMarshal(Writer writer) {
