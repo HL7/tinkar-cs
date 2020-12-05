@@ -27,7 +27,8 @@ namespace Tinkar
         IEnumerable<Guid> ComponentUuids,
         IEnumerable<Guid> DefinitionForSemanticUuids,
         IEnumerable<Guid> ReferencedComponentUuids,
-        IEnumerable<SemanticVersionDTO> SemanticVersions) : BaseDTO,
+        IEnumerable<SemanticVersionDTO> SemanticVersions) :
+        BaseDTO<SemanticChronologyDTO>,
         ISemanticChronology<DefinitionForSemanticDTO>,
         IChangeSetThing,
         IJsonMarshalable,

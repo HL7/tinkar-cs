@@ -23,8 +23,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record ConceptChronologyDTO : BaseDTO,
-        IEquatable<ConceptChronologyDTO>,
+    public record ConceptChronologyDTO : BaseDTO<ConceptChronologyDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -74,18 +73,23 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
-        /// We manually create this rather than using the default
-        /// record implementation because we want to compare to
-        /// do a deep comparison, not just compare reference equality.
+        /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns>true if equal</returns>
-        public virtual bool Equals(ConceptChronologyDTO other) =>
-                    this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
-                    this.CompareSequence(this.ChronologySetUuids, other.ChronologySetUuids) &&
-                    this.CompareSequence<ConceptVersionDTO>(this.ConceptVersions, other.ConceptVersions)
-                    ;
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(ConceptChronologyDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareSequence<ConceptVersionDTO>(this.ConceptVersions, other.ConceptVersions);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
 
         /// <summary>
         /// Override of default hashcode. Must provide if Equals overridden.

@@ -22,8 +22,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record SemanticVersionDTO : BaseDTO,
-        IEquatable<SemanticVersionDTO>,
+    public record SemanticVersionDTO : BaseDTO<SemanticVersionDTO>,
         ISemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,
@@ -78,20 +77,29 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
-        /// We manually create this rather than using the default
-        /// record implementation because we want to compare to
-        /// do a deep comparison, not just compare reference equality.
+        /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
-        /// <returns>true if equal</returns>
-        public virtual bool Equals(SemanticVersionDTO other) =>
-            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
-            this.CompareSequence(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids) &&
-            this.CompareSequence(this.ReferencedComponentUuids, other.ReferencedComponentUuids) &&
-            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
-            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO)
-            ;
+        /// <returns> -1, 0, or 1</returns>
+        public override Int32 CompareTo(SemanticVersionDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+            if (cmp != 0)
+                return cmp;
+
+            // Fields!!!
+            throw new NotImplementedException();
+            return 0;
+        }
 
         /// <summary>
         /// Override of default hashcode. Must provide if Equals overridden.

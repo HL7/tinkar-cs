@@ -18,8 +18,7 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record StampDTO : BaseDTO,
-        IEquatable<StampDTO>,
+    public record StampDTO : BaseDTO<StampDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -94,20 +93,30 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
-        /// We manually create this rather than using the default
-        /// record implementation because we want to compare to
-        /// do a deep comparison, not just compare reference equality.
+        /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
-        /// <returns>true if equal</returns>
-        public virtual bool Equals(StampDTO other) =>
-            this.CompareSequence(this.StatusUuids, other.StatusUuids) &&
-            (this.Time.CompareTo(other.Time) == 0) &&
-            this.CompareSequence(this.AuthorUuids, other.AuthorUuids) &&
-            this.CompareSequence(this.ModuleUuids, other.ModuleUuids) &&
-            this.CompareSequence(this.PathUuids, other.PathUuids)
-            ;
+        /// <returns> -1, 0, or 1</returns>
+        public override Int32 CompareTo(StampDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.StatusUuids, other.StatusUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.Time.CompareTo(other.Time);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.AuthorUuids, other.AuthorUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ModuleUuids, other.ModuleUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.PathUuids, other.PathUuids);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
 
         /// <summary>
         /// Override of default hashcode. Must provide if Equals overridden.

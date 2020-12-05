@@ -21,7 +21,8 @@ namespace Tinkar
 {
     public record FieldDefinitionDTO(IEnumerable<Guid> DataTypeUuids,
                                     IEnumerable<Guid> PurposeUuids,
-                                    IEnumerable<Guid> UseUuids) : BaseDTO,
+                                    IEnumerable<Guid> UseUuids) :
+        BaseDTO<FieldDefinitionDTO>,
         IFieldDefinition,
         IChangeSetThing,
         IJsonMarshalable,

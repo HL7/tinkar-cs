@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record DefinitionForSemanticDTO(IEnumerable<Guid> ComponentUuids) : BaseDTO,
+    public record DefinitionForSemanticDTO(IEnumerable<Guid> ComponentUuids) : 
+        BaseDTO<DefinitionForSemanticDTO>,
         IDefinitionForSemantic,
         IJsonMarshalable,
         IMarshalable

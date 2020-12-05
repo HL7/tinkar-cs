@@ -26,7 +26,8 @@ namespace Tinkar
     public record DefinitionForSemanticChronologyDTO(
             IEnumerable<Guid> ComponentUuids,
             IEnumerable<Guid> ChronologySetUuids,
-            IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions) : BaseDTO,
+            IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions) : 
+        BaseDTO<DefinitionForSemanticChronologyDTO>,
         IDefinitionForSemanticChronology<IConcept>,
         IChangeSetThing,
         IJsonMarshalable,

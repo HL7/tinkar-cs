@@ -18,8 +18,7 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptVersionDTO : BaseDTO,
-        IEquatable<ConceptVersionDTO>,
+    public record ConceptVersionDTO : BaseDTO<ConceptVersionDTO>,
         IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
@@ -59,16 +58,21 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
-        /// We manually create this rather than using the default
-        /// record implementation because we want to compare to
-        /// do a deep comparison, not just compare reference equality.
+        /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns>true if equal</returns>
-        public virtual bool Equals(ConceptVersionDTO other) =>
-            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
-            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(ConceptVersionDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareItem(this.StampDTO, other.StampDTO);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
 
         /// <summary>
         /// Override of default hashcode. Must provide if Equals overridden.

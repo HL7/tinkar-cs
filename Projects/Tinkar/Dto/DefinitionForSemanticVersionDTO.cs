@@ -28,7 +28,8 @@ namespace Tinkar
             IEnumerable<Guid> ComponentUuids,
             StampDTO StampDTO,
             IEnumerable<Guid> ReferencedComponentPurposeUuids,
-            IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs) : BaseDTO,
+            IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs) : 
+        BaseDTO<DefinitionForSemanticVersionDTO>,
         IDefinitionForSemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,

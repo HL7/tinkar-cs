@@ -21,8 +21,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record StampCommentDTO : BaseDTO,
-        IEquatable<StampCommentDTO>,
+    public record StampCommentDTO : BaseDTO<StampCommentDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -57,16 +56,20 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
-        /// We manually create this rather than using the default
-        /// record implementation because we want to compare to
-        /// do a deep comparison, not just compare reference equality.
+        /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
-        /// <returns>true if equal</returns>
-        public virtual bool Equals(StampCommentDTO other) =>
-            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO) &&
-            (this.Comment.CompareTo(other.Comment) == 0);
+        /// <returns> -1, 0, or 1</returns>
+        public override Int32 CompareTo(StampCommentDTO other)
+        {
+            Int32 cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.Comment.CompareTo(other.Comment);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
 
         /// <summary>
         /// Override of default hashcode. Must provide if Equals overridden.

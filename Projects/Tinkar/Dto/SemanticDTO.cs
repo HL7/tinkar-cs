@@ -7,7 +7,7 @@ namespace Tinkar
             IEnumerable<Guid> ComponentUuids,
             IEnumerable<Guid> DefinitionForSemanticUuids,
             IEnumerable<Guid> ReferencedComponentUuids
-        ) : BaseDTO,
+        ) : BaseDTO<SemanticDTO>,
         IJsonMarshalable,
         IMarshalable,
         ISemantic
