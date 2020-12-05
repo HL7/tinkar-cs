@@ -24,11 +24,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record DefinitionForSemanticVersionDTO(
-            IEnumerable<Guid> ComponentUuids,
-            StampDTO StampDTO,
-            IEnumerable<Guid> ReferencedComponentPurposeUuids,
-            IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs) : 
+    public record DefinitionForSemanticVersionDTO :
         BaseDTO<DefinitionForSemanticVersionDTO>,
         IDefinitionForSemanticVersion,
         IChangeSetThing,
@@ -37,16 +33,62 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
-        //$@Override
-        public IConcept ReferencedComponentPurpose =>
-            new ConceptDTO(this.ReferencedComponentPurposeUuids);
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
 
-        //@Override
+        /// <summary>
+        /// Implementation of IVersion.Stamp
+        /// </summary>
         public IStamp Stamp => this.StampDTO;
 
-        //@Override
+        /// <summary>
+        /// Implementation of IDefinitionForSemanticVersion.ReferencedComponentPurpose
+        /// </summary>
+        public IConcept ReferencedComponentPurpose =>
+                new ConceptDTO(this.ReferencedComponentPurposeUuids);
+
+
+        /// <summary>
+        /// Implementation of IDefinitionForSemanticVersion.FieldDefinitions
+        /// </summary>
         public IEnumerable<IFieldDefinition> FieldDefinitions =>
             this.FieldDefinitionDTOs.Select((dto) => (IFieldDefinition)dto);
+
+        /// <summary>
+        /// Backing DTO for Stamp
+        /// </summary>
+        public StampDTO StampDTO { get; init; }
+
+        /// <summary>
+        /// ReferencedComponentPurpose Guids
+        /// </summary>
+        public IEnumerable<Guid> ReferencedComponentPurposeUuids { get; init; }
+
+        /// <summary>
+        /// FieldDefinition Guids
+        /// </summary>
+        public IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="stampDTO">StampDTO</param>
+        /// <param name="referencedComponentPurposeUuids">ReferencedComponentPurposeUuids</param>
+        /// <param name="fieldDefinitionDTOs">FieldDefinitionDTOs</param>
+        public DefinitionForSemanticVersionDTO(
+            IEnumerable<Guid> componentUuids,
+            StampDTO stampDTO,
+            IEnumerable<Guid> referencedComponentPurposeUuids,
+            IEnumerable<FieldDefinitionDTO> fieldDefinitionDTOs)
+        {
+            this.ComponentUuids = componentUuids;
+            this.StampDTO = stampDTO;
+            this.ReferencedComponentPurposeUuids = referencedComponentPurposeUuids;
+            this.FieldDefinitionDTOs = fieldDefinitionDTOs;
+        }
 
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO using JSON

@@ -99,12 +99,12 @@ namespace Tinkar
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
-        /// $NotTested
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
         public static SemanticDTO Make(TinkarInput input)
         {
+            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
@@ -114,11 +114,11 @@ namespace Tinkar
 
         /// <summary>
         /// Marshal DTO item to output stream.
-        /// $NotTested
         /// </summary>
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.DefinitionForSemanticUuids);

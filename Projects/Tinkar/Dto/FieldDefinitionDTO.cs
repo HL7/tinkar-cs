@@ -19,9 +19,7 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record FieldDefinitionDTO(IEnumerable<Guid> DataTypeUuids,
-                                    IEnumerable<Guid> PurposeUuids,
-                                    IEnumerable<Guid> UseUuids) :
+    public record FieldDefinitionDTO :
         BaseDTO<FieldDefinitionDTO>,
         IFieldDefinition,
         IChangeSetThing,
@@ -30,9 +28,80 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
+        /// <summary>
+        /// Implementation of IFieldDefinition.DataType
+        /// </summary>
         public IConcept DataType => new ConceptDTO(this.DataTypeUuids);
+
+        /// <summary>
+        /// Implementation of IFieldDefinition.Purpose
+        /// </summary>
         public IConcept Purpose => new ConceptDTO(this.PurposeUuids);
+
+        /// <summary>
+        /// Implementation of IFieldDefinition.Use
+        /// </summary>
         public IConcept Use => new ConceptDTO(this.UseUuids);
+
+        /// <summary>
+        /// DataType uuids.
+        /// </summary>
+        public IEnumerable<Guid> DataTypeUuids { get; init; }
+
+        /// <summary>
+        /// Purpose uuids.
+        /// </summary>
+        public IEnumerable<Guid> PurposeUuids { get; init; }
+
+        /// <summary>
+        /// Use uuids.
+        /// </summary>
+        public IEnumerable<Guid> UseUuids { get; init; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dataTypeUuids">DataTypeUuids</param>
+        /// <param name="purposeUuids">PurposeUuids</param>
+        /// <param name="useUuids">useUuids</param>
+        public FieldDefinitionDTO(IEnumerable<Guid> dataTypeUuids,
+            IEnumerable<Guid> purposeUuids,
+            IEnumerable<Guid> useUuids)
+        {
+            this.DataTypeUuids = dataTypeUuids;
+            this.PurposeUuids = purposeUuids;
+            this.UseUuids = useUuids;
+        }
+
+
+        /// <summary>
+        /// Compare this with another item of same type.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns> -1, 0, or 1</returns>
+        public override Int32 CompareTo(FieldDefinitionDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.PurposeUuids, other.PurposeUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.UseUuids, other.UseUuids);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() =>
+            this.DataTypeUuids.GetHashCode() ^
+            this.PurposeUuids.GetHashCode() ^
+            this.UseUuids.GetHashCode();
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -53,12 +122,12 @@ namespace Tinkar
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
-        /// $NotTested
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
         public static FieldDefinitionDTO Make(TinkarInput input)
         {
+            //$NotTested
             try
             {
                 CheckMarshalVersion(input, MarshalVersion);
@@ -74,11 +143,11 @@ namespace Tinkar
 
         /// <summary>
         /// Marshal DTO item to output stream.
-        /// $NotTested
         /// </summary>
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.DataTypeUuids);
             output.WriteUuidList(this.PurposeUuids);

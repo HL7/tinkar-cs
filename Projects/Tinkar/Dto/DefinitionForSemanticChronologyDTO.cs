@@ -23,10 +23,7 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record DefinitionForSemanticChronologyDTO(
-            IEnumerable<Guid> ComponentUuids,
-            IEnumerable<Guid> ChronologySetUuids,
-            IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions) : 
+    public record DefinitionForSemanticChronologyDTO :
         BaseDTO<DefinitionForSemanticChronologyDTO>,
         IDefinitionForSemanticChronology<IConcept>,
         IChangeSetThing,
@@ -35,10 +32,69 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// ???.
+        /// </summary>
+        public IEnumerable<Guid> ChronologySetUuids { get; init; }
+
+        /// <summary>
+        /// DTO instance for Versions.
+        /// </summary>
+        public IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions { get; init; }
+
         public IEnumerable<IDefinitionForSemanticVersion> Versions =>
-            this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
+                this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
 
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="chronologySetUuids">ChronologySetUuids</param>
+        /// <param name="definitionVersions">DefinitionVersions</param>
+        public DefinitionForSemanticChronologyDTO(
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> chronologySetUuids,
+            IEnumerable<DefinitionForSemanticVersionDTO> definitionVersions)
+        {
+            this.ComponentUuids = componentUuids;
+            this.ChronologySetUuids = chronologySetUuids;
+            this.DefinitionVersions = definitionVersions;
+        }
+
+        /// <summary>
+        /// Compares this to another item.
+        /// </summary>
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(DefinitionForSemanticChronologyDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.CompareSequence<DefinitionForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
+                                             this.ChronologySetUuids.GetHashCode() ^
+                                             this.DefinitionVersions.GetHashCode();
+
 
         //@Override
         //public void jsonMarshal(Writer writer) {
@@ -60,12 +116,12 @@ namespace Tinkar
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
-        /// $NotTested
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
         public static DefinitionForSemanticChronologyDTO Make(TinkarInput input)
         {
+            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
             return new DefinitionForSemanticChronologyDTO(
@@ -77,11 +133,11 @@ namespace Tinkar
 
         /// <summary>
         /// Marshal DTO item to output stream.
-        /// $NotTested
         /// </summary>
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.ChronologySetUuids);

@@ -114,12 +114,12 @@ namespace Tinkar
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
-        /// $NotTested
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
         public static StampCommentDTO Make(TinkarInput input)
         {
+            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             return new StampCommentDTO(
                 StampDTO.Make(input),
@@ -128,11 +128,11 @@ namespace Tinkar
 
         /// <summary>
         /// Marshal DTO item to output stream.
-        /// $NotTested
         /// </summary>
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             this.StampDTO.Marshal(output);
             output.WriteUTF(this.Comment);
