@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public abstract record BaseDTO<TDto> : IComparable<TDto>, IEquatable<TDto>
+    public abstract record BaseDTO<TDto> : IComparable<TDto>, IEquivalent<TDto>
     {
         /// <summary>
         /// Write marshall version to output stream
@@ -95,14 +95,14 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation of Equals.
+        /// Implementation of IEquivalent.IsEquivalent
         /// We manually create this rather than using the default
         /// record implementation because we want to compare to
         /// do a deep comparison, not just compare reference equality.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
+        /// <param name="other">Item to compare to for equivalence</param>
         /// <returns>true if equal</returns>
-        public Boolean Equals(TDto other) => this.CompareTo(other) == 0;
+        public Boolean IsEquivalent(TDto other) => this.CompareTo(other) == 0;
 
         /// <summary>
         /// Compare two items of same DTO type.

@@ -71,14 +71,6 @@ namespace Tinkar
             return 0;
         }
 
-        /// <summary>
-        /// Override of default hashcode. Must provide if Equals overridden.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode() =>
-            this.StampDTO.GetHashCode() ^
-            this.Comment.GetHashCode();
-
         ///**
         //    * Marshal method for StampCommentDTO using JSON
         //    * @param writer

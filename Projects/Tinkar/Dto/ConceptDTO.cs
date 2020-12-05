@@ -33,12 +33,6 @@ namespace Tinkar
         public override Int32 CompareTo(ConceptDTO other) =>
                 this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
 
-        /// <summary>
-        /// Override of default hashcode. Must provide if Equals overridden.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode() => this.ComponentUuids.GetHashCode();
-
         //$@Override
         //public void jsonMarshal(Writer writer) {
         //    final JSONObject json = new JSONObject();

@@ -31,18 +31,18 @@ namespace Tinkar.XUnitTests
         }
 
         [Fact]
-        public void ConceptDTOEqualityTest()
+        public void ConceptDTOIsEquivalentTest()
         {
             {
                 ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
                 ConceptDTO b = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-                Assert.True(a.Equals(b));
+                Assert.True(a.IsEquivalent(b));
             }
 
             {
                 ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
                 ConceptDTO b = new ConceptDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
-                Assert.False(a.Equals(b));
+                Assert.False(a.IsEquivalent(b));
             }
         }
 
@@ -57,8 +57,8 @@ namespace Tinkar.XUnitTests
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);
-            ConceptDTO dtoRead = ConceptDTO.Make(input);
-            Assert.True(dtoStart.Equals(dtoRead));
+            ConceptDTO dtoRead = (ConceptDTO) input.ReadField();
+            Assert.True(dtoStart.IsEquivalent(dtoRead));
         }
     }
 }

@@ -117,19 +117,6 @@ namespace Tinkar
             return 0;
         }
 
-
-        /// <summary>
-        /// Override of default hashcode. Must provide if Equals overridden.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode() =>
-            this.StatusUuids.GetHashCode() ^
-            this.Time.GetHashCode() ^
-            this.AuthorUuids.GetHashCode() ^
-            this.ModuleUuids.GetHashCode() ^
-            this.PathUuids.GetHashCode()
-            ;
-
         //@Override
         //public void jsonMarshal(Writer writer)
         //{

@@ -91,14 +91,6 @@ namespace Tinkar
             return 0;
         }
 
-        /// <summary>
-        /// Override of default hashcode. Must provide if Equals overridden.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
-                                             this.ChronologySetUuids.GetHashCode() ^
-                                             this.ConceptVersions.GetHashCode();
-
         //@Override
         //public void jsonMarshal(Writer writer) {
         //    final JSONObject json = new JSONObject();
