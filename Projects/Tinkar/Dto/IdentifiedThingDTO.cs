@@ -23,9 +23,33 @@ namespace Tinkar
      *
      * @author kec
      */
-    public record IdentifiedThingDTO(IEnumerable<Guid> ComponentUuids) :
-        IIdentifiedThing, 
+    public record IdentifiedThingDTO :
+        BaseDTO<IdentifiedThingDTO>,
+        IIdentifiedThing,
         IChangeSetThing
     {
+
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        public IdentifiedThingDTO(IEnumerable<Guid> componentUuids)
+        {
+            this.ComponentUuids = componentUuids;
+        }
+
+
+        /// <summary>
+        /// Compares this to another item.
+        /// </summary>
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(IdentifiedThingDTO other) =>
+        this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
     }
 }

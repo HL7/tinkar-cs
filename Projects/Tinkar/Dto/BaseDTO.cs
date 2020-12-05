@@ -111,6 +111,6 @@ namespace Tinkar
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual Int32 CompareTo(TDto obj) => throw new NotImplementedException();
+        public abstract Int32 CompareTo(TDto obj);
     }
 }

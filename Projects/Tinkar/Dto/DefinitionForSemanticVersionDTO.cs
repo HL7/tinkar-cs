@@ -90,6 +90,31 @@ namespace Tinkar
             this.FieldDefinitionDTOs = fieldDefinitionDTOs;
         }
 
+        /// <summary>
+        /// Compares this to another item.
+        /// </summary>
+        /// <param name="other">Item to compare to</param>
+        /// <returns>-1, 0, or 1</returns>
+        public override Int32 CompareTo(DefinitionForSemanticVersionDTO other)
+        {
+            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            if (cmp != 0)
+                return cmp;
+
+            cmp = this.CompareItem(this.StampDTO, other.StampDTO);
+            if (cmp != 0)
+                return cmp;
+
+            cmp = this.CompareGuids(this.ReferencedComponentPurposeUuids, other.ReferencedComponentPurposeUuids);
+            if (cmp != 0)
+                return cmp;
+
+            cmp = this.CompareSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs);
+            if (cmp != 0)
+                return cmp;
+            return 0;
+        }
+
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO using JSON
         // * @param writer

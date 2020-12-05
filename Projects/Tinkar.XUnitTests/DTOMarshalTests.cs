@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public class DTOMarshalTests
+    public partial class DTOMarshalTests
     {
         static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -15,50 +15,29 @@ namespace Tinkar.XUnitTests
         Guid g3 = new Guid(3, 0, 0, zero);
         Guid g4 = new Guid(4, 0, 0, zero);
 
+        Guid h1 = new Guid(11, 0, 0, zero);
+        Guid h2 = new Guid(12, 0, 0, zero);
+        Guid h3 = new Guid(13, 0, 0, zero);
+        Guid h4 = new Guid(14, 0, 0, zero);
+
+
+        Guid i1 = new Guid(21, 0, 0, zero);
+        Guid i2 = new Guid(22, 0, 0, zero);
+        Guid i3 = new Guid(23, 0, 0, zero);
+        Guid i4 = new Guid(24, 0, 0, zero);
+
+
+        Guid j1 = new Guid(31, 0, 0, zero);
+        Guid j2 = new Guid(32, 0, 0, zero);
+        Guid j3 = new Guid(33, 0, 0, zero);
+        Guid j4 = new Guid(34, 0, 0, zero);
+        
         void Compare(IEnumerable<Guid> inGuids, params Guid[] cmpGuids)
         {
             Guid[] guidArr = inGuids.ToArray();
             Assert.True(guidArr.Length == cmpGuids.Length);
             for (Int32 i = 0; i < guidArr.Length; i++)
                 Assert.True(guidArr[i].CompareTo(cmpGuids[i]) == 0);
-        }
-
-        [Fact]
-        public void ConceptDTOFieldsTest()
-        {
-            ConceptDTO dtoStart = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
-        }
-
-        [Fact]
-        public void ConceptDTOIsEquivalentTest()
-        {
-            {
-                ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-                ConceptDTO b = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-                Assert.True(a.IsEquivalent(b));
-            }
-
-            {
-                ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-                ConceptDTO b = new ConceptDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
-                Assert.False(a.IsEquivalent(b));
-            }
-        }
-
-        [Fact]
-        public void ConceptDTOMarshalTest()
-        {
-            ConceptDTO dtoStart = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-
-            MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            output.WriteField(dtoStart);
-
-            ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            ConceptDTO dtoRead = (ConceptDTO) input.ReadField();
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
         }
     }
 }
