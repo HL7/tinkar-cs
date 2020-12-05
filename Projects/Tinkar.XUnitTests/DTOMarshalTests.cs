@@ -24,15 +24,36 @@ namespace Tinkar.XUnitTests
         }
 
         [Fact]
-        public void ConceptDTOTest()
+        public void ConceptDTOFieldsTest()
+        {
+            ConceptDTO dtoStart = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
+        }
+
+        [Fact]
+        public void ConceptDTOEqualityTest()
+        {
+            {
+                ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                ConceptDTO b = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                Assert.True(a.Equals(b));
+            }
+
+            {
+                ConceptDTO a = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                ConceptDTO b = new ConceptDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
+                Assert.False(a.Equals(b));
+            }
+        }
+
+        [Fact]
+        public void ConceptDTOMarshalTest()
         {
             ConceptDTO dtoStart = new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
 
-            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
-
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);
-            dtoStart.Marshal(output);
+            output.WriteField(dtoStart);
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);

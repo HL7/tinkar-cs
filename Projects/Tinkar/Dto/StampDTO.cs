@@ -18,23 +18,108 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record StampDTO(
-            IEnumerable<Guid> StatusUuids,
-            DateTime Time,
-            IEnumerable<Guid> AuthorUuids,
-            IEnumerable<Guid> ModuleUuids,
-            IEnumerable<Guid> PathUuids
-        ) : BaseDTO,
+    public record StampDTO : BaseDTO,
+        IEquatable<StampDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
         IStamp
     {
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Status guids
+        /// </summary>
+        public IEnumerable<Guid> StatusUuids { get; init; }
+
+        /// <summary>
+        /// Author guids
+        /// </summary>
+        public IEnumerable<Guid> AuthorUuids { get; init; }
+
+        /// <summary>
+        /// Module guids
+        /// </summary>
+        public IEnumerable<Guid> ModuleUuids { get; init; }
+
+        /// <summary>
+        /// Path guids
+        /// </summary>
+        public IEnumerable<Guid> PathUuids { get; init; }
+
+        /// <summary>
+        /// Implementation of IStamp.Time
+        /// </summary>
+        public DateTime Time { get; init; }
+
+        /// <summary>
+        /// Implementation of IStamp.Status
+        /// </summary>
         public IConcept Status => new ConceptDTO(this.StatusUuids);
+
+        /// <summary>
+        /// Implementation of IStamp.Author
+        /// </summary>
         public IConcept Author => new ConceptDTO(this.AuthorUuids);
+
+        /// <summary>
+        /// Implementation of IStamp.Module
+        /// </summary>
         public IConcept Module => new ConceptDTO(this.ModuleUuids);
+
+        /// <summary>
+        /// Implementation of IStamp.Path
+        /// </summary>
         public IConcept Path => new ConceptDTO(this.PathUuids);
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="statusUuids">StatusUuids</param>
+        /// <param name="time">Time</param>
+        /// <param name="authorUuids">AuthorUuids</param>
+        /// <param name="moduleUuids">ModuleUuids</param>
+        /// <param name="pathUuids">PathUuids</param>
+        public StampDTO(IEnumerable<Guid> statusUuids,
+                        DateTime time,
+                        IEnumerable<Guid> authorUuids,
+                        IEnumerable<Guid> moduleUuids,
+                        IEnumerable<Guid> pathUuids)
+        {
+            this.StatusUuids = statusUuids;
+            this.Time = time;
+            this.AuthorUuids = authorUuids;
+            this.ModuleUuids = moduleUuids;
+            this.PathUuids = pathUuids;
+        }
+
+        /// <summary>
+        /// Implementation of Equals.
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns>true if equal</returns>
+        public virtual bool Equals(StampDTO other) =>
+            this.CompareSequence(this.StatusUuids, other.StatusUuids) &&
+            (this.Time.CompareTo(other.Time) == 0) &&
+            this.CompareSequence(this.AuthorUuids, other.AuthorUuids) &&
+            this.CompareSequence(this.ModuleUuids, other.ModuleUuids) &&
+            this.CompareSequence(this.PathUuids, other.PathUuids)
+            ;
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() =>
+            this.StatusUuids.GetHashCode() ^
+            this.Time.GetHashCode() ^
+            this.AuthorUuids.GetHashCode() ^
+            this.ModuleUuids.GetHashCode() ^
+            this.PathUuids.GetHashCode()
+            ;
 
         //@Override
         //public void jsonMarshal(Writer writer)

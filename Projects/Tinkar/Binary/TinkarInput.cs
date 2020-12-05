@@ -44,97 +44,65 @@ namespace Tinkar
         public IEnumerable<Guid> ReadImmutableUuidList() => this.ReadUuidArray();
 
         /// <summary>
-        /// Read little endian Int32 from input stream.
+        /// Read network ordered  Int32 from input stream.
         /// </summary>
         /// <returns></returns>
-        public Int32 ReadInt() => 
-            IPAddress.NetworkToHostOrder(reader.ReadInt32());
+        public Int32 ReadInt32() =>
+            IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
 
         /// <summary>
-        /// Read little endian Int64 from input stream.
+        /// Read network ordered float from input stream.
+        /// </summary>
+        public Single ReadSingle()
+        {
+            Int32 v = IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
+            return BitConverter.Int32BitsToSingle(v);
+        }
+
+
+        /// <summary>
+        /// Read network ordered boolean from input stream.
+        /// </summary>
+        public Boolean ReadBoolean() => this.reader.ReadBoolean();
+
+        /// <summary>
+        /// Read network ordered Int64 from input stream.
         /// </summary>
         /// <returns></returns>
         public Int64 ReadLong() =>
-                IPAddress.NetworkToHostOrder(reader.ReadInt64());
+                IPAddress.NetworkToHostOrder(this.reader.ReadInt64());
+
+        public byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt32());
 
         public Guid[] ReadUuidArray()
         {
-            try
-            {
-                int length = this.ReadInt();
-                Guid[] array = new Guid[length];
-                for (int i = 0; i < length; i++)
-                    array[i] = new Guid(this.reader.ReadBytes(16));
-                return array;
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            int length = this.ReadInt32();
+            Guid[] array = new Guid[length];
+            for (int i = 0; i < length; i++)
+                array[i] = new Guid(this.reader.ReadBytes(16));
+            return array;
         }
 
-        public DateTime ReadInstant()
-        {
-            try
-            {
-                return DateTimeExtensions.FromInstant(this.ReadLong(), this.ReadInt());
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
-        }
-
-        public static TinkarInput Make(byte[] buf)
-        {
-            MemoryStream bais = new MemoryStream(buf);
-            return new TinkarInput(bais);
-        }
-
-        public static TinkarInput Make(TinkarByteArrayOutput tinkarOut)
-        {
-            MemoryStream bais = new MemoryStream(tinkarOut.getBytes());
-            return new TinkarInput(bais);
-        }
+        public DateTime ReadInstant() =>
+            DateTimeExtensions.FromInstant(this.ReadLong(), this.ReadInt32());
 
         public IEnumerable<FieldDefinitionDTO> ReadFieldDefinitionList()
         {
-            try
-            {
-                int length = this.ReadInt();
-                FieldDefinitionDTO[] array = new FieldDefinitionDTO[length];
-                for (int i = 0; i < length; i++)
-                {
-                    //            array[i] = FieldDefinitionDTO.Make(this);
-                }
-                return array;
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            int length = this.ReadInt32();
+            for (int i = 0; i < length; i++)
+                yield return FieldDefinitionDTO.Make(this);
         }
-
 
         public IEnumerable<ConceptVersionDTO> ReadConceptVersionList(IEnumerable<Guid> componentUuids)
         {
-            try
-            {
-                int length = this.ReadInt();
-                ConceptVersionDTO[] array = new ConceptVersionDTO[length];
-                for (int i = 0; i < length; i++)
-                    array[i] = ConceptVersionDTO.Make(this, componentUuids);
-                return array;
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            int length = this.ReadInt32();
+            for (int i = 0; i < length; i++)
+                yield return ConceptVersionDTO.Make(this, componentUuids);
         }
 
         public IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
         {
-            Int32 length = this.ReadInt();
+            Int32 length = this.ReadInt32();
 
             // Generate array to avoid multiple enumerations of componentUuids.
             Guid[] componentUuidArr = componentUuids.ToArray();
@@ -142,105 +110,64 @@ namespace Tinkar
                 yield return DefinitionForSemanticVersionDTO.Make(this, componentUuidArr);
         }
 
-        public IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(IEnumerable<Guid> componentUuids,
-                                                                         IEnumerable<Guid> definitionForSemanticUuids,
-                                                                         IEnumerable<Guid> referencedComponentUuids)
+        public IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids)
         {
-            throw new NotImplementedException();
-            //    try
-            //    {
-            //        int length = ReadInt();
-            //        SemanticVersionDTO[] array = new SemanticVersionDTO[length];
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            array[i] = SemanticVersionDTO.Make(this, componentUuids,
-            //                    definitionForSemanticUuids, referencedComponentUuids);
-            //        }
-            //        return Lists.immutable.of(array);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw new UncheckedIOException(ex);
-            //    }
+            int length = this.ReadInt32();
+            for (int i = 0; i < length; i++)
+            {
+                yield return SemanticVersionDTO.Make(this,
+                    componentUuids,
+                    definitionForSemanticUuids,
+                    referencedComponentUuids);
+            }
         }
 
-        public IEnumerable<Object> ReadImmutableObjectList()
+        public IEnumerable<Object> ReadObjects()
         {
-            throw new NotImplementedException();
-            //return Lists.immutable.of(readObjectArray());
+            int fieldCount = this.ReadInt32();
+            for (int i = 0; i < fieldCount; i++)
+                yield return this.ReadField();
         }
 
-        //public Object[] readObjectArray()
-        //{
-        //    try
-        //    {
-        //        int fieldCount = ReadInt();
-        //        Object[] array = new Object[fieldCount];
-        //        for (int i = 0; i < array.length; i++)
-        //        {
-        //            readObject(array, i);
-        //        }
-        //        return array;
-        //    }
-        //    catch (IOException e)
-        //    {
-        //        throw new UncheckedIOException(e);
-        //    }
-        //}
-
-        //        private void readObject(Object[] array, int i)
-        //        {
-        //            try
-        //            {
-        //                byte token = readByte();
-        //                FieldDataType dataType = FieldDataType.fromToken(token);
-        //                array[i] = switch (dataType)
-        //                {
-        //                    case STRING -> readUTF();
-        //                    case FLOAT -> readFloat();
-        //                    case BOOLEAN -> readBoolean();
-        //                    case BYTE_ARRAY -> readByteArray();
-        //                    case IDENTIFIED_THING -> new IdentifiedThingDTO(ReadImmutableUuidList());
-        //                    case INTEGER -> ReadInt();
-        //                    case OBJECT_ARRAY -> readEmbeddedObjectArray();
-        //                    case DIGRAPH -> throw new UnsupportedEncodingException("Can't handle DIGRAPH.");
-        //                    case INSTANT -> readInstant();
-        //                    case CONCEPT_CHRONOLOGY, CONCEPT, DEFINITION_FOR_SEMANTIC_CHRONOLOGY,
-        //                        DEFINITION_FOR_SEMANTIC, SEMANTIC_CHRONOLOGY, SEMANTIC->unmarshal(dataType);
-        //                    default -> throw new UnsupportedEncodingException(dataType.toString());
-        //                };
-        //            }
-        //            catch (IOException e)
-        //            {
-        //                throw new UncheckedIOException(e);
-        //            }
-        //        }
-
-        //        private Object unmarshal(FieldDataType dataType)
-        //        {
-        //            return switch (dataType)
-        //            {
-        //                case CONCEPT_CHRONOLOGY -> ConceptChronologyDTO.Make(this);
-        //                case CONCEPT -> ConceptDTO.Make(this);
-        //                case DEFINITION_FOR_SEMANTIC_CHRONOLOGY -> DefinitionForSemanticChronologyDTO.Make(this);
-        //                case DEFINITION_FOR_SEMANTIC -> DefinitionForSemanticDTO.Make(this);
-        //                case SEMANTIC_CHRONOLOGY -> SemanticChronologyDTO.Make(this);
-        //                case SEMANTIC -> SemanticDTO.Make(this);
-        //                default -> throw new UnsupportedOperationException("TinkarInput does know how to unmarshal: " + dataType);
-        //            };
-        //        }
-
-        //        private Object[] readEmbeddedObjectArray() throws IOException
-        //        {
-        //        int size = ReadInt();
-        //        Object[]
-        //        objects = new Object[size];
-        //        for (int j = 0; j<size; j++) {
-        //            readObject(objects, j);
-        //    }
-        //return objects;
-        //    }
-
-        byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt());
+        public Object ReadField()
+        {
+            FieldDataType token = (FieldDataType)this.reader.ReadByte();
+            switch (token)
+            {
+                case FieldDataType.StringType:
+                    return this.ReadUTF();
+                case FieldDataType.IntegerType:
+                    return this.ReadInt32();
+                case FieldDataType.FloatType:
+                    return this.ReadSingle();
+                case FieldDataType.BooleanType:
+                    return this.ReadBoolean();
+                case FieldDataType.ByteArrayType:
+                    return this.ReadByteArray();
+                case FieldDataType.ObjectArrayType:
+                    return this.ReadObjects().ToArray();
+                case FieldDataType.DiGraphType:
+                    throw new NotImplementedException();
+                case FieldDataType.InstantType:
+                    return this.ReadInstant();
+                case FieldDataType.ConceptChronologyType:
+                    return ConceptChronologyDTO.Make(this);
+                case FieldDataType.ConceptType:
+                    return ConceptDTO.Make(this);
+                case FieldDataType.DefinitionForSemanticChronologyType:
+                    return DefinitionForSemanticChronologyDTO.Make(this);
+                case FieldDataType.DefinitionForSymanticType:
+                    return DefinitionForSemanticDTO.Make(this);
+                case FieldDataType.SemanticChronologyType:
+                    return SemanticChronologyDTO.Make(this);
+                case FieldDataType.SemanticType:
+                    return SemanticDTO.Make(this);
+                default:
+                    throw new NotImplementedException($"FieldDataType {token} not known");
+            };
+        }
     }
 }

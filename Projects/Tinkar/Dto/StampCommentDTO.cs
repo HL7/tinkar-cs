@@ -21,7 +21,8 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record StampCommentDTO(StampDTO StampDTO, String Comment) : BaseDTO,
+    public record StampCommentDTO : BaseDTO,
+        IEquatable<StampCommentDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -29,7 +30,51 @@ namespace Tinkar
     {
         private const int MarshalVersion = 1;
 
+        /// <summary>
+        /// DTO for Stamp;
+        /// </summary>
+        public StampDTO StampDTO { get; init; }
+
+        /// <summary>
+        /// Implementation of IStampComment.Stamp
+        /// </summary>
         public IStamp Stamp => this.StampDTO;
+
+        /// <summary>
+        /// Implementation of IStampComment.Comment
+        /// </summary>
+        public String Comment { get; init; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="stampDTO">StampDTO</param>
+        /// <param name="comment">Comment</param>
+        public StampCommentDTO(StampDTO stampDTO, String comment)
+        {
+            this.StampDTO = stampDTO;
+            this.Comment = comment;
+        }
+
+        /// <summary>
+        /// Implementation of Equals.
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns>true if equal</returns>
+        public virtual bool Equals(StampCommentDTO other) =>
+            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO) &&
+            (this.Comment.CompareTo(other.Comment) == 0);
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() =>
+            this.StampDTO.GetHashCode() ^
+            this.Comment.GetHashCode();
 
         ///**
         //    * Marshal method for StampCommentDTO using JSON

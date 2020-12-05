@@ -37,10 +37,16 @@ namespace Tinkar
         public void WriteBoolean(Boolean value) => this.writer.Write(value);
 
         /// <summary>
+        /// Write byte array to output stream.
+        /// </summary>
+        /// <returns></returns>
+        public void WriteByteArray(Byte[] value) => this.writer.Write(value);
+
+        /// <summary>
         /// Write float to output stream.
         /// </summary>
         /// <returns></returns>
-        public void WriteFloat(float value)
+        public void WriteSingle(float value)
         {
             Int32 v = BitConverter.SingleToInt32Bits(value);
             this.writer.Write(IPAddress.HostToNetworkOrder(v));
@@ -50,14 +56,14 @@ namespace Tinkar
         /// Write little endian Int32 to output stream.
         /// </summary>
         /// <returns></returns>
-        public void WriteInt(Int32 value) =>
+        public void WriteInt32(Int32 value) =>
             this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
         /// <summary>
         /// Write little endian Int64 to output stream.
         /// </summary>
         /// <returns></returns>
-        public void WriteLong(Int64 value) =>
+        public void WriteInt64(Int64 value) =>
             this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
         /**
@@ -66,18 +72,18 @@ namespace Tinkar
          */
         public void WriteInstant(DateTime instant)
         {
-            this.WriteLong(instant.EpochSecond());
-            this.WriteInt(instant.Nano());
+            this.WriteInt64(instant.EpochSecond());
+            this.WriteInt32(instant.Nano());
         }
 
         public void WriteMarshalableList(IEnumerable<IMarshalable> items)
         {
-            this.WriteInt(items.Count());
+            this.WriteInt32(items.Count());
             foreach (IMarshalable version in items)
                 version.Marshal(this);
         }
 
-        private void WriteField(Object field)
+        public void WriteField(Object field)
         {
             switch (field)
             {
@@ -88,33 +94,33 @@ namespace Tinkar
 
                 case byte[] item:
                     this.WriteFieldType(FieldDataType.ByteArrayType);
-                    this.WriteInt(item.Length);
-                    this.writer.Write(item);
+                    this.WriteInt32(item.Length);
+                    this.WriteByteArray(item);
                     break;
 
                 case Single item:
                     this.WriteFieldType(FieldDataType.FloatType);
-                    this.WriteFloat(item);
+                    this.WriteSingle(item);
                     break;
 
                 case Double item:
                     this.WriteFieldType(FieldDataType.FloatType);
-                    this.writer.Write((float)item);
+                    this.WriteSingle((Single) item);
                     break;
 
                 case Int32 int32Item:
                     this.WriteFieldType(FieldDataType.IntegerType);
-                    this.writer.Write(int32Item);
+                    this.WriteInt32(int32Item);
                     break;
 
                 case Int64 item:
                     this.WriteFieldType(FieldDataType.IntegerType);
-                    this.writer.Write((Int32)item);
+                    this.WriteInt32((Int32)item);
                     break;
 
                 case String item:
                     this.WriteFieldType(FieldDataType.StringType);
-                    this.writer.Write(item);
+                    this.WriteUTF(item);
                     break;
 
                 case DateTime item:
@@ -187,14 +193,14 @@ namespace Tinkar
 
         public void WriteUuidList(IEnumerable<Guid> statusUuids)
         {
-            this.WriteInt(statusUuids.Count());
+            this.WriteInt32(statusUuids.Count());
             foreach (Guid statusUuid in statusUuids)
                 this.writer.Write(statusUuid.ToByteArray());
         }
 
         public void WriteObjectList(IEnumerable<Object> fields)
         {
-            this.WriteInt(fields.Count());
+            this.WriteInt32(fields.Count());
             foreach (Object field in fields)
                 this.WriteField(field);
         }

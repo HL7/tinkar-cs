@@ -18,16 +18,64 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record ConceptVersionDTO(IEnumerable<Guid> ComponentUuids,
-            StampDTO StampDTO) : BaseDTO,
+    public record ConceptVersionDTO : BaseDTO,
+        IEquatable<ConceptVersionDTO>,
         IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
 
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// Stamp DTO
+        /// </summary>
+        public StampDTO StampDTO { get; init; }
+
+        /// <summary>
+        /// Implementation of IStampComment.Stamp.
+        /// </summary>
         public IStamp Stamp => this.StampDTO;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        public ConceptVersionDTO(IEnumerable<Guid> componentUuids,
+            StampDTO stampDTO)
+        {
+            this.ComponentUuids = componentUuids;
+            this.StampDTO = stampDTO;
+        }
+
+        /// <summary>
+        /// Implementation of Equals.
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns>true if equal</returns>
+        public virtual bool Equals(ConceptVersionDTO other) =>
+            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
+            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
+            this.StampDTO.GetHashCode();
 
         ///**
         // * Marshaler for ConceptVersionDTO using JSON
@@ -63,15 +111,8 @@ namespace Tinkar
         //@VersionUnmarshaler
         public static ConceptVersionDTO Make(TinkarInput input, IEnumerable<Guid> componentUuids)
         {
-            try
-            {
-                CheckMarshalVersion(input, MarshalVersion);
-                return new ConceptVersionDTO(componentUuids, StampDTO.Make(input));
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            CheckMarshalVersion(input, MarshalVersion);
+            return new ConceptVersionDTO(componentUuids, StampDTO.Make(input));
         }
 
         ///**

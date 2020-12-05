@@ -22,19 +22,87 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record SemanticVersionDTO(
-                IEnumerable<Guid> ComponentUuids,
-                IEnumerable<Guid> DefinitionForSemanticUuids,
-                IEnumerable<Guid> ReferencedComponentUuids,
-                StampDTO StampDTO,
-                IEnumerable<Object> Fields
-            ) : BaseDTO,
+    public record SemanticVersionDTO : BaseDTO,
+        IEquatable<SemanticVersionDTO>,
         ISemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
     {
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+
+        /// <summary>
+        /// ???
+        /// </summary>
+        public StampDTO StampDTO { get; init; }
+
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// Implementation of ISemanticVersion.Fields
+        /// </summary>
+        public IEnumerable<Object> Fields { get; init; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemanticUuids</param>
+        /// <param name="referencedComponentUuids">ReferencedComponentUuids</param>
+        /// <param name="stampDTO">StampDTO</param>
+        /// <param name="fields">Fields</param>
+        public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
+                                IEnumerable<Guid> definitionForSemanticUuids,
+                                IEnumerable<Guid> referencedComponentUuids,
+                                StampDTO stampDTO,
+                                IEnumerable<Object> fields)
+        {
+            this.ComponentUuids = componentUuids;
+            this.DefinitionForSemanticUuids = definitionForSemanticUuids;
+            this.ReferencedComponentUuids = referencedComponentUuids;
+            this.StampDTO = stampDTO;
+            this.Fields = fields;
+        }
+
+        /// <summary>
+        /// Implementation of Equals.
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns>true if equal</returns>
+        public virtual bool Equals(SemanticVersionDTO other) =>
+            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
+            this.CompareSequence(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids) &&
+            this.CompareSequence(this.ReferencedComponentUuids, other.ReferencedComponentUuids) &&
+            this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
+            this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO)
+            ;
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() =>
+            this.ComponentUuids.GetHashCode() ^
+            this.DefinitionForSemanticUuids.GetHashCode() ^
+            this.ReferencedComponentUuids.GetHashCode() ^
+            this.StampDTO.GetHashCode() ^
+            this.Fields.GetHashCode();
 
         //$public SemanticVersionDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
         //                          IdentifiedThing referencedComponent, Stamp stamp, IEnumerable<Object> fields) {
@@ -80,7 +148,7 @@ namespace Tinkar
                     definitionForSemanticUuids,
                     referencedComponentUuids,
                     StampDTO.Make(input),
-                    input.ReadImmutableObjectList());
+                    input.ReadObjects());
         }
 
         public void Marshal(TinkarOutput output)
@@ -89,10 +157,5 @@ namespace Tinkar
             this.StampDTO.Marshal(output);
             output.WriteObjectList(this.Fields);
         }
-
-        //@Override
-        //public Stamp stamp() {
-        //    return stampDTO;
-        //}
     }
 }

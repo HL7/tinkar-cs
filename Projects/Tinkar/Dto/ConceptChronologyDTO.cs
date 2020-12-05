@@ -23,21 +23,77 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public record ConceptChronologyDTO(
-            IEnumerable<Guid> ComponentUuids,
-            IEnumerable<Guid> ChronologySetUuids,
-            IEnumerable<ConceptVersionDTO> ConceptVersions
-        ) : BaseDTO,
+    public record ConceptChronologyDTO : BaseDTO,
+        IEquatable<ConceptChronologyDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
         IConceptChronology<IConcept>
     {
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Implementation of IChronology.ChronologySet.
+        /// </summary>
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
+        /// <summary>
+        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// </summary>
+        public IEnumerable<Guid> ComponentUuids { get; init; }
+
+        /// <summary>
+        /// ???.
+        /// </summary>
+        public IEnumerable<Guid> ChronologySetUuids { get; init; }
+
+        /// <summary>
+        /// DTO instance for Versions.
+        /// </summary>
+        public IEnumerable<ConceptVersionDTO> ConceptVersions { get; init; }
+
+        /// <summary>
+        /// IConceptVersion versions
+        /// </summary>
         public IEnumerable<IConceptVersion> Versions =>
             this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="chronologySetUuids">ChronologySetUuids</param>
+        /// <param name="conceptVersions">ConceptVersions</param>
+        public ConceptChronologyDTO(IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> chronologySetUuids,
+            IEnumerable<ConceptVersionDTO> conceptVersions)
+        {
+            this.ComponentUuids = componentUuids;
+            this.ChronologySetUuids = chronologySetUuids;
+            this.ConceptVersions = conceptVersions;
+        }
+
+        /// <summary>
+        /// Implementation of Equals.
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equality</param>
+        /// <returns>true if equal</returns>
+        public virtual bool Equals(ConceptChronologyDTO other) =>
+                    this.CompareSequence(this.ComponentUuids, other.ComponentUuids) &&
+                    this.CompareSequence(this.ChronologySetUuids, other.ChronologySetUuids) &&
+                    this.CompareSequence<ConceptVersionDTO>(this.ConceptVersions, other.ConceptVersions)
+                    ;
+
+        /// <summary>
+        /// Override of default hashcode. Must provide if Equals overridden.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => this.ComponentUuids.GetHashCode() ^
+                                             this.ChronologySetUuids.GetHashCode() ^
+                                             this.ConceptVersions.GetHashCode();
 
         //@Override
         //public void jsonMarshal(Writer writer) {
