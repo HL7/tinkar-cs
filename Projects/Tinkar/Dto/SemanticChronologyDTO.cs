@@ -150,9 +150,9 @@ namespace Tinkar
         {
             //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
-            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
+            IEnumerable<Guid> definitionForSemanticUuids = input.ReadUuidArray();
+            IEnumerable<Guid> referencedComponentUuids = input.ReadUuidArray();
             return new SemanticChronologyDTO(
                     componentUuids, definitionForSemanticUuids, referencedComponentUuids,
                     input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids)

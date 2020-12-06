@@ -15,23 +15,37 @@ namespace Tinkar.XUnitTests
         Guid g3 = new Guid(3, 0, 0, zero);
         Guid g4 = new Guid(4, 0, 0, zero);
 
-        Guid h1 = new Guid(11, 0, 0, zero);
-        Guid h2 = new Guid(12, 0, 0, zero);
-        Guid h3 = new Guid(13, 0, 0, zero);
-        Guid h4 = new Guid(14, 0, 0, zero);
+        Guid h1 = new Guid(0x11, 0, 0, zero);
+        Guid h2 = new Guid(0x12, 0, 0, zero);
+        Guid h3 = new Guid(0x13, 0, 0, zero);
+        Guid h4 = new Guid(0x14, 0, 0, zero);
 
 
-        Guid i1 = new Guid(21, 0, 0, zero);
-        Guid i2 = new Guid(22, 0, 0, zero);
-        Guid i3 = new Guid(23, 0, 0, zero);
-        Guid i4 = new Guid(24, 0, 0, zero);
+        Guid i1 = new Guid(0x21, 0, 0, zero);
+        Guid i2 = new Guid(0x22, 0, 0, zero);
+        Guid i3 = new Guid(0x23, 0, 0, zero);
+        Guid i4 = new Guid(0x24, 0, 0, zero);
 
 
-        Guid j1 = new Guid(31, 0, 0, zero);
-        Guid j2 = new Guid(32, 0, 0, zero);
-        Guid j3 = new Guid(33, 0, 0, zero);
-        Guid j4 = new Guid(34, 0, 0, zero);
-        
+        Guid j1 = new Guid(0x31, 0, 0, zero);
+        Guid j2 = new Guid(0x32, 0, 0, zero);
+        Guid j3 = new Guid(0x33, 0, 0, zero);
+        Guid j4 = new Guid(0x34, 0, 0, zero);
+
+        Guid k1 = new Guid(0x41, 0, 0, zero);
+        Guid k2 = new Guid(0x42, 0, 0, zero);
+        Guid k3 = new Guid(0x43, 0, 0, zero);
+        Guid k4 = new Guid(0x44, 0, 0, zero);
+        Guid k5 = new Guid(0x45, 0, 0, zero);
+        Guid k6 = new Guid(0x46, 0, 0, zero);
+
+        Guid l1 = new Guid(0x51, 0, 0, zero);
+        Guid l2 = new Guid(0x52, 0, 0, zero);
+        Guid l3 = new Guid(0x53, 0, 0, zero);
+        Guid l4 = new Guid(0x54, 0, 0, zero);
+        Guid l5 = new Guid(0x55, 0, 0, zero);
+        Guid l6 = new Guid(0x56, 0, 0, zero);
+
         void Compare(IEnumerable<Guid> inGuids, params Guid[] cmpGuids)
         {
             Guid[] guidArr = inGuids.ToArray();

@@ -146,14 +146,13 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static StampDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             return new StampDTO(
-                input.ReadImmutableUuidList(),
+                input.ReadUuidArray(),
                 input.ReadInstant(),
-                input.ReadImmutableUuidList(),
-                input.ReadImmutableUuidList(),
-                input.ReadImmutableUuidList()
+                input.ReadUuidArray(),
+                input.ReadUuidArray(),
+                input.ReadUuidArray()
                 );
         }
 
@@ -163,7 +162,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.StatusUuids);
             output.WriteInstant(this.Time);

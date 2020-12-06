@@ -117,18 +117,10 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static FieldDefinitionDTO Make(TinkarInput input)
         {
-            //$NotTested
-            try
-            {
-                CheckMarshalVersion(input, MarshalVersion);
-                return new FieldDefinitionDTO(input.ReadImmutableUuidList(),
-                    input.ReadImmutableUuidList(),
-                    input.ReadImmutableUuidList());
-            }
-            catch (Exception ex)
-            {
-                throw new UncheckedIOException(ex);
-            }
+            CheckMarshalVersion(input, MarshalVersion);
+            return new FieldDefinitionDTO(input.ReadUuidArray(),
+                input.ReadUuidArray(),
+                input.ReadUuidArray());
         }
 
         /// <summary>
@@ -137,7 +129,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.DataTypeUuids);
             output.WriteUuidList(this.PurposeUuids);

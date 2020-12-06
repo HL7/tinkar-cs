@@ -114,10 +114,10 @@ namespace Tinkar
         {
             //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
             return new DefinitionForSemanticChronologyDTO(
                     componentUuids,
-                    input.ReadImmutableUuidList(),
+                    input.ReadUuidArray(),
                     input.ReadDefinitionForSemanticVersionList(componentUuids)
                     );
         }

@@ -111,7 +111,6 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static StampCommentDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             return new StampCommentDTO(
                 StampDTO.Make(input),
@@ -124,7 +123,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             this.StampDTO.Marshal(output);
             output.WriteUTF(this.Comment);

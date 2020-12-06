@@ -116,11 +116,10 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static ConceptChronologyDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
             return new ConceptChronologyDTO(componentUuids,
-                input.ReadImmutableUuidList(),
+                input.ReadUuidArray(),
                 input.ReadConceptVersionList(componentUuids)
             );
         }
@@ -131,7 +130,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.ChronologySetUuids);

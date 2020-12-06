@@ -10,38 +10,42 @@ namespace Tinkar.XUnitTests
     {
         DateTime cvTime => new DateTime(1920, 4, 5);
 
-        ConceptVersionDTO cv1 => new ConceptVersionDTO(
-            new Guid[] { this.g1 },
-            new StampDTO(
-                new Guid[] { this.g2 },
-                cvTime,
-                new Guid[] { this.g3 },
-                new Guid[] { this.g4 },
-                new Guid[] { this.h1 }
-            ));
+        ConceptVersionDTO cv1(IEnumerable<Guid> componentGuids) => 
+            new ConceptVersionDTO(
+                componentGuids,
+                new StampDTO(
+                    new Guid[] { this.k2 },
+                    cvTime,
+                    new Guid[] { this.k3 },
+                    new Guid[] { this.k4 },
+                    new Guid[] { this.k1 }
+                ));
 
-        ConceptVersionDTO cv2 => new ConceptVersionDTO(
-            new Guid[] { this.g2 },
-            new StampDTO(
-                new Guid[] { this.g3 },
-                cvTime,
-                new Guid[] { this.g4 },
-                new Guid[] { this.j1 },
-                new Guid[] { this.j2 }
-            ));
+        ConceptVersionDTO cv2(IEnumerable<Guid> componentGuids) => 
+            new ConceptVersionDTO(
+                componentGuids,
+                new StampDTO(
+                    new Guid[] { this.l2 },
+                    cvTime,
+                    new Guid[] { this.l3 },
+                    new Guid[] { this.l4 },
+                    new Guid[] { this.l5 }
+                ));
 
-        ConceptVersionDTO[] conceptVersionsBase =>
-            new ConceptVersionDTO[] { cv1, cv2 };
+        ConceptVersionDTO[] conceptVersionsBase(IEnumerable<Guid> componentGuids) =>
+            new ConceptVersionDTO[] { cv1(componentGuids), cv2(componentGuids) };
+
         [Fact]
         public void ConceptChronologyDTOFieldsTest()
         {
             ConceptChronologyDTO dtoStart = new ConceptChronologyDTO(
                 new Guid[] {this.g1, this.g2, this.g3, this.g4},
                 new Guid[] {this.h1, this.h2, this.h3, this.h4},
-                conceptVersionsBase);
+                conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 }));
             Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
             Compare(dtoStart.ChronologySetUuids, this.h1, this.h2, this.h3, this.h4);
-            Compare(dtoStart.ConceptVersions, conceptVersionsBase);
+            Compare(dtoStart.ConceptVersions,
+                conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 }));
         }
 
         [Fact]
@@ -51,12 +55,12 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 Assert.True(a.IsEquivalent(b));
             }
@@ -65,12 +69,12 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     new Guid[] { this.g2, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g2, this.g2, this.g3, this.g4 })
                 );
                 Assert.False(a.IsEquivalent(b));
             }
@@ -79,12 +83,12 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h3, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 Assert.False(a.IsEquivalent(b));
             }
@@ -93,12 +97,15 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    conceptVersionsBase
+                    conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new ConceptVersionDTO[] { cv1 }
+                    new ConceptVersionDTO[]
+                    {
+                        cv1(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
+                    }
                 );
                 Assert.False(a.IsEquivalent(b));
             }
@@ -110,7 +117,7 @@ namespace Tinkar.XUnitTests
             ConceptChronologyDTO dtoStart = new ConceptChronologyDTO(
                 new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                 new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                conceptVersionsBase
+                conceptVersionsBase(new Guid[] { this.g1, this.g2, this.g3, this.g4 })
             );
 
             MemoryStream ms = new MemoryStream();

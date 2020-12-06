@@ -41,8 +41,6 @@ namespace Tinkar
         /// <returns></returns>
         public String ReadUTF() => this.reader.ReadString();
 
-        public IEnumerable<Guid> ReadImmutableUuidList() => this.ReadUuidArray();
-
         /// <summary>
         /// Read network ordered  Int32 from input stream.
         /// </summary>
@@ -86,50 +84,60 @@ namespace Tinkar
         public DateTime ReadInstant() =>
             DateTimeExtensions.FromInstant(this.ReadLong(), this.ReadInt32());
 
-        public IEnumerable<FieldDefinitionDTO> ReadFieldDefinitionList()
+        public FieldDefinitionDTO[] ReadFieldDefinitionList()
         {
             int length = this.ReadInt32();
+            FieldDefinitionDTO[] retVal = new FieldDefinitionDTO[length];
             for (int i = 0; i < length; i++)
-                yield return FieldDefinitionDTO.Make(this);
+                retVal[i] = FieldDefinitionDTO.Make(this);
+            return retVal;
         }
 
-        public IEnumerable<ConceptVersionDTO> ReadConceptVersionList(IEnumerable<Guid> componentUuids)
+        public ConceptVersionDTO[] ReadConceptVersionList(IEnumerable<Guid> componentUuids)
         {
             int length = this.ReadInt32();
+            ConceptVersionDTO[] retVal = new ConceptVersionDTO[length];
             for (int i = 0; i < length; i++)
-                yield return ConceptVersionDTO.Make(this, componentUuids);
+                retVal[i] = ConceptVersionDTO.Make(this, componentUuids);
+            return retVal;
         }
 
-        public IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
+        public DefinitionForSemanticVersionDTO[] ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
         {
             Int32 length = this.ReadInt32();
-
+            DefinitionForSemanticVersionDTO[] retVal = new DefinitionForSemanticVersionDTO[length];
             // Generate array to avoid multiple enumerations of componentUuids.
             Guid[] componentUuidArr = componentUuids.ToArray();
             for (int i = 0; i < length; i++)
-                yield return DefinitionForSemanticVersionDTO.Make(this, componentUuidArr);
+                retVal[i] = DefinitionForSemanticVersionDTO.Make(this, componentUuidArr);
+            return retVal;
         }
 
-        public IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(
+        public SemanticVersionDTO[] ReadSemanticVersionList(
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids)
         {
             int length = this.ReadInt32();
+            SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
             for (int i = 0; i < length; i++)
             {
-                yield return SemanticVersionDTO.Make(this,
+                retVal[i] = SemanticVersionDTO.Make(this,
                     componentUuids,
                     definitionForSemanticUuids,
                     referencedComponentUuids);
             }
+
+            return retVal;
         }
 
-        public IEnumerable<Object> ReadObjects()
+        public Object[] ReadObjects()
         {
             int fieldCount = this.ReadInt32();
+            Object[] retVal = new Object[fieldCount];
             for (int i = 0; i < fieldCount; i++)
-                yield return this.ReadField();
+                retVal[i] = this.ReadField();
+            return retVal;
         }
 
         public Object ReadField()

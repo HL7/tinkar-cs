@@ -96,11 +96,10 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static SemanticDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadImmutableUuidList();
-            IEnumerable<Guid> definitionForSemanticUuids = input.ReadImmutableUuidList();
-            IEnumerable<Guid> referencedComponentUuids = input.ReadImmutableUuidList();
+            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
+            IEnumerable<Guid> definitionForSemanticUuids = input.ReadUuidArray();
+            IEnumerable<Guid> referencedComponentUuids = input.ReadUuidArray();
             return new SemanticDTO(componentUuids, definitionForSemanticUuids, referencedComponentUuids);
         }
 
@@ -110,7 +109,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.DefinitionForSemanticUuids);

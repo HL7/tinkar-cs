@@ -152,10 +152,11 @@ namespace Tinkar
         public static DefinitionForSemanticVersionDTO Make(TinkarInput input,
             IEnumerable<Guid> componentUuids)
         {
+            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             return new DefinitionForSemanticVersionDTO(componentUuids,
                     StampDTO.Make(input),
-                    input.ReadImmutableUuidList(),
+                    input.ReadUuidArray(),
                     input.ReadFieldDefinitionList());
         }
 
@@ -165,6 +166,7 @@ namespace Tinkar
         // */
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             this.StampDTO.Marshal(output);
             output.WriteUuidList(this.ReferencedComponentPurposeUuids);
