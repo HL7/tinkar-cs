@@ -28,14 +28,17 @@ namespace Tinkar
         IConcept Author { get; }
         IConcept Module { get; }
         IConcept Path { get; }
+    }
 
-        //$default StampDTO toChangeSetThing()
-        //{
-        //    return new StampDTO(status().componentUuids(),
-        //        time(),
-        //        author().componentUuids(),
-        //        module().componentUuids(),
-        //        path().componentUuids());
-        //}
+    public static class IStampExtensions
+    {
+        public static StampDTO ToChangeSetThing(this IStamp me)
+        {
+            return new StampDTO(me.Status.ComponentUuids,
+                me.Time,
+                me.Author.ComponentUuids,
+                me.Module.ComponentUuids,
+                me.Path.ComponentUuids);
+        }
     }
 }

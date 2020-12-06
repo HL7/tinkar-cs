@@ -9,3 +9,7 @@
 
 3) How strict should java and csharp extensions map?
    i.e. can we get rid of UncheckedIOException and such?
+
+4) What are restrictions to objects put into Fields
+	public IEnumerable<Object> SemanticVersionDTO.Fields { get; init; }
+	Can this be anything, or is it limites to certain types.

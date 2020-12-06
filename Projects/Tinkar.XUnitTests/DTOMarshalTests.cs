@@ -39,5 +39,15 @@ namespace Tinkar.XUnitTests
             for (Int32 i = 0; i < guidArr.Length; i++)
                 Assert.True(guidArr[i].CompareTo(cmpGuids[i]) == 0);
         }
+
+        void Compare<T>(IEnumerable<IEquivalent<T>> inItems,
+            IEnumerable<IEquivalent<T>> cmpItems)
+        {
+            IEquivalent<T>[] inArr = inItems.ToArray();
+            IEquivalent<T>[] cmpArr = cmpItems.ToArray();
+            Assert.True(inArr.Length == cmpArr.Length);
+            for (Int32 i = 0; i < inArr.Length; i++)
+                Assert.True(inArr[i].IsEquivalent((T) cmpArr[i]));
+        }
     }
 }

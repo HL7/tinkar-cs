@@ -55,6 +55,10 @@ namespace Tinkar
         /// </summary>
         public IEnumerable<Object> Fields { get; init; }
 
+        public IStamp Stamp => this.StampDTO;
+        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -76,6 +80,19 @@ namespace Tinkar
             this.Fields = fields;
         }
 
+        public SemanticVersionDTO(IEnumerable<Guid> componentUuids, 
+                IDefinitionForSemantic definitionForSemantic,
+                IIdentifiedThing referencedComponent, 
+                IStamp stamp, 
+                IEnumerable<Object> fields) :
+            this(componentUuids,
+                definitionForSemantic.ComponentUuids,
+                referencedComponent.ComponentUuids,
+                stamp.ToChangeSetThing(),
+                fields)
+        {
+        }
+
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
@@ -95,23 +112,10 @@ namespace Tinkar
             cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
-
             // Fields!!!
             throw new NotImplementedException();
             return 0;
         }
-
-        //$public SemanticVersionDTO(IEnumerable<Guid> componentUuids, DefinitionForSemantic definitionForSemantic,
-        //                          IdentifiedThing referencedComponent, Stamp stamp, IEnumerable<Object> fields) {
-        //    this(componentUuids,
-        //            definitionForSemantic.componentUuids(),
-        //            referencedComponent.componentUuids(),
-        //            stamp.toChangeSetThing(), fields);
-        //}
-
-        public IStamp Stamp => this.StampDTO;
-        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
-        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         //@Override
         //public void jsonMarshal(Writer writer) {
