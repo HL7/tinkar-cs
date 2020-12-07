@@ -25,58 +25,36 @@ namespace Tinkar.XUnitTests
         public void FieldDefinitionDTOIsEquivalentTest()
         {
             {
-                FieldDefinitionDTO a = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
-                FieldDefinitionDTO b = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                FieldDefinitionDTO a = CreateFieldDefinition;
+                FieldDefinitionDTO b = CreateFieldDefinition;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                FieldDefinitionDTO a = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
-                FieldDefinitionDTO b = new FieldDefinitionDTO(
-                    new Guid[] { this.g2, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                FieldDefinitionDTO a = CreateFieldDefinition;
+                FieldDefinitionDTO b = CreateFieldDefinition with 
+                {
+                    DataTypeUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                }
+                ;
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
-                FieldDefinitionDTO a = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
-                FieldDefinitionDTO b = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h3, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                FieldDefinitionDTO a = CreateFieldDefinition;
+                FieldDefinitionDTO b = CreateFieldDefinition with
+                {
+                    PurposeUuids = new Guid[] { this.h1, this.h3, this.h3, this.h4 }
+                };
                 Assert.False(a.IsEquivalent(b));
             }
             
             {
-                FieldDefinitionDTO a = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
-                FieldDefinitionDTO b = new FieldDefinitionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i3 }
-                );
+                FieldDefinitionDTO a = CreateFieldDefinition;
+                FieldDefinitionDTO b = CreateFieldDefinition with
+                {
+                    UseUuids = new Guid[] { this.i1, this.i2, this.i3, this.i3 }
+                };
                 Assert.False(a.IsEquivalent(b));
             }
         }

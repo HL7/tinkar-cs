@@ -15,24 +15,10 @@ namespace Tinkar.XUnitTests
 
             ConceptVersionDTO dtoStart = new ConceptVersionDTO(
                 new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                new StampDTO(
-                    new Guid[] { this.g2, this.g3, this.g4 },
-                    time,
-                    new Guid[] { this.h3, this.h4 },
-                    new Guid[] { this.i4 },
-                    new Guid[] { this.j2, this.j3, this.j4 }
-                )
+                CreateStampDTO
                 );
             Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
-            Assert.True(dtoStart.StampDTO.IsEquivalent(
-                        new StampDTO(
-                            new Guid[] { this.g2, this.g3, this.g4 },
-                            time,
-                            new Guid[] { this.h3, this.h4 },
-                            new Guid[] { this.i4 },
-                            new Guid[] { this.j2, this.j3, this.j4 }
-                        )
-                ));
+            Assert.True(dtoStart.StampDTO.IsEquivalent(CreateStampDTO));
         }
 
         [Fact]
@@ -42,49 +28,21 @@ namespace Tinkar.XUnitTests
             {
                 ConceptVersionDTO a = new ConceptVersionDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new StampDTO(
-                            new Guid[] { this.g2, this.g3, this.g4 },
-                            time,
-                            new Guid[] { this.h3, this.h4 },
-                            new Guid[] { this.i4 },
-                            new Guid[] { this.j2, this.j3, this.j4 }
-                        )
-                    );
+                    CreateStampDTO);
                 ConceptVersionDTO b = new ConceptVersionDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new StampDTO(
-                        new Guid[] { this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h3, this.h4 },
-                        new Guid[] { this.i4 },
-                        new Guid[] { this.j2, this.j3, this.j4 }
-                    )
-                    );
+                    CreateStampDTO);
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
                 ConceptVersionDTO a = new ConceptVersionDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new StampDTO(
-                        new Guid[] { this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h3, this.h4 },
-                        new Guid[] { this.i4 },
-                        new Guid[] { this.j2, this.j3, this.j4 }
-                    )
-                    );
+                    CreateStampDTO);
 
                 ConceptVersionDTO b = new ConceptVersionDTO(
                     new Guid[] { this.g2, this.g1, this.g3, this.g4 },
-                    new StampDTO(
-                        new Guid[] { this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h3, this.h4 },
-                        new Guid[] { this.i4 },
-                        new Guid[] { this.j2, this.j3, this.j4 }
-                    )
-                    );
+                    CreateStampDTO);
                 Assert.False(a.IsEquivalent(b));
             }
         }
@@ -94,14 +52,7 @@ namespace Tinkar.XUnitTests
         {
             ConceptVersionDTO dtoStart = new ConceptVersionDTO(
                 new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                new StampDTO(
-                    new Guid[] { this.g2, this.g3, this.g4 },
-                    new DateTime(1990, 3, 4),
-                    new Guid[] { this.h3, this.h4 },
-                    new Guid[] { this.i4 },
-                    new Guid[] { this.j2, this.j3, this.j4 }
-                )
-                );
+                CreateStampDTO);
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);

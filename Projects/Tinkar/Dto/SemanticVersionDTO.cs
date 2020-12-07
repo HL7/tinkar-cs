@@ -31,19 +31,21 @@ namespace Tinkar
         private const int MarshalVersion = 1;
 
         /// <summary>
-        /// ???
+        /// Implements IVersion.Stamp
         /// </summary>
-        public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
+
+        public IStamp Stamp => this.StampDTO;
 
         /// <summary>
-        /// ???
+        /// Implements ISemantic.ReferencedComponent
         /// </summary>
-        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
 
         /// <summary>
-        /// ???
+        /// Implements ISemantic.DefinitionForSemantic
         /// </summary>
-        public StampDTO StampDTO { get; init; }
+        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+
 
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids
@@ -55,9 +57,20 @@ namespace Tinkar
         /// </summary>
         public IEnumerable<Object> Fields { get; init; }
 
-        public IStamp Stamp => this.StampDTO;
-        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
-        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+        /// <summary>
+        /// Backing for DefinitionForSemantic UUID's
+        /// </summary>
+        public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
+
+        /// <summary>
+        /// Backing for ReferencedComponent Uuids
+        /// </summary>
+        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+
+        /// <summary>
+        /// Backing for Stamp.
+        /// </summary>
+        public StampDTO StampDTO { get; init; }
 
         /// <summary>
         /// Constructor
@@ -80,10 +93,10 @@ namespace Tinkar
             this.Fields = fields;
         }
 
-        public SemanticVersionDTO(IEnumerable<Guid> componentUuids, 
+        public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
                 IDefinitionForSemantic definitionForSemantic,
-                IIdentifiedThing referencedComponent, 
-                IStamp stamp, 
+                IIdentifiedThing referencedComponent,
+                IStamp stamp,
                 IEnumerable<Object> fields) :
             this(componentUuids,
                 definitionForSemantic.ComponentUuids,
@@ -144,6 +157,7 @@ namespace Tinkar
                                               IEnumerable<Guid> definitionForSemanticUuids,
                                               IEnumerable<Guid> referencedComponentUuids)
         {
+            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             return new SemanticVersionDTO(componentUuids,
                     definitionForSemanticUuids,
@@ -154,6 +168,7 @@ namespace Tinkar
 
         public void Marshal(TinkarOutput output)
         {
+            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             this.StampDTO.Marshal(output);
             output.WriteObjectList(this.Fields);

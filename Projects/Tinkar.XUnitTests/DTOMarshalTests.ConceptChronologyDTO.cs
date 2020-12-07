@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace Tinkar.XUnitTests
@@ -13,24 +14,14 @@ namespace Tinkar.XUnitTests
         ConceptVersionDTO cv1(IEnumerable<Guid> componentGuids) => 
             new ConceptVersionDTO(
                 componentGuids,
-                new StampDTO(
-                    new Guid[] { this.k2 },
-                    cvTime,
-                    new Guid[] { this.k3 },
-                    new Guid[] { this.k4 },
-                    new Guid[] { this.k1 }
-                ));
+                CreateStampDTO
+            );
 
         ConceptVersionDTO cv2(IEnumerable<Guid> componentGuids) => 
             new ConceptVersionDTO(
                 componentGuids,
-                new StampDTO(
-                    new Guid[] { this.l2 },
-                    cvTime,
-                    new Guid[] { this.l3 },
-                    new Guid[] { this.l4 },
-                    new Guid[] { this.l5 }
-                ));
+                CreateStampDTO with { StatusUuids = new Guid[] { this.g2 } }
+                );
 
         ConceptVersionDTO[] conceptVersionsBase(IEnumerable<Guid> componentGuids) =>
             new ConceptVersionDTO[] { cv1(componentGuids), cv2(componentGuids) };

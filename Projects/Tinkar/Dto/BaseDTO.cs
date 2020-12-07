@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public abstract record BaseDTO<TDto> : IComparable<TDto>, IEquivalent<TDto>
+    public abstract record BaseDTO<TDto> : IComparable<TDto>,
+        IEquivalent<TDto>
     {
         /// <summary>
         /// Write marshall version to output stream
@@ -106,13 +107,11 @@ namespace Tinkar
         /// <param name="a">First item to compare</param>
         /// <param name="b">Second item to compare</param>
         /// <returns></returns>
-#nullable enable
         protected Int32 CompareItem<TItem>(TItem a, TItem b)
             where TItem : IComparable<TItem>
         {
             return a.CompareTo(b);
         }
-#nullable disable
 
         protected static void CheckMarshalVersion(TinkarInput input,
                         Int32 MarshalVersion)

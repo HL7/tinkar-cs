@@ -46,6 +46,29 @@ namespace Tinkar.XUnitTests
         Guid l5 = new Guid(0x55, 0, 0, zero);
         Guid l6 = new Guid(0x56, 0, 0, zero);
 
+        protected FieldDefinitionDTO CreateFieldDefinition => 
+            new FieldDefinitionDTO(
+                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+                new Guid[] { this.h1, this.h2, this.h3, this.h4 },
+                new Guid[] { this.i1, this.i2, this.i3, this.i4 }
+            );
+
+        protected StampDTO CreateStampDTO => new StampDTO(
+            new Guid[]
+            {
+                new Guid(0x80, 0, 0, zero),
+                new Guid(0x81, 0, 0, zero)
+            },
+            new DateTime(1990, 3, 4),
+            new Guid[]
+            {
+                new Guid(0x80, 1, 0, zero),
+                new Guid(0x81, 1, 0, zero)
+            },
+            new Guid[] { new Guid(0x80, 2, 0, zero) },
+            new Guid[] { new Guid(0x80, 3, 0, zero) }
+            );
+
         void Compare(IEnumerable<Guid> inGuids, params Guid[] cmpGuids)
         {
             Guid[] guidArr = inGuids.ToArray();
@@ -61,7 +84,7 @@ namespace Tinkar.XUnitTests
             IEquivalent<T>[] cmpArr = cmpItems.ToArray();
             Assert.True(inArr.Length == cmpArr.Length);
             for (Int32 i = 0; i < inArr.Length; i++)
-                Assert.True(inArr[i].IsEquivalent((T) cmpArr[i]));
+                Assert.True(inArr[i].IsEquivalent((T)cmpArr[i]));
         }
     }
 }

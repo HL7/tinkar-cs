@@ -64,6 +64,18 @@ namespace Tinkar
         public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         /// <summary>
+        /// Implements IChronology.Versions
+        /// </summary>
+        public IEnumerable<ISemanticVersion> Versions =>
+            this.SemanticVersions.Select((dto) => (ISemanticVersion)dto);
+
+        /// <summary>
+        /// Implements IChronology.ChronologySet
+        /// </summary>
+        public DefinitionForSemanticDTO ChronologySet =>
+            new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="componentUuids">ComponentUuids</param>
@@ -82,6 +94,13 @@ namespace Tinkar
             this.SemanticVersions = semanticVersions;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="definitionForSemantic">definitionForSemanticUuids</param>
+        /// <param name="referencedComponent">ReferencedComponentUuids</param>
+        /// <param name="semanticVersions">SemanticVersions</param>
         public SemanticChronologyDTO(IEnumerable<Guid> componentUuids,
                                   IDefinitionForSemantic definitionForSemantic,
                                   IIdentifiedThing referencedComponent,
@@ -154,7 +173,9 @@ namespace Tinkar
             IEnumerable<Guid> definitionForSemanticUuids = input.ReadUuidArray();
             IEnumerable<Guid> referencedComponentUuids = input.ReadUuidArray();
             return new SemanticChronologyDTO(
-                    componentUuids, definitionForSemanticUuids, referencedComponentUuids,
+                    componentUuids, 
+                    definitionForSemanticUuids, 
+                    referencedComponentUuids,
                     input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids)
                     );
         }
@@ -172,11 +193,5 @@ namespace Tinkar
             output.WriteUuidList(this.ReferencedComponentUuids);
             output.WriteMarshalableList(this.SemanticVersions);
         }
-
-        public IEnumerable<ISemanticVersion> Versions =>
-            this.SemanticVersions.Select((dto) => (ISemanticVersion)dto);
-
-        public DefinitionForSemanticDTO ChronologySet =>
-            new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
     }
 }

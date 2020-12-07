@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace Tinkar.XUnitTests
@@ -13,23 +14,10 @@ namespace Tinkar.XUnitTests
         {
             DateTime time = new DateTime(2020, 12, 31);
             StampCommentDTO dtoStart = new StampCommentDTO(
-                new StampDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    time,
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                    new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
-                    "xxyyz"
-                );
+                CreateStampDTO,
+                "xxyyz");
             Assert.True(dtoStart.Comment == "xxyyz");
-            Assert.True(dtoStart.StampDTO.IsEquivalent(
-                new StampDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    time,
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                    new Guid[] { this.j1, this.j2, this.j3, this.j4 })
-                ));
+            Assert.True(dtoStart.StampDTO.IsEquivalent(CreateStampDTO));
         }
 
         [Fact]
@@ -38,21 +26,11 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO,
                     "xxyyz"
                 );
                 Assert.True(a.IsEquivalent(b));
@@ -60,21 +38,11 @@ namespace Tinkar.XUnitTests
 
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO with { StatusUuids = new Guid[] { this.g2, this.g3, this.g4 } },
                     "xxyyz"
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -82,21 +50,11 @@ namespace Tinkar.XUnitTests
 
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    new StampDTO(
-                        new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                        time,
-                        new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                        new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                        new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                    CreateStampDTO,
                     "xxyyz1"
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -109,12 +67,7 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             StampCommentDTO dtoStart = new StampCommentDTO(
-                new StampDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    time,
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 },
-                    new Guid[] { this.j1, this.j2, this.j3, this.j4 }),
+                CreateStampDTO,
                 "xxyyz"
             );
 
