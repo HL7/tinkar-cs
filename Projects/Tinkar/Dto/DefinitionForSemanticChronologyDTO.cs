@@ -38,19 +38,25 @@ namespace Tinkar
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// ???.
-        /// </summary>
-        public IEnumerable<Guid> ChronologySetUuids { get; init; }
-
-        /// <summary>
         /// DTO instance for Versions.
         /// </summary>
         public IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions { get; init; }
 
+        /// <summary>
+        /// Implementation of IChronology.Versions
+        /// </summary>
         public IEnumerable<IDefinitionForSemanticVersion> Versions =>
-                this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
+            this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
 
+        /// <summary>
+        /// Implementation of IChronology.ChronologySet
+        /// </summary>
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
+
+        /// <summary>
+        /// ChronologySet uuids
+        /// </summary>
+        public IEnumerable<Guid> ChronologySetUuids { get; init; }
 
         /// <summary>
         /// Constructor
@@ -112,7 +118,6 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static DefinitionForSemanticChronologyDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadUuidArray();
             return new DefinitionForSemanticChronologyDTO(
@@ -128,7 +133,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.ChronologySetUuids);

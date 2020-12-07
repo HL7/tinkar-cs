@@ -159,7 +159,7 @@ namespace Tinkar
                     break;
 
                 case DefinitionForSemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSymanticType);
+                    this.WriteFieldType(FieldDataType.DefinitionForSemanticChronologyType);
                     item.Marshal(this);
                     break;
 
