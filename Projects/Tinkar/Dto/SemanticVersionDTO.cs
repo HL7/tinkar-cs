@@ -123,7 +123,7 @@ namespace Tinkar
             cmp = FieldCompare.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+            cmp = FieldCompare.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
 

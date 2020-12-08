@@ -167,7 +167,6 @@ namespace Tinkar
         /// <returns>new DTO item</returns>
         public static SemanticChronologyDTO Make(TinkarInput input)
         {
-            //$NotTested
             CheckMarshalVersion(input, MarshalVersion);
             IEnumerable<Guid> componentUuids = input.ReadUuidArray();
             IEnumerable<Guid> definitionForSemanticUuids = input.ReadUuidArray();
@@ -186,7 +185,6 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            //$NotTested
             WriteMarshalVersion(output, MarshalVersion);
             output.WriteUuidList(this.ComponentUuids);
             output.WriteUuidList(this.DefinitionForSemanticUuids);

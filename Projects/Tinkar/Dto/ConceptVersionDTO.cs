@@ -67,7 +67,7 @@ namespace Tinkar
             Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareItem(this.StampDTO, other.StampDTO);
+            cmp = FieldCompare.CompareItem(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
             return 0;

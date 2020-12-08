@@ -62,7 +62,7 @@ namespace Tinkar
         /// <returns> -1, 0, or 1</returns>
         public override Int32 CompareTo(StampCommentDTO other)
         {
-            Int32 cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
+            Int32 cmp = FieldCompare.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
             cmp = this.Comment.CompareTo(other.Comment);

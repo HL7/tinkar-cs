@@ -101,7 +101,7 @@ namespace Tinkar
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.CompareItem(this.StampDTO, other.StampDTO);
+            cmp = FieldCompare.CompareItem(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
 

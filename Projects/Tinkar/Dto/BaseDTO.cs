@@ -19,46 +19,6 @@ namespace Tinkar
             output.WriteInt32(marshalVersion);
         }
 
-        /// <summary>
-        /// Compare two IEnumerable<Object> instances and return true if list contains
-        /// items that are equal.
-        /// </summary>
-        /// <param name="a">First item to compare</param>
-        /// <param name="b">Second item to compare</param>
-        /// <returns></returns>
-        //$protected Int32 CompareObjects(IEnumerable<Object> a, IEnumerable<Object> b)
-        //{
-        //    Int32 cmp = a.Count().CompareTo(b.Count());
-        //    if (cmp != 0)
-        //        return cmp;
-        //    IEnumerator<Object> aIterator = a.GetEnumerator();
-        //    IEnumerator<Object> bIterator = b.GetEnumerator();
-        //    for (Int32 i = 0; i < a.Count(); i++)
-        //    {
-        //        aIterator.MoveNext();
-        //        bIterator.MoveNext();
-        //        Object aItem = aIterator.Current;
-        //        Object bItem = bIterator.Current;
-        //        cmp = aItem.CompareTo(bItem);
-        //        if (cmp != 0)
-        //            return cmp;
-        //    }
-
-        //    return 0;
-        //}
-
-        /// <summary>
-        /// Compare two IComparable instances.
-        /// </summary>
-        /// <param name="a">First item to compare</param>
-        /// <param name="b">Second item to compare</param>
-        /// <returns></returns>
-        protected Int32 CompareItem<TItem>(TItem a, TItem b)
-            where TItem : IComparable<TItem>
-        {
-            return a.CompareTo(b);
-        }
-
         protected static void CheckMarshalVersion(TinkarInput input,
                         Int32 MarshalVersion)
         {

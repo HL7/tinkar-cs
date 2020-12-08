@@ -7,6 +7,18 @@ namespace Tinkar
     public static class FieldCompare
     {
         /// <summary>
+        /// Compare two IComparable instances.
+        /// </summary>
+        /// <param name="a">First item to compare</param>
+        /// <param name="b">Second item to compare</param>
+        /// <returns></returns>
+        public static Int32 CompareItem<TItem>(TItem a, TItem b)
+            where TItem : IComparable<TItem>
+        {
+            return a.CompareTo(b);
+        }
+
+        /// <summary>
         /// Compare two IEnumerable<Guid> instances and return true if each has the same
         /// Guid values.
         /// </summary>
