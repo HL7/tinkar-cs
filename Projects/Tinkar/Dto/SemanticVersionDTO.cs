@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tinkar
 {
@@ -113,20 +114,23 @@ namespace Tinkar
         /// <returns> -1, 0, or 1</returns>
         public override Int32 CompareTo(SemanticVersionDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids);
+            cmp = FieldCompare.CompareGuids(this.DefinitionForSemanticUuids, other.DefinitionForSemanticUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            cmp = FieldCompare.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
             if (cmp != 0)
                 return cmp;
             cmp = this.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
             if (cmp != 0)
                 return cmp;
-            // Fields!!!
-            throw new NotImplementedException();
+
+            cmp = this.Fields.Count().CompareTo(other.Fields.Count());
+            if (cmp != 0)
+                return cmp;
+
             return 0;
         }
 

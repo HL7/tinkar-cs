@@ -97,7 +97,7 @@ namespace Tinkar
         /// <returns>-1, 0, or 1</returns>
         public override Int32 CompareTo(DefinitionForSemanticVersionDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
             if (cmp != 0)
                 return cmp;
 
@@ -105,11 +105,11 @@ namespace Tinkar
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.CompareGuids(this.ReferencedComponentPurposeUuids, other.ReferencedComponentPurposeUuids);
+            cmp = FieldCompare.CompareGuids(this.ReferencedComponentPurposeUuids, other.ReferencedComponentPurposeUuids);
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.CompareSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs);
+            cmp = FieldCompare.CompareSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs);
             if (cmp != 0)
                 return cmp;
             return 0;

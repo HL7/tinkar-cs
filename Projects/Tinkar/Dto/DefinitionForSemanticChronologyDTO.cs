@@ -81,13 +81,13 @@ namespace Tinkar
         /// <returns>-1, 0, or 1</returns>
         public override Int32 CompareTo(DefinitionForSemanticChronologyDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
+            cmp = FieldCompare.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareSequence<DefinitionForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
+            cmp = FieldCompare.CompareSequence<DefinitionForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
             if (cmp != 0)
                 return cmp;
             return 0;

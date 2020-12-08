@@ -20,60 +20,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Compare two IEnumerable<Guid> instances and return true if each has the same
-        /// Guid values.
-        /// </summary>
-        /// <param name="a">First item to compare</param>
-        /// <param name="b">Second item to compare</param>
-        /// <returns></returns>
-        protected Int32 CompareGuids(IEnumerable<Guid> a, IEnumerable<Guid> b)
-        {
-            Int32 cmp = a.Count().CompareTo(b.Count());
-            if (cmp != 0)
-                return cmp;
-            IEnumerator<Guid> aIterator = a.GetEnumerator();
-            IEnumerator<Guid> bIterator = b.GetEnumerator();
-            for (Int32 i = 0; i < a.Count(); i++)
-            {
-                aIterator.MoveNext();
-                bIterator.MoveNext();
-                cmp = aIterator.Current.CompareTo(bIterator.Current);
-                if (cmp != 0)
-                    return cmp;
-            }
-            return 0;
-        }
-
-        /// <summary>
-        /// Compare two IEnumerable<IComparable> instances and return true if list contains
-        /// items that are equal.
-        /// </summary>
-        /// <param name="a">First item to compare</param>
-        /// <param name="b">Second item to compare</param>
-        /// <returns></returns>
-        protected Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
-            where TSeq : IComparable<TSeq>
-        {
-            Int32 cmp = a.Count().CompareTo(b.Count());
-            if (cmp != 0)
-                return cmp;
-            IEnumerator<TSeq> aIterator = a.GetEnumerator();
-            IEnumerator<TSeq> bIterator = b.GetEnumerator();
-            for (Int32 i = 0; i < a.Count(); i++)
-            {
-                aIterator.MoveNext();
-                bIterator.MoveNext();
-                TSeq aItem = aIterator.Current;
-                TSeq bItem = bIterator.Current;
-                cmp = aItem.CompareTo(bItem);
-                if (cmp != 0)
-                    return cmp;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
         /// Compare two IEnumerable<Object> instances and return true if list contains
         /// items that are equal.
         /// </summary>

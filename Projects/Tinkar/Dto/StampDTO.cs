@@ -99,19 +99,19 @@ namespace Tinkar
         /// <returns> -1, 0, or 1</returns>
         public override Int32 CompareTo(StampDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.StatusUuids, other.StatusUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.StatusUuids, other.StatusUuids);
             if (cmp != 0)
                 return cmp;
             cmp = this.Time.CompareTo(other.Time);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.AuthorUuids, other.AuthorUuids);
+            cmp = FieldCompare.CompareGuids(this.AuthorUuids, other.AuthorUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.ModuleUuids, other.ModuleUuids);
+            cmp = FieldCompare.CompareGuids(this.ModuleUuids, other.ModuleUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.PathUuids, other.PathUuids);
+            cmp = FieldCompare.CompareGuids(this.PathUuids, other.PathUuids);
             if (cmp != 0)
                 return cmp;
             return 0;

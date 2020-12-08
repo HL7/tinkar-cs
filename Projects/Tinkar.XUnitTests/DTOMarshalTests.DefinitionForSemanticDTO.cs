@@ -8,6 +8,8 @@ namespace Tinkar.XUnitTests
 {
     public partial class DTOMarshalTests
     {
+        DefinitionForSemanticDTO CreateDefinitionForSemanticDTO =>
+            new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
         [Fact]
         public void DefinitionForSemanticDTOFieldsTest()
         {
@@ -19,13 +21,13 @@ namespace Tinkar.XUnitTests
         public void DefinitionForSemanticDTOIsEquivalentTest()
         {
             {
-                DefinitionForSemanticDTO a = new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-                DefinitionForSemanticDTO b = new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                DefinitionForSemanticDTO a = CreateDefinitionForSemanticDTO;
+                DefinitionForSemanticDTO b = CreateDefinitionForSemanticDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticDTO a = new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                DefinitionForSemanticDTO a = CreateDefinitionForSemanticDTO;
                 DefinitionForSemanticDTO b = new DefinitionForSemanticDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
                 Assert.False(a.IsEquivalent(b));
             }
@@ -34,7 +36,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void DefinitionForSemanticDTOMarshalTest()
         {
-            DefinitionForSemanticDTO dtoStart = new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+            DefinitionForSemanticDTO dtoStart = CreateDefinitionForSemanticDTO;
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);

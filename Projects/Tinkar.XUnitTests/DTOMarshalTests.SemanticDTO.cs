@@ -8,14 +8,15 @@ namespace Tinkar.XUnitTests
 {
     public partial class DTOMarshalTests
     {
+        SemanticDTO CreateSemanticDTO => new SemanticDTO(
+            new Guid[] { this.g1, this.g2, this.g3, this.g4 },
+            new Guid[] { this.h1, this.h2, this.h3, this.h4 },
+            new Guid[] { this.i1, this.i2, this.i3, this.i4 }
+        );
         [Fact]
         public void SemanticDTOFieldsTest()
         {
-            SemanticDTO dtoStart = new SemanticDTO(
-                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+            SemanticDTO dtoStart = CreateSemanticDTO;
             Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
             Compare(dtoStart.DefinitionForSemanticUuids, this.h1, this.h2, this.h3, this.h4);
             Compare(dtoStart.ReferencedComponentUuids, this.i1, this.i2, this.i3, this.i4);
@@ -25,11 +26,7 @@ namespace Tinkar.XUnitTests
         public void SemanticDTOIsEquivalentTest()
         {
             {
-                SemanticDTO a = new SemanticDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                SemanticDTO a = CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
@@ -39,11 +36,7 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                SemanticDTO a = new SemanticDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                SemanticDTO a = CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
                     new Guid[] { this.g2, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
@@ -53,11 +46,7 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                SemanticDTO a = new SemanticDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                SemanticDTO a = CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h3, this.h3, this.h4 },
@@ -67,11 +56,7 @@ namespace Tinkar.XUnitTests
             }
             
             {
-                SemanticDTO a = new SemanticDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                    new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-                );
+                SemanticDTO a = CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
                     new Guid[] { this.g1, this.g2, this.g3, this.g4 },
                     new Guid[] { this.h1, this.h2, this.h3, this.h4 },
@@ -84,11 +69,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void SemanticDTOMarshalTest()
         {
-            SemanticDTO dtoStart = new SemanticDTO(
-                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                new Guid[] { this.h1, this.h2, this.h3, this.h4 },
-                new Guid[] { this.i1, this.i2, this.i3, this.i4 }
-            );
+            SemanticDTO dtoStart = CreateSemanticDTO;
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);

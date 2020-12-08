@@ -64,7 +64,7 @@ namespace Tinkar
         /// <returns>-1, 0, or 1</returns>
         public override Int32 CompareTo(ConceptVersionDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
             if (cmp != 0)
                 return cmp;
             cmp = this.CompareItem(this.StampDTO, other.StampDTO);

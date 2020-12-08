@@ -81,13 +81,13 @@ namespace Tinkar
         /// <returns> -1, 0, or 1</returns>
         public override Int32 CompareTo(FieldDefinitionDTO other)
         {
-            Int32 cmp = this.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
+            Int32 cmp = FieldCompare.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.PurposeUuids, other.PurposeUuids);
+            cmp = FieldCompare.CompareGuids(this.PurposeUuids, other.PurposeUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = this.CompareGuids(this.UseUuids, other.UseUuids);
+            cmp = FieldCompare.CompareGuids(this.UseUuids, other.UseUuids);
             if (cmp != 0)
                 return cmp;
             return 0;
