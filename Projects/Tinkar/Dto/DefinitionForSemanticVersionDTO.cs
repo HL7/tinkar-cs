@@ -90,6 +90,16 @@ namespace Tinkar
             this.FieldDefinitionDTOs = fieldDefinitionDTOs;
         }
 
+        public DefinitionForSemanticVersionDTO(TinkarInput input,
+            IEnumerable<Guid> componentUuids)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = componentUuids;
+            this.StampDTO = new StampDTO(input);
+            this.ReferencedComponentPurposeUuids = input.ReadUuids();
+            this.FieldDefinitionDTOs = input.ReadFieldDefinitionList();
+        }
+
         /// <summary>
         /// Compares this to another item.
         /// </summary>
@@ -142,22 +152,9 @@ namespace Tinkar
         //            jsonObject.asFieldDefinitionList(FIELD_DEFINITIONS));
         //}
 
-        ///**
-        // * Unmarshal method for DefinitionForSemanticVersionDTO
-        // * @param in
-        // * @param componentUuids
-        // * @return
-        // */
-        //@VersionUnmarshaler
         public static DefinitionForSemanticVersionDTO Make(TinkarInput input,
-            IEnumerable<Guid> componentUuids)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            return new DefinitionForSemanticVersionDTO(componentUuids,
-                    StampDTO.Make(input),
-                    input.ReadUuidArray(),
-                    input.ReadFieldDefinitionList());
-        }
+            IEnumerable<Guid> componentUuids) =>
+            new DefinitionForSemanticVersionDTO(input, componentUuids);
 
         ///**
         // * Marshal method for DefinitionForSemanticVersionDTO
@@ -165,10 +162,17 @@ namespace Tinkar
         // */
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteMarshalVersion(MarshalVersion);
             this.StampDTO.Marshal(output);
-            output.WriteUuidList(this.ReferencedComponentPurposeUuids);
+            output.WriteUuids(this.ReferencedComponentPurposeUuids);
             output.WriteMarshalableList(this.FieldDefinitionDTOs);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
     }
 }

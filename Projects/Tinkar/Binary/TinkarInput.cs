@@ -72,7 +72,7 @@ namespace Tinkar
 
         public byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt32());
 
-        public Guid[] ReadUuidArray()
+        public Guid[] ReadUuids()
         {
             int length = this.ReadInt32();
             Guid[] array = new Guid[length];
@@ -177,5 +177,12 @@ namespace Tinkar
                     throw new NotImplementedException($"FieldDataType {token} not known");
             };
         }
+        public void CheckMarshalVersion(Int32 MarshalVersion)
+        {
+            int objectMarshalVersion = this.ReadInt32();
+            if (objectMarshalVersion != MarshalVersion)
+                throw new ArgumentException($"Unsupported version: {objectMarshalVersion}");
+        }
+
     }
 }

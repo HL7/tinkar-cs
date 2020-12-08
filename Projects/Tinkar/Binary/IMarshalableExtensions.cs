@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tinkar.Binary
+namespace Tinkar
 {
     /// <summary>
     /// Extension methods to IMarshalable interface
     /// </summary>
     public static class IMarshalableExtensions
     {
-        public static TinkarByteArrayOutput Marshal(this IMarshalable me)
-        {
-            //$ Untested
-            TinkarByteArrayOutput byteArrayOutput = TinkarByteArrayOutput.Make();
-            me.Marshal(byteArrayOutput);
-            return byteArrayOutput;
-        }
+        //public static TinkarByteArrayOutput Marshal(this IMarshalable me)
+        //{
+        //    //$ Untested
+        //    TinkarByteArrayOutput byteArrayOutput = TinkarByteArrayOutput.Make();
+        //    me.Marshal(byteArrayOutput);
+        //    return byteArrayOutput;
+        //}
 
         //static <T> T makeVersion(Class<T> objectClass, TinkarByteArrayOutput output, IEnumerable<Guid> componentUuids)
         //{
@@ -89,26 +89,6 @@ namespace Tinkar.Binary
         //    return Make(objectClass, TinkarInput.Make(output));
         //}
 
-        //static <T> T unmarshal(Class<T> objectClass, Class<? extends Annotation> annotationClass,
-        //Object[] parameters) throws IllegalAccessException, InvocationTargetException
-        //{
-        //    //$ Untested
-        //    ArrayList<Method> unmarshalMethodList = getUnmarshalMethods(objectClass, annotationClass);
-        //    if (unmarshalMethodList.isEmpty())
-        //    {
-        //        throw new MarshalExceptionUnchecked("No " + annotationClass.getSimpleName() +
-        //                                            " method for class: " + objectClass);
-        //    }
-        //    else if (unmarshalMethodList.size() == 1)
-        //    {
-        //        Method unmarshalMethod = unmarshalMethodList.get(0);
-        //        return (T) unmarshalMethod.invoke(null, parameters);
-        //    }
-
-        //    throw new MarshalExceptionUnchecked("More than one unmarshal method for class: " + objectClass
-        //                                                                                     + " methods: " +
-        //                                                                                     unmarshalMethodList);
-        //}
 
         //static <T> ArrayList<Method>
         //    getUnmarshalMethods(Class<T> objectClass, Class<? extends Annotation> annotationClass)

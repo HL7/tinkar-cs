@@ -93,6 +93,19 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        public StampDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.StatusUuids = input.ReadUuids();
+            this.Time = input.ReadInstant();
+            this.AuthorUuids = input.ReadUuids();
+            this.ModuleUuids = input.ReadUuids();
+            this.PathUuids = input.ReadUuids();
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
@@ -144,17 +157,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static StampDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            return new StampDTO(
-                input.ReadUuidArray(),
-                input.ReadInstant(),
-                input.ReadUuidArray(),
-                input.ReadUuidArray(),
-                input.ReadUuidArray()
-                );
-        }
+        public static StampDTO Make(TinkarInput input) =>
+            new StampDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -162,12 +166,19 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.StatusUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.StatusUuids);
             output.WriteInstant(this.Time);
-            output.WriteUuidList(this.AuthorUuids);
-            output.WriteUuidList(this.ModuleUuids);
-            output.WriteUuidList(this.PathUuids);
+            output.WriteUuids(this.AuthorUuids);
+            output.WriteUuids(this.ModuleUuids);
+            output.WriteUuids(this.PathUuids);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
     }
 }

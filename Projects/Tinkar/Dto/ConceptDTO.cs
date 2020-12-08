@@ -1,5 +1,8 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Tinkar
@@ -26,6 +29,23 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public ConceptDTO(TinkarJsonInput input)
+        {
+            this.ComponentUuids = input.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
+        }
+
+        /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        public ConceptDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = input.ReadUuids();
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -33,31 +53,13 @@ namespace Tinkar
         public override Int32 CompareTo(ConceptDTO other) =>
             FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
 
-        //$@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //    json.put(ComponentFieldForJson.COMPONENT_UUIDS, componentUuids);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static ConceptDTO Make(JSONObject jsonObject) {
-        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    return new ConceptDTO(componentUuids);
-        //}
-
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static ConceptDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
-            return new ConceptDTO(componentUuids);
-        }
+        public static ConceptDTO Make(TinkarInput input) =>
+            new ConceptDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -65,8 +67,18 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.ComponentUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.ComponentUuids);
+        }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteGuids(ComponentFieldForJson.COMPONENT_UUIDS,
+                this.ComponentUuids);
         }
     }
 }

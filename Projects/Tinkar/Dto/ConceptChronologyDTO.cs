@@ -72,6 +72,18 @@ namespace Tinkar
             this.ConceptVersions = conceptVersions;
         }
 
+
+        /// <summary>
+        /// Construct item from TinkarInput Stream
+        /// </summary>
+        public ConceptChronologyDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = input.ReadUuids();
+            this.ChronologySetUuids = input.ReadUuids();
+            this.ConceptVersions = input.ReadConceptVersionList(this.ComponentUuids);
+        }
+
         /// <summary>
         /// Compares this to another item.
         /// </summary>
@@ -114,15 +126,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static ConceptChronologyDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
-            return new ConceptChronologyDTO(componentUuids,
-                input.ReadUuidArray(),
-                input.ReadConceptVersionList(componentUuids)
-            );
-        }
+        public static ConceptChronologyDTO Make(TinkarInput input) =>
+            new ConceptChronologyDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -130,12 +135,20 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.ComponentUuids);
-            output.WriteUuidList(this.ChronologySetUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.ComponentUuids);
+            output.WriteUuids(this.ChronologySetUuids);
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
             output.WriteMarshalableList(this.ConceptVersions);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+
     }
 }

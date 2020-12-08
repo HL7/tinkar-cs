@@ -1,1 +1,1 @@
-﻿
+﻿1. should we add Versions number to Json input/output (like binary)?

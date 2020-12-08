@@ -26,6 +26,17 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public DefinitionForSemanticDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = input.ReadUuids();
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -52,12 +63,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static DefinitionForSemanticDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
-            return new DefinitionForSemanticDTO(componentUuids);
-        }
+        public static DefinitionForSemanticDTO Make(TinkarInput input) =>
+            new DefinitionForSemanticDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -65,8 +72,15 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.ComponentUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.ComponentUuids);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
     }
 }

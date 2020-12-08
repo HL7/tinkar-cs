@@ -9,6 +9,24 @@ namespace Tinkar.XUnitTests
     public class ConceptDTOTests
     {
         [Fact]
+        public void ConceptDTOJsonMarshal()
+        {
+            ConceptDTO dtoStart = Misc.CreateConceptDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                output.WriteClass(dtoStart);
+            }
+
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                ConceptDTO dtoEnd = (ConceptDTO) input.ReadClass();
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+            }
+        }
+
+        [Fact]
         public void ConceptDTOFieldsTest()
         {
             ConceptDTO dtoStart = Misc.CreateConceptDTO;

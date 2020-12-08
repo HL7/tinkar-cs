@@ -229,13 +229,13 @@ namespace Tinkar.XUnitTests
             {
                 MemoryStream ms = MSCreate(lenZero);
                 Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
-                Guid[] value = ti.ReadUuidArray();
+                Guid[] value = ti.ReadUuids();
                 Assert.True(value.Length == 0);
             }
             {
                 MemoryStream ms = MSCreate(lenOne, guidBytes1);
                 TinkarInput ti = new TinkarInput(ms);
-                Guid[] gArr = ti.ReadUuidArray();
+                Guid[] gArr = ti.ReadUuids();
 
                 Assert.True(gArr.Length == 1);
                 Assert.True(gArr[0] == new Guid(guidBytes1));
@@ -244,7 +244,7 @@ namespace Tinkar.XUnitTests
             {
                 MemoryStream ms = MSCreate(lenOne, guidBytes2);
                 TinkarInput ti = new TinkarInput(ms);
-                Guid[] gArr = ti.ReadUuidArray();
+                Guid[] gArr = ti.ReadUuids();
 
                 Assert.True(gArr.Length == 1);
                 Assert.True(gArr[0] == new Guid(guidBytes2));
@@ -253,7 +253,7 @@ namespace Tinkar.XUnitTests
             {
                 MemoryStream ms = MSCreate(lenTwo, guidBytes1, guidBytes2);
                 TinkarInput ti = new TinkarInput(ms);
-                Guid[] gArr = ti.ReadUuidArray();
+                Guid[] gArr = ti.ReadUuids();
 
                 Assert.True(gArr.Length == 2);
                 Assert.True(gArr[0] == new Guid(guidBytes1));
@@ -360,7 +360,7 @@ namespace Tinkar.XUnitTests
             {
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput ti = new TinkarOutput(ms);
-                ti.WriteUuidList(new Guid[0]);
+                ti.WriteUuids(new Guid[0]);
                 ms.Position = 0;
                 Assert.True(ms.Length == 4);
                 Assert.True(ms.ReadByte() == 0);
@@ -373,7 +373,7 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
-                ti.WriteUuidList(new Guid[] { g1 });
+                ti.WriteUuids(new Guid[] { g1 });
                 ms.Position = 0;
                 Assert.True(ms.Length == 20);
                 Assert.True(ms.ReadByte() == 0);
@@ -403,7 +403,7 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff });
-                ti.WriteUuidList(new Guid[] { g1 });
+                ti.WriteUuids(new Guid[] { g1 });
                 ms.Position = 0;
                 Assert.True(ms.Length == 20);
                 Assert.True(ms.ReadByte() == 0);
@@ -434,7 +434,7 @@ namespace Tinkar.XUnitTests
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
                 Guid g2 = new Guid(new byte[] { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff });
-                ti.WriteUuidList(new Guid[] { g1, g2 });
+                ti.WriteUuids(new Guid[] { g1, g2 });
                 ms.Position = 0;
                 Assert.True(ms.Length == 36);
                 Assert.True(ms.ReadByte() == 0);

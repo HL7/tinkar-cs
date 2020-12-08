@@ -73,6 +73,17 @@ namespace Tinkar
             this.UseUuids = useUuids;
         }
 
+        /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        public FieldDefinitionDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.DataTypeUuids = input.ReadUuids();
+            this.PurposeUuids = input.ReadUuids();
+            this.UseUuids = input.ReadUuids();
+        }
 
         /// <summary>
         /// Compare this with another item of same type.
@@ -115,13 +126,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static FieldDefinitionDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            return new FieldDefinitionDTO(input.ReadUuidArray(),
-                input.ReadUuidArray(),
-                input.ReadUuidArray());
-        }
+        public static FieldDefinitionDTO Make(TinkarInput input) =>
+            new FieldDefinitionDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -129,10 +135,18 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.DataTypeUuids);
-            output.WriteUuidList(this.PurposeUuids);
-            output.WriteUuidList(this.UseUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.DataTypeUuids);
+            output.WriteUuids(this.PurposeUuids);
+            output.WriteUuids(this.UseUuids);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+
     }
 }

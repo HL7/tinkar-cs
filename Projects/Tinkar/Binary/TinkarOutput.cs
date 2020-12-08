@@ -130,7 +130,7 @@ namespace Tinkar
 
                 case Object[] item:
                     this.WriteFieldType(FieldDataType.ObjectArrayType);
-                    this.WriteObjectList(item);
+                    this.WriteObjects(item);
                     break;
 
                 case ConceptDTO item:
@@ -178,7 +178,7 @@ namespace Tinkar
         }
 
 
-        private void WriteIdentifiedThing(IIdentifiedThing thing) => this.WriteUuidList(thing.ComponentUuids);
+        private void WriteIdentifiedThing(IIdentifiedThing thing) => this.WriteUuids(thing.ComponentUuids);
 
         /// <summary>
         /// Read string.
@@ -187,22 +187,28 @@ namespace Tinkar
         /// <returns></returns>
         public void WriteUTF(String s) => this.writer.Write(s);
 
-        private void WriteDigraph() => throw new UnsupportedOperationException("WriteDigraph");
+        private void WriteDigraph() => throw new NotImplementedException("WriteDigraph");
         private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((byte)fieldType);
         private void WriteByte(byte value) => this.writer.Write(value);
 
-        public void WriteUuidList(IEnumerable<Guid> statusUuids)
+        public void WriteUuids(IEnumerable<Guid> statusUuids)
         {
             this.WriteInt32(statusUuids.Count());
             foreach (Guid statusUuid in statusUuids)
                 this.writer.Write(statusUuid.ToByteArray());
         }
 
-        public void WriteObjectList(IEnumerable<Object> fields)
+        public void WriteObjects(IEnumerable<Object> fields)
         {
             this.WriteInt32(fields.Count());
             foreach (Object field in fields)
                 this.WriteField(field);
         }
+
+        /// <summary>
+        /// Write marshal version to output stream
+        /// </summary>
+        public void WriteMarshalVersion(Int32 marshalVersion) =>
+            this.WriteInt32(marshalVersion);
     }
 }

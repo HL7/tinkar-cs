@@ -56,6 +56,16 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        public StampCommentDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.StampDTO = new StampDTO(input);
+            this.Comment = input.ReadUTF();
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
@@ -109,13 +119,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static StampCommentDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            return new StampCommentDTO(
-                StampDTO.Make(input),
-                input.ReadUTF());
-        }
+        public static StampCommentDTO Make(TinkarInput input) =>
+            new StampCommentDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -123,9 +128,16 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteMarshalVersion(MarshalVersion);
             this.StampDTO.Marshal(output);
             output.WriteUTF(this.Comment);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
     }
 }

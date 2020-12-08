@@ -58,6 +58,19 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="componentUuids"></param>
+        public ConceptVersionDTO(TinkarInput input,
+            IEnumerable<Guid> componentUuids)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = componentUuids;
+            this.StampDTO = new StampDTO(input);
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -98,18 +111,9 @@ namespace Tinkar
         //            StampDTO.Make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)));
         //}
 
-        ///**
-        // * Version unmarshaler for ConceptVersionDTO.
-        // * @param input
-        // * @param componentUuids
-        // * @return new instance of ConceptVersionDTO created from the input.
-        // */
-        //@VersionUnmarshaler
-        public static ConceptVersionDTO Make(TinkarInput input, IEnumerable<Guid> componentUuids)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            return new ConceptVersionDTO(componentUuids, StampDTO.Make(input));
-        }
+        public static ConceptVersionDTO Make(TinkarInput input,
+            IEnumerable<Guid> componentUuids) =>
+            new ConceptVersionDTO(input, componentUuids);
 
         ///**
         // * Version marshaler for ConceptVersionDTO
@@ -117,10 +121,18 @@ namespace Tinkar
         // */
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
+            output.WriteMarshalVersion(MarshalVersion);
             // note that componentUuids are not written redundantly here,
             // they are written with the ConceptChronologyDTO...
             this.StampDTO.Marshal(output);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+
     }
 }

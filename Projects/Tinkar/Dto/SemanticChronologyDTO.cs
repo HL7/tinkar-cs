@@ -95,6 +95,21 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from binary stream
+        /// </summary>
+        public SemanticChronologyDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(MarshalVersion);
+            this.ComponentUuids = input.ReadUuids();
+            this.DefinitionForSemanticUuids = input.ReadUuids();
+            this.ReferencedComponentUuids = input.ReadUuids();
+            this.SemanticVersions = input.ReadSemanticVersionList(
+                this.ComponentUuids,
+                this.DefinitionForSemanticUuids,
+                this.ReferencedComponentUuids);
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="componentUuids">ComponentUuids</param>
@@ -165,19 +180,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static SemanticChronologyDTO Make(TinkarInput input)
-        {
-            CheckMarshalVersion(input, MarshalVersion);
-            IEnumerable<Guid> componentUuids = input.ReadUuidArray();
-            IEnumerable<Guid> definitionForSemanticUuids = input.ReadUuidArray();
-            IEnumerable<Guid> referencedComponentUuids = input.ReadUuidArray();
-            return new SemanticChronologyDTO(
-                    componentUuids, 
-                    definitionForSemanticUuids, 
-                    referencedComponentUuids,
-                    input.ReadSemanticVersionList(componentUuids, definitionForSemanticUuids, referencedComponentUuids)
-                    );
-        }
+        public static SemanticChronologyDTO Make(TinkarInput input) =>
+            new SemanticChronologyDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -185,11 +189,18 @@ namespace Tinkar
         /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
-            WriteMarshalVersion(output, MarshalVersion);
-            output.WriteUuidList(this.ComponentUuids);
-            output.WriteUuidList(this.DefinitionForSemanticUuids);
-            output.WriteUuidList(this.ReferencedComponentUuids);
+            output.WriteMarshalVersion(MarshalVersion);
+            output.WriteUuids(this.ComponentUuids);
+            output.WriteUuids(this.DefinitionForSemanticUuids);
+            output.WriteUuids(this.ReferencedComponentUuids);
             output.WriteMarshalableList(this.SemanticVersions);
         }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        public void Marshal(TinkarJsonOutput output) =>
+            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
     }
 }

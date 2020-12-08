@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -7,25 +9,10 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public abstract record BaseDTO<TDto> : IComparable<TDto>,
+    public abstract record BaseDTO<TDto> :
+        IComparable<TDto>,
         IEquivalent<TDto>
     {
-        /// <summary>
-        /// Write marshall version to output stream
-        /// </summary>
-        protected static void WriteMarshalVersion(TinkarOutput output,
-            Int32 marshalVersion)
-        {
-            output.WriteInt32(marshalVersion);
-        }
-
-        protected static void CheckMarshalVersion(TinkarInput input,
-                        Int32 MarshalVersion)
-        {
-            int objectMarshalVersion = input.ReadInt32();
-            if (objectMarshalVersion != MarshalVersion)
-                throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        }
 
         /// <summary>
         /// Implementation of IEquivalent.IsEquivalent
@@ -35,7 +22,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">Item to compare to for equivalence</param>
         /// <returns>true if equal</returns>
-        public Boolean IsEquivalent(TDto other) => this.CompareTo(other) == 0;
+        public Boolean IsEquivalent(TDto other) =>
+            this.CompareTo(other) == 0;
 
         /// <summary>
         /// Compare two items of same DTO type.

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -44,71 +45,10 @@ namespace Tinkar
      */
     public interface IJsonMarshalable
     {
-
-        //$@JsonMarshaler
-
-        //void jsonMarshal(Writer out);
-
-        //    default String toJsonString()
-        //{
-        //    StringWriter writer = new StringWriter();
-        //    jsonMarshal(writer);
-        //    return writer.toString();
-        //}
-
-
-        //static <T> T makeSemanticVersion(Class<T> objectClass, String makerString,
-        //    IEnumerable<Guid> componentUuidList,
-        //    IEnumerable<Guid> definitionForSemanticUuids, IEnumerable<Guid> referencedComponentUuids)
-        //{
-        //    try
-        //    {
-        //        JSONObject jsonObject = (JSONObject) JSONValue.parse(makerString);
-        //        return Marshalable.unmarshal(objectClass, JsonSemanticVersionUnmarshaler.class,
-        //        new Object[]
-        //        {
-        //            jsonObject, componentUuidList,
-        //            definitionForSemanticUuids, referencedComponentUuids
-        //        });
-
-        //    }
-        //    catch (ParseException |
-
-        //    IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
-
-
-        //static <T> T makeVersion(Class<T> objectClass, String makerString, IEnumerable<Guid> componentUuidList)
-        //{
-        //    try
-        //    {
-        //        JSONObject jsonObject = (JSONObject) JSONValue.parse(makerString);
-        //        return Marshalable.unmarshal(objectClass, JsonVersionUnmarshaler.class,
-        //        new Object[] {jsonObject, componentUuidList});
-
-        //    }
-        //    catch (ParseException |
-
-        //    IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
-
-        //static <T> T Make(Class<T> objectClass, String makerString)
-        //{
-        //    try
-        //    {
-        //        JSONObject jsonObject = (JSONObject) JSONValue.parse(makerString);
-        //        return Marshalable.unmarshal(objectClass, JsonChronologyUnmarshaler.class,
-        //        new Object[] {jsonObject});
-        //    }
-        //    catch (ParseException |
-
-        //    IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-        //        throw new MarshalExceptionUnchecked(ex);
-        //    }
-        //}
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
+        void Marshal(TinkarJsonOutput output);
     }
 }
