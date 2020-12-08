@@ -7,17 +7,17 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public partial class DTOMarshalTests
+    public class StampCommentDTOTests
     {
         [Fact]
         public void StampCommentDTOFieldsTest()
         {
             DateTime time = new DateTime(2020, 12, 31);
             StampCommentDTO dtoStart = new StampCommentDTO(
-                CreateStampDTO,
+                Misc.CreateStampDTO,
                 "xxyyz");
             Assert.True(dtoStart.Comment == "xxyyz");
-            Assert.True(dtoStart.StampDTO.IsEquivalent(CreateStampDTO));
+            Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
         }
 
         [Fact]
@@ -26,11 +26,11 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    CreateStampDTO,
+                    Misc.CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    CreateStampDTO,
+                    Misc.CreateStampDTO,
                     "xxyyz"
                 );
                 Assert.True(a.IsEquivalent(b));
@@ -38,11 +38,11 @@ namespace Tinkar.XUnitTests
 
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    CreateStampDTO,
+                    Misc.CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    CreateStampDTO with { StatusUuids = new Guid[] { this.g2, this.g3, this.g4 } },
+                    Misc.CreateStampDTO with { StatusUuids = new Guid[] { Misc.g2, Misc.g3, Misc.g4 } },
                     "xxyyz"
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -50,11 +50,11 @@ namespace Tinkar.XUnitTests
 
             {
                 StampCommentDTO a = new StampCommentDTO(
-                    CreateStampDTO,
+                    Misc.CreateStampDTO,
                     "xxyyz"
                 );
                 StampCommentDTO b = new StampCommentDTO(
-                    CreateStampDTO,
+                    Misc.CreateStampDTO,
                     "xxyyz1"
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -67,7 +67,7 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             StampCommentDTO dtoStart = new StampCommentDTO(
-                CreateStampDTO,
+                Misc.CreateStampDTO,
                 "xxyyz"
             );
 

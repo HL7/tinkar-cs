@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public partial class DTOMarshalTests
+    public class FieldCompareTests
     {
         [Fact]
         public void FieldCompareTest()
@@ -39,69 +39,73 @@ namespace Tinkar.XUnitTests
                                                     new byte[] { 1, 3, 2 }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateConceptChronologyDTO,
-                                                    CreateConceptChronologyDTO));
+                Assert.True(FieldCompare.Equivalent(Misc.CreateConceptChronologyDTO,
+                    Misc.CreateConceptChronologyDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateConceptChronologyDTO,
-                    CreateConceptChronologyDTO
+                    Misc.CreateConceptChronologyDTO,
+                    Misc.CreateConceptChronologyDTO
                     with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateConceptDTO,
-                CreateConceptDTO));
+                Assert.True(FieldCompare.Equivalent(
+                    Misc.CreateConceptDTO,
+                    Misc.CreateConceptDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateConceptDTO,
-                    CreateConceptDTO
+                    Misc.CreateConceptDTO,
+                    Misc.CreateConceptDTO
                     with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateDefinitionForSemanticChronologyDTO,
-                    CreateDefinitionForSemanticChronologyDTO));
+                Assert.True(FieldCompare.Equivalent(Misc.CreateDefinitionForSemanticChronologyDTO,
+                    Misc.CreateDefinitionForSemanticChronologyDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateDefinitionForSemanticChronologyDTO,
-                    CreateDefinitionForSemanticChronologyDTO
+                    Misc.CreateDefinitionForSemanticChronologyDTO,
+                    Misc.CreateDefinitionForSemanticChronologyDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateDefinitionForSemanticDTO,
-                    CreateDefinitionForSemanticDTO));
+                Assert.True(FieldCompare.Equivalent(
+                    Misc.CreateDefinitionForSemanticDTO,
+                    Misc.CreateDefinitionForSemanticDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateDefinitionForSemanticDTO,
-                    CreateDefinitionForSemanticDTO
+                    Misc.CreateDefinitionForSemanticDTO,
+                    Misc.CreateDefinitionForSemanticDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateSemanticChronologyDTO,
-                    CreateSemanticChronologyDTO));
+                Assert.True(FieldCompare.Equivalent(
+                    Misc.CreateSemanticChronologyDTO,
+                    Misc.CreateSemanticChronologyDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateSemanticChronologyDTO,
-                    CreateSemanticChronologyDTO
+                    Misc.CreateSemanticChronologyDTO,
+                    Misc.CreateSemanticChronologyDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(CreateSemanticDTO,
-                    CreateSemanticDTO));
+                Assert.True(FieldCompare.Equivalent(
+                    Misc.CreateSemanticDTO,
+                    Misc.CreateSemanticDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    CreateSemanticDTO,
-                    CreateSemanticDTO
+                    Misc.CreateSemanticDTO,
+                    Misc.CreateSemanticDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { this.g2, this.g2, this.g3, this.g4 }
+                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                     }));
             }
             {

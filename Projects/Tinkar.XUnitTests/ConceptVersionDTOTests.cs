@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public partial class DTOMarshalTests
+    public class ConceptVersionDTOTests
     {
         [Fact]
         public void ConceptVersionDTOFieldsTest()
@@ -14,11 +14,11 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             ConceptVersionDTO dtoStart = new ConceptVersionDTO(
-                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                CreateStampDTO
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.CreateStampDTO
                 );
-            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
-            Assert.True(dtoStart.StampDTO.IsEquivalent(CreateStampDTO));
+            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
         }
 
         [Fact]
@@ -27,22 +27,22 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
             {
                 ConceptVersionDTO a = new ConceptVersionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    CreateStampDTO);
+                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.CreateStampDTO);
                 ConceptVersionDTO b = new ConceptVersionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    CreateStampDTO);
+                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.CreateStampDTO);
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
                 ConceptVersionDTO a = new ConceptVersionDTO(
-                    new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                    CreateStampDTO);
+                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.CreateStampDTO);
 
                 ConceptVersionDTO b = new ConceptVersionDTO(
-                    new Guid[] { this.g2, this.g1, this.g3, this.g4 },
-                    CreateStampDTO);
+                    new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 },
+                    Misc.CreateStampDTO);
                 Assert.False(a.IsEquivalent(b));
             }
         }
@@ -51,8 +51,8 @@ namespace Tinkar.XUnitTests
         public void ConceptVersionDTOMarshalTest()
         {
             ConceptVersionDTO dtoStart = new ConceptVersionDTO(
-                new Guid[] { this.g1, this.g2, this.g3, this.g4 },
-                CreateStampDTO);
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.CreateStampDTO);
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);
@@ -61,7 +61,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
-                new Guid[] { this.g1, this.g2, this.g3, this.g4 });
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
             Assert.True(dtoStart.IsEquivalent(dtoRead));
         }
     }

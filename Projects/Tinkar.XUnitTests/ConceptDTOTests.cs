@@ -6,28 +6,27 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public partial class DTOMarshalTests
+    public class ConceptDTOTests
     {
-        ConceptDTO CreateConceptDTO => new ConceptDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
         [Fact]
         public void ConceptDTOFieldsTest()
         {
-            ConceptDTO dtoStart = this.CreateConceptDTO;
-            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
+            ConceptDTO dtoStart = Misc.CreateConceptDTO;
+            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
         [Fact]
         public void ConceptDTOIsEquivalentTest()
         {
             {
-                ConceptDTO a = this.CreateConceptDTO;
-                ConceptDTO b = this.CreateConceptDTO;
+                ConceptDTO a = Misc.CreateConceptDTO;
+                ConceptDTO b = Misc.CreateConceptDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                ConceptDTO a = this.CreateConceptDTO;
-                ConceptDTO b = new ConceptDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
+                ConceptDTO a = Misc.CreateConceptDTO;
+                ConceptDTO b = new ConceptDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
                 Assert.False(a.IsEquivalent(b));
             }
         }
@@ -35,7 +34,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void ConceptDTOMarshalTest()
         {
-            ConceptDTO dtoStart = this.CreateConceptDTO;
+            ConceptDTO dtoStart = Misc.CreateConceptDTO;
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);

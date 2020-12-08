@@ -6,29 +6,27 @@ using Xunit;
 
 namespace Tinkar.XUnitTests
 {
-    public partial class DTOMarshalTests
+    public class DefinitionForSemanticDTOTests
     {
-        DefinitionForSemanticDTO CreateDefinitionForSemanticDTO =>
-            new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
         [Fact]
         public void DefinitionForSemanticDTOFieldsTest()
         {
-            DefinitionForSemanticDTO dtoStart = new DefinitionForSemanticDTO(new Guid[] { this.g1, this.g2, this.g3, this.g4 });
-            Compare(dtoStart.ComponentUuids, this.g1, this.g2, this.g3, this.g4);
+            DefinitionForSemanticDTO dtoStart = new DefinitionForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
         [Fact]
         public void DefinitionForSemanticDTOIsEquivalentTest()
         {
             {
-                DefinitionForSemanticDTO a = CreateDefinitionForSemanticDTO;
-                DefinitionForSemanticDTO b = CreateDefinitionForSemanticDTO;
+                DefinitionForSemanticDTO a = Misc.CreateDefinitionForSemanticDTO;
+                DefinitionForSemanticDTO b = Misc.CreateDefinitionForSemanticDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticDTO a = CreateDefinitionForSemanticDTO;
-                DefinitionForSemanticDTO b = new DefinitionForSemanticDTO(new Guid[] { this.g2, this.g1, this.g3, this.g4 });
+                DefinitionForSemanticDTO a = Misc.CreateDefinitionForSemanticDTO;
+                DefinitionForSemanticDTO b = new DefinitionForSemanticDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
                 Assert.False(a.IsEquivalent(b));
             }
         }
@@ -36,7 +34,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void DefinitionForSemanticDTOMarshalTest()
         {
-            DefinitionForSemanticDTO dtoStart = CreateDefinitionForSemanticDTO;
+            DefinitionForSemanticDTO dtoStart = Misc.CreateDefinitionForSemanticDTO;
 
             MemoryStream ms = new MemoryStream();
             TinkarOutput output = new TinkarOutput(ms);
