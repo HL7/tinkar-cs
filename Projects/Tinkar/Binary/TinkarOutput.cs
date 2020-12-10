@@ -21,13 +21,22 @@ using System.Net;
 
 namespace Tinkar
 {
-    public class TinkarOutput
+    public class TinkarOutput : IDisposable
     {
         private BinaryWriter writer;
 
         public TinkarOutput(Stream outStream)
         {
             this.writer = new BinaryWriter(outStream);
+        }
+
+        public void Dispose()
+        {
+            if (this.writer != null)
+            {
+                this.writer.Flush();
+                this.writer = null;
+            }
         }
 
         /// <summary>

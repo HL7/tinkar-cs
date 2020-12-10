@@ -78,8 +78,8 @@ namespace Tinkar
             IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
-            jObj.ExpectPropertyClass("ConceptVersionDTO");
-            JObject jObjStamp = jObj.ExpectObject(ComponentFieldForJson.STAMP);
+            jObj.GetClass("ConceptVersionDTO");
+            JObject jObjStamp = jObj.GetObject(ComponentFieldForJson.STAMP);
             this.StampDTO = new StampDTO(jObjStamp);
         }
 

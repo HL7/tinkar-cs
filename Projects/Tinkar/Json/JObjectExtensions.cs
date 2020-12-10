@@ -9,7 +9,7 @@ namespace Tinkar
 {
     public static class JObjectExtensions
     {
-        public static void ExpectPropertyClass(this JObject jObj,
+        public static void GetClass(this JObject jObj,
             String expectedClassName)
         {
             String actualClassName = jObj[ComponentFieldForJson.CLASS]?.Value<String>();
@@ -17,7 +17,7 @@ namespace Tinkar
                 throw new Exception($"Tinkar parse exception. Expected class '{expectedClassName}', received '{actualClassName}'");
         }
 
-        static JToken Expect(this JObject jObj, String tokenName)
+        static JToken Get(this JObject jObj, String tokenName)
         {
             JToken p = jObj[tokenName] as JToken;
             if (p == null)
@@ -25,7 +25,7 @@ namespace Tinkar
             return p;
         }
 
-        public static JObject ExpectObject(this JObject jObj, String tokenName)
+        public static JObject GetObject(this JObject jObj, String tokenName)
         {
             JObject p = jObj[tokenName] as JObject;
             if (p == null)
@@ -33,13 +33,13 @@ namespace Tinkar
             return p;
         }
 
-        public static DateTime ReadInstant(this JObject jObj, String propertyName) => 
-            jObj.Expect(propertyName).Value<DateTime>();
+        public static DateTime GetInstant(this JObject jObj, String propertyName) => 
+            jObj.Get(propertyName).Value<DateTime>();
 
 
-        public static IEnumerable<Guid> ReadUuids(this JObject jObj, String propertyName)
+        public static IEnumerable<Guid> GetUuids(this JObject jObj, String propertyName)
         {
-            String[] guidStrings = jObj.Expect(propertyName).Values<String>().ToArray();
+            String[] guidStrings = jObj.Get(propertyName).Values<String>().ToArray();
             Guid[] retVal = new Guid[guidStrings.Length];
             for (Int32 i = 0; i < guidStrings.Length; i++)
                 retVal[i] = new Guid(guidStrings[i]);

@@ -73,8 +73,10 @@ namespace Tinkar.XUnitTests
             SemanticChronologyDTO dtoStart = Misc.CreateSemanticChronologyDTO;
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            output.WriteField(dtoStart);
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                output.WriteField(dtoStart);
+            }
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);

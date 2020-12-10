@@ -86,8 +86,10 @@ namespace Tinkar.XUnitTests
             SemanticVersionDTO dtoStart = Misc.CreateSemanticVersionDTO;
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            dtoStart.Marshal(output);
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);

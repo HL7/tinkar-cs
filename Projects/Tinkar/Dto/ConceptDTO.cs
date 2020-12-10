@@ -33,8 +33,8 @@ namespace Tinkar
         /// </summary>
         public ConceptDTO(JObject jObj)
         {
-            jObj.ExpectPropertyClass("ConceptDTO");
-            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
+            jObj.GetClass("ConceptDTO");
+            this.ComponentUuids = jObj.GetUuids(ComponentFieldForJson.COMPONENT_UUIDS);
         }
 
         /// <summary>

@@ -37,8 +37,10 @@ namespace Tinkar.XUnitTests
             DefinitionForSemanticDTO dtoStart = Misc.CreateDefinitionForSemanticDTO;
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            output.WriteField(dtoStart);
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                output.WriteField(dtoStart);
+            }
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,14 @@ namespace Tinkar.XUnitTests
 {
     public static class Misc
     {
+        public static void Dump(this MemoryStream ms)
+        {
+                ms.Position = 0;
+                StreamReader sr = new StreamReader(ms);
+                String json = sr.ReadToEnd();
+                Trace.WriteLine(json);
+        }
+
         public static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public static Guid g1 => new Guid(1, 0, 0, zero);

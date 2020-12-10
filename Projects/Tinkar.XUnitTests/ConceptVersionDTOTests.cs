@@ -57,8 +57,11 @@ namespace Tinkar.XUnitTests
                 Misc.CreateStampDTO);
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            dtoStart.Marshal(output);
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);
@@ -80,12 +83,7 @@ namespace Tinkar.XUnitTests
                 dtoStart.Marshal(output);
             }
 
-            {
-                ms.Position = 0;
-                StreamReader sr = new StreamReader(ms);
-                String json = sr.ReadToEnd();
-                Trace.WriteLine(json);
-            }
+            ms.Dump();
             ms.Position = 0;
             TinkarJsonInput input = new TinkarJsonInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input.ReadJsonObject(),

@@ -25,13 +25,17 @@ namespace Tinkar
 	 *
 	 * @author kec
 	 */
-    public class TinkarInput
+    public class TinkarInput : IDisposable
     {
         private BinaryReader reader;
 
         public TinkarInput(Stream inStream)
         {
             this.reader = new BinaryReader(inStream);
+        }
+
+        public void Dispose()
+        {
         }
 
         /// <summary>

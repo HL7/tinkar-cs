@@ -152,15 +152,15 @@ namespace Tinkar.XUnitTests
             );
 
             MemoryStream ms = new MemoryStream();
-            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            using (TinkarOutput output = new TinkarOutput(ms))
             {
                 dtoStart.Marshal(output);
             }
 
             ms.Position = 0;
-            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            using (TinkarInput input = new TinkarInput(ms))
             {
-                StampDTO dtoEnd = StampDTO.Make(input.ReadJsonObject());
+                StampDTO dtoEnd = StampDTO.Make(input);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

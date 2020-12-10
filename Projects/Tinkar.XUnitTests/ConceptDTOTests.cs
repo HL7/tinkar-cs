@@ -18,6 +18,7 @@ namespace Tinkar.XUnitTests
                 dtoStart.Marshal(output);
             }
 
+            ms.Dump();
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
@@ -55,8 +56,10 @@ namespace Tinkar.XUnitTests
             ConceptDTO dtoStart = Misc.CreateConceptDTO;
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            output.WriteField(dtoStart);
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                output.WriteField(dtoStart);
+            }
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);

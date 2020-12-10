@@ -72,8 +72,10 @@ namespace Tinkar.XUnitTests
             void Test(DateTime start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -91,8 +93,10 @@ namespace Tinkar.XUnitTests
             void Test(Int32 start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -114,8 +118,10 @@ namespace Tinkar.XUnitTests
             void Test(Int64 start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -136,8 +142,10 @@ namespace Tinkar.XUnitTests
             void Test(String start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -155,8 +163,10 @@ namespace Tinkar.XUnitTests
             void Test(byte[] start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -174,8 +184,10 @@ namespace Tinkar.XUnitTests
             void Test(bool start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
@@ -192,8 +204,10 @@ namespace Tinkar.XUnitTests
             void Test(Single start)
             {
                 MemoryStream ms = new MemoryStream();
-                TinkarOutput output = new TinkarOutput(ms);
-                output.WriteField(start);
+                using (TinkarOutput output = new TinkarOutput(ms))
+                {
+                    output.WriteField(start);
+                }
 
                 ms.Position = 0;
                 TinkarInput input = new TinkarInput(ms);
