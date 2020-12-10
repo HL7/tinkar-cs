@@ -76,9 +76,9 @@ namespace Tinkar.XUnitTests
         public void ConceptChronologyDTOMarshalTest()
         {
             ConceptChronologyDTO dtoStart = new ConceptChronologyDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                new Guid[] {Misc.g1, Misc.g2, Misc.g3, Misc.g4},
+                new Guid[] {Misc.h1, Misc.h2, Misc.h3, Misc.h4},
+                Misc.ConceptVersionsBase(new Guid[] {Misc.g1, Misc.g2, Misc.g3, Misc.g4})
             );
 
             MemoryStream ms = new MemoryStream();
@@ -89,9 +89,11 @@ namespace Tinkar.XUnitTests
 
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.ReadField();
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                ConceptChronologyDTO dtoRead = (ConceptChronologyDTO) input.ReadField();
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
     }
 }

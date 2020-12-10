@@ -92,12 +92,14 @@ namespace Tinkar.XUnitTests
             }
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            SemanticVersionDTO dtoRead = SemanticVersionDTO.Make(input,
-                dtoStart.ComponentUuids,
-                dtoStart.DefinitionForSemanticUuids,
-                dtoStart.ReferencedComponentUuids);
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                SemanticVersionDTO dtoRead = SemanticVersionDTO.Make(input,
+                    dtoStart.ComponentUuids,
+                    dtoStart.DefinitionForSemanticUuids,
+                    dtoStart.ReferencedComponentUuids);
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
     }
 }

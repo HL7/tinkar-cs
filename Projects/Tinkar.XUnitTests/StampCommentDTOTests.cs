@@ -78,9 +78,11 @@ namespace Tinkar.XUnitTests
             }
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            StampCommentDTO dtoRead = StampCommentDTO.Make(input);
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                StampCommentDTO dtoRead = StampCommentDTO.Make(input);
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
     }
 }

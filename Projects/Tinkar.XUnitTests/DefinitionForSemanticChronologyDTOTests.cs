@@ -81,9 +81,11 @@ namespace Tinkar.XUnitTests
             }
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO)input.ReadField();
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO) input.ReadField();
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
     }
 }

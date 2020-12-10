@@ -75,9 +75,11 @@ namespace Tinkar.XUnitTests
             }
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            FieldDefinitionDTO dtoRead = FieldDefinitionDTO.Make(input);
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                FieldDefinitionDTO dtoRead = FieldDefinitionDTO.Make(input);
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
     }
 }

@@ -78,9 +78,11 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                DateTime value = (DateTime) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+                    DateTime value = (DateTime) input.ReadField();
+                    Assert.True(start == value);
+                }
             }
 
             Test(new DateTime(1900, 1, 1));
@@ -99,9 +101,12 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                Int32 value = (Int32) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    Int32 value = (Int32) input.ReadField();
+                    Assert.True(start == value);
+                }
             }
 
             Test(Int32.MinValue);
@@ -124,9 +129,13 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                Int32 value = (Int32) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    Int32 value = (Int32) input.ReadField();
+                    Assert.True(start == value);
+                }
+
             }
 
             Test(0);
@@ -148,9 +157,13 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                String value = (String) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    String value = (String) input.ReadField();
+                    Assert.True(start == value);
+                }
+
             }
             Test(String.Empty);
             Test("a");
@@ -169,9 +182,13 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                byte[] value = (byte[]) input.ReadField();
-                Assert.True(start.SequenceEqual(value));
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    byte[] value = (byte[]) input.ReadField();
+                    Assert.True(start.SequenceEqual(value));
+                }
+
             }
             Test(new byte[] {});
             Test(new byte[] { 1 });
@@ -190,9 +207,13 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                Boolean value = (Boolean) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    Boolean value = (Boolean) input.ReadField();
+                    Assert.True(start == value);
+                }
+
             }
             Test(true);
             Test(false);
@@ -210,9 +231,13 @@ namespace Tinkar.XUnitTests
                 }
 
                 ms.Position = 0;
-                TinkarInput input = new TinkarInput(ms);
-                Single value = (Single) input.ReadField();
-                Assert.True(start == value);
+                using (TinkarInput input = new TinkarInput(ms))
+                {
+
+                    Single value = (Single) input.ReadField();
+                    Assert.True(start == value);
+                }
+
             }
 
             Test(Single.MinValue);

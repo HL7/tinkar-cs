@@ -64,10 +64,12 @@ namespace Tinkar.XUnitTests
 
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
-            ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
+                    new Guid[] {Misc.g1, Misc.g2, Misc.g3, Misc.g4});
+                Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
         }
 
         [Fact]
