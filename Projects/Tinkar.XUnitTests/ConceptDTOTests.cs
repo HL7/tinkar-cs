@@ -21,7 +21,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                ConceptDTO dtoEnd = ConceptDTO.Make(input);
+                ConceptDTO dtoEnd = ConceptDTO.Make(input.ReadJsonObject());
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

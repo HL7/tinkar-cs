@@ -160,7 +160,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                StampDTO dtoEnd = StampDTO.Make(input);
+                StampDTO dtoEnd = StampDTO.Make(input.ReadJsonObject());
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
@@ -186,7 +186,7 @@ namespace Tinkar.XUnitTests
 
             ms.Position = 0;
             TinkarJsonInput input = new TinkarJsonInput(ms);
-            StampDTO dtoRead = StampDTO.Make(input);
+            StampDTO dtoRead = StampDTO.Make(input.ReadJsonObject());
             Assert.True(dtoStart.IsEquivalent(dtoRead));
         }
     }

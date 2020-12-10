@@ -88,7 +88,7 @@ namespace Tinkar.XUnitTests
             }
             ms.Position = 0;
             TinkarJsonInput input = new TinkarJsonInput(ms);
-            ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
+            ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input.ReadJsonObject(),
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
             Assert.True(dtoStart.IsEquivalent(dtoRead));
         }

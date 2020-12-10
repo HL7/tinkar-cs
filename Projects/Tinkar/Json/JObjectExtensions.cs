@@ -25,6 +25,13 @@ namespace Tinkar
             return p;
         }
 
+        public static JObject ExpectObject(this JObject jObj, String tokenName)
+        {
+            JObject p = jObj[tokenName] as JObject;
+            if (p == null)
+                throw new Exception($"Error parsing Tinkar json. Expected property '{tokenName}' not found");
+            return p;
+        }
 
         public static DateTime ReadInstant(this JObject jObj, String propertyName) => 
             jObj.Expect(propertyName).Value<DateTime>();

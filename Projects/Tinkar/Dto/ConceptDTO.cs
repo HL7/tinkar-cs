@@ -31,9 +31,8 @@ namespace Tinkar
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public ConceptDTO(TinkarJsonInput input)
+        public ConceptDTO(JObject jObj)
         {
-            JObject jObj = input.ReadJsonObject();
             jObj.ExpectPropertyClass("ConceptDTO");
             this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
         }
@@ -76,8 +75,8 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
-        public static ConceptDTO Make(TinkarJsonInput input) =>
-            new ConceptDTO(input);
+        public static ConceptDTO Make(JObject jObj) =>
+            new ConceptDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.

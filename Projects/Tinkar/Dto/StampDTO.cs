@@ -109,9 +109,8 @@ namespace Tinkar
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public StampDTO(TinkarJsonInput input)
+        public StampDTO(JObject jObj)
         {
-            JObject jObj = input.ReadJsonObject();
             this.StatusUuids = jObj.ReadUuids(ComponentFieldForJson.STATUS_UUIDS);
             this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
             this.AuthorUuids = jObj.ReadUuids(ComponentFieldForJson.AUTHOR_UUIDS);
@@ -155,8 +154,8 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json stream.
         /// </summary>
-        public static StampDTO Make(TinkarJsonInput input) =>
-            new StampDTO(input);
+        public static StampDTO Make(JObject jObj) =>
+            new StampDTO(jObj);
 
         /// <summary>
         /// Marshal DTO item to output stream.

@@ -74,13 +74,13 @@ namespace Tinkar
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public ConceptVersionDTO(TinkarJsonInput input,
+        public ConceptVersionDTO(JObject jObj,
             IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
-            JObject jObj = input.ReadJsonObject();
             jObj.ExpectPropertyClass("ConceptVersionDTO");
-            this.StampDTO = new StampDTO(input);
+            JObject jObjStamp = jObj.ExpectObject(ComponentFieldForJson.STAMP);
+            this.StampDTO = new StampDTO(jObjStamp);
         }
 
         /// <summary>
@@ -126,9 +126,9 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static ConceptVersionDTO Make(TinkarJsonInput input,
+        public static ConceptVersionDTO Make(JObject jObj,
             IEnumerable<Guid> componentUuids) =>
-            new ConceptVersionDTO(input, componentUuids);
+            new ConceptVersionDTO(jObj, componentUuids);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
