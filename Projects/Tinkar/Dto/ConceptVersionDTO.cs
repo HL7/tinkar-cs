@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -71,6 +72,18 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public ConceptVersionDTO(TinkarJsonInput input,
+            IEnumerable<Guid> componentUuids)
+        {
+            this.ComponentUuids = componentUuids;
+            JObject jObj = input.ReadJsonObject();
+            jObj.ExpectPropertyClass("ConceptVersionDTO");
+            this.StampDTO = new StampDTO(input);
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -86,39 +99,20 @@ namespace Tinkar
             return 0;
         }
 
-        ///**
-        // * Marshaler for ConceptVersionDTO using JSON
-        // * @param writer
-        // */
-        //@JsonMarshaler
-        //@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.STAMP, stampDTO);
-        //    json.writeJSONString(writer);
-        //}
 
-        ///**
-        // * Version unmarshaler for ConceptVersionDTO using JSON
-        // * @param jsonObject
-        // * @param componentUuids
-        // * @return
-        // */
-        //@JsonVersionUnmarshaler
-        //public static ConceptVersionDTO Make(JSONObject jsonObject, IEnumerable<Guid> componentUuids) {
-        //    return new ConceptVersionDTO(
-        //            componentUuids,
-        //            StampDTO.Make((JSONObject) jsonObject.get(ComponentFieldForJson.STAMP)));
-        //}
-
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static ConceptVersionDTO Make(TinkarInput input,
             IEnumerable<Guid> componentUuids) =>
             new ConceptVersionDTO(input, componentUuids);
 
-        ///**
-        // * Version marshaler for ConceptVersionDTO
-        // * @param out
-        // */
+        /// <summary>
+        /// Marshal all fields to binary output stream.
+        /// </summary>
+        /// <param name="output">Json output stream</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -128,11 +122,27 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static ConceptVersionDTO Make(TinkarJsonInput input,
+            IEnumerable<Guid> componentUuids) =>
+            new ConceptVersionDTO(input, componentUuids);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
-
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass("ConceptVersionDTO");
+            output.WritePropertyName(ComponentFieldForJson.STAMP);
+            // note that componentUuids are not written redundantly here,
+            // they are written with the ConceptChronologyDTO...
+            this.StampDTO.Marshal(output);
+            output.WriteEndObject();
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -17,7 +18,33 @@ namespace Tinkar
             this.reader = new JsonTextReader(new StreamReader(inStream));
         }
 
-        IEnumerable<Guid> ExpectPropertyGuids(String propertyName)
+        public JObject ReadJsonObject() => JObject.Load(this.reader);
+
+        public bool ReadProperty(out String propertyName)
+        {
+            propertyName = null;
+            if (this.reader.Read() == false)
+                throw new Exception($"Tinkar JSON parse error. Unexpected EOF");
+            switch (this.reader.TokenType)
+            {
+                case JsonToken.EndObject:
+                    return false;
+                case JsonToken.PropertyName:
+                    propertyName = (String) this.reader.Value;
+                    return false;
+                default:
+                    throw new Exception($"Tinkar JSON parse error. Unexpected token {this.reader.TokenType} found reading object's properties");
+            }
+        }
+
+        public DateTime ExpectPropertyInstant(String propertyName)
+        {
+            ExpectProperty(propertyName);
+            String instantStr = this.ExpectStringToken();
+            return InstantUtil.Parse(instantStr);
+        }
+
+        public IEnumerable<Guid> ExpectPropertyGuids(String propertyName)
         {
             ExpectProperty(propertyName);
             List<Guid> retVal = new List<Guid>();
@@ -46,7 +73,7 @@ namespace Tinkar
             return retVal;
         }
 
-        String ValueAsString()
+        public String ValueAsString()
         {
             String value = this.reader.Value as String;
             if (value == null)
@@ -54,7 +81,7 @@ namespace Tinkar
             return value;
         }
 
-        void ExpectToken(JsonToken token)
+        public void ExpectToken(JsonToken token)
         {
             if (this.reader.Read() == false)
                 throw new Exception("Unexpected EOF reading from JSON stream");
@@ -62,52 +89,51 @@ namespace Tinkar
                 throw new Exception($"Unexpected token {reader.TokenType}, expecting {token}");
         }
 
-        void ExpectStartObject() => ExpectToken(JsonToken.StartObject);
-        void ExpectEndObject() => ExpectToken(JsonToken.EndObject);
-        void ExpectPropertyName() => ExpectToken(JsonToken.PropertyName);
+        public void ExpectStartObject() => ExpectToken(JsonToken.StartObject);
+        public void ExpectEndObject() => ExpectToken(JsonToken.EndObject);
+        public void ExpectPropertyName() => ExpectToken(JsonToken.PropertyName);
 
-        void ExpectStringValue(String expectedValue)
+        public void ExpectStringValue(String expectedValue)
         {
             String value = this.ValueAsString();
             if (String.Compare(expectedValue, value) != 0)
                 throw new Exception($"Jason read error. Expected '{expectedValue}', got {value}");
         }
 
-        void ExpectProperty(String propertyName)
+        public void ExpectProperty(String propertyName)
         {
             this.ExpectPropertyName();
             ExpectStringValue(propertyName);
         }
 
-        String ExpectStringToken()
+        public String ExpectStringToken()
         {
             ExpectToken(JsonToken.String);
             return this.ValueAsString();
         }
 
-        String ExpectPropertyString(String propertyName)
+        public String ExpectPropertyString(String propertyName)
         {
             ExpectProperty(propertyName);
             return this.ExpectStringToken();
         }
 
-        /// <summary>
-        /// Unmarshal Tinkar object from json stream.
-        /// </summary>
-        public IJsonMarshalable ReadClass()
-        {
-            this.ExpectStartObject();
-            String className = this.ExpectPropertyString(ComponentFieldForJson.CLASS);
-            switch (className)
-            {
-                case "ConceptDTO": return new ConceptDTO(this);
-                default:
-                    throw new Exception($"Error reading class. Unknown class '{className}'");
-            }
-        }
+        public void ReadStartObject() => ExpectStartObject();
+
+        public void ReadEndObject() => ExpectEndObject();
 
         public IEnumerable<Guid> ReadUuids(String propertyName) =>
             ExpectPropertyGuids(propertyName);
+
+        public DateTime ReadInstant(String propertyName) =>
+            ExpectPropertyInstant(propertyName);
+
+        public void ReadClass(String className)
+        {
+            String readClassName = this.ExpectPropertyString(ComponentFieldForJson.CLASS);
+            if (String.Compare(readClassName, className) != 0)
+                throw new Exception($"Expected class name {className}, received {readClassName}");
+        }
 
         public void Dispose()
         {

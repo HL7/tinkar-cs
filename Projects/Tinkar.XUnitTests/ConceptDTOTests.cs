@@ -15,13 +15,13 @@ namespace Tinkar.XUnitTests
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
             {
-                output.WriteClass(dtoStart);
+                dtoStart.Marshal(output);
             }
 
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                ConceptDTO dtoEnd = (ConceptDTO) input.ReadClass();
+                ConceptDTO dtoEnd = ConceptDTO.Make(input);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

@@ -152,11 +152,40 @@ namespace Tinkar.XUnitTests
             );
 
             MemoryStream ms = new MemoryStream();
-            TinkarOutput output = new TinkarOutput(ms);
-            dtoStart.Marshal(output);
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
 
             ms.Position = 0;
-            TinkarInput input = new TinkarInput(ms);
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                StampDTO dtoEnd = StampDTO.Make(input);
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+            }
+        }
+
+        [Fact]
+        public void StampDTOJsonMarshalTest()
+        {
+            DateTime time = new DateTime(2020, 12, 31);
+
+            StampDTO dtoStart = new StampDTO(
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                time,
+                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
+                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
+                new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+            );
+
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Position = 0;
+            TinkarJsonInput input = new TinkarJsonInput(ms);
             StampDTO dtoRead = StampDTO.Make(input);
             Assert.True(dtoStart.IsEquivalent(dtoRead));
         }

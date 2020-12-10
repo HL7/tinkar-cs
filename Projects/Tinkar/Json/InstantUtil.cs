@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 kec.
+ * Copyright 2020-2021 HL7.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,4 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hl7.tinkar.json.parser;
+using System;
+using System.Collections.Generic;
+public static class InstantUtil
+{
+    public static String Format(DateTime dateTime) => dateTime.ToString();
+
+    public static DateTime Parse(String possibleInstant)
+	{
+		try
+		{
+			DateTime instant = DateTime.Parse(possibleInstant);
+			return instant;
+		}
+		catch
+		{
+			return DateTime.MinValue;
+		}
+	}
+}

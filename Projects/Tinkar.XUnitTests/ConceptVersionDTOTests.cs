@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Tinkar.XUnitTests
@@ -60,6 +62,32 @@ namespace Tinkar.XUnitTests
 
             ms.Position = 0;
             TinkarInput input = new TinkarInput(ms);
+            ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+            Assert.True(dtoStart.IsEquivalent(dtoRead));
+        }
+
+        [Fact]
+        public void ConceptVersionDTOJsonMarshalTest()
+        {
+            ConceptVersionDTO dtoStart = new ConceptVersionDTO(
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.CreateStampDTO);
+
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            {
+                ms.Position = 0;
+                StreamReader sr = new StreamReader(ms);
+                String json = sr.ReadToEnd();
+                Trace.WriteLine(json);
+            }
+            ms.Position = 0;
+            TinkarJsonInput input = new TinkarJsonInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
             Assert.True(dtoStart.IsEquivalent(dtoRead));

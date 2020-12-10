@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -106,6 +107,19 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public StampDTO(TinkarJsonInput input)
+        {
+            JObject jObj = input.ReadJsonObject();
+            this.StatusUuids = jObj.ReadUuids(ComponentFieldForJson.STATUS_UUIDS);
+            this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
+            this.AuthorUuids = jObj.ReadUuids(ComponentFieldForJson.AUTHOR_UUIDS);
+            this.ModuleUuids = jObj.ReadUuids(ComponentFieldForJson.MODULE_UUIDS);
+            this.PathUuids = jObj.ReadUuids(ComponentFieldForJson.PATH_UUIDS);
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
@@ -130,34 +144,18 @@ namespace Tinkar
             return 0;
         }
 
-        //@Override
-        //public void jsonMarshal(Writer writer)
-        //{
-        //	final JSONObject json = new JSONObject();
-        //	json.put(STATUS_UUIDS, statusUuids);
-        //	json.put(ComponentFieldForJson.TIME, time);
-        //	json.put(ComponentFieldForJson.AUTHOR_UUIDS, authorUuids);
-        //	json.put(ComponentFieldForJson.MODULE_UUIDS, moduleUuids);
-        //	json.put(ComponentFieldForJson.PATH_UUIDS, pathUuids);
-        //	json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static StampDTO Make(JSONObject jsonObject)
-        //{
-        //	return new StampDTO(jsonObject.asImmutableUuidList(STATUS_UUIDS),
-        //			jsonObject.asInstant(TIME),
-        //			jsonObject.asImmutableUuidList(AUTHOR_UUIDS),
-        //			jsonObject.asImmutableUuidList(MODULE_UUIDS),
-        //			jsonObject.asImmutableUuidList(PATH_UUIDS));
-        //}
-
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
         public static StampDTO Make(TinkarInput input) =>
+            new StampDTO(input);
+
+        /// <summary>
+        /// Static method to Create DTO item from json stream.
+        /// </summary>
+        public static StampDTO Make(TinkarJsonInput input) =>
             new StampDTO(input);
 
         /// <summary>
@@ -178,7 +176,15 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteUuids(ComponentFieldForJson.STATUS_UUIDS, this.StatusUuids);
+            output.WriteInstant(ComponentFieldForJson.TIME, this.Time);
+            output.WriteUuids(ComponentFieldForJson.AUTHOR_UUIDS, this.AuthorUuids);
+            output.WriteUuids(ComponentFieldForJson.MODULE_UUIDS, this.ModuleUuids);
+            output.WriteUuids(ComponentFieldForJson.PATH_UUIDS, this.PathUuids);
+            output.WriteEndObject();
+        }
     }
 }

@@ -16,22 +16,34 @@ namespace Tinkar
         /// Constructor
         /// </summary>
         /// <param name="outStream"></param>
-        public TinkarJsonOutput(Stream outStream)
+        public TinkarJsonOutput(Stream outStream, bool formatted = true)
         {
             this.writer = new JsonTextWriter(new StreamWriter(outStream));
+            if (formatted == true)
+                this.writer.Formatting = Formatting.Indented;
         }
 
 
         /// <summary>
-        /// Marshal Tinkar object to json stream as Json object.
+        /// Write JSON start object tag.
         /// </summary>
-        public void WriteClass(IJsonMarshalable item)
+        public void WriteStartObject() => this.writer.WriteStartObject();
+
+        /// <summary>
+        /// Write JSON end object tag.
+        /// </summary>
+        public void WriteEndObject() => this.writer.WriteEndObject();
+
+        public void WritePropertyName(String propertyName) =>
+            this.writer.WritePropertyName(propertyName);
+
+        /// <summary>
+        /// Write class property.
+        /// </summary>
+        public void WriteClass(String className)
         {
-            writer.WriteStartObject();
-            writer.WritePropertyName(ComponentFieldForJson.CLASS);
-            writer.WriteValue(item.GetType().Name);
-            item.Marshal(this);
-            writer.WriteEndObject();
+            this.writer.WritePropertyName(ComponentFieldForJson.CLASS);
+            this.writer.WriteValue(className);
         }
 
         /// <summary>
@@ -39,7 +51,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="guids"></param>
-        public void WriteGuids(String propertyName,
+        public void WriteUuids(String propertyName,
             IEnumerable<Guid> guids)
         {
             this.writer.WritePropertyName(propertyName);
@@ -47,6 +59,16 @@ namespace Tinkar
             foreach (Guid guid in guids)
                 this.writer.WriteValue(guid);
             this.writer.WriteEndArray();
+        }
+
+        /// <summary>
+        /// Write property that is a date time
+        /// </summary>
+        public void WriteInstant(String propertyName,
+            DateTime instant)
+        {
+            this.writer.WritePropertyName(propertyName);
+            this.writer.WriteValue(InstantUtil.Format(instant));
         }
 
         public void Dispose()
