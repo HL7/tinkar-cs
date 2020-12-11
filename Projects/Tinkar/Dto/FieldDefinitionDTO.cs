@@ -38,7 +38,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        private const String JsonClassName = "FieldDefinitionDTO";
+        public const String JsonClassName = "FieldDefinitionDTO";
 
 
         /// <summary>

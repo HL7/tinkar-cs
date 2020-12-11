@@ -41,7 +41,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        private const String JsonClassName = "ConceptChronologyDTO";
+        public const String JsonClassName = "ConceptChronologyDTO";
 
         /// <summary>
         /// Implementation of IChronology.ChronologySet.

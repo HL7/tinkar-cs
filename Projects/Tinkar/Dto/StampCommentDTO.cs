@@ -39,7 +39,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        private const String JsonClassName = "StampCommentDTO";
+        public const String JsonClassName = "StampCommentDTO";
 
         /// <summary>
         /// DTO for Stamp;

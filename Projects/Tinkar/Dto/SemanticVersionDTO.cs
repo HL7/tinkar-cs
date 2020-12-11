@@ -41,7 +41,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        private const String JsonClassName = "SemanticVersionDTO";
+        public const String JsonClassName = "SemanticVersionDTO";
 
         /// <summary>
         /// Implements IVersion.Stamp
@@ -121,9 +121,7 @@ namespace Tinkar
             this.DefinitionForSemanticUuids = definitionForSemanticUuids;
             this.ReferencedComponentUuids = referencedComponentUuids;
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
-
-            throw new NotImplementedException();
-            //this.Fields = input.ReadObjects();
+            this.Fields = jObj.ReadObjects(ComponentFieldForJson.FIELDS);
         }
 
         /// <summary>
@@ -232,6 +230,7 @@ namespace Tinkar
             output.WriteClass(JsonClassName);
             output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
+            output.WriteObjects(ComponentFieldForJson.FIELDS, this.Fields);
             output.WriteEndObject();
         }
     }

@@ -171,7 +171,7 @@ namespace Tinkar
                     return ConceptDTO.Make(this);
                 case FieldDataType.DefinitionForSemanticChronologyType:
                     return DefinitionForSemanticChronologyDTO.Make(this);
-                case FieldDataType.DefinitionForSymanticType:
+                case FieldDataType.DefinitionForSemanticType:
                     return DefinitionForSemanticDTO.Make(this);
                 case FieldDataType.SemanticChronologyType:
                     return SemanticChronologyDTO.Make(this);

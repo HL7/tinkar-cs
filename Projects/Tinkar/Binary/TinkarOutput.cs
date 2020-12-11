@@ -163,18 +163,13 @@ namespace Tinkar
                     break;
 
                 case DefinitionForSemanticDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSymanticType);
+                    this.WriteFieldType(FieldDataType.DefinitionForSemanticType);
                     item.Marshal(this);
                     break;
 
                 case DefinitionForSemanticChronologyDTO item:
                     this.WriteFieldType(FieldDataType.DefinitionForSemanticChronologyType);
                     item.Marshal(this);
-                    break;
-
-                case IIdentifiedThing item:
-                    this.WriteFieldType(FieldDataType.IdentifiedThingType);
-                    this.WriteIdentifiedThing(item);
                     break;
 
                 case DigraphDTO item:
@@ -186,8 +181,6 @@ namespace Tinkar
             }
         }
 
-
-        private void WriteIdentifiedThing(IIdentifiedThing thing) => this.WriteUuids(thing.ComponentUuids);
 
         /// <summary>
         /// Read string.

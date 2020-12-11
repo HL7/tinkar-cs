@@ -25,7 +25,7 @@ namespace Tinkar
 		ConceptChronologyType = 8,
         ConceptType = 9,
 		DefinitionForSemanticChronologyType = 10,
-		DefinitionForSymanticType = 11,
+		DefinitionForSemanticType = 11,
 		SemanticChronologyType = 12,
 		SemanticType = 13,
 

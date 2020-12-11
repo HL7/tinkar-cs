@@ -39,6 +39,98 @@ namespace Tinkar
             this.writer.WritePropertyName(propertyName);
 
         /// <summary>
+        /// Write array of objects.
+        /// </summary>
+        public void WriteObjects(String propertyName, IEnumerable<Object> fields)
+        {
+            this.writer.WritePropertyName(propertyName);
+            WriteObjects(fields);
+        }
+
+        /// <summary>
+        /// Write array of objects.
+        /// </summary>
+        void WriteObjects(IEnumerable<Object> fields)
+        {
+            this.writer.WriteStartArray();
+            foreach (Object field in fields)
+                WriteField(field);
+            this.writer.WriteEndArray();
+        }
+
+        public void WriteField(Object field)
+        {
+            switch (field)
+            {
+                case Boolean item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case byte[] item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case Single item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case Double item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case Int32 item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case Int64 item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case String item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case DateTime item:
+                    this.writer.WriteValue(item);
+                    break;
+
+                case Object[] item:
+                    this.WriteObjects(item);
+                    break;
+
+                case ConceptDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case ConceptChronologyDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case SemanticDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case SemanticChronologyDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case DefinitionForSemanticDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case DefinitionForSemanticChronologyDTO item:
+                    item.Marshal(this);
+                    break;
+
+                case DigraphDTO item:
+                    throw new NotImplementedException();
+
+                default:
+                    throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
+            }
+        }
+
+        /// <summary>
         /// Write class property.
         /// </summary>
         public void WriteClass(String className)

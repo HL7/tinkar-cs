@@ -95,7 +95,15 @@ namespace Tinkar.XUnitTests
                 new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
                 new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
                 Misc.CreateStampDTO,
-                new Object[] { 1, "abcdef", 0.3F }
+                new Object[]
+                {
+                    true, false,
+                    new byte[] { }, new byte[] {1, 2, 3 },
+                    0.3F,
+                    -1, 0, 1, 
+                    "abcdef",
+                    new DateTime(2020, 1, 2)
+                }
             );
 
 
