@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class DefinitionForSemanticVersionDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticVersionDTOFieldsTest()
         {
@@ -39,6 +42,7 @@ namespace Tinkar.XUnitTests
                 );
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticVersionDTOIsEquivalentTest()
         {
@@ -94,6 +98,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticVersionDTOMarshalTest()
         {
@@ -111,6 +116,26 @@ namespace Tinkar.XUnitTests
                 DefinitionForSemanticVersionDTO dtoRead =
                     DefinitionForSemanticVersionDTO.Make(input, dtoStart.ComponentUuids);
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+        [DoNotParallelize]
+        [Fact]
+        public void DefinitionForSemanticVersionDTOJsonMarshal()
+        {
+            DefinitionForSemanticVersionDTO dtoStart = Misc.CreateDefinitionForSemanticVersionDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                DefinitionForSemanticVersionDTO dtoEnd = DefinitionForSemanticVersionDTO.Make(input.ReadJsonObject(),
+                    dtoStart.ComponentUuids);
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }

@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -30,7 +31,18 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "DefinitionForSemanticChronologyDTO";
 
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids.
@@ -88,6 +100,19 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        public DefinitionForSemanticChronologyDTO(JObject jObj)
+        {
+            jObj.GetClass(JsonClassName);
+            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
+            this.ChronologySetUuids = jObj.ReadUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS);
+            this.DefinitionVersions =
+                jObj.ReadDefinitionForSemanticVersionList(this.ComponentUuids);
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -105,24 +130,6 @@ namespace Tinkar
                 return cmp;
             return 0;
         }
-
-        //@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //    json.put(ComponentFieldForJson.COMPONENT_UUIDS, componentUuids);
-        //    json.put(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS, chronologySetUuids);
-        //    json.put(ComponentFieldForJson.DEFINITION_VERSIONS, definitionVersions);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static DefinitionForSemanticChronologyDTO Make(JSONObject jsonObject) {
-        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    return new DefinitionForSemanticChronologyDTO(componentUuids,
-        //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
-        //                    jsonObject.asDefinitionForSemanticVersionList(ComponentFieldForJson.DEFINITION_VERSIONS, componentUuids));
-        //}
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -145,11 +152,26 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static DefinitionForSemanticChronologyDTO Make(JObject jObj) =>
+            new DefinitionForSemanticChronologyDTO(jObj);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
-
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, this.ComponentUuids);
+            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS, this.ChronologySetUuids);
+            output.WriteMarshalableList(ComponentFieldForJson.DEFINITION_VERSIONS,
+                this.DefinitionVersions);
+            output.WriteEndObject();
+        }
     }
 }

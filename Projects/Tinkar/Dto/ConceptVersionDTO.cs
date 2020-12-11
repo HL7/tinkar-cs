@@ -33,6 +33,12 @@ namespace Tinkar
         private const int MarshalVersion = 1;
 
         /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "ConceptVersionDTO";
+
+        /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
@@ -78,8 +84,8 @@ namespace Tinkar
             IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
-            jObj.GetClass("ConceptVersionDTO");
-            JObject jObjStamp = jObj.GetObject(ComponentFieldForJson.STAMP);
+            jObj.GetClass(JsonClassName);
+            JObject jObjStamp = jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP);
             this.StampDTO = new StampDTO(jObjStamp);
         }
 
@@ -136,11 +142,12 @@ namespace Tinkar
         /// <param name="output">Json output stream</param>
         public void Marshal(TinkarJsonOutput output)
         {
-            output.WriteStartObject();
-            output.WriteClass("ConceptVersionDTO");
-            output.WritePropertyName(ComponentFieldForJson.STAMP);
             // note that componentUuids are not written redundantly here,
             // they are written with the ConceptChronologyDTO...
+
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
             output.WriteEndObject();
         }

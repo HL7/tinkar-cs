@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class DefinitionForSemanticChronologyDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticChronologyDTOFieldsTest()
         {
@@ -20,6 +23,7 @@ namespace Tinkar.XUnitTests
                 );
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticChronologyDTOIsEquivalentTest()
         {
@@ -69,6 +73,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticChronologyDTOMarshalTest()
         {
@@ -85,6 +90,25 @@ namespace Tinkar.XUnitTests
             {
                 DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO) input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+        [DoNotParallelize]
+        [Fact]
+        public void DefinitionForSemanticChronologyDTOJsonMarshal()
+        {
+            DefinitionForSemanticChronologyDTO dtoStart = Misc.CreateDefinitionForSemanticChronologyDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                DefinitionForSemanticChronologyDTO dtoEnd = DefinitionForSemanticChronologyDTO.Make(input.ReadJsonObject());
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }

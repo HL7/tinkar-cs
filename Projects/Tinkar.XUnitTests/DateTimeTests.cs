@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class DateTimeTests
     {
+        [DoNotParallelize]
         [Fact]
         public void InstantTest()
         {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -46,6 +47,16 @@ namespace Tinkar
             this.writer.WriteValue(className);
         }
 
+        public void WriteMarshalableList(String propertyName,
+            IEnumerable<IJsonMarshalable> items)
+        {
+            this.writer.WritePropertyName(propertyName);
+            this.writer.WriteStartArray();
+            foreach (IJsonMarshalable item in items)
+                item.Marshal(this);
+            this.writer.WriteEndArray();
+        }
+
         /// <summary>
         /// Write property that is array of guids
         /// </summary>
@@ -69,6 +80,16 @@ namespace Tinkar
         {
             this.writer.WritePropertyName(propertyName);
             this.writer.WriteValue(InstantUtil.Format(instant));
+        }
+
+        /// <summary>
+        /// Write property that is a string
+        /// </summary>
+        public void WriteUTF(String propertyName,
+            String value)
+        {
+            this.writer.WritePropertyName(propertyName);
+            this.writer.WriteValue(value);
         }
 
         public void Dispose()

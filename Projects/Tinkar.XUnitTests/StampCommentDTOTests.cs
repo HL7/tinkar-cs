@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class StampCommentDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void StampCommentDTOFieldsTest()
         {
@@ -20,6 +23,7 @@ namespace Tinkar.XUnitTests
             Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StampCommentDTOIsEquivalentTest()
         {
@@ -61,6 +65,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StampCommentDTOMarshalTest()
         {
@@ -82,6 +87,27 @@ namespace Tinkar.XUnitTests
             {
                 StampCommentDTO dtoRead = StampCommentDTO.Make(input);
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+
+
+        [DoNotParallelize]
+        [Fact]
+        public void StampCommentDTOJsonMarshal()
+        {
+            StampCommentDTO dtoStart = Misc.CreateStampCommentDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                StampCommentDTO dtoEnd = StampCommentDTO.Make(input.ReadJsonObject());
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }

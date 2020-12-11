@@ -12,7 +12,18 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "ConceptDTO";
 
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids.
@@ -33,8 +44,8 @@ namespace Tinkar
         /// </summary>
         public ConceptDTO(JObject jObj)
         {
-            jObj.GetClass("ConceptDTO");
-            this.ComponentUuids = jObj.GetUuids(ComponentFieldForJson.COMPONENT_UUIDS);
+            jObj.GetClass(JsonClassName);
+            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
         }
 
         /// <summary>
@@ -85,7 +96,7 @@ namespace Tinkar
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();
-            output.WriteClass("ConceptDTO");
+            output.WriteClass(JsonClassName);
             output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
             output.WriteEndObject();

@@ -65,6 +65,13 @@ namespace Tinkar.XUnitTests
 
         public static ConceptDTO CreateConceptDTO => new ConceptDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
 
+        public static FieldDefinitionDTO CreateFieldDefinitionDTO =>
+            new FieldDefinitionDTO(
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
+                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+            );
+
         public static DefinitionForSemanticDTO CreateDefinitionForSemanticDTO =>
             new DefinitionForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
 
@@ -98,6 +105,15 @@ namespace Tinkar.XUnitTests
                 new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
                 new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
             );
+
+        public static ConceptVersionDTO CreateConceptVersionDTO => 
+            new ConceptVersionDTO(
+                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.CreateStampDTO
+            );
+
+        public static StampCommentDTO CreateStampCommentDTO => 
+            new StampCommentDTO(Misc.CreateStampDTO, "xxyyz");
 
         public static StampDTO CreateStampDTO => new StampDTO(
             new Guid[]

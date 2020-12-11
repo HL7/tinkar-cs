@@ -25,6 +25,11 @@ namespace Tinkar
         IMarshalable,
         IStamp
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
 
         /// <summary>
@@ -111,11 +116,11 @@ namespace Tinkar
         /// </summary>
         public StampDTO(JObject jObj)
         {
-            this.StatusUuids = jObj.GetUuids(ComponentFieldForJson.STATUS_UUIDS);
-            this.Time = jObj.GetInstant(ComponentFieldForJson.TIME);
-            this.AuthorUuids = jObj.GetUuids(ComponentFieldForJson.AUTHOR_UUIDS);
-            this.ModuleUuids = jObj.GetUuids(ComponentFieldForJson.MODULE_UUIDS);
-            this.PathUuids = jObj.GetUuids(ComponentFieldForJson.PATH_UUIDS);
+            this.StatusUuids = jObj.ReadUuids(ComponentFieldForJson.STATUS_UUIDS);
+            this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
+            this.AuthorUuids = jObj.ReadUuids(ComponentFieldForJson.AUTHOR_UUIDS);
+            this.ModuleUuids = jObj.ReadUuids(ComponentFieldForJson.MODULE_UUIDS);
+            this.PathUuids = jObj.ReadUuids(ComponentFieldForJson.PATH_UUIDS);
         }
 
         /// <summary>

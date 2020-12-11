@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,18 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "SemanticVersionDTO";
 
         /// <summary>
         /// Implements IVersion.Stamp
@@ -45,7 +57,8 @@ namespace Tinkar
         /// <summary>
         /// Implements ISemantic.DefinitionForSemantic
         /// </summary>
-        public IDefinitionForSemantic DefinitionForSemantic => new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
+        public IDefinitionForSemantic DefinitionForSemantic =>
+            new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
 
         /// <summary>
@@ -82,10 +95,10 @@ namespace Tinkar
         /// <param name="stampDTO">StampDTO</param>
         /// <param name="fields">Fields</param>
         public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
-                                IEnumerable<Guid> definitionForSemanticUuids,
-                                IEnumerable<Guid> referencedComponentUuids,
-                                StampDTO stampDTO,
-                                IEnumerable<Object> fields)
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids,
+            StampDTO stampDTO,
+            IEnumerable<Object> fields)
         {
             this.ComponentUuids = componentUuids;
             this.DefinitionForSemanticUuids = definitionForSemanticUuids;
@@ -94,6 +107,24 @@ namespace Tinkar
             this.Fields = fields;
         }
 
+
+        /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public SemanticVersionDTO(JObject jObj,
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids)
+        {
+            jObj.GetClass(JsonClassName);
+            this.ComponentUuids = componentUuids;
+            this.DefinitionForSemanticUuids = definitionForSemanticUuids;
+            this.ReferencedComponentUuids = referencedComponentUuids;
+            this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
+
+            throw new NotImplementedException();
+            //this.Fields = input.ReadObjects();
+        }
 
         /// <summary>
         /// Create item from binary stream
@@ -115,15 +146,15 @@ namespace Tinkar
         /// Constructor
         /// </summary>
         public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
-                    IDefinitionForSemantic definitionForSemantic,
-                    IIdentifiedThing referencedComponent,
-                    IStamp stamp,
-                    IEnumerable<Object> fields) :
-                this(componentUuids,
-                    definitionForSemantic.ComponentUuids,
-                    referencedComponent.ComponentUuids,
-                    stamp.ToChangeSetThing(),
-                    fields)
+            IDefinitionForSemantic definitionForSemantic,
+            IIdentifiedThing referencedComponent,
+            IStamp stamp,
+            IEnumerable<Object> fields) :
+            this(componentUuids,
+                definitionForSemantic.ComponentUuids,
+                referencedComponent.ComponentUuids,
+                stamp.ToChangeSetThing(),
+                fields)
         {
         }
 
@@ -154,27 +185,11 @@ namespace Tinkar
             return 0;
         }
 
-        //@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.STAMP, stampDTO);
-        //    json.put(FIELDS, fields);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonSemanticVersionUnmarshaler
-        //public static SemanticVersionDTO Make(JSONObject jsonObject,
-        //                                      IEnumerable<Guid> componentUuids,
-        //                                      IEnumerable<Guid> definitionForSemanticUuids,
-        //                                      IEnumerable<Guid> referencedComponentUuids) {
-        //    JSONObject jsonStampObject = (JSONObject) jsonObject.get(ComponentFieldForJson.STAMP);
-        //    return new SemanticVersionDTO(componentUuids,
-        //            definitionForSemanticUuids,
-        //            referencedComponentUuids,
-        //            StampDTO.Make(jsonStampObject),
-        //            jsonObject.asImmutableObjectList(FIELDS));
-        //}
-
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
         public static SemanticVersionDTO Make(TinkarInput input,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
@@ -184,6 +199,10 @@ namespace Tinkar
                 definitionForSemanticUuids,
                 referencedComponentUuids);
 
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// </summary>
+        /// <param name="output">output data stream</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -192,10 +211,28 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from json .
+        /// </summary>
+        public static SemanticVersionDTO Make(JObject jObj,
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids) =>
+            new SemanticVersionDTO(jObj,
+                componentUuids,
+                definitionForSemanticUuids,
+                referencedComponentUuids);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WritePropertyName(ComponentFieldForJson.STAMP);
+            this.StampDTO.Marshal(output);
+            output.WriteEndObject();
+        }
     }
 }

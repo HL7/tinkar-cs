@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace Tinkar
@@ -27,7 +28,18 @@ namespace Tinkar
         IMarshalable,
         IStampComment
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "StampCommentDTO";
 
         /// <summary>
         /// DTO for Stamp;
@@ -66,6 +78,15 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public StampCommentDTO(JObject jObj)
+        {
+            this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
+            this.Comment = jObj.ReadString(ComponentFieldForJson.COMMENT);
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
@@ -80,39 +101,6 @@ namespace Tinkar
                 return cmp;
             return 0;
         }
-
-        ///**
-        //    * Marshal method for StampCommentDTO using JSON
-        //    * @param writer
-        //    */
-        //@Override
-        //public void jsonMarshal(Writer writer)
-        //{
-        //	final JSONObject json = new JSONObject();
-        //	json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //	json.put(ComponentFieldForJson.STAMP, stampDTO);
-        //	json.put(ComponentFieldForJson.COMMENT, comment);
-        //	json.writeJSONString(writer);
-        //}
-
-        ///**
-        //    * Unmarshal method for StampCommentDTO using JSON
-        //    * @param jsonObject
-        //    * @return
-        //    */
-        //@JsonChronologyUnmarshaler
-        //public static StampCommentDTO Make(JSONObject jsonObject)
-        //{
-        //	return new StampCommentDTO(
-        //			StampDTO.Make((JSONObject)jsonObject.get(ComponentFieldForJson.STAMP)),
-        //			(String)jsonObject.get(ComponentFieldForJson.COMMENT));
-        //}
-
-        ///**
-        //    * Unarshal method for StampCommentDTO
-        //    * @param in
-        //    * @return
-        //    */
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -134,10 +122,25 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from json stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static StampCommentDTO Make(JObject jObj) =>
+            new StampCommentDTO(jObj);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WritePropertyName(ComponentFieldForJson.STAMP);
+            this.StampDTO.Marshal(output);
+            output.WriteUTF(ComponentFieldForJson.COMMENT, this.Comment);
+            output.WriteEndObject();
+        }
     }
 }

@@ -74,6 +74,12 @@ namespace Tinkar
         public static Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
             where TSeq : IComparable<TSeq>
         {
+            if ((a == null) &&(b == null))
+                return 0;
+            if (a == null)
+                return -1;
+            if (b == null)
+                return 1;
             Int32 cmp = a.Count().CompareTo(b.Count());
             if (cmp != 0)
                 return cmp;

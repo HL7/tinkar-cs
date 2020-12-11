@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,19 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "DefinitionForSemanticDTO";
+
 
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids.
@@ -23,6 +36,15 @@ namespace Tinkar
         public DefinitionForSemanticDTO(IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
+        }
+
+        /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public DefinitionForSemanticDTO(JObject jObj)
+        {
+            jObj.GetClass(JsonClassName);
+            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
         }
 
         /// <summary>
@@ -44,20 +66,6 @@ namespace Tinkar
         public override Int32 CompareTo(DefinitionForSemanticDTO other) =>
             FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
 
-        //$@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //    json.put(ComponentFieldForJson.COMPONENT_UUIDS, componentUuids);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static DefinitionForSemanticDTO Make(JSONObject jsonObject) {
-        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    return new DefinitionForSemanticDTO(componentUuids);
-        //}
-
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
@@ -77,10 +85,22 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from json .
+        /// </summary>
+        public static DefinitionForSemanticDTO Make(JObject jObj) =>
+            new DefinitionForSemanticDTO(jObj);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS,
+                this.ComponentUuids);
+            output.WriteEndObject();
+        }
     }
 }

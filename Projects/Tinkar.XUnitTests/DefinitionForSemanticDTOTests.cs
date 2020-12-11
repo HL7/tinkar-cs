@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class DefinitionForSemanticDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticDTOFieldsTest()
         {
@@ -15,6 +18,7 @@ namespace Tinkar.XUnitTests
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticDTOIsEquivalentTest()
         {
@@ -31,6 +35,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void DefinitionForSemanticDTOMarshalTest()
         {
@@ -47,6 +52,25 @@ namespace Tinkar.XUnitTests
             {
                 DefinitionForSemanticDTO dtoRead = (DefinitionForSemanticDTO) input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+        [DoNotParallelize]
+        [Fact]
+        public void DefinitionForSemanticDTOJsonMarshal()
+        {
+            DefinitionForSemanticDTO dtoStart = Misc.CreateDefinitionForSemanticDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                DefinitionForSemanticDTO dtoEnd = DefinitionForSemanticDTO.Make(input.ReadJsonObject());
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }

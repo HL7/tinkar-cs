@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +27,19 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "FieldDefinitionDTO";
+
 
         /// <summary>
         /// Implementation of IFieldDefinition.DataType
@@ -86,6 +99,16 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public FieldDefinitionDTO(JObject jObj)
+        {
+            this.DataTypeUuids = jObj.ReadUuids(ComponentFieldForJson.DATATYPE_UUIDS);
+            this.PurposeUuids = jObj.ReadUuids(ComponentFieldForJson.PURPOSE_UUIDS);
+            this.UseUuids = jObj.ReadUuids(ComponentFieldForJson.USE_UUIDS);
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="other">Item to compare to for equality</param>
@@ -103,23 +126,6 @@ namespace Tinkar
                 return cmp;
             return 0;
         }
-
-        //@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //    json.put(ComponentFieldForJson.DATATYPE_UUIDS, dataTypeUuids);
-        //    json.put(ComponentFieldForJson.PURPOSE_UUIDS, purposeUuids);
-        //    json.put(ComponentFieldForJson.USE_UUIDS, useUuids);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static FieldDefinitionDTO Make(JSONObject jsonObject) {
-        //    return new FieldDefinitionDTO(jsonObject.asImmutableUuidList(ComponentFieldForJson.DATATYPE_UUIDS),
-        //            jsonObject.asImmutableUuidList(ComponentFieldForJson.PURPOSE_UUIDS),
-        //            jsonObject.asImmutableUuidList(ComponentFieldForJson.USE_UUIDS));
-        //}
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -142,11 +148,26 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from input json stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static FieldDefinitionDTO Make(JObject input) =>
+            new FieldDefinitionDTO(input);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WriteUuids(ComponentFieldForJson.DATATYPE_UUIDS, this.DataTypeUuids);
+            output.WriteUuids(ComponentFieldForJson.PURPOSE_UUIDS, this.PurposeUuids);
+            output.WriteUuids(ComponentFieldForJson.USE_UUIDS, this.UseUuids);
+            output.WriteEndObject();
+        }
 
     }
 }

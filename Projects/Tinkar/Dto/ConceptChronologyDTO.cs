@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -29,7 +30,18 @@ namespace Tinkar
         IMarshalable,
         IConceptChronology<IConcept>
     {
+        /// <summary>
+        /// Version of marshalling code.
+        /// If code is modified in a way that renders old serialized data
+        /// non-conformant, then this number should be incremented.
+        /// </summary>
         private const int MarshalVersion = 1;
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        private const String JsonClassName = "ConceptChronologyDTO";
 
         /// <summary>
         /// Implementation of IChronology.ChronologySet.
@@ -85,6 +97,16 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Create item from json stream
+        /// </summary>
+        public ConceptChronologyDTO(JObject jObj)
+        {
+            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
+            this.ChronologySetUuids = jObj.ReadUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS);
+            this.ConceptVersions = jObj.ReadConceptVersionList(this.ComponentUuids);
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="other">Item to compare to</param>
@@ -102,24 +124,6 @@ namespace Tinkar
                 return cmp;
             return 0;
         }
-
-        //@Override
-        //public void jsonMarshal(Writer writer) {
-        //    final JSONObject json = new JSONObject();
-        //    json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        //    json.put(ComponentFieldForJson.COMPONENT_UUIDS, componentUuids);
-        //    json.put(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS, chronologySetUuids);
-        //    json.put(ComponentFieldForJson.CONCEPT_VERSIONS, conceptVersions);
-        //    json.writeJSONString(writer);
-        //}
-
-        //@JsonChronologyUnmarshaler
-        //public static ConceptChronologyDTO Make(JSONObject jsonObject) {
-        //    IEnumerable<Guid> componentUuids = jsonObject.asImmutableUuidList(ComponentFieldForJson.COMPONENT_UUIDS);
-        //    return new ConceptChronologyDTO(componentUuids,
-        //                    jsonObject.asImmutableUuidList(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS),
-        //                    jsonObject.asConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, componentUuids));
-        //}
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -144,11 +148,32 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from json stream.
+        /// </summary>
+        /// <param name="input">input data stream</param>
+        /// <returns>new DTO item</returns>
+        public static ConceptChronologyDTO Make(JObject jObj) =>
+            new ConceptChronologyDTO(jObj);
+
+        /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream</param>
-        public void Marshal(TinkarJsonOutput output) =>
-            throw new NotImplementedException($"MarshalFields(TinkarJsonOutput) not implemented");
+        public void Marshal(TinkarJsonOutput output)
+        {
+            // Note that the componentIds are not written redundantly
+            // in writeConceptVersionList...
+
+            output.WriteStartObject();
+            output.WriteClass(JsonClassName);
+            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, 
+                this.ComponentUuids);
+            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS,
+                this.ChronologySetUuids);
+            output.WriteMarshalableList(ComponentFieldForJson.CONCEPT_VERSIONS,
+                this.ConceptVersions);
+            output.WriteEndObject();
+        }
 
     }
 }

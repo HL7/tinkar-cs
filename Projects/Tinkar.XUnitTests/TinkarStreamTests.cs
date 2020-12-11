@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
@@ -28,6 +30,7 @@ namespace Tinkar.XUnitTests
                     | b1 * 0x100000000000000L);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ReadIntTest()
         {
@@ -46,6 +49,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ReadLongTest()
         {
@@ -66,6 +70,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void InstantTest()
         {
@@ -89,6 +94,7 @@ namespace Tinkar.XUnitTests
             Test(new DateTime(2020, 1, 2, 12, 30, 30, 100));
         }
 
+        [DoNotParallelize]
         [Fact]
         public void Int32Test()
         {
@@ -117,6 +123,7 @@ namespace Tinkar.XUnitTests
             Test((Int32) 0x7fe1deab);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void Int64Test()
         {
@@ -145,6 +152,7 @@ namespace Tinkar.XUnitTests
             Test(100);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StringTest()
         {
@@ -170,6 +178,7 @@ namespace Tinkar.XUnitTests
             Test("This is a test string");
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ByteArrayTest()
         {
@@ -195,6 +204,7 @@ namespace Tinkar.XUnitTests
             Test(new byte[] { 1, 30, 255});
         }
 
+        [DoNotParallelize]
         [Fact]
         public void BoolTest()
         {
@@ -219,6 +229,7 @@ namespace Tinkar.XUnitTests
             Test(false);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void FloatTest()
         {
@@ -256,6 +267,7 @@ namespace Tinkar.XUnitTests
             return ms;
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ReadUuidArrayTest()
         {
@@ -300,6 +312,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void WriteIntTest()
         {
@@ -338,6 +351,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void WriteLongTest()
         {
@@ -393,6 +407,7 @@ namespace Tinkar.XUnitTests
         }
 
 
+        [DoNotParallelize]
         [Fact]
         public void WriteUuidArrayTest()
         {

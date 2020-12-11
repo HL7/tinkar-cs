@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class StampDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void StampDTOFieldsTest()
         {
@@ -26,6 +29,7 @@ namespace Tinkar.XUnitTests
             Assert.True(dtoStart.Time == time);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StampDTOIsEquivalentTest()
         {
@@ -138,6 +142,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StampDTOMarshalTest()
         {
@@ -165,6 +170,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void StampDTOJsonMarshalTest()
         {

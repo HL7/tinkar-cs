@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class ConceptDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void ConceptDTOJsonMarshal()
         {
@@ -27,6 +30,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptDTOFieldsTest()
         {
@@ -34,6 +38,7 @@ namespace Tinkar.XUnitTests
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptDTOIsEquivalentTest()
         {
@@ -50,6 +55,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptDTOMarshalTest()
         {

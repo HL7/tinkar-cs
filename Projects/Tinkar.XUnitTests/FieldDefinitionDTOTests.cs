@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
     public class FieldDefinitionDTOTests
     {
+        [DoNotParallelize]
         [Fact]
         public void FieldDefinitionDTOFieldsTest()
         {
@@ -21,6 +24,7 @@ namespace Tinkar.XUnitTests
             Misc.Compare(dtoStart.UseUuids, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
         }
 
+        [DoNotParallelize]
         [Fact]
         public void FieldDefinitionDTOIsEquivalentTest()
         {
@@ -59,6 +63,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void FieldDefinitionDTOMarshalTest()
         {
@@ -79,6 +84,25 @@ namespace Tinkar.XUnitTests
             {
                 FieldDefinitionDTO dtoRead = FieldDefinitionDTO.Make(input);
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+        [DoNotParallelize]
+        [Fact]
+        public void FieldDefinitionDTOJsonMarshal()
+        {
+            FieldDefinitionDTO dtoStart = Misc.CreateFieldDefinitionDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                FieldDefinitionDTO dtoEnd = FieldDefinitionDTO.Make(input.ReadJsonObject());
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }

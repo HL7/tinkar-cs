@@ -17,32 +17,77 @@ namespace Tinkar
                 throw new Exception($"Tinkar parse exception. Expected class '{expectedClassName}', received '{actualClassName}'");
         }
 
-        static JToken Get(this JObject jObj, String tokenName)
+        public static T ReadToken<T>(this JObject jObj, String tokenName)
+            where T : JToken
         {
-            JToken p = jObj[tokenName] as JToken;
-            if (p == null)
+            JToken token = jObj[tokenName] as JToken;
+            if (token == null)
                 throw new Exception($"Error parsing Tinkar json. Expected property '{tokenName}' not found");
-            return p;
+            T retVal = token as T;
+            if (retVal == null)
+                throw new Exception($"Error parsing Tinkar json. Property '{tokenName}' is type {token.GetType().Name}, expected {typeof(T).Name}");
+            return retVal;
         }
 
-        public static JObject GetObject(this JObject jObj, String tokenName)
+        public static DateTime ReadInstant(this JObject jObj, String propertyName) => 
+            jObj.ReadToken<JValue>(propertyName).Value<DateTime>();
+
+        public static String ReadString(this JObject jObj, String propertyName) =>
+            jObj.ReadToken<JValue>(propertyName).Value<String>();
+
+        public static IEnumerable<Guid> ReadUuids(this JObject jObj, String propertyName)
         {
-            JObject p = jObj[tokenName] as JObject;
-            if (p == null)
-                throw new Exception($"Error parsing Tinkar json. Expected property '{tokenName}' not found");
-            return p;
-        }
-
-        public static DateTime GetInstant(this JObject jObj, String propertyName) => 
-            jObj.Get(propertyName).Value<DateTime>();
-
-
-        public static IEnumerable<Guid> GetUuids(this JObject jObj, String propertyName)
-        {
-            String[] guidStrings = jObj.Get(propertyName).Values<String>().ToArray();
+            String[] guidStrings = jObj.ReadToken<JArray>(propertyName).Values<String>().ToArray();
             Guid[] retVal = new Guid[guidStrings.Length];
             for (Int32 i = 0; i < guidStrings.Length; i++)
                 retVal[i] = new Guid(guidStrings[i]);
+            return retVal;
+        }
+
+        public static IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(
+            this JObject jObj,
+            IEnumerable<Guid> componentUuids)
+        {
+            List<DefinitionForSemanticVersionDTO> retVal = new List<DefinitionForSemanticVersionDTO>();
+            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.DEFINITION_VERSIONS);
+            foreach (JObject item in items.Values<JObject>())
+                retVal.Add(DefinitionForSemanticVersionDTO.Make(item, componentUuids));
+            return retVal;
+        }
+
+        public static IEnumerable<FieldDefinitionDTO> ReadFieldDefinitionList(this JObject jObj)
+        {
+            List<FieldDefinitionDTO> retVal = new List<FieldDefinitionDTO>();
+            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.FIELD_DEFINITIONS);
+            foreach (JObject item in items.Values<JObject>())
+                retVal.Add(FieldDefinitionDTO.Make(item));
+            return retVal;
+        }
+
+        public static IEnumerable<ConceptVersionDTO> ReadConceptVersionList(this JObject jObj, 
+            IEnumerable<Guid> componentUuids)
+        {
+            List<ConceptVersionDTO> retVal = new List<ConceptVersionDTO>();
+
+            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.CONCEPT_VERSIONS);
+            foreach (JObject item in items.Values<JObject>())
+                retVal.Add(ConceptVersionDTO.Make(item, componentUuids));
+            return retVal;
+        }
+
+        public static IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(this JObject jObj,
+            IEnumerable<Guid> componentUuids,
+            IEnumerable<Guid> definitionForSemanticUuids,
+            IEnumerable<Guid> referencedComponentUuids)
+        {
+            List<SemanticVersionDTO> retVal = new List<SemanticVersionDTO>();
+
+            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.VERSIONS);
+            foreach (JObject item in items.Values<JObject>())
+                retVal.Add(SemanticVersionDTO.Make(item, 
+                    componentUuids, 
+                    definitionForSemanticUuids,
+                    referencedComponentUuids));
             return retVal;
         }
     }

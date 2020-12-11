@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
@@ -11,6 +13,7 @@ namespace Tinkar.XUnitTests
     {
         DateTime cvTime => new DateTime(1920, 4, 5);
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptChronologyDTOFieldsTest()
         {
@@ -21,6 +24,7 @@ namespace Tinkar.XUnitTests
                 Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 }));
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptChronologyDTOIsEquivalentTest()
         {
@@ -72,6 +76,7 @@ namespace Tinkar.XUnitTests
             }
         }
 
+        [DoNotParallelize]
         [Fact]
         public void ConceptChronologyDTOMarshalTest()
         {
@@ -93,6 +98,25 @@ namespace Tinkar.XUnitTests
             {
                 ConceptChronologyDTO dtoRead = (ConceptChronologyDTO) input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
+            }
+        }
+        [DoNotParallelize]
+        [Fact]
+        public void ConceptChronologyDTOJsonMarshal()
+        {
+            ConceptChronologyDTO dtoStart = Misc.CreateConceptChronologyDTO;
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
+
+            ms.Dump();
+            ms.Position = 0;
+            using (TinkarJsonInput input = new TinkarJsonInput(ms))
+            {
+                ConceptChronologyDTO dtoEnd = ConceptChronologyDTO.Make(input.ReadJsonObject());
+                Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
     }
