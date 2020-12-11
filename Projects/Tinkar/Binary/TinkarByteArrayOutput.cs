@@ -19,27 +19,27 @@ using System.IO;
 
 namespace Tinkar
 {
-	/**
+    /**
      *
      * @author kec
      */
-	public class TinkarByteArrayOutput : TinkarOutput
-	{
-		MemoryStream byteArrayOutputStream;
+    public class TinkarByteArrayOutput : TinkarOutput
+    {
+        private MemoryStream byteArrayOutputStream;
 
-		private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream) : base(byteArrayOutputStream)
-		{
-			this.byteArrayOutputStream = byteArrayOutputStream;
-		}
+        public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
 
-		public byte[] getBytes() => this.byteArrayOutputStream.ToArray();
+        private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream) : base(byteArrayOutputStream)
+        {
+            this.byteArrayOutputStream = byteArrayOutputStream;
+        }
 
-		public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
+        public byte[] GetBytes() => this.byteArrayOutputStream.ToArray();
 
-		public TinkarInput ToInput()
-		{
-			MemoryStream bais = new MemoryStream(this.getBytes());
-			return new TinkarInput(bais);
-		}
-	}
+        public TinkarInput ToInput()
+        {
+            MemoryStream bais = new MemoryStream(this.GetBytes());
+            return new TinkarInput(bais);
+        }
+    }
 }

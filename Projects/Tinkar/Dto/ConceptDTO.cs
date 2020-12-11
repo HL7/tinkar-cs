@@ -1,9 +1,9 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -97,7 +97,8 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
             output.WriteEndObject();
         }

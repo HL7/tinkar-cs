@@ -1,6 +1,6 @@
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -22,7 +22,6 @@ namespace Tinkar
         /// This must be consistent with Java implementation.
         /// </summary>
         public const String JsonClassName = "DefinitionForSemanticDTO";
-
 
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids.
@@ -98,7 +97,8 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
             output.WriteEndObject();
         }

@@ -17,12 +17,11 @@ using System;
 
 namespace Tinkar
 {
-
     /**
      *
      * @author KWA
      */
-    public interface IConceptChronology<TIdentifiedThing> : 
+    public interface IConceptChronology<TIdentifiedThing> :
         IChronology<IConceptVersion, TIdentifiedThing>, IConcept
         where TIdentifiedThing : IIdentifiedThing
     {

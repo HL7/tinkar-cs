@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public record SemanticVersionDTO : BaseDTO<SemanticVersionDTO>,
         ISemanticVersion,
         IChangeSetThing,
@@ -60,7 +60,6 @@ namespace Tinkar
         public IDefinitionForSemantic DefinitionForSemantic =>
             new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
-
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids
         /// </summary>
@@ -94,7 +93,8 @@ namespace Tinkar
         /// <param name="referencedComponentUuids">ReferencedComponentUuids</param>
         /// <param name="stampDTO">StampDTO</param>
         /// <param name="fields">Fields</param>
-        public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
+        public SemanticVersionDTO(
+            IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids,
             StampDTO stampDTO,
@@ -107,11 +107,11 @@ namespace Tinkar
             this.Fields = fields;
         }
 
-
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public SemanticVersionDTO(JObject jObj,
+        public SemanticVersionDTO(
+            JObject jObj,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids)
@@ -127,7 +127,8 @@ namespace Tinkar
         /// <summary>
         /// Create item from binary stream
         /// </summary>
-        public SemanticVersionDTO(TinkarInput input,
+        public SemanticVersionDTO(
+            TinkarInput input,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids)
@@ -143,12 +144,14 @@ namespace Tinkar
         /// <summary>
         /// Constructor
         /// </summary>
-        public SemanticVersionDTO(IEnumerable<Guid> componentUuids,
+        public SemanticVersionDTO(
+            IEnumerable<Guid> componentUuids,
             IDefinitionForSemantic definitionForSemantic,
             IIdentifiedThing referencedComponent,
             IStamp stamp,
             IEnumerable<Object> fields) :
-            this(componentUuids,
+            this(
+                componentUuids,
                 definitionForSemantic.ComponentUuids,
                 referencedComponent.ComponentUuids,
                 stamp.ToChangeSetThing(),
@@ -188,11 +191,13 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static SemanticVersionDTO Make(TinkarInput input,
+        public static SemanticVersionDTO Make(
+            TinkarInput input,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids) =>
-            new SemanticVersionDTO(input,
+            new SemanticVersionDTO(
+                input,
                 componentUuids,
                 definitionForSemanticUuids,
                 referencedComponentUuids);
@@ -211,11 +216,13 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
-        public static SemanticVersionDTO Make(JObject jObj,
+        public static SemanticVersionDTO Make(
+            JObject jObj,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids) =>
-            new SemanticVersionDTO(jObj,
+            new SemanticVersionDTO(
+                jObj,
                 componentUuids,
                 definitionForSemanticUuids,
                 referencedComponentUuids);

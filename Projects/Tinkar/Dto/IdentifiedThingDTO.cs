@@ -43,7 +43,6 @@ namespace Tinkar
             this.ComponentUuids = componentUuids;
         }
 
-
         /// <summary>
         /// Compares this to another item.
         /// </summary>

@@ -18,10 +18,9 @@ using System;
 
 namespace Tinkar
 {
-
     /**
-	 * @author KWA
-	 */
+     * @author KWA
+     */
     public interface IDefinitionForSemantic : IIdentifiedThing
     {
     }

@@ -114,7 +114,7 @@ namespace Tinkar
 
                 case Double item:
                     this.WriteFieldType(FieldDataType.FloatType);
-                    this.WriteSingle((Single) item);
+                    this.WriteSingle((Single)item);
                     break;
 
                 case Int32 int32Item:
@@ -180,7 +180,6 @@ namespace Tinkar
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
             }
         }
-
 
         /// <summary>
         /// Read string.

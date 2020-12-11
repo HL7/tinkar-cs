@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -39,7 +39,6 @@ namespace Tinkar
         /// This must be consistent with Java implementation.
         /// </summary>
         public const String JsonClassName = "FieldDefinitionDTO";
-
 
         /// <summary>
         /// Implementation of IFieldDefinition.DataType
@@ -77,7 +76,8 @@ namespace Tinkar
         /// <param name="dataTypeUuids">DataTypeUuids</param>
         /// <param name="purposeUuids">PurposeUuids</param>
         /// <param name="useUuids">useUuids</param>
-        public FieldDefinitionDTO(IEnumerable<Guid> dataTypeUuids,
+        public FieldDefinitionDTO(
+            IEnumerable<Guid> dataTypeUuids,
             IEnumerable<Guid> purposeUuids,
             IEnumerable<Guid> useUuids)
         {

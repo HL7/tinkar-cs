@@ -21,9 +21,9 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public record SemanticChronologyDTO :
         BaseDTO<SemanticChronologyDTO>,
         ISemanticChronology<DefinitionForSemanticDTO>,
@@ -43,7 +43,6 @@ namespace Tinkar
         /// This must be consistent with Java implementation.
         /// </summary>
         public const String JsonClassName = "SemanticChronologyDTO";
-
 
         /// <summary>
         /// Uuids for DefinitionForSemantic
@@ -142,14 +141,16 @@ namespace Tinkar
         /// <param name="definitionForSemantic">definitionForSemanticUuids</param>
         /// <param name="referencedComponent">ReferencedComponentUuids</param>
         /// <param name="semanticVersions">SemanticVersions</param>
-        public SemanticChronologyDTO(IEnumerable<Guid> componentUuids,
-                                  IDefinitionForSemantic definitionForSemantic,
-                                  IIdentifiedThing referencedComponent,
-                                  IEnumerable<SemanticVersionDTO> semanticVersions) :
-                this(componentUuids,
-                     definitionForSemantic.ComponentUuids,
-                     referencedComponent.ComponentUuids,
-                     semanticVersions)
+        public SemanticChronologyDTO(
+            IEnumerable<Guid> componentUuids,
+            IDefinitionForSemantic definitionForSemantic,
+            IIdentifiedThing referencedComponent,
+            IEnumerable<SemanticVersionDTO> semanticVersions) :
+                this(
+                    componentUuids,
+                    definitionForSemantic.ComponentUuids,
+                    referencedComponent.ComponentUuids,
+                    semanticVersions)
         {
         }
 
@@ -210,13 +211,17 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, 
+            output.WriteUuids(
+                ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
-            output.WriteUuids(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS,
                 this.DefinitionForSemanticUuids);
-            output.WriteUuids(ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.REFERENCED_COMPONENT_UUIDS,
                 this.ReferencedComponentUuids);
-            output.WriteMarshalableList(ComponentFieldForJson.VERSIONS,
+            output.WriteMarshalableList(
+                ComponentFieldForJson.VERSIONS,
                 this.SemanticVersions);
             output.WriteEndObject();
         }

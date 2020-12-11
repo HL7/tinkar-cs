@@ -20,7 +20,7 @@ namespace Tinkar
     /**
      * @author KWA
      */
-    public interface IConceptVersion : IVersion, 
+    public interface IConceptVersion : IVersion,
         IConcept
     {
         //$default ConceptVersionDTO toChangeSetThing()

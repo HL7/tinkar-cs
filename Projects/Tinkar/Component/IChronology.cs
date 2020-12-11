@@ -18,7 +18,6 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-
     /**
      *
      * @author KWA

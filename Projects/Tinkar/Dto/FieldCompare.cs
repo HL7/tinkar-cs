@@ -74,7 +74,7 @@ namespace Tinkar
         public static Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
             where TSeq : IComparable<TSeq>
         {
-            if ((a == null) &&(b == null))
+            if ((a == null) && (b == null))
                 return 0;
             if (a == null)
                 return -1;
@@ -119,7 +119,6 @@ namespace Tinkar
             return Compare(aObj, bObj) == 0;
         }
 
-
         public static Int32 Compare(Object aObj, Object bObj)
         {
             Int32 cmp = aObj.GetType().Name.CompareTo(bObj.GetType().Name);
@@ -128,26 +127,26 @@ namespace Tinkar
 
             switch (aObj)
             {
-                case String a: 
-                    return a.CompareTo((String) bObj);
+                case String a:
+                    return a.CompareTo((String)bObj);
 
-                case Int32 a: 
+                case Int32 a:
                     return a.CompareTo((Int32)bObj);
-                
-                case Single a: 
-                    return a.CompareTo((Single) bObj);
-                
-                case Boolean a: 
+
+                case Single a:
+                    return a.CompareTo((Single)bObj);
+
+                case Boolean a:
                     return a.CompareTo((Boolean)bObj);
-                
-                case DateTime a: 
+
+                case DateTime a:
                     return a.CompareTo((DateTime)bObj);
-                
-                case byte[] a: 
+
+                case byte[] a:
                     return CompareByteArray(a, (byte[])bObj);
-                
+
                 case ConceptChronologyDTO a:
-                    return a.CompareTo((ConceptChronologyDTO) bObj);
+                    return a.CompareTo((ConceptChronologyDTO)bObj);
 
                 case ConceptDTO a:
                     return a.CompareTo((ConceptDTO)bObj);
@@ -166,7 +165,7 @@ namespace Tinkar
 
                 // DiGraphType = 6,
                 case Object[] aArr:
-                    return Compare(aArr, (Object[]) bObj);
+                    return Compare(aArr, (Object[])bObj);
 
                 default:
                     throw new NotImplementedException($"Can not handle type {aObj.GetType().Name}");

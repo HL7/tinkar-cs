@@ -20,15 +20,15 @@ public static class InstantUtil
     public static String Format(DateTime dateTime) => dateTime.ToString();
 
     public static DateTime Parse(String possibleInstant)
-	{
-		try
-		{
-			DateTime instant = DateTime.Parse(possibleInstant);
-			return instant;
-		}
-		catch
-		{
-			return DateTime.MinValue;
-		}
-	}
+    {
+        try
+        {
+            DateTime instant = DateTime.Parse(possibleInstant);
+            return instant;
+        }
+        catch
+        {
+            return DateTime.MinValue;
+        }
+    }
 }

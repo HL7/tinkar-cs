@@ -21,9 +21,9 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public record DefinitionForSemanticChronologyDTO :
         BaseDTO<DefinitionForSemanticChronologyDTO>,
         IDefinitionForSemanticChronology<IConcept>,
@@ -169,7 +169,8 @@ namespace Tinkar
             output.WriteClass(JsonClassName);
             output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, this.ComponentUuids);
             output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS, this.ChronologySetUuids);
-            output.WriteMarshalableList(ComponentFieldForJson.DEFINITION_VERSIONS,
+            output.WriteMarshalableList(
+                ComponentFieldForJson.DEFINITION_VERSIONS,
                 this.DefinitionVersions);
             output.WriteEndObject();
         }

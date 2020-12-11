@@ -21,9 +21,9 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public record ConceptChronologyDTO : BaseDTO<ConceptChronologyDTO>,
         IChangeSetThing,
         IJsonMarshalable,
@@ -75,7 +75,8 @@ namespace Tinkar
         /// <param name="componentUuids">ComponentUuids</param>
         /// <param name="chronologySetUuids">ChronologySetUuids</param>
         /// <param name="conceptVersions">ConceptVersions</param>
-        public ConceptChronologyDTO(IEnumerable<Guid> componentUuids,
+        public ConceptChronologyDTO(
+            IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> chronologySetUuids,
             IEnumerable<ConceptVersionDTO> conceptVersions)
         {
@@ -83,7 +84,6 @@ namespace Tinkar
             this.ChronologySetUuids = chronologySetUuids;
             this.ConceptVersions = conceptVersions;
         }
-
 
         /// <summary>
         /// Construct item from TinkarInput Stream
@@ -142,6 +142,7 @@ namespace Tinkar
             output.WriteMarshalVersion(MarshalVersion);
             output.WriteUuids(this.ComponentUuids);
             output.WriteUuids(this.ChronologySetUuids);
+
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
             output.WriteMarshalableList(this.ConceptVersions);
@@ -166,11 +167,14 @@ namespace Tinkar
 
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, 
+            output.WriteUuids(
+                ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
-            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.CHRONOLOGY_SET_UUIDS,
                 this.ChronologySetUuids);
-            output.WriteMarshalableList(ComponentFieldForJson.CONCEPT_VERSIONS,
+            output.WriteMarshalableList(
+                ComponentFieldForJson.CONCEPT_VERSIONS,
                 this.ConceptVersions);
             output.WriteEndObject();
         }

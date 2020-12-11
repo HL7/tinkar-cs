@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -85,11 +85,12 @@ namespace Tinkar
         /// <param name="authorUuids">AuthorUuids</param>
         /// <param name="moduleUuids">ModuleUuids</param>
         /// <param name="pathUuids">PathUuids</param>
-        public StampDTO(IEnumerable<Guid> statusUuids,
-                        DateTime time,
-                        IEnumerable<Guid> authorUuids,
-                        IEnumerable<Guid> moduleUuids,
-                        IEnumerable<Guid> pathUuids)
+        public StampDTO(
+            IEnumerable<Guid> statusUuids,
+            DateTime time,
+            IEnumerable<Guid> authorUuids,
+            IEnumerable<Guid> moduleUuids,
+            IEnumerable<Guid> pathUuids)
         {
             this.StatusUuids = statusUuids;
             this.Time = time;

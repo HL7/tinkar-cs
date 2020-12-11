@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Tinkar
@@ -23,7 +23,6 @@ namespace Tinkar
             if (formatted == true)
                 this.writer.Formatting = Formatting.Indented;
         }
-
 
         /// <summary>
         /// Write JSON start object tag.
@@ -44,17 +43,17 @@ namespace Tinkar
         public void WriteObjects(String propertyName, IEnumerable<Object> fields)
         {
             this.writer.WritePropertyName(propertyName);
-            WriteObjects(fields);
+            this.WriteObjects(fields);
         }
 
         /// <summary>
         /// Write array of objects.
         /// </summary>
-        void WriteObjects(IEnumerable<Object> fields)
+        private void WriteObjects(IEnumerable<Object> fields)
         {
             this.writer.WriteStartArray();
             foreach (Object field in fields)
-                WriteField(field);
+                this.WriteField(field);
             this.writer.WriteEndArray();
         }
 
@@ -139,7 +138,8 @@ namespace Tinkar
             this.writer.WriteValue(className);
         }
 
-        public void WriteMarshalableList(String propertyName,
+        public void WriteMarshalableList(
+            String propertyName,
             IEnumerable<IJsonMarshalable> items)
         {
             this.writer.WritePropertyName(propertyName);
@@ -154,7 +154,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="guids"></param>
-        public void WriteUuids(String propertyName,
+        public void WriteUuids(
+            String propertyName,
             IEnumerable<Guid> guids)
         {
             this.writer.WritePropertyName(propertyName);
@@ -167,7 +168,8 @@ namespace Tinkar
         /// <summary>
         /// Write property that is a date time
         /// </summary>
-        public void WriteInstant(String propertyName,
+        public void WriteInstant(
+            String propertyName,
             DateTime instant)
         {
             this.writer.WritePropertyName(propertyName);
@@ -177,7 +179,8 @@ namespace Tinkar
         /// <summary>
         /// Write property that is a string
         /// </summary>
-        public void WriteUTF(String propertyName,
+        public void WriteUTF(
+            String propertyName,
             String value)
         {
             this.writer.WritePropertyName(propertyName);

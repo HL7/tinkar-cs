@@ -22,9 +22,9 @@ using System.Net;
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public class TinkarInput : IDisposable
     {
         private BinaryReader reader;
@@ -60,7 +60,6 @@ namespace Tinkar
             Int32 v = IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
             return BitConverter.Int32BitsToSingle(v);
         }
-
 
         /// <summary>
         /// Read network ordered boolean from input stream.
@@ -110,6 +109,7 @@ namespace Tinkar
         {
             Int32 length = this.ReadInt32();
             DefinitionForSemanticVersionDTO[] retVal = new DefinitionForSemanticVersionDTO[length];
+
             // Generate array to avoid multiple enumerations of componentUuids.
             Guid[] componentUuidArr = componentUuids.ToArray();
             for (int i = 0; i < length; i++)
@@ -126,7 +126,8 @@ namespace Tinkar
             SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
             for (int i = 0; i < length; i++)
             {
-                retVal[i] = SemanticVersionDTO.Make(this,
+                retVal[i] = SemanticVersionDTO.Make(
+                    this,
                     componentUuids,
                     definitionForSemanticUuids,
                     referencedComponentUuids);
@@ -187,6 +188,5 @@ namespace Tinkar
             if (objectMarshalVersion != MarshalVersion)
                 throw new ArgumentException($"Unsupported version: {objectMarshalVersion}");
         }
-
     }
 }

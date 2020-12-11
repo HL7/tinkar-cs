@@ -22,7 +22,6 @@ namespace Tinkar
     /**
      * @author KWA
      */
-
     /// <summary>
     /// 
     /// </summary>

@@ -18,7 +18,6 @@ using System;
 
 namespace Tinkar
 {
-
     /**
      * @author KWA
      */

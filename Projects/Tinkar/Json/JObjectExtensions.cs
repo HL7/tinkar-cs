@@ -9,9 +9,10 @@ namespace Tinkar
 {
     public static class JObjectExtensions
     {
-        const String TErr = "Error parsing Tinkar json.";
+        private const String TErr = "Error parsing Tinkar json.";
 
-        public static void GetClass(this JObject jObj,
+        public static void GetClass(
+            this JObject jObj,
             String expectedClassName)
         {
             String actualClassName = jObj[ComponentFieldForJson.CLASS]?.Value<String>();
@@ -46,7 +47,7 @@ namespace Tinkar
             return retVal;
         }
 
-        static IJsonMarshalable ReadJsonMarshable(this JObject jObj)
+        private static IJsonMarshalable ReadJsonMarshable(this JObject jObj)
         {
             String actualClassName = jObj[ComponentFieldForJson.CLASS]?.Value<String>();
             switch (actualClassName)
@@ -69,7 +70,6 @@ namespace Tinkar
                     throw new NotImplementedException($"Class {actualClassName} not known");
             }
         }
-
 
         public static IEnumerable<Object> ReadObjects(this JObject jObj, String propertyName)
         {
@@ -124,7 +124,8 @@ namespace Tinkar
             return retVal;
         }
 
-        public static IEnumerable<ConceptVersionDTO> ReadConceptVersionList(this JObject jObj,
+        public static IEnumerable<ConceptVersionDTO> ReadConceptVersionList(
+            this JObject jObj,
             IEnumerable<Guid> componentUuids)
         {
             List<ConceptVersionDTO> retVal = new List<ConceptVersionDTO>();
@@ -135,7 +136,8 @@ namespace Tinkar
             return retVal;
         }
 
-        public static IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(this JObject jObj,
+        public static IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(
+            this JObject jObj,
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids)
@@ -144,7 +146,8 @@ namespace Tinkar
 
             JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.VERSIONS);
             foreach (JObject item in items.Values<JObject>())
-                retVal.Add(SemanticVersionDTO.Make(item,
+                retVal.Add(SemanticVersionDTO.Make(
+                    item,
                     componentUuids,
                     definitionForSemanticUuids,
                     referencedComponentUuids));

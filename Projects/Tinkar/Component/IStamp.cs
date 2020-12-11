@@ -34,7 +34,8 @@ namespace Tinkar
     {
         public static StampDTO ToChangeSetThing(this IStamp me)
         {
-            return new StampDTO(me.Status.ComponentUuids,
+            return new StampDTO(
+                me.Status.ComponentUuids,
                 me.Time,
                 me.Author.ComponentUuids,
                 me.Module.ComponentUuids,

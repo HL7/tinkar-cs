@@ -19,8 +19,8 @@ using System;
 namespace Tinkar
 {
     /**
-	 * @author KWA
-	 */
+     * @author KWA
+     */
     public interface IVersion : IIdentifiedThing
     {
         IStamp Stamp { get; }

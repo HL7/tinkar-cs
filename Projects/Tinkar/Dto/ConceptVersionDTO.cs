@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
@@ -57,7 +57,8 @@ namespace Tinkar
         /// Constructor
         /// </summary>
         /// <param name="componentUuids">ComponentUuids</param>
-        public ConceptVersionDTO(IEnumerable<Guid> componentUuids,
+        public ConceptVersionDTO(
+            IEnumerable<Guid> componentUuids,
             StampDTO stampDTO)
         {
             this.ComponentUuids = componentUuids;
@@ -69,7 +70,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input"></param>
         /// <param name="componentUuids"></param>
-        public ConceptVersionDTO(TinkarInput input,
+        public ConceptVersionDTO(
+            TinkarInput input,
             IEnumerable<Guid> componentUuids)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -80,7 +82,8 @@ namespace Tinkar
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public ConceptVersionDTO(JObject jObj,
+        public ConceptVersionDTO(
+            JObject jObj,
             IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
@@ -105,13 +108,13 @@ namespace Tinkar
             return 0;
         }
 
-
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static ConceptVersionDTO Make(TinkarInput input,
+        public static ConceptVersionDTO Make(
+            TinkarInput input,
             IEnumerable<Guid> componentUuids) =>
             new ConceptVersionDTO(input, componentUuids);
 
@@ -122,6 +125,7 @@ namespace Tinkar
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
+
             // note that componentUuids are not written redundantly here,
             // they are written with the ConceptChronologyDTO...
             this.StampDTO.Marshal(output);
@@ -132,7 +136,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream</param>
         /// <returns>new DTO item</returns>
-        public static ConceptVersionDTO Make(JObject jObj,
+        public static ConceptVersionDTO Make(
+            JObject jObj,
             IEnumerable<Guid> componentUuids) =>
             new ConceptVersionDTO(jObj, componentUuids);
 

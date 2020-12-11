@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hl7.tinkar.json;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
+using System;
+using System.Collections.Generic;
 
 /**
- *  Used to indicate which static method on a class shall be used as the
- *  JsonChronologyUnmarshaler.
  *
+ * @author kec
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface JsonChronologyUnmarshaler {
+namespace Tinkar
+{
+    public class ChangeSetBuilder
+    {
+        private List<IChangeSetThing> changeSetObjects = new List<IChangeSetThing>();
 
+        public ChangeSetBuilder Add(IChangeSetThing changeSetObject)
+        {
+            this.changeSetObjects.Add(changeSetObject);
+            return this;
+        }
+
+        public String Build()
+        {
+            throw new NotSupportedException();
+        }
+    }
 }

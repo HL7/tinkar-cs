@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
     /**
-	 *
-	 * @author kec
-	 */
+     *
+     * @author kec
+     */
     public record DefinitionForSemanticVersionDTO :
         BaseDTO<DefinitionForSemanticVersionDTO>,
         IDefinitionForSemanticVersion,
@@ -45,7 +45,6 @@ namespace Tinkar
         /// </summary>
         public const String JsonClassName = "DefinitionForSemanticVersionDTO";
 
-
         /// <summary>
         /// Implementation of IIdentifiedThing.ComponentUuids
         /// </summary>
@@ -61,7 +60,6 @@ namespace Tinkar
         /// </summary>
         public IConcept ReferencedComponentPurpose =>
                 new ConceptDTO(this.ReferencedComponentPurposeUuids);
-
 
         /// <summary>
         /// Implementation of IDefinitionForSemanticVersion.FieldDefinitions
@@ -106,7 +104,8 @@ namespace Tinkar
         /// <summary>
         /// Create item from json stream
         /// </summary>
-        public DefinitionForSemanticVersionDTO(JObject jObj,
+        public DefinitionForSemanticVersionDTO(
+            JObject jObj,
             IEnumerable<Guid> componentUuids)
         {
             jObj.GetClass(JsonClassName);
@@ -116,8 +115,9 @@ namespace Tinkar
             this.FieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
         }
 
-        public DefinitionForSemanticVersionDTO(TinkarInput input,
-                IEnumerable<Guid> componentUuids)
+        public DefinitionForSemanticVersionDTO(
+            TinkarInput input,
+            IEnumerable<Guid> componentUuids)
         {
             input.CheckMarshalVersion(MarshalVersion);
             this.ComponentUuids = componentUuids;
@@ -151,7 +151,8 @@ namespace Tinkar
             return 0;
         }
 
-        public static DefinitionForSemanticVersionDTO Make(TinkarInput input,
+        public static DefinitionForSemanticVersionDTO Make(
+            TinkarInput input,
             IEnumerable<Guid> componentUuids) =>
             new DefinitionForSemanticVersionDTO(input, componentUuids);
 
@@ -170,7 +171,8 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
-        public static DefinitionForSemanticVersionDTO Make(JObject jObj,
+        public static DefinitionForSemanticVersionDTO Make(
+            JObject jObj,
             IEnumerable<Guid> componentUuids) =>
             new DefinitionForSemanticVersionDTO(jObj, componentUuids);
 
@@ -182,13 +184,16 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.COMPONENT_UUIDS,
                 this.ComponentUuids);
             output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
-            output.WriteUuids(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS,
+            output.WriteUuids(
+                ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS,
                 this.ReferencedComponentPurposeUuids);
-            output.WriteMarshalableList(ComponentFieldForJson.FIELD_DEFINITIONS,
+            output.WriteMarshalableList(
+                ComponentFieldForJson.FIELD_DEFINITIONS,
                 this.FieldDefinitionDTOs);
             output.WriteEndObject();
         }
