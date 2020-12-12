@@ -18,15 +18,23 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// Chronology interaface.
+    /// </summary>
+    /// <typeparam name="TVersion">Version type.</typeparam>
+    /// <typeparam name="TIdentifiedThing">Thing type.</typeparam>
     public interface IChronology<TVersion, TIdentifiedThing> : IIdentifiedThing
         where TVersion : IVersion
         where TIdentifiedThing : IIdentifiedThing
     {
+        /// <summary>
+        /// Gets ChronologySet.
+        /// </summary>
         TIdentifiedThing ChronologySet { get; }
+
+        /// <summary>
+        /// Gets versions.
+        /// </summary>
         IEnumerable<TVersion> Versions { get; }
     }
 }

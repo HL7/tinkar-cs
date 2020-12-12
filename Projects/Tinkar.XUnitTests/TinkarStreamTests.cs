@@ -12,22 +12,22 @@ namespace Tinkar.XUnitTests
         Int32 MakeInt32(Int32 b1, Int32 b2, Int32 b3, Int32 b4)
         {
             return (b4
-                   | b3 * 0x100
-                   | b2 * 0x10000
-                   | b1 * 0x1000000);
+                   | (b3 * 0x100)
+                   | (b2 * 0x10000)
+                   | (b1 * 0x1000000));
         }
 
         Int64 MakeInt64(Int64 b1, Int64 b2, Int64 b3, Int64 b4, Int64 b5, Int64 b6, Int64 b7, Int64 b8)
         {
             return (
                     b8
-                    | b7 * 0x100L
-                    | b6 * 0x10000L
-                    | b5 * 0x1000000L
-                    | b4 * 0x100000000L
-                    | b3 * 0x10000000000L
-                    | b2 * 0x1000000000000L
-                    | b1 * 0x100000000000000L);
+                    | (b7 * 0x100L)
+                    | (b6 * 0x10000L)
+                    | (b5 * 0x1000000L)
+                    | (b4 * 0x100000000L)
+                    | (b3 * 0x10000000000L)
+                    | (b2 * 0x1000000000000L)
+                    | (b1 * 0x100000000000000L));
         }
 
         [DoNotParallelize]
@@ -320,9 +320,9 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput to = new TinkarOutput(ms);
                 Int32 value = (1
-                              | 2 * 0x100
-                              | 3 * 0x10000
-                              | 4 * 0x1000000);
+                              | (2 * 0x100)
+                              | (3 * 0x10000)
+                              | (4 * 0x1000000));
                 to.WriteInt32(value);
                 ms.Position = 0;
 
@@ -337,9 +337,9 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput to = new TinkarOutput(ms);
                 Int32 value = (0xf1
-                        | 0xf2 * 0x100
-                        | 0xf3 * 0x10000
-                        | 0x74 * 0x1000000);
+                        | (0xf2 * 0x100)
+                        | (0xf3 * 0x10000)
+                        | (0x74 * 0x1000000));
                 to.WriteInt32(value);
                 ms.Position = 0;
 
@@ -359,13 +359,13 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Int64 value = (1L
-                               | 2L * 0x100
-                               | 3L * 0x10000
-                               | 4L * 0x1000000
-                               | 5L * 0x100000000
-                               | 6L * 0x10000000000
-                               | 7L * 0x1000000000000
-                               | 8L * 0x100000000000000);
+                               | (2L * 0x100)
+                               | (3L * 0x10000)
+                               | (4L * 0x1000000)
+                               | (5L * 0x100000000)
+                               | (6L * 0x10000000000)
+                               | (7L * 0x1000000000000)
+                               | (8L * 0x100000000000000));
                 ti.WriteInt64(value);
                 ms.Position = 0;
 
@@ -384,13 +384,13 @@ namespace Tinkar.XUnitTests
                 MemoryStream ms = new MemoryStream();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Int64 value = (0xf1L
-                                 | 0xf2L * 0x100
-                                 | 0xf3L * 0x10000
-                                 | 0xf4L * 0x1000000
-                                 | 0xf5L * 0x100000000
-                                 | 0xf6L * 0x10000000000
-                                 | 0xf7L * 0x1000000000000
-                                 | 0x78L * 0x100000000000000);
+                                 | (0xf2L * 0x100)
+                                 | (0xf3L * 0x10000)
+                                 | (0xf4L * 0x1000000)
+                                 | (0xf5L * 0x100000000)
+                                 | (0xf6L * 0x10000000000)
+                                 | (0xf7L * 0x1000000000000)
+                                 | (0x78L * 0x100000000000000));
                 ti.WriteInt64(value);
                 ms.Position = 0;
 

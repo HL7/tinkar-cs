@@ -21,10 +21,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar DefinitionForSemanticVersion record.
+    /// </summary>
     public record DefinitionForSemanticVersionDTO :
         BaseDTO<DefinitionForSemanticVersionDTO>,
         IDefinitionForSemanticVersion,
@@ -46,49 +45,49 @@ namespace Tinkar
         public const String JsonClassName = "DefinitionForSemanticVersionDTO";
 
         /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids
+        /// Gets Component UUIDs.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// Implementation of IVersion.Stamp
+        /// Gets Stamp.
         /// </summary>
         public IStamp Stamp => this.StampDTO;
 
         /// <summary>
-        /// Implementation of IDefinitionForSemanticVersion.ReferencedComponentPurpose
+        /// Gets ReferencedComponentPurpose.
         /// </summary>
         public IConcept ReferencedComponentPurpose =>
                 new ConceptDTO(this.ReferencedComponentPurposeUuids);
 
         /// <summary>
-        /// Implementation of IDefinitionForSemanticVersion.FieldDefinitions
+        /// Gets FieldDefinitions.
         /// </summary>
         public IEnumerable<IFieldDefinition> FieldDefinitions =>
             this.FieldDefinitionDTOs.Select((dto) => (IFieldDefinition)dto);
 
         /// <summary>
-        /// Backing DTO for Stamp
+        /// Gets Stamp record.
         /// </summary>
         public StampDTO StampDTO { get; init; }
 
         /// <summary>
-        /// ReferencedComponentPurpose Guids
+        /// Gets ReferencedComponentPurpose UUIDs.
         /// </summary>
         public IEnumerable<Guid> ReferencedComponentPurposeUuids { get; init; }
 
         /// <summary>
-        /// FieldDefinition Guids
+        /// Gets FieldDefinition UUIDs.
         /// </summary>
         public IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids</param>
-        /// <param name="stampDTO">StampDTO</param>
-        /// <param name="referencedComponentPurposeUuids">ReferencedComponentPurposeUuids</param>
-        /// <param name="fieldDefinitionDTOs">FieldDefinitionDTOs</param>
+        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name="stampDTO">StampDTO.</param>
+        /// <param name="referencedComponentPurposeUuids">ReferencedComponentPurposeUuids.</param>
+        /// <param name="fieldDefinitionDTOs">FieldDefinitionDTOs.</param>
         public DefinitionForSemanticVersionDTO(
             IEnumerable<Guid> componentUuids,
             StampDTO stampDTO,
@@ -102,8 +101,11 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
         public DefinitionForSemanticVersionDTO(
             JObject jObj,
             IEnumerable<Guid> componentUuids)
@@ -115,6 +117,12 @@ namespace Tinkar
             this.FieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class
+        /// from binary stream.
+        /// </summary>
+        /// <param name="input">input data stream.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
         public DefinitionForSemanticVersionDTO(
             TinkarInput input,
             IEnumerable<Guid> componentUuids)
@@ -129,8 +137,8 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to</param>
-        /// <returns>-1, 0, or 1</returns>
+        /// <param name="other">Item to compare to.</param>
+        /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(DefinitionForSemanticVersionDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
@@ -151,6 +159,12 @@ namespace Tinkar
             return 0;
         }
 
+        /// <summary>
+        /// Static method to Create DTO item from input stream.
+        /// </summary>
+        /// <param name="input">input data stream.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <returns>new DTO item.</returns>
         public static DefinitionForSemanticVersionDTO Make(
             TinkarInput input,
             IEnumerable<Guid> componentUuids) =>
@@ -159,7 +173,7 @@ namespace Tinkar
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -171,6 +185,9 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <returns>Deserialized DefinitionForSemanticVersion record.</returns>
         public static DefinitionForSemanticVersionDTO Make(
             JObject jObj,
             IEnumerable<Guid> componentUuids) =>
@@ -179,7 +196,7 @@ namespace Tinkar
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();

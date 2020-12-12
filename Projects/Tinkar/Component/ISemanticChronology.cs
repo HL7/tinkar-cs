@@ -18,10 +18,10 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Semantic Chronology interface.
+    /// </summary>
+    /// <typeparam name="TIdentifiedThing">Generic param for IChnronology interface.</typeparam>
     public interface ISemanticChronology<TIdentifiedThing> :
         IChronology<ISemanticVersion, TIdentifiedThing>,
         ISemantic

@@ -19,6 +19,9 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// Tree Record.
+    /// </summary>
     public record TreeDTO
     {
     }

@@ -19,25 +19,23 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar IdentifiedThing record.
+    /// </summary>
     public record IdentifiedThingDTO :
         BaseDTO<IdentifiedThingDTO>,
         IIdentifiedThing,
         IChangeSetThing
     {
-
         /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// Gets Component UUIDs.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="IdentifiedThingDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids</param>
+        /// <param name="componentUuids">ComponentUuids.</param>
         public IdentifiedThingDTO(IEnumerable<Guid> componentUuids)
         {
             this.ComponentUuids = componentUuids;
@@ -46,8 +44,8 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to</param>
-        /// <returns>-1, 0, or 1</returns>
+        /// <param name="other">Item to compare to.</param>
+        /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(IdentifiedThingDTO other) =>
             FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
     }

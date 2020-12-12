@@ -18,11 +18,15 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Version Interface. This is the base interface
+    /// for many specialized Tinkar Version interfaces.
+    /// </summary>
     public interface IVersion : IIdentifiedThing
     {
+        /// <summary>
+        /// Gets stamp for version.
+        /// </summary>
         IStamp Stamp { get; }
     }
 }

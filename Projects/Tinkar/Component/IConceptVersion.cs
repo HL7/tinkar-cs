@@ -17,9 +17,9 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Concept Version interface.
+    /// </summary>
     public interface IConceptVersion : IVersion,
         IConcept
     {

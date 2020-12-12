@@ -21,19 +21,27 @@ using System.Net;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Read data from input stream into Tinkar objects.
+    /// The serialization format read must be compatible the Java Tinkar
+    /// serializer.
+    /// </summary>
     public class TinkarInput : IDisposable
     {
         private BinaryReader reader;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TinkarInput"/> class.
+        /// </summary>
+        /// <param name="inStream">Binary input stream.</param>
         public TinkarInput(Stream inStream)
         {
             this.reader = new BinaryReader(inStream);
         }
 
+        /// <summary>
+        /// Dispose function.
+        /// </summary>
         public void Dispose()
         {
         }
@@ -42,19 +50,20 @@ namespace Tinkar
         /// Read string.
         /// Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String.</returns>
         public String ReadUTF() => this.reader.ReadString();
 
         /// <summary>
         /// Read network ordered  Int32 from input stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Int32.</returns>
         public Int32 ReadInt32() =>
             IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
 
         /// <summary>
         /// Read network ordered float from input stream.
         /// </summary>
+        /// <returns>read single value.</returns>
         public Single ReadSingle()
         {
             Int32 v = IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
@@ -64,17 +73,26 @@ namespace Tinkar
         /// <summary>
         /// Read network ordered boolean from input stream.
         /// </summary>
+        /// <returns>read boolean value.</returns>
         public Boolean ReadBoolean() => this.reader.ReadBoolean();
 
         /// <summary>
         /// Read network ordered Int64 from input stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Int64.</returns>
         public Int64 ReadLong() =>
                 IPAddress.NetworkToHostOrder(this.reader.ReadInt64());
 
+        /// <summary>
+        /// Read a byte array from input stream.
+        /// </summary>
+        /// <returns>byte[].</returns>
         public byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt32());
 
+        /// <summary>
+        /// Read array of guids from input stream.
+        /// </summary>
+        /// <returns>Guid[].</returns>
         public Guid[] ReadUuids()
         {
             int length = this.ReadInt32();
@@ -84,9 +102,17 @@ namespace Tinkar
             return array;
         }
 
+        /// <summary>
+        /// Read data tome from input stream.
+        /// </summary>
+        /// <returns>DateTime.</returns>
         public DateTime ReadInstant() =>
             DateTimeExtensions.FromInstant(this.ReadLong(), this.ReadInt32());
 
+        /// <summary>
+        /// Read an array or FieldDefinitionDTO items.
+        /// </summary>
+        /// <returns>FieldDefinitionDTO[].</returns>
         public FieldDefinitionDTO[] ReadFieldDefinitionList()
         {
             int length = this.ReadInt32();
@@ -96,6 +122,11 @@ namespace Tinkar
             return retVal;
         }
 
+        /// <summary>
+        /// Read an array or ConceptVersionDTO items.
+        /// </summary>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <returns>ConceptVersionDTO[].</returns>
         public ConceptVersionDTO[] ReadConceptVersionList(IEnumerable<Guid> componentUuids)
         {
             int length = this.ReadInt32();
@@ -105,6 +136,11 @@ namespace Tinkar
             return retVal;
         }
 
+        /// <summary>
+        /// Read an array or DefinitionForSemanticVersionDTO items.
+        /// </summary>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <returns>DefinitionForSemanticVersionDTO[].</returns>
         public DefinitionForSemanticVersionDTO[] ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
         {
             Int32 length = this.ReadInt32();
@@ -117,6 +153,13 @@ namespace Tinkar
             return retVal;
         }
 
+        /// <summary>
+        /// Read an array or SemanticVersionDTO items.
+        /// </summary>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+        /// <returns>SemanticVersionDTO[].</returns>
         public SemanticVersionDTO[] ReadSemanticVersionList(
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
@@ -136,6 +179,10 @@ namespace Tinkar
             return retVal;
         }
 
+        /// <summary>
+        /// Read an array or Object items.
+        /// </summary>
+        /// <returns>Object[].</returns>
         public Object[] ReadObjects()
         {
             int fieldCount = this.ReadInt32();
@@ -145,6 +192,10 @@ namespace Tinkar
             return retVal;
         }
 
+        /// <summary>
+        /// Read an array or Object fields.
+        /// </summary>
+        /// <returns>Object[].</returns>
         public Object ReadField()
         {
             FieldDataType token = (FieldDataType)this.reader.ReadByte();
@@ -180,12 +231,18 @@ namespace Tinkar
                     return SemanticDTO.Make(this);
                 default:
                     throw new NotImplementedException($"FieldDataType {token} not known");
-            };
+            }
         }
-        public void CheckMarshalVersion(Int32 MarshalVersion)
+
+        /// <summary>
+        /// Read version number from input stream and compare it to the
+        /// passed expected value. Throw exception if doesnt match.
+        /// </summary>
+        /// <param name="marshalVersion">Expected version.</param>
+        public void CheckMarshalVersion(Int32 marshalVersion)
         {
             int objectMarshalVersion = this.ReadInt32();
-            if (objectMarshalVersion != MarshalVersion)
+            if (objectMarshalVersion != marshalVersion)
                 throw new ArgumentException($"Unsupported version: {objectMarshalVersion}");
         }
     }

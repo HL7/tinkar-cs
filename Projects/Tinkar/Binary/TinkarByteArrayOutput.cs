@@ -19,23 +19,43 @@ using System.IO;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar binary output stream that writes to a byte arrray.
+    /// </summary>
     public class TinkarByteArrayOutput : TinkarOutput
     {
+        /// <summary>
+        /// Store output in this memory stream.
+        /// </summary>
         private MemoryStream byteArrayOutputStream;
 
-        public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
-
-        private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream) : base(byteArrayOutputStream)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TinkarByteArrayOutput"/> class.
+        /// </summary>
+        /// <param name="byteArrayOutputStream">Underlying memory stream.</param>
+        private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream)
+            : base(byteArrayOutputStream)
         {
             this.byteArrayOutputStream = byteArrayOutputStream;
         }
 
+        /// <summary>
+        /// Create a TinkarByteArrayOutput item.
+        /// </summary>
+        /// <returns>TinkarByteArrayOutput item.</returns>
+        public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
+
+        /// <summary>
+        /// Get output stream bytes.
+        /// </summary>
+        /// <returns>array or read bytes.</returns>
         public byte[] GetBytes() => this.byteArrayOutputStream.ToArray();
 
+        /// <summary>
+        /// Convert output stream to an input stream
+        /// containing output streams bytes.
+        /// </summary>
+        /// <returns>Tinkar input stream.</returns>
         public TinkarInput ToInput()
         {
             MemoryStream bais = new MemoryStream(this.GetBytes());

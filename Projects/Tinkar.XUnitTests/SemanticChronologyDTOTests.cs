@@ -96,7 +96,7 @@ namespace Tinkar.XUnitTests
         {
             SemanticChronologyDTO dtoStart = Misc.CreateSemanticChronologyDTO;
             MemoryStream ms = new MemoryStream();
-            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
                 dtoStart.Marshal(output);
             }

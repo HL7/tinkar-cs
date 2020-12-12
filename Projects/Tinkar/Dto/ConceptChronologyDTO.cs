@@ -20,10 +20,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar ConceptChronology record.
+    /// </summary>
     public record ConceptChronologyDTO : BaseDTO<ConceptChronologyDTO>,
         IChangeSetThing,
         IJsonMarshalable,
@@ -44,37 +43,37 @@ namespace Tinkar
         public const String JsonClassName = "ConceptChronologyDTO";
 
         /// <summary>
-        /// Implementation of IChronology.ChronologySet.
+        /// Gets ChronologySet.
         /// </summary>
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
         /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// Gets Component UUIDs.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// ???.
+        /// Gets ChronologySet UUIDs.
         /// </summary>
         public IEnumerable<Guid> ChronologySetUuids { get; init; }
 
         /// <summary>
-        /// DTO instance for Versions.
+        /// Gets ConceptVersions.
         /// </summary>
         public IEnumerable<ConceptVersionDTO> ConceptVersions { get; init; }
 
         /// <summary>
-        /// IConceptVersion versions
+        /// Gets Versions.
         /// </summary>
         public IEnumerable<IConceptVersion> Versions =>
             this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids</param>
-        /// <param name="chronologySetUuids">ChronologySetUuids</param>
-        /// <param name="conceptVersions">ConceptVersions</param>
+        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name="chronologySetUuids">ChronologySetUuids.</param>
+        /// <param name="conceptVersions">ConceptVersions.</param>
         public ConceptChronologyDTO(
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> chronologySetUuids,
@@ -86,8 +85,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Construct item from TinkarInput Stream
+        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class
+        /// from a TinkarInput Stream.
         /// </summary>
+        /// <param name="input">input data stream.</param>
         public ConceptChronologyDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -97,8 +98,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
         public ConceptChronologyDTO(JObject jObj)
         {
             this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
@@ -109,8 +112,8 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to</param>
-        /// <returns>-1, 0, or 1</returns>
+        /// <param name="other">Item to compare to.</param>
+        /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(ConceptChronologyDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
@@ -128,15 +131,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static ConceptChronologyDTO Make(TinkarInput input) =>
             new ConceptChronologyDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -151,20 +154,19 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <returns>new DTO item.</returns>
         public static ConceptChronologyDTO Make(JObject jObj) =>
             new ConceptChronologyDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
             output.WriteUuids(
@@ -178,6 +180,5 @@ namespace Tinkar
                 this.ConceptVersions);
             output.WriteEndObject();
         }
-
     }
 }

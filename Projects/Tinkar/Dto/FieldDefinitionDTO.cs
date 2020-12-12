@@ -20,6 +20,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// FieldDefinition record.
+    /// </summary>
     public record FieldDefinitionDTO :
         BaseDTO<FieldDefinitionDTO>,
         IFieldDefinition,
@@ -41,41 +44,41 @@ namespace Tinkar
         public const String JsonClassName = "FieldDefinitionDTO";
 
         /// <summary>
-        /// Implementation of IFieldDefinition.DataType
+        /// Gets DataType record.
         /// </summary>
         public IConcept DataType => new ConceptDTO(this.DataTypeUuids);
 
         /// <summary>
-        /// Implementation of IFieldDefinition.Purpose
+        /// Gets Purpose concept.
         /// </summary>
         public IConcept Purpose => new ConceptDTO(this.PurposeUuids);
 
         /// <summary>
-        /// Implementation of IFieldDefinition.Use
+        /// Gets Use concept.
         /// </summary>
         public IConcept Use => new ConceptDTO(this.UseUuids);
 
         /// <summary>
-        /// DataType uuids.
+        /// Gets DataType uuids.
         /// </summary>
         public IEnumerable<Guid> DataTypeUuids { get; init; }
 
         /// <summary>
-        /// Purpose uuids.
+        /// Gets Purpose UUIDs.
         /// </summary>
         public IEnumerable<Guid> PurposeUuids { get; init; }
 
         /// <summary>
-        /// Use uuids.
+        /// Gets Use uuids.
         /// </summary>
         public IEnumerable<Guid> UseUuids { get; init; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class.
         /// </summary>
-        /// <param name="dataTypeUuids">DataTypeUuids</param>
-        /// <param name="purposeUuids">PurposeUuids</param>
-        /// <param name="useUuids">useUuids</param>
+        /// <param name="dataTypeUuids">DataTypeUuids.</param>
+        /// <param name="purposeUuids">PurposeUuids.</param>
+        /// <param name="useUuids">useUuids.</param>
         public FieldDefinitionDTO(
             IEnumerable<Guid> dataTypeUuids,
             IEnumerable<Guid> purposeUuids,
@@ -87,9 +90,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from binary stream
+        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
+        /// from binary stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
+        /// <param name="input">input data stream.</param>
         public FieldDefinitionDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -99,8 +103,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
         public FieldDefinitionDTO(JObject jObj)
         {
             this.DataTypeUuids = jObj.ReadUuids(ComponentFieldForJson.DATATYPE_UUIDS);
@@ -111,8 +117,8 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns> -1, 0, or 1</returns>
+        /// <param name="other">Item to compare to for equality.</param>
+        /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(FieldDefinitionDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
@@ -130,15 +136,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static FieldDefinitionDTO Make(TinkarInput input) =>
             new FieldDefinitionDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -150,15 +156,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input json stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static FieldDefinitionDTO Make(JObject input) =>
             new FieldDefinitionDTO(input);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();
@@ -168,6 +174,5 @@ namespace Tinkar
             output.WriteUuids(ComponentFieldForJson.USE_UUIDS, this.UseUuids);
             output.WriteEndObject();
         }
-
     }
 }

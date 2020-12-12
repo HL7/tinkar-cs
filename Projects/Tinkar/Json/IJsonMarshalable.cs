@@ -19,36 +19,15 @@ using Newtonsoft.Json;
 
 namespace Tinkar
 {
-    /**
-     *
-     * Template for JsonMarshalable implementations classes
-     *
-     *
-     * // Using a static method rather than a constructor eliminates the need for //
-     * a readResolve method, but allows the implementation to decide how // to
-     * handle special cases.
-     *
-     * @JsonUnmarshaler public static Object Make(JSONObject jsonObject) {
-     *
-     * }
-     *
-     * @Override
-     * @JsonMarshaler public void marshal(Writer out) { final JSONObject json = new
-     * JSONObject(); json.put("class", this.getClass().getCanonicalName());
-     *
-     * json.writeJSONString(writer); throw new UnsupportedOperationException(); }
-     *
-     *
-     *
-     *
-     *
-     */
+    /// <summary>
+    /// Interface for all classes that marshal to and from JSON streams.
+    /// </summary>
     public interface IJsonMarshalable
     {
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         void Marshal(TinkarJsonOutput output);
     }
 }

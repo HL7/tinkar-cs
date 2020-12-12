@@ -17,9 +17,19 @@ using System;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// Tinkar Stamp with comment interface.
+    /// </summary>
     public interface IStampComment
     {
+        /// <summary>
+        /// Gets stamp.
+        /// </summary>
         IStamp Stamp { get; }
+
+        /// <summary>
+        /// Gets Comment field.
+        /// </summary>
         String Comment { get; }
     }
 }

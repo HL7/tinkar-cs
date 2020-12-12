@@ -18,10 +18,9 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// ???.
+    /// </summary>
     public interface IChangeSetThing
     {
     }

@@ -19,9 +19,9 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    public record DigraphDTO
-    {
-        internal Guid[] Nodes { get; init; }
-        internal int[][] AdjacencyList { get; init; }
-    }
+    //public record DigraphDTO
+    //{
+    //    internal Guid[] Nodes { get; init; }
+    //    internal int[][] AdjacencyList { get; init; }
+    //}
 }

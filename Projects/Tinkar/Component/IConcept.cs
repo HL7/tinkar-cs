@@ -17,9 +17,10 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     * @author kwa
-     */
+    /// <summary>
+    /// Identified thing interface. This is a base interface for most of the
+    /// other Tinkar record intefaces.
+    /// </summary>
     public interface IConcept : IIdentifiedThing
     {
     }

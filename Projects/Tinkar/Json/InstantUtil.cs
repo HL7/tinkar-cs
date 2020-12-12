@@ -15,10 +15,28 @@
  */
 using System;
 using System.Collections.Generic;
+
+/// <summary>
+/// Instant (DateTime) utilities.
+/// </summary>
 public static class InstantUtil
 {
+    /// <summary>
+    /// Create string representation of DateTime.
+    /// This format must be compatible
+    /// with Tinkar-java instant format.
+    /// </summary>
+    /// <param name="dateTime">value to make string from.</param>
+    /// <returns>Strign represetnation of instant.</returns>
     public static String Format(DateTime dateTime) => dateTime.ToString();
 
+    /// <summary>
+    /// Parse string representation of DateTime into date time.
+    /// This date time format must be compatible
+    /// with Tinkar-java instant format.
+    /// </summary>
+    /// <param name="possibleInstant">instant string.</param>
+    /// <returns>DateTime instance.</returns>
     public static DateTime Parse(String possibleInstant)
     {
         try

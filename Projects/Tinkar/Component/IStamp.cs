@@ -17,21 +17,47 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Stamp interface.
+    /// </summary>
     public interface IStamp
     {
+        /// <summary>
+        /// Gets stamp status.
+        /// </summary>
         IConcept Status { get; }
+
+        /// <summary>
+        /// Gets stamp time.
+        /// </summary>
         DateTime Time { get; }
+
+        /// <summary>
+        /// Gets stamp author.
+        /// </summary>
         IConcept Author { get; }
+
+        /// <summary>
+        /// Gets stamp module.
+        /// </summary>
         IConcept Module { get; }
+
+        /// <summary>
+        /// Gets stamp path.
+        /// </summary>
         IConcept Path { get; }
     }
 
+    /// <summary>
+    /// IStamp interface extension methods.
+    /// </summary>
     public static class IStampExtensions
     {
+        /// <summary>
+        /// Create StampDTO from an IStamp.
+        /// </summary>
+        /// <param name="me">Extension method operated on this element.</param>
+        /// <returns>Stamp.</returns>
         public static StampDTO ToChangeSetThing(this IStamp me)
         {
             return new StampDTO(

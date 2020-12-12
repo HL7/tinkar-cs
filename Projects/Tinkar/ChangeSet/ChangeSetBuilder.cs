@@ -17,25 +17,21 @@
 using System;
 using System.Collections.Generic;
 
-/**
- *
- * @author kec
- */
 namespace Tinkar
 {
-    public class ChangeSetBuilder
-    {
-        private List<IChangeSetThing> changeSetObjects = new List<IChangeSetThing>();
+    //public class ChangeSetBuilder
+    //{
+    //    private List<IChangeSetThing> changeSetObjects = new List<IChangeSetThing>();
 
-        public ChangeSetBuilder Add(IChangeSetThing changeSetObject)
-        {
-            this.changeSetObjects.Add(changeSetObject);
-            return this;
-        }
+    //    public ChangeSetBuilder Add(IChangeSetThing changeSetObject)
+    //    {
+    //        this.changeSetObjects.Add(changeSetObject);
+    //        return this;
+    //    }
 
-        public String Build()
-        {
-            throw new NotSupportedException();
-        }
-    }
+    //    public String Build()
+    //    {
+    //        throw new NotSupportedException();
+    //    }
+    //}
 }

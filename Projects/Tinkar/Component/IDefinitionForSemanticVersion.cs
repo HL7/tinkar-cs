@@ -18,13 +18,21 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// Defines the fields and purpose of a Semantic Version.
+    /// SemanticVersion instances all reference a IDefinitionForSemanticVersion
+    /// to define the expected fields of that Semantic Version.
+    /// </summary>
     public interface IDefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
     {
+        /// <summary>
+        /// Gets the SemanticVersion field definitions.
+        /// </summary>
         IEnumerable<IFieldDefinition> FieldDefinitions { get; }
+
+        /// <summary>
+        /// Gets the purpose of referenced component.
+        /// </summary>
         IConcept ReferencedComponentPurpose { get; }
 
         //$default DefinitionForSemanticVersionDTO toChangeSetThing() {

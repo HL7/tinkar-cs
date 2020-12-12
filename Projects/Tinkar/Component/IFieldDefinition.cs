@@ -19,31 +19,30 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar interface for Field Definition.
+    /// </summary>
     public interface IFieldDefinition
     {
-        /**
-         * Underlying object type such as String or Integer.
-         * @return Concept designating the data type of the defined field.
-         */
+        /// <summary>
+        ///  Gets underlying object type such as String or Integer.
+        ///  @return Concept designating the data type of the defined field.
+        /// </summary>
         IConcept DataType { get; }
 
-        /**
-         * What the object represents: a String might be a URI,
-         * a component identifier might represent a mapping, or an
-         * integer might represent a coordinate.
-         * @return Concept designating the purpose of the defined field.
-         */
+        /// <summary>
+        /// Gets what the object represents: a String might be a URI,
+        /// a component identifier might represent a mapping, or an
+        /// integer might represent a coordinate.
+        /// @return Concept designating the purpose of the defined field.
+        /// </summary>
         IConcept Purpose { get; }
 
-        /**
-         * The context in which this specific field is used. Maybe it is the
-         * "SNOMED code" in a mapping, or the location of an image if a URI.
-         * @return Concept designating the use of the defined field.
-         */
+        /// <summary>
+        /// Gets the context in which this specific field is used. Maybe it is the
+        /// "SNOMED code" in a mapping, or the location of an image if a URI.
+        /// @return Concept designating the use of the defined field.
+        /// </summary>
         IConcept Use { get; }
 
         //$default FieldDefinitionDTO toChangeSetThing()

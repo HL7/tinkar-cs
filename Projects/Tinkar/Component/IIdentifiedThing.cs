@@ -19,14 +19,14 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
     /// <summary>
-    /// 
+    /// Tinkar base interface for all identified 'things'.
     /// </summary>
     public interface IIdentifiedThing
     {
+        /// <summary>
+        /// Gets component uuids.
+        /// </summary>
         IEnumerable<Guid> ComponentUuids { get; }
     }
 }

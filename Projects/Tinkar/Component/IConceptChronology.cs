@@ -17,10 +17,10 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// ConceptChronology interface.
+    /// </summary>
+    /// <typeparam name="TIdentifiedThing">IChronology identified thing generic parameter.</typeparam>
     public interface IConceptChronology<TIdentifiedThing> :
         IChronology<IConceptVersion, TIdentifiedThing>, IConcept
         where TIdentifiedThing : IIdentifiedThing

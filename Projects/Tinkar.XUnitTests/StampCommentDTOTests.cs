@@ -97,7 +97,7 @@ namespace Tinkar.XUnitTests
         {
             StampCommentDTO dtoStart = Misc.CreateStampCommentDTO;
             MemoryStream ms = new MemoryStream();
-            using (TinkarJsonOutput output = new TinkarJsonOutput(ms))
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
                 dtoStart.Marshal(output);
             }

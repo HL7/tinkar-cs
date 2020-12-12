@@ -17,10 +17,10 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author KWA
-     */
+    /// <summary>
+    /// DefinitionForSemanticChronology interace.
+    /// </summary>
+    /// <typeparam name="TIdentifiedThing">Generic type for IChronology. </typeparam>
     public interface IDefinitionForSemanticChronology<TIdentifiedThing> :
         IChronology<IDefinitionForSemanticVersion, TIdentifiedThing>,
         IDefinitionForSemantic

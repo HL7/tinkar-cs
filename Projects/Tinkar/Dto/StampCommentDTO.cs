@@ -18,10 +18,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar StampComment record.
+    /// </summary>
     public record StampCommentDTO : BaseDTO<StampCommentDTO>,
         IChangeSetThing,
         IJsonMarshalable,
@@ -42,25 +41,25 @@ namespace Tinkar
         public const String JsonClassName = "StampCommentDTO";
 
         /// <summary>
-        /// DTO for Stamp;
+        /// Gets Stamp.
         /// </summary>
         public StampDTO StampDTO { get; init; }
 
         /// <summary>
-        /// Implementation of IStampComment.Stamp
+        /// Gets Stamp.
         /// </summary>
         public IStamp Stamp => this.StampDTO;
 
         /// <summary>
-        /// Implementation of IStampComment.Comment
+        /// Gets Comment.
         /// </summary>
         public String Comment { get; init; }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="StampCommentDTO"/> class.
         /// </summary>
-        /// <param name="stampDTO">StampDTO</param>
-        /// <param name="comment">Comment</param>
+        /// <param name="stampDTO">StampDTO.</param>
+        /// <param name="comment">Comment.</param>
         public StampCommentDTO(StampDTO stampDTO, String comment)
         {
             this.StampDTO = stampDTO;
@@ -68,8 +67,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from binary stream
+        /// Initializes a new instance of the <see cref="StampCommentDTO"/> class
+        /// from binary stream.
         /// </summary>
+        /// <param name="input">input data stream.</param>
         public StampCommentDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -78,8 +79,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="StampCommentDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
         public StampCommentDTO(JObject jObj)
         {
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
@@ -89,8 +92,8 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns> -1, 0, or 1</returns>
+        /// <param name="other">Item to compare to for equality.</param>
+        /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(StampCommentDTO other)
         {
             Int32 cmp = FieldCompare.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
@@ -105,15 +108,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static StampCommentDTO Make(TinkarInput input) =>
             new StampCommentDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -124,15 +127,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <returns>new DTO item.</returns>
         public static StampCommentDTO Make(JObject jObj) =>
             new StampCommentDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();

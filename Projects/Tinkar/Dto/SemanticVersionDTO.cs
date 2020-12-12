@@ -20,10 +20,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar SemanticVersion record.
+    /// </summary>
     public record SemanticVersionDTO : BaseDTO<SemanticVersionDTO>,
         ISemanticVersion,
         IChangeSetThing,
@@ -44,55 +43,54 @@ namespace Tinkar
         public const String JsonClassName = "SemanticVersionDTO";
 
         /// <summary>
-        /// Implements IVersion.Stamp
+        /// Gets Stamp.
         /// </summary>
-
         public IStamp Stamp => this.StampDTO;
 
         /// <summary>
-        /// Implements ISemantic.ReferencedComponent
+        /// Gets ReferencedComponent.
         /// </summary>
         public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
 
         /// <summary>
-        /// Implements ISemantic.DefinitionForSemantic
+        /// Gets DefinitionForSemantic.
         /// </summary>
         public IDefinitionForSemantic DefinitionForSemantic =>
             new DefinitionForSemanticDTO(this.DefinitionForSemanticUuids);
 
         /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids
+        /// Gets Component UUIDs.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// Implementation of ISemanticVersion.Fields
+        /// Gets Fields array.
         /// </summary>
         public IEnumerable<Object> Fields { get; init; }
 
         /// <summary>
-        /// Backing for DefinitionForSemantic UUID's
+        /// Gets DefinitionForSemantic UUID's.
         /// </summary>
         public IEnumerable<Guid> DefinitionForSemanticUuids { get; init; }
 
         /// <summary>
-        /// Backing for ReferencedComponent Uuids
+        /// Gets ReferencedComponent Uuids.
         /// </summary>
         public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
 
         /// <summary>
-        /// Backing for Stamp.
+        /// Gets Stamp.
         /// </summary>
         public StampDTO StampDTO { get; init; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids</param>
-        /// <param name="definitionForSemanticUuids">DefinitionForSemanticUuids</param>
-        /// <param name="referencedComponentUuids">ReferencedComponentUuids</param>
-        /// <param name="stampDTO">StampDTO</param>
-        /// <param name="fields">Fields</param>
+        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemanticUuids.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
+        /// <param name="stampDTO">StampDTO.</param>
+        /// <param name="fields">Fields.</param>
         public SemanticVersionDTO(
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> definitionForSemanticUuids,
@@ -108,8 +106,13 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         public SemanticVersionDTO(
             JObject jObj,
             IEnumerable<Guid> componentUuids,
@@ -125,8 +128,13 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from binary stream
+        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class
+        /// from binary stream.
         /// </summary>
+        /// <param name="input">Binary input stream to read from.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         public SemanticVersionDTO(
             TinkarInput input,
             IEnumerable<Guid> componentUuids,
@@ -142,15 +150,20 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
         /// </summary>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemantic">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponent">ReferencedComponent UUIDs.</param>
+        /// <param name="stamp">Stamp.</param>
+        /// <param name="fields">SemanticVersion fields.</param>
         public SemanticVersionDTO(
             IEnumerable<Guid> componentUuids,
             IDefinitionForSemantic definitionForSemantic,
             IIdentifiedThing referencedComponent,
             IStamp stamp,
-            IEnumerable<Object> fields) :
-            this(
+            IEnumerable<Object> fields)
+            : this(
                 componentUuids,
                 definitionForSemantic.ComponentUuids,
                 referencedComponent.ComponentUuids,
@@ -162,8 +175,8 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns> -1, 0, or 1</returns>
+        /// <param name="other">Item to compare to for equality.</param>
+        /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(SemanticVersionDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
@@ -189,8 +202,11 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+        /// <returns>new DTO item.</returns>
         public static SemanticVersionDTO Make(
             TinkarInput input,
             IEnumerable<Guid> componentUuids,
@@ -205,7 +221,7 @@ namespace Tinkar
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -216,6 +232,11 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+        /// <returns>Deserialized SemanticVersion record.</returns>
         public static SemanticVersionDTO Make(
             JObject jObj,
             IEnumerable<Guid> componentUuids,
@@ -230,7 +251,7 @@ namespace Tinkar
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();

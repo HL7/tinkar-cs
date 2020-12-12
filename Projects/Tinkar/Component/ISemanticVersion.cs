@@ -19,11 +19,14 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Semantic Version Interface.
+    /// </summary>
     public interface ISemanticVersion : IVersion, ISemantic
     {
+        /// <summary>
+        /// Gets semantic version fields.
+        /// </summary>
         IEnumerable<Object> Fields { get; }
 
         //$default SemanticVersionDTO toChangeSetThing()

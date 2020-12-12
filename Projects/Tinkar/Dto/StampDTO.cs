@@ -19,6 +19,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// Stamp record.
+    /// </summary>
     public record StampDTO : BaseDTO<StampDTO>,
         IChangeSetThing,
         IJsonMarshalable,
@@ -33,58 +36,58 @@ namespace Tinkar
         private const int MarshalVersion = 1;
 
         /// <summary>
-        /// Status guids
+        /// Gets Status UUIDs.
         /// </summary>
         public IEnumerable<Guid> StatusUuids { get; init; }
 
         /// <summary>
-        /// Author guids
+        /// Gets Author UUIDs.
         /// </summary>
         public IEnumerable<Guid> AuthorUuids { get; init; }
 
         /// <summary>
-        /// Module guids
+        /// Gets Module UUIDs.
         /// </summary>
         public IEnumerable<Guid> ModuleUuids { get; init; }
 
         /// <summary>
-        /// Path guids
+        /// Gets Path UUIDs.
         /// </summary>
         public IEnumerable<Guid> PathUuids { get; init; }
 
         /// <summary>
-        /// Implementation of IStamp.Time
+        /// Gets Time.
         /// </summary>
         public DateTime Time { get; init; }
 
         /// <summary>
-        /// Implementation of IStamp.Status
+        /// Gets Status.
         /// </summary>
         public IConcept Status => new ConceptDTO(this.StatusUuids);
 
         /// <summary>
-        /// Implementation of IStamp.Author
+        /// Gets Author.
         /// </summary>
         public IConcept Author => new ConceptDTO(this.AuthorUuids);
 
         /// <summary>
-        /// Implementation of IStamp.Module
+        /// Gets Module.
         /// </summary>
         public IConcept Module => new ConceptDTO(this.ModuleUuids);
 
         /// <summary>
-        /// Implementation of IStamp.Path
+        /// Gets Path.
         /// </summary>
         public IConcept Path => new ConceptDTO(this.PathUuids);
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="StampDTO"/> class.
         /// </summary>
-        /// <param name="statusUuids">StatusUuids</param>
-        /// <param name="time">Time</param>
-        /// <param name="authorUuids">AuthorUuids</param>
-        /// <param name="moduleUuids">ModuleUuids</param>
-        /// <param name="pathUuids">PathUuids</param>
+        /// <param name="statusUuids">StatusUuids.</param>
+        /// <param name="time">Time.</param>
+        /// <param name="authorUuids">AuthorUuids.</param>
+        /// <param name="moduleUuids">ModuleUuids.</param>
+        /// <param name="pathUuids">PathUuids.</param>
         public StampDTO(
             IEnumerable<Guid> statusUuids,
             DateTime time,
@@ -100,8 +103,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from binary stream
+        /// Initializes a new instance of the <see cref="StampDTO"/> class
+        /// from binary stream.
         /// </summary>
+        /// <param name="input">input data stream.</param>
         public StampDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -113,8 +118,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="StampDTO"/> class
+        /// from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
         public StampDTO(JObject jObj)
         {
             this.StatusUuids = jObj.ReadUuids(ComponentFieldForJson.STATUS_UUIDS);
@@ -127,8 +134,8 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality</param>
-        /// <returns> -1, 0, or 1</returns>
+        /// <param name="other">Item to compare to for equality.</param>
+        /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(StampDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.StatusUuids, other.StatusUuids);
@@ -152,21 +159,23 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static StampDTO Make(TinkarInput input) =>
             new StampDTO(input);
 
         /// <summary>
         /// Static method to Create DTO item from json stream.
         /// </summary>
+        /// <param name="jObj">JSON parent container to read from.</param>
+        /// <returns>Deserialized Stamp record.</returns>
         public static StampDTO Make(JObject jObj) =>
             new StampDTO(jObj);
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -180,7 +189,7 @@ namespace Tinkar
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();

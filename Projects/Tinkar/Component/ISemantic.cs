@@ -18,12 +18,19 @@ using System;
 
 namespace Tinkar
 {
-    /**
-     * @author KWA
-     */
+    /// <summary>
+    /// Tinkar Semantic interface.
+    /// </summary>
     public interface ISemantic : IIdentifiedThing
     {
+        /// <summary>
+        /// Gets component that this semantic references.
+        /// </summary>
         IIdentifiedThing ReferencedComponent { get; }
+
+        /// <summary>
+        /// Gets DefinitionForSemantic.
+        /// </summary>
         IDefinitionForSemantic DefinitionForSemantic { get; }
     }
 }

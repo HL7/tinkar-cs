@@ -21,15 +21,31 @@ using System.Net;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// Tinkar binary output stream. Writes Tinkar objects to serialized
+    /// binary byte stream.
+    /// </summary>
     public class TinkarOutput : IDisposable
     {
+        /// <summary>
+        /// Binary writer that gets written to.
+        /// </summary>
         private BinaryWriter writer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TinkarOutput"/> class.
+        /// </summary>
+        /// <param name="outStream">Output stream.</param>
         public TinkarOutput(Stream outStream)
         {
             this.writer = new BinaryWriter(outStream);
         }
 
+        /// <summary>
+        /// Dispose. This flushes streams and releases underlying output stream.
+        /// If dispose is not called, cached data is not flushed to output stream,
+        /// rendering the underlying output stream truncated.
+        /// </summary>
         public void Dispose()
         {
             if (this.writer != null)
@@ -42,19 +58,19 @@ namespace Tinkar
         /// <summary>
         /// Write boolean to output stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="value">value to write.</param>
         public void WriteBoolean(Boolean value) => this.writer.Write(value);
 
         /// <summary>
         /// Write byte array to output stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="value">value to write.</param>
         public void WriteByteArray(Byte[] value) => this.writer.Write(value);
 
         /// <summary>
         /// Write float to output stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="value">value to write.</param>
         public void WriteSingle(float value)
         {
             Int32 v = BitConverter.SingleToInt32Bits(value);
@@ -64,27 +80,31 @@ namespace Tinkar
         /// <summary>
         /// Write little endian Int32 to output stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="value">value to write.</param>
         public void WriteInt32(Int32 value) =>
             this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
         /// <summary>
         /// Write little endian Int64 to output stream.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="value">value to write.</param>
         public void WriteInt64(Int64 value) =>
             this.writer.Write(IPAddress.HostToNetworkOrder(value));
 
-        /**
-         * Always convert to UTC...
-         * @param instant 
-         */
-        public void WriteInstant(DateTime instant)
+        /// <summary>
+        /// Write out date time.
+        /// </summary>
+        /// <param name="value">value to write.</param>
+        public void WriteInstant(DateTime value)
         {
-            this.WriteInt64(instant.EpochSecond());
-            this.WriteInt32(instant.Nano());
+            this.WriteInt64(value.EpochSecond());
+            this.WriteInt32(value.Nano());
         }
 
+        /// <summary>
+        /// Write out a series of IMarshalable items.
+        /// </summary>
+        /// <param name="items">Items to write.</param>
         public void WriteMarshalableList(IEnumerable<IMarshalable> items)
         {
             this.WriteInt32(items.Count());
@@ -92,6 +112,10 @@ namespace Tinkar
                 version.Marshal(this);
         }
 
+        /// <summary>
+        /// Write sinple object field to output stream.
+        /// </summary>
+        /// <param name="field">Value to write.</param>
         public void WriteField(Object field)
         {
             switch (field)
@@ -172,26 +196,25 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case DigraphDTO item:
-                    this.WriteDigraph();
-                    break;
-
+                // case DigraphDTO item:
+                //    this.WriteDigraph();
+                //    break;
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
             }
         }
 
         /// <summary>
-        /// Read string.
+        /// Write string.
         /// Note: BinaryWriter.WriteString is supposed to be identical to java WriteUTF().
         /// </summary>
-        /// <returns></returns>
+        /// <param name="s">String to write.</param>
         public void WriteUTF(String s) => this.writer.Write(s);
 
-        private void WriteDigraph() => throw new NotImplementedException("WriteDigraph");
-        private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((byte)fieldType);
-        private void WriteByte(byte value) => this.writer.Write(value);
-
+        /// <summary>
+        /// Write a stream of Uuids (guids) to output stream.
+        /// </summary>
+        /// <param name="statusUuids">values to write.</param>
         public void WriteUuids(IEnumerable<Guid> statusUuids)
         {
             this.WriteInt32(statusUuids.Count());
@@ -199,6 +222,10 @@ namespace Tinkar
                 this.writer.Write(statusUuid.ToByteArray());
         }
 
+        /// <summary>
+        /// Write out a stream ob simple objects.
+        /// </summary>
+        /// <param name="fields">Values to write.</param>
         public void WriteObjects(IEnumerable<Object> fields)
         {
             this.WriteInt32(fields.Count());
@@ -207,9 +234,18 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Write marshal version to output stream
+        /// Write marshal version to output stream.
         /// </summary>
+        /// <param name="marshalVersion">value to write.</param>
         public void WriteMarshalVersion(Int32 marshalVersion) =>
             this.WriteInt32(marshalVersion);
+
+        //private void WriteDigraph() => throw new NotImplementedException("WriteDigraph");
+
+        /// <summary>
+        /// Write field type to output stream.
+        /// </summary>
+        /// <param name="fieldType">value to write.</param>
+        private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((byte)fieldType);
     }
 }

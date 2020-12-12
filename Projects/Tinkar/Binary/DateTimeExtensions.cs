@@ -22,6 +22,9 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// DateTime extension methods.
+    /// </summary>
     public static class DateTimeExtensions
     {
         /// <summary>
@@ -29,23 +32,39 @@ namespace Tinkar
         /// </summary>
         private static DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
+        /// <summary>
+        /// Create a java value 'seconds since epochStart' from c# DateTime.
+        /// </summary>
+        /// <param name="dt">DateTime value.</param>
+        /// <returns>Java integer seconds since 1970.</returns>
         public static Int64 EpochSecond(this DateTime dt)
         {
             TimeSpan ts = dt - epochStart;
             return (Int64)ts.TotalSeconds;
         }
 
+        /// <summary>
+        /// Create nano seconds from data time milliseconds.
+        /// </summary>
+        /// <param name="dt">Date time value.</param>
+        /// <returns>nanoseconds part of date time.</returns>
         public static Int32 Nano(this DateTime dt)
         {
             TimeSpan ts = dt - epochStart;
             return ts.Milliseconds * 1000000;
         }
 
+        /// <summary>
+        /// Create C# date time from jave serialized instant fields.
+        /// </summary>
+        /// <param name="epoch">Seconds since (or before) 1970.</param>
+        /// <param name="nanoSeconds">nanoseconds part of instant.</param>
+        /// <returns>read DateTime value.</returns>
         public static DateTime FromInstant(
             long epoch,
             Int32 nanoSeconds)
         {
-            TimeSpan ts = new TimeSpan(epoch * TimeSpan.TicksPerSecond + nanoSeconds / 100);
+            TimeSpan ts = new TimeSpan((epoch * TimeSpan.TicksPerSecond) + (nanoSeconds / 100));
             return DateTimeExtensions.epochStart + ts;
         }
     }

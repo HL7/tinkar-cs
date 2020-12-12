@@ -18,31 +18,15 @@ using System.Collections.Generic;
 
 namespace Tinkar
 {
-    /**
-     *
-     * Template for marshalable class implementations classes
-     *
-
-     private static final int MarshalVersion = 1;
-
-     // Using a static method rather than a constructor eliminates the need for
-     // a readResolve method, but allows the implementation to decide how
-     // to handle special cases.
-
-        public static StampDTO Make(TinkarInput input) {
-            CheckMarshalVersion(input, MarshalVersion);
-            ...
-        }
-
-        public void Marshal(TinkarOutput output) {
-            WriteMarshalVersion(output, MarshalVersion);
-            throw new UnsupportedOperationException();
-        }
-     *
-     *
-     */
+    /// <summary>
+    /// Interface for classes that implement marshaling to a binary stream.
+    /// </summary>
     public interface IMarshalable
     {
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
         void Marshal(TinkarOutput output);
     }
 }

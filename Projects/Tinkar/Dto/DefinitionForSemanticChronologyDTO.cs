@@ -20,10 +20,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
-    /**
-     *
-     * @author kec
-     */
+    /// <summary>
+    /// Tinkar DefinitionForSemanticChronology record.
+    /// </summary>
     public record DefinitionForSemanticChronologyDTO :
         BaseDTO<DefinitionForSemanticChronologyDTO>,
         IDefinitionForSemanticChronology<IConcept>,
@@ -45,37 +44,37 @@ namespace Tinkar
         public const String JsonClassName = "DefinitionForSemanticChronologyDTO";
 
         /// <summary>
-        /// Implementation of IIdentifiedThing.ComponentUuids.
+        /// Gets Component UUIDs.
         /// </summary>
         public IEnumerable<Guid> ComponentUuids { get; init; }
 
         /// <summary>
-        /// DTO instance for Versions.
+        /// Gets Versions record.
         /// </summary>
         public IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions { get; init; }
 
         /// <summary>
-        /// Implementation of IChronology.Versions
+        /// Gets Versions.
         /// </summary>
         public IEnumerable<IDefinitionForSemanticVersion> Versions =>
             this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
 
         /// <summary>
-        /// Implementation of IChronology.ChronologySet
+        /// Gets ChronologySet.
         /// </summary>
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
 
         /// <summary>
-        /// ChronologySet uuids
+        /// Gets ChronologySet UUIDs.
         /// </summary>
         public IEnumerable<Guid> ChronologySetUuids { get; init; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids</param>
-        /// <param name="chronologySetUuids">ChronologySetUuids</param>
-        /// <param name="definitionVersions">DefinitionVersions</param>
+        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name="chronologySetUuids">ChronologySetUuids.</param>
+        /// <param name="definitionVersions">DefinitionVersions.</param>
         public DefinitionForSemanticChronologyDTO(
             IEnumerable<Guid> componentUuids,
             IEnumerable<Guid> chronologySetUuids,
@@ -87,9 +86,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from binary stream
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class
+        /// from binary stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
+        /// <param name="input">input data stream.</param>
         public DefinitionForSemanticChronologyDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(MarshalVersion);
@@ -100,9 +100,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Create item from json stream
+        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class
+        /// from json stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
+        /// <param name="jObj">JSON parent container.</param>
         public DefinitionForSemanticChronologyDTO(JObject jObj)
         {
             jObj.GetClass(JsonClassName);
@@ -115,8 +116,8 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to</param>
-        /// <returns>-1, 0, or 1</returns>
+        /// <param name="other">Item to compare to.</param>
+        /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(DefinitionForSemanticChronologyDTO other)
         {
             Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
@@ -134,15 +135,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="input">input data stream.</param>
+        /// <returns>new DTO item.</returns>
         public static DefinitionForSemanticChronologyDTO Make(TinkarInput input) =>
             new DefinitionForSemanticChronologyDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">output data stream</param>
+        /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
             output.WriteMarshalVersion(MarshalVersion);
@@ -154,15 +155,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream</param>
-        /// <returns>new DTO item</returns>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <returns>new DTO item.</returns>
         public static DefinitionForSemanticChronologyDTO Make(JObject jObj) =>
             new DefinitionForSemanticChronologyDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
-        /// <param name="output">Json output stream</param>
+        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();

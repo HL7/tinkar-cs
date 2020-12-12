@@ -9,15 +9,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
+    /// <summary>
+    /// Serializes Tinkar records into JSON objects.
+    /// </summary>
     public class TinkarJsonOutput : IDisposable
     {
         private JsonWriter writer;
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="TinkarJsonOutput"/> class.
         /// </summary>
-        /// <param name="outStream"></param>
-        public TinkarJsonOutput(Stream outStream, bool formatted = true)
+        /// <param name="outStream">output stream.</param>
+        /// <param name="formatted">if true, json is formatted to be easily readable.</param>
+        public TinkarJsonOutput(Stream outStream, bool formatted = false)
         {
             this.writer = new JsonTextWriter(new StreamWriter(outStream));
             if (formatted == true)
@@ -34,12 +38,19 @@ namespace Tinkar
         /// </summary>
         public void WriteEndObject() => this.writer.WriteEndObject();
 
+        /// <summary>
+        /// Created JSON child property with the indicated name.
+        /// This does not assign a value to that property.
+        /// </summary>
+        /// <param name="propertyName">Name of property to create.</param>
         public void WritePropertyName(String propertyName) =>
             this.writer.WritePropertyName(propertyName);
 
         /// <summary>
         /// Write array of objects.
         /// </summary>
+        /// <param name="propertyName">child property name.</param>
+        /// <param name="fields">values to write.</param>
         public void WriteObjects(String propertyName, IEnumerable<Object> fields)
         {
             this.writer.WritePropertyName(propertyName);
@@ -47,16 +58,9 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Write array of objects.
+        /// Write field to output stream.
         /// </summary>
-        private void WriteObjects(IEnumerable<Object> fields)
-        {
-            this.writer.WriteStartArray();
-            foreach (Object field in fields)
-                this.WriteField(field);
-            this.writer.WriteEndArray();
-        }
-
+        /// <param name="field">value to write.</param>
         public void WriteField(Object field)
         {
             switch (field)
@@ -121,8 +125,8 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case DigraphDTO item:
-                    throw new NotImplementedException();
+                //case DigraphDTO item:
+                //    throw new NotImplementedException();
 
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
@@ -132,12 +136,18 @@ namespace Tinkar
         /// <summary>
         /// Write class property.
         /// </summary>
+        /// <param name="className">name of class.</param>
         public void WriteClass(String className)
         {
             this.writer.WritePropertyName(ComponentFieldForJson.CLASS);
             this.writer.WriteValue(className);
         }
 
+        /// <summary>
+        /// Write series of IMarshable records to json.
+        /// </summary>
+        /// <param name="propertyName">Name of property containing serialized records.</param>
+        /// <param name="items">item to serialize.</param>
         public void WriteMarshalableList(
             String propertyName,
             IEnumerable<IJsonMarshalable> items)
@@ -150,10 +160,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Write property that is array of guids
+        /// Write property that is array of guids.
         /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="guids"></param>
+        /// <param name="propertyName">Name of json property to write.</param>
+        /// <param name="guids">Guids to write.</param>
         public void WriteUuids(
             String propertyName,
             IEnumerable<Guid> guids)
@@ -166,8 +176,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Write property that is a date time
+        /// Write property that is a date time.
         /// </summary>
+        /// <param name="propertyName">Name of json property to write.</param>
+        /// <param name="instant">value to write.</param>
         public void WriteInstant(
             String propertyName,
             DateTime instant)
@@ -177,8 +189,10 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Write property that is a string
+        /// Write property that is a string.
         /// </summary>
+        /// <param name="propertyName">JSON property name that value will be written to.</param>
+        /// <param name="value">Value.</param>
         public void WriteUTF(
             String propertyName,
             String value)
@@ -187,6 +201,11 @@ namespace Tinkar
             this.writer.WriteValue(value);
         }
 
+        /// <summary>
+        /// Dispose method. Flushes output stream and sets stream to null.
+        /// If dispose is not called, then cached output may not be properly
+        /// flushed to output stream.
+        /// </summary>
         public void Dispose()
         {
             if (this.writer != null)
@@ -196,6 +215,18 @@ namespace Tinkar
             }
 
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Write array of objects.
+        /// </summary>
+        /// <param name="fields">Fields to write.</param>
+        private void WriteObjects(IEnumerable<Object> fields)
+        {
+            this.writer.WriteStartArray();
+            foreach (Object field in fields)
+                this.WriteField(field);
+            this.writer.WriteEndArray();
         }
     }
 }
