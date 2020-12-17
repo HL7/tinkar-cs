@@ -21,6 +21,7 @@ namespace Tinkar
     /// <summary>
     /// Definition for Semantic interface.
     /// </summary>
+    [JavaAttribute("DefinitionForSemantic")]
     public interface IDefinitionForSemantic : IIdentifiedThing
     {
     }

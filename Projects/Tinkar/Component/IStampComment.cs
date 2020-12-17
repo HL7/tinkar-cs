@@ -20,6 +20,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Stamp with comment interface.
     /// </summary>
+    [JavaAttribute("StampComment")]
     public interface IStampComment
     {
         /// <summary>

@@ -23,6 +23,7 @@ namespace Tinkar
     /// </summary>
     /// <typeparam name="TVersion">Version type.</typeparam>
     /// <typeparam name="TIdentifiedThing">Thing type.</typeparam>
+    [JavaAttribute("Chronology")]
     public interface IChronology<TVersion, TIdentifiedThing> : IIdentifiedThing
         where TVersion : IVersion
         where TIdentifiedThing : IIdentifiedThing

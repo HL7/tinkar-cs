@@ -22,6 +22,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Semantic Version Interface.
     /// </summary>
+    [JavaAttribute("SemanticVersion")]
     public interface ISemanticVersion : IVersion, ISemantic
     {
         /// <summary>

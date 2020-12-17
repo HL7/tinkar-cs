@@ -23,6 +23,7 @@ namespace Tinkar
     /// SemanticVersion instances all reference a IDefinitionForSemanticVersion
     /// to define the expected fields of that Semantic Version.
     /// </summary>
+    [JavaAttribute("DefinitionForSemanticVersion")]
     public interface IDefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
     {
         /// <summary>

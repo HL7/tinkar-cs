@@ -22,6 +22,7 @@ namespace Tinkar
     /// Tinkar Semantic Chronology interface.
     /// </summary>
     /// <typeparam name="TIdentifiedThing">Generic param for IChnronology interface.</typeparam>
+    [JavaAttribute("SemanticChronology")]
     public interface ISemanticChronology<TIdentifiedThing> :
         IChronology<ISemanticVersion, TIdentifiedThing>,
         ISemantic

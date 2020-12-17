@@ -20,6 +20,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Stamp interface.
     /// </summary>
+    [JavaAttribute("Stamp")]
     public interface IStamp
     {
         /// <summary>

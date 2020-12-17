@@ -22,6 +22,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar interface for Field Definition.
     /// </summary>
+    [JavaAttribute("FieldDefinition")]
     public interface IFieldDefinition
     {
         /// <summary>

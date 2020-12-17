@@ -22,6 +22,7 @@ namespace Tinkar
     /// Tinkar Version Interface. This is the base interface
     /// for many specialized Tinkar Version interfaces.
     /// </summary>
+    [JavaAttribute("Version")]
     public interface IVersion : IIdentifiedThing
     {
         /// <summary>

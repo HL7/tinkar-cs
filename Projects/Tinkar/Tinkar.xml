@@ -1933,6 +1933,24 @@
             </summary>
             <param name="output">Json output stream.</param>
         </member>
+        <member name="T:Tinkar.JavaAttribute">
+            <summary>
+            Marks a class, method, or property as being a mirror of a
+            java item of the indicated name.
+            This is used to do automatic code normalization using roslyn tools.
+            </summary>
+        </member>
+        <member name="P:Tinkar.JavaAttribute.JavaName">
+            <summary>
+            Gets os sets name of java item that this is a mirror of.
+            </summary>
+        </member>
+        <member name="M:Tinkar.JavaAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.JavaAttribute"/> class.
+            </summary>
+            <param name="javaName">Name of java item that this is a mirror of.</param>
+        </member>
         <member name="T:Tinkar.ComponentFieldForJson">
             <summary>
             Definitions used in JSON serialization.

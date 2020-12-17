@@ -20,6 +20,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Concept Version interface.
     /// </summary>
+    [JavaAttribute("ConceptVersion")]
     public interface IConceptVersion : IVersion,
         IConcept
     {
