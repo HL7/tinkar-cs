@@ -14,7 +14,7 @@ namespace Tinkar
     public class JavaAttribute : Attribute
     {
         /// <summary>
-        /// Gets os sets name of java item that this is a mirror of.
+        /// Gets or sets name of java item that this is a mirror of.
         /// </summary>
         public String JavaName { get; set; }
 
