@@ -85,7 +85,7 @@ namespace Tinkar.XUnitTests
                 ms.Position = 0;
                 using (TinkarInput input = new TinkarInput(ms))
                 {
-                    DateTime value = (DateTime) input.ReadField();
+                    DateTime value = (DateTime)input.ReadField();
                     Assert.True(start == value);
                 }
             }
@@ -110,7 +110,7 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    Int32 value = (Int32) input.ReadField();
+                    Int32 value = (Int32)input.ReadField();
                     Assert.True(start == value);
                 }
             }
@@ -120,7 +120,7 @@ namespace Tinkar.XUnitTests
             Test(0);
             Test(-1);
             Test(100);
-            Test((Int32) 0x7fe1deab);
+            Test((Int32)0x7fe1deab);
         }
 
         [DoNotParallelize]
@@ -139,7 +139,7 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    Int32 value = (Int32) input.ReadField();
+                    Int32 value = (Int32)input.ReadField();
                     Assert.True(start == value);
                 }
 
@@ -168,7 +168,7 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    String value = (String) input.ReadField();
+                    String value = (String)input.ReadField();
                     Assert.True(start == value);
                 }
 
@@ -194,14 +194,14 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    byte[] value = (byte[]) input.ReadField();
+                    byte[] value = (byte[])input.ReadField();
                     Assert.True(start.SequenceEqual(value));
                 }
 
             }
-            Test(new byte[] {});
+            Test(new byte[] { });
             Test(new byte[] { 1 });
-            Test(new byte[] { 1, 30, 255});
+            Test(new byte[] { 1, 30, 255 });
         }
 
         [DoNotParallelize]
@@ -220,7 +220,7 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    Boolean value = (Boolean) input.ReadField();
+                    Boolean value = (Boolean)input.ReadField();
                     Assert.True(start == value);
                 }
 
@@ -245,7 +245,7 @@ namespace Tinkar.XUnitTests
                 using (TinkarInput input = new TinkarInput(ms))
                 {
 
-                    Single value = (Single) input.ReadField();
+                    Single value = (Single)input.ReadField();
                     Assert.True(start == value);
                 }
 

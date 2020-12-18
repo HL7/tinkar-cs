@@ -36,7 +36,7 @@ namespace Tinkar.XUnitTests
 
             {
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
-                FieldDefinitionDTO b = Misc.CreateFieldDefinition with 
+                FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
                     DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                 }
@@ -52,7 +52,7 @@ namespace Tinkar.XUnitTests
                 };
                 Assert.False(a.IsEquivalent(b));
             }
-            
+
             {
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with

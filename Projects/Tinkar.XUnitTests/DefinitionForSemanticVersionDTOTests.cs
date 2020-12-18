@@ -86,7 +86,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition with
                 {
                     DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
-                } ;
+                };
 
                 DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
                 DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO

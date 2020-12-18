@@ -53,7 +53,7 @@ namespace Tinkar.XUnitTests
                 );
                 Assert.False(a.IsEquivalent(b));
             }
-            
+
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
@@ -80,7 +80,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                SemanticDTO dtoRead = (SemanticDTO) input.ReadField();
+                SemanticDTO dtoRead = (SemanticDTO)input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

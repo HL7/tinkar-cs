@@ -18,7 +18,7 @@ namespace Tinkar.XUnitTests
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.ChronologySetUuids, Misc.h1, Misc.h2, Misc.h3);
             Misc.Compare<DefinitionForSemanticVersionDTO>(dtoStart.DefinitionVersions,
-                new DefinitionForSemanticVersionDTO[] 
+                new DefinitionForSemanticVersionDTO[]
                     { Misc.CreateDefinitionForSemanticVersionDTO }
                 );
         }
@@ -88,7 +88,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO) input.ReadField();
+                DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO)input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

@@ -112,7 +112,7 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Object[] AArr() => new object[] {"a", 2, 0.1F};
+                Object[] AArr() => new object[] { "a", 2, 0.1F };
                 Object[] BArr() => new object[] { "a", 2, "ggg" };
 
                 Assert.True(FieldCompare.Equivalent(AArr(), AArr()));

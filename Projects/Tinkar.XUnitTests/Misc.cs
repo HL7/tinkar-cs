@@ -13,10 +13,10 @@ namespace Tinkar.XUnitTests
     {
         public static void Dump(this MemoryStream ms)
         {
-                ms.Position = 0;
-                StreamReader sr = new StreamReader(ms);
-                String json = sr.ReadToEnd();
-                Trace.WriteLine(json);
+            ms.Position = 0;
+            StreamReader sr = new StreamReader(ms);
+            String json = sr.ReadToEnd();
+            Trace.WriteLine(json);
         }
 
         public static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -100,7 +100,7 @@ namespace Tinkar.XUnitTests
                     true, false,
                     new byte[] { }, new byte[] {1, 2, 3 },
                     0.3F,
-                    -1, 0, 1, 
+                    -1, 0, 1,
                     "abcdef",
                     new DateTime(2020, 1, 2)
                 }
@@ -114,13 +114,13 @@ namespace Tinkar.XUnitTests
                 new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
             );
 
-        public static ConceptVersionDTO CreateConceptVersionDTO => 
+        public static ConceptVersionDTO CreateConceptVersionDTO =>
             new ConceptVersionDTO(
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
                 Misc.CreateStampDTO
             );
 
-        public static StampCommentDTO CreateStampCommentDTO => 
+        public static StampCommentDTO CreateStampCommentDTO =>
             new StampCommentDTO(Misc.CreateStampDTO, "xxyyz");
 
         public static StampDTO CreateStampDTO => new StampDTO(
