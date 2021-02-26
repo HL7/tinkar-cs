@@ -66,7 +66,7 @@ namespace Tinkar
         /// <summary>
         /// Gets ReferencedComponent.
         /// </summary>
-        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IComponent ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
 
         /// <summary>
         /// Gets DefinitionForSemantic.
@@ -147,7 +147,7 @@ namespace Tinkar
         public SemanticChronologyDTO(
             IEnumerable<Guid> componentUuids,
             IDefinitionForSemantic definitionForSemantic,
-            IIdentifiedThing referencedComponent,
+            IComponent referencedComponent,
             IEnumerable<SemanticVersionDTO> semanticVersions)
             : this(
                     componentUuids,

@@ -22,12 +22,12 @@ namespace Tinkar
     /// Tinkar Semantic interface.
     /// </summary>
     [JavaAttribute("Semantic")]
-    public interface ISemantic : IIdentifiedThing
+    public interface ISemantic : IComponent
     {
         /// <summary>
         /// Gets component that this semantic references.
         /// </summary>
-        IIdentifiedThing ReferencedComponent { get; }
+        IComponent ReferencedComponent { get; }
 
         /// <summary>
         /// Gets DefinitionForSemantic.

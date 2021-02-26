@@ -25,7 +25,7 @@ namespace Tinkar
     public interface IDefinitionForSemanticChronology<TIdentifiedThing> :
         IChronology<IDefinitionForSemanticVersion, TIdentifiedThing>,
         IDefinitionForSemantic
-        where TIdentifiedThing : IIdentifiedThing
+        where TIdentifiedThing : IComponent
     {
         //$default DefinitionForSemanticChronologyDTO toChangeSetThing() {
         //     MutableList<DefinitionForSemanticVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());

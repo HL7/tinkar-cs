@@ -23,7 +23,7 @@ namespace Tinkar
     /// <typeparam name="TIdentifiedThing">IChronology identified thing generic parameter.</typeparam>
     public interface IConceptChronology<TIdentifiedThing> :
         IChronology<IConceptVersion, TIdentifiedThing>, IConcept
-        where TIdentifiedThing : IIdentifiedThing
+        where TIdentifiedThing : IComponent
     {
         //$default ConceptChronologyDTO toChangeSetThing() {
         //     MutableList<ConceptVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());

@@ -22,8 +22,8 @@ namespace Tinkar
     /// <summary>
     /// Tinkar base interface for all identified 'things'.
     /// </summary>
-    [JavaAttribute("IdentifiedThing")]
-    public interface IIdentifiedThing
+    [JavaAttribute("Component")]
+    public interface IComponent
     {
         /// <summary>
         /// Gets component uuids.

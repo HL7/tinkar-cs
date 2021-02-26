@@ -33,7 +33,7 @@ namespace Tinkar
         /// <summary>
         /// Gets ReferencedComponent.
         /// </summary>
-        public IIdentifiedThing ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
+        public IComponent ReferencedComponent => new IdentifiedThingDTO(this.ReferencedComponentUuids);
 
         /// <summary>
         /// Gets DefinitionForSemantic.

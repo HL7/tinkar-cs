@@ -24,7 +24,7 @@ namespace Tinkar
     /// </summary>
     public record IdentifiedThingDTO :
         BaseDTO<IdentifiedThingDTO>,
-        IIdentifiedThing,
+        IComponent,
         IChangeSetThing
     {
         /// <summary>

@@ -23,7 +23,7 @@ namespace Tinkar
     /// for many specialized Tinkar Version interfaces.
     /// </summary>
     [JavaAttribute("Version")]
-    public interface IVersion : IIdentifiedThing
+    public interface IVersion : IComponent
     {
         /// <summary>
         /// Gets stamp for version.

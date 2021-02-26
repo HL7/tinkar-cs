@@ -30,11 +30,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Util\Id\impl\IntIdSetRoaring.cs" />
+    <Compile Remove="Util\Id\impl\PublicId1.cs" />
+    <Compile Remove="Util\Id\impl\PublicId2.cs" />
+    <Compile Remove="Util\Id\impl\PublicId3.cs" />
+    <Compile Remove="Util\Id\impl\PublicIdA.cs" />
+    <Compile Remove="Util\Id\impl\PublicIdCollections.cs" />
+    <Compile Remove="Util\Id\impl\PublicIdN.cs" />
+    <Compile Remove="Util\Id\IntIdListFactory.cs" />
+    <Compile Remove="Util\Id\IntIds.cs" />
+    <Compile Remove="Util\Id\IntIdSetFactory.cs" />
+    <Compile Remove="Util\Id\IPublicIdCollection.cs" />
+    <Compile Remove="Util\Id\IPublicIdList.cs" />
+    <Compile Remove="Util\Id\IPublicIdSet.cs" />
+    <Compile Remove="Util\Id\PublicIdListFactory.cs" />
+    <Compile Remove="Util\Id\PublicIds.cs" />
+    <Compile Remove="Util\Id\PublicIdSetFactory.cs" />
+    <Compile Remove="Util\Id\VertexIds.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="C:\Users\Kurt\.nuget\packages\hl7.fhir.specification.r4\2.0.0-beta1\contentFiles\any\any\specification.zip" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+    <None Include="Util\Id\impl\IntIdSetRoaring.cs" />
+    <None Include="Util\Id\impl\PublicId1.cs" />
+    <None Include="Util\Id\impl\PublicId2.cs" />
+    <None Include="Util\Id\impl\PublicId3.cs" />
+    <None Include="Util\Id\impl\PublicIdA.cs" />
+    <None Include="Util\Id\impl\PublicIdCollections.cs" />
+    <None Include="Util\Id\impl\PublicIdN.cs" />
+    <None Include="Util\Id\IntIdListFactory.cs" />
+    <None Include="Util\Id\IntIds.cs" />
+    <None Include="Util\Id\IntIdSetFactory.cs" />
+    <None Include="Util\Id\IPublicIdCollection.cs" />
+    <None Include="Util\Id\IPublicIdList.cs" />
+    <None Include="Util\Id\IPublicIdSet.cs" />
+    <None Include="Util\Id\PublicIdListFactory.cs" />
+    <None Include="Util\Id\PublicIds.cs" />
+    <None Include="Util\Id\PublicIdSetFactory.cs" />
+    <None Include="Util\Id\VertexIds.cs" />
   </ItemGroup>
 
   <ItemGroup>

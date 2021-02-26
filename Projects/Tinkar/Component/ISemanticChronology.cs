@@ -26,7 +26,7 @@ namespace Tinkar
     public interface ISemanticChronology<TIdentifiedThing> :
         IChronology<ISemanticVersion, TIdentifiedThing>,
         ISemantic
-        where TIdentifiedThing : IIdentifiedThing
+        where TIdentifiedThing : IComponent
     {
         //$default SemanticChronologyDTO toChangeSetThing()
         //{
