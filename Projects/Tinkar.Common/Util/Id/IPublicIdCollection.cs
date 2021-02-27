@@ -8,15 +8,16 @@ using System.Collections.Immutable;
 
 namespace Tinkar.Common
 {
-    public interface IPublicIdCollection<E extends PublicId> : IIdCollection, Iterable<E>
+    public interface IPublicIdCollection<E> : IIdCollection, IEnumerable<E>
+        where E : IPublicId
     {
 
-        void forEach(Consumer<? super E> consumer);
+        //$void forEach(Consumer<? super E> consumer);
 
-        Stream<? extends IPublicId> stream();
+        //$Stream<? extends IPublicId> stream();
 
-        IPublicId[] toIdArray();
+        IPublicId[] ToIdArray();
 
-        bool contains(IPublicId value);
+        bool Contains(IPublicId value);
     }
 }

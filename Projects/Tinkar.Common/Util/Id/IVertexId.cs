@@ -19,13 +19,7 @@ namespace Tinkar.Common
         /// </summary>
         /// <returns></returns>
 #warning 'Compare this to Java implementation to insure compatability.'
-        public Guid AsUuid()
-        {
-            byte[] guidData = new byte[16];
-            Array.Copy(BitConverter.GetBytes(MostSignificantBits), guidData, 8);
-            Array.Copy(BitConverter.GetBytes(LeastSignificantBits), 0, guidData, 8, 8);
-            return new Guid(guidData);
-        }
+        public Guid AsUuid() => GuidUtil.AsUuid(MostSignificantBits, LeastSignificantBits);
 
 
 #nullable enable

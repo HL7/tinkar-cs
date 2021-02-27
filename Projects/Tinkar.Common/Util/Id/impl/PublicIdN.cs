@@ -8,58 +8,44 @@ using System.Collections.Immutable;
 
 namespace Tinkar.Common
 {
-    public class PublicIdN implements PublicId {
+    public class PublicIdN : IPublicId
+    {
+        long[] uuidParts;
 
-    private final long[] uuidParts;
-
-    public PublicIdN(UUID... uuids) {
-        uuidParts = UuidUtil.asArray(uuids);
-    }
-
-    public PublicIdN(long... uuidParts) {
-        this.uuidParts = uuidParts;
-    }
-
-    @Override
-    public int uuidCount() {
-        return uuidParts.length/2;
-    }
-
-    @Override
-    public UUID[] asUuidArray() {
-        return UuidUtil.toArray(uuidParts);
-    }
-
-    @Override
-    public void forEach(LongConsumer consumer) {
-        for (long uuidPart: uuidParts) {
-            consumer.accept(uuidPart);
+        public PublicIdN(params Guid[] uuids)
+        {
+            uuidParts = GuidUtil.AsArray(uuids);
         }
-    }
 
-    @Override
-    public bool equals(Object o) {
-        if (this == o) return true;
-
-        if (o instanceof PublicId) {
-            PublicId publicId = (PublicId) o;
-            UUID[] thisUuids = asUuidArray();
-            return Arrays.stream(publicId.asUuidArray()).anyMatch(uuid -> {
-                for (UUID thisUuid: thisUuids) {
-                    if (uuid.equals(thisUuid)) {
-                        return true;
-                    }
-                }
-                return false;
-            });
+        public PublicIdN(params long[] uuidParts)
+        {
+            this.uuidParts = uuidParts;
         }
-        return false;
-    }
 
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(uuidParts);
-    }
+        public int UuidCount => uuidParts.Length / 2;
 
-}
+        public Guid[] AsUuidArray() => GuidUtil.ToArray(uuidParts);
+
+        //$public void forEach(LongConsumer consumer)
+        //{
+        //    for (long uuidPart: uuidParts)
+        //    {
+        //        consumer.accept(uuidPart);
+        //    }
+        //}
+
+        public override bool Equals(Object other)
+        {
+            if (this == other) return true;
+            switch (other)
+            {
+                case IPublicId publicId:
+                    return GuidUtil.AreEqual(this.AsUuidArray(), publicId.AsUuidArray());
+                default:
+                    return false;
+            }
+        }
+
+        public override int GetHashCode() => uuidParts.GetHashCode();
+    }
 }

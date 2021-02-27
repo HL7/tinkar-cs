@@ -20,7 +20,7 @@ namespace Tinkar.Common
             return new PublicId1(msb, lsb);
         }
 
-        public static  IVertexId of(UUID uuid)
+        public static  IVertexId of(Guid uuid)
         {
             return new PublicId1(uuid);
         }

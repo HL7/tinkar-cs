@@ -7,45 +7,23 @@ using System.Text;
 
 namespace Tinkar.Common
 {
-    public enum IntIdListFactory
+    public class IntIdListFactory
     {
-        INSTANCE;
+        public static IntIdListFactory INSTANCE { get; } = new IntIdListFactory();
 
-    public IIntIdList empty()
-    {
-        return IntId0List.INSTANCE;
-    }
-
-    public IIntIdList of()
-    {
-        return this.empty();
-    }
-
-    public IIntIdList of(int one)
-    {
-        return new IntId1List(one);
-    }
-
-    public IIntIdList of(int one, int two)
-    {
-        return new IntId2List(one, two);
-    }
-
-    public IIntIdList of(params Int32[] elements)
-    {
-        if (elements == null || elements.length == 0)
+        public IIntIdList Empty() => IntId0List.INSTANCE;
+        public IIntIdList Of() => this.Empty();
+        public IIntIdList Of(int one) => new IntId1List(one);
+        public IIntIdList Of(int one, int two) => new IntId2List(one, two);
+        public IIntIdList Of(params Int32[] elements)
         {
-            return this.empty();
+            if (elements == null || elements.Length == 0)
+                return this.Empty();
+            if (elements.Length == 1)
+                return new IntId1List(elements[0]);
+            if (elements.Length == 2)
+                return new IntId2List(elements[0], elements[1]);
+            return new IntIdListArray(elements);
         }
-        if (elements.length == 1)
-        {
-            return new IntId1List(elements[0]);
-        }
-        if (elements.length == 2)
-        {
-            return new IntId2List(elements[0], elements[1]);
-        }
-        return new IntIdListArray(elements);
     }
-}
 }

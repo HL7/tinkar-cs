@@ -7,71 +7,38 @@ using System.Text;
 
 namespace Tinkar.Common
 {
-    public enum IntIdSetFactory
+    public class IntIdSetFactory
     {
-        INSTANCE;
+        public static IntIdSetFactory INSTANCE { get; } = new IntIdSetFactory();
 
-    public IIntIdSet empty()
-    {
-        return IntId0Set.INSTANCE;
+        public IIntIdSet Empty() => IntId0Set.INSTANCE;
+        public IIntIdSet Of() => this.Empty();
+        public IIntIdSet Of(int one) => new IntId1Set(one);
+        public IIntIdSet Of(int one, int two) => new IntId2Set(one, two);
+        public IIntIdSet Of(params Int32[] elements)
+        {
+            if (elements == null || elements.Length == 0)
+                return Empty();
+            if (elements.Length == 1)
+                return this.Of(elements[0]);
+            if (elements.Length == 2)
+                return this.Of(elements[0], elements[1]);
+            //$if (elements.Length < 1024)
+            return IntIdSetArray.NewIntIdSet(elements);
+            //$return IntIdSetRoaring.newIntIdSet(elements);
+        }
+
+        public IIntIdSet OfAlreadySorted(params Int32[] elements)
+        {
+            if (elements == null || elements.Length == 0)
+                return Empty();
+            if (elements.Length == 1)
+                return this.Of(elements[0]);
+            if (elements.Length == 2)
+                return this.Of(elements[0], elements[1]);
+            //$if (elements.Length < 1024)
+            return IntIdSetArray.NewIntIdSetAlreadySorted(elements);
+            //$return IntIdSetRoaring.newIntIdSetAlreadySorted(elements);
+        }
     }
-
-    public IIntIdSet of()
-    {
-        return this.empty();
-    }
-
-    public IIntIdSet of(int one)
-    {
-        return new IntId1Set(one);
-    }
-
-
-    public IIntIdSet of(int one, int two)
-    {
-        return new IntId2Set(one, two);
-    }
-
-    public IIntIdSet of(params Int32[] elements)
-    {
-        if (elements == null || elements.length == 0)
-        {
-            return empty();
-        }
-        if (elements.length == 1)
-        {
-            return this.of(elements[0]);
-        }
-        if (elements.length == 2)
-        {
-            return this.of(elements[0], elements[1]);
-        }
-        if (elements.length < 1024)
-        {
-            return IntIdSetArray.newIntIdSet(elements);
-        }
-        return IntIdSetRoaring.newIntIdSet(elements);
-    }
-
-    public IIntIdSet ofAlreadySorted(params Int32[] elements)
-    {
-        if (elements == null || elements.length == 0)
-        {
-            return empty();
-        }
-        if (elements.length == 1)
-        {
-            return this.of(elements[0]);
-        }
-        if (elements.length == 2)
-        {
-            return this.of(elements[0], elements[1]);
-        }
-        if (elements.length < 1024)
-        {
-            return IntIdSetArray.newIntIdSetAlreadySorted(elements);
-        }
-        return IntIdSetRoaring.newIntIdSetAlreadySorted(elements);
-    }
-}
 }

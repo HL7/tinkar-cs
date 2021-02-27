@@ -9,7 +9,7 @@ namespace Tinkar.Common
 {
     public class IntIds
     {
-        public static  IntIdListFactory list = IntIdListFactory.INSTANCE;
-    public static  IntIdSetFactory set = IntIdSetFactory.INSTANCE;
-}
+        public static IntIdListFactory list = IntIdListFactory.INSTANCE;
+        public static IntIdSetFactory set = IntIdSetFactory.INSTANCE;
+    }
 }

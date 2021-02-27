@@ -12,7 +12,7 @@ namespace Tinkar.Common
 	{
 		Guid[] AsUuidArray();
 
-		int uuidCount();
+		int UuidCount { get; }
 
 		//**
 		// * Presents ordered list of longs, from the UUIDs in the order: msb, lsb, msb, lsb, ...

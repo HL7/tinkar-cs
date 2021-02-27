@@ -8,22 +8,25 @@ using System.Collections.Immutable;
 
 namespace Tinkar.Common
 {
-    public abstract class PublicIdA implements PublicId {
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        UUID[] uuids = asUuidArray();
-        for (int i = 0; i < uuids.length; i++) {
-            sb.append("\"");
-            sb.append(uuids[i].toString());
-            sb.append("\"");
-            sb.append(", ");
+    public abstract class PublicIdA : IPublicId
+    {
+        public abstract Guid[] AsUuidArray();
+
+        public override String ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            Guid[] uuids = this.AsUuidArray();
+
+            String Str(Int32 i) => $"\"{uuids[i++].ToString()}\"";
+
+            Int32 i = 0;
+            while (i < uuids.Length - 1)
+                sb.Append($"{Str(i++)}, ");
+            sb.Append($"{Str(i++)}]");
+            return sb.ToString();
         }
-        sb.delete(sb.length() - 2, sb.length() - 1);
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("]");
-        return sb.toString();
+
+        public abstract Int32 UuidCount { get; }
     }
-}
 }

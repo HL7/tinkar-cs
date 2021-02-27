@@ -8,8 +8,8 @@ using System.Collections.Immutable;
 
 namespace Tinkar.Common
 {
-    public interface IPublicIdList<E extends PublicId> : IPublicIdCollection<E>, IdList
+    public interface IPublicIdList<E> : IPublicIdCollection<E>, IdList
+        where E : IPublicId
     {
-
     }
 }

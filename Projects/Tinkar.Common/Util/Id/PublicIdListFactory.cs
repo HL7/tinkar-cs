@@ -12,21 +12,9 @@ namespace Tinkar.Common
     {
         public static  PublicIdListFactory INSTANCE = new PublicIdListFactory();
 
-        public IPublicIdList empty()
-        {
-            return PublicIdCollections.ListN.EMPTY_LIST;
-        }
-
-        public IPublicIdList of()
-        {
-            return this.empty();
-        }
-
-        public IPublicIdList of(IPublicId one)
-        {
-            return new PublicIdCollections.List12(one);
-        }
-
+        public IPublicIdList Empty() => PublicIdCollections.ListN.EMPTY_LIST;
+        public IPublicIdList Of() => this.Empty();
+        public IPublicIdList Of(IPublicId one) => new PublicIdCollections.List12(one);
         public IPublicIdList of(IPublicId one, IPublicId two)
         {
             return new PublicIdCollections.List12(one, two);

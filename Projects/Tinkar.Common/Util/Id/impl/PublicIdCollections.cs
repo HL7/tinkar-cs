@@ -5,22 +5,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Collections.Immutable;
+using System.Collections;
 
 namespace Tinkar.Common
 {
 
-    public class PublicIdCollections {
-    /**
-     * A "salt" value used for randomizing iteration order. This is initialized once
-     * and stays constant for the lifetime of the JVM. It need not be truly random, but
-     * it needs to vary sufficiently from one run to the next so that iteration order
-     * will vary between JVM runs.
-     */
-    static final int SALT;
-    static {
+    public class PublicIdCollections
+    {
+        /**
+         * A "salt" value used for randomizing iteration order. This is initialized once
+         * and stays constant for the lifetime of the JVM. It need not be truly random, but
+         * it needs to vary sufficiently from one run to the next so that iteration order
+         * will vary between JVM runs.
+         */
+        static int SALT;
+        static {
         long nt = System.nanoTime();
-        SALT = (int)((nt >>> 32) ^ nt);
+        SALT = (int) ((nt >>> 32) ^ nt);
     }
+
+#if NEVER
 
     /** No instances. */
     private PublicIdCollections() { }
@@ -37,16 +41,17 @@ namespace Tinkar.Common
     implements PublicIdCollection<E>
     {
         // all mutating methods throw UnsupportedOperationException
-        @Override public bool add(E e) { throw uoe(); }
-        @Override public bool addAll(Collection<? extends E> c) { throw uoe(); }
-        @Override public void    clear() { throw uoe(); }
-        @Override public bool remove(Object o) { throw uoe(); }
-        @Override public bool removeAll(Collection<?> c) { throw uoe(); }
-        @Override public bool removeIf(Predicate<? super E> filter) { throw uoe(); }
-        @Override public bool retainAll(Collection<?> c) { throw uoe(); }
+        @Override public boolean add(E e) { throw uoe(); }
+        @Override public boolean addAll(Collection<? extends E> c) { throw uoe(); }
+        @Override public void clear() { throw uoe(); }
+        @Override public boolean remove(Object o) { throw uoe(); }
+        @Override public boolean removeAll(Collection<?> c) { throw uoe(); }
+        @Override public boolean removeIf(Predicate<? super E> filter) { throw uoe(); }
+        @Override public boolean retainAll(Collection<?> c) { throw uoe(); }
 
         @Override
-        public Stream<E> stream() {
+        public Stream<E> stream()
+        {
             return StreamSupport.stream(spliterator(), false);
         }
     }
@@ -55,363 +60,435 @@ namespace Tinkar.Common
 
     // make a copy, short-circuiting based on implementation class
     @SuppressWarnings("unchecked")
-    static <E> List<E> listCopy(Collection<? extends E> coll) {
+    static <E> List<E> listCopy(Collection<? extends E> coll)
+    {
         if (coll instanceof PublicIdCollections.AbstractImmutableList && coll.getClass() != PublicIdCollections.SubList.class) {
-            return (List<E>)coll;
-        } else {
-            return (List<E>)List.of(coll.toArray());
-        }
+            return (List<E>) coll;
+} else
+{
+    return (List<E>)List.of(coll.toArray());
+}
     }
 
     @SuppressWarnings("unchecked")
-    static <E extends PublicId> PublicIdList<E> emptyList() {
-        return (PublicIdList<E>) PublicIdCollections.ListN.EMPTY_LIST;
-    }
+    static < E extends PublicId> PublicIdList<E> emptyList() {
+    return (PublicIdList<E>)PublicIdCollections.ListN.EMPTY_LIST;
+}
 
-    static abstract class AbstractImmutableList<E extends PublicId>
+static abstract class AbstractImmutableList<E extends PublicId>
             extends PublicIdCollections.AbstractImmutableCollection<E>
             implements PublicIdList<E>, List<E>, RandomAccess {
 
-        // all mutating methods throw UnsupportedOperationException
-        @Override public void    add(int index, E element) { throw uoe(); }
-        @Override public bool addAll(int index, Collection<? extends E> c) { throw uoe(); }
-        @Override public E       remove(int index) { throw uoe(); }
-        @Override public void    replaceAll(UnaryOperator<E> operator) { throw uoe(); }
-        @Override public E       set(int index, E element) { throw uoe(); }
-        @Override public void    sort(Comparator<? super E> c) { throw uoe(); }
+    // all mutating methods throw UnsupportedOperationException
+    @Override public void add(int index, E element) { throw uoe(); }
+    @Override public boolean addAll(int index, Collection<? extends E> c) { throw uoe(); }
+    @Override public E remove(int index) { throw uoe(); }
+    @Override public void replaceAll(UnaryOperator<E> operator) { throw uoe(); }
+    @Override public E set(int index, E element) { throw uoe(); }
+    @Override public void sort(Comparator<? super E> c) { throw uoe(); }
 
-        @Override
-        public AbstractImmutableList<E> subList(int fromIndex, int toIndex) {
-            int size = size();
-            subListRangeCheck(fromIndex, toIndex, size);
-            return PublicIdCollections.SubList.fromList(this, fromIndex, toIndex);
+    @Override
+        public AbstractImmutableList<E> subList(int fromIndex, int toIndex)
+    {
+        int size = size();
+        subListRangeCheck(fromIndex, toIndex, size);
+        return PublicIdCollections.SubList.fromList(this, fromIndex, toIndex);
+    }
+
+    static void subListRangeCheck(int fromIndex, int toIndex, int size)
+    {
+        if (fromIndex < 0)
+            throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+        if (toIndex > size)
+            throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+        if (fromIndex > toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                    ") > toIndex(" + toIndex + ")");
+    }
+
+    @Override
+        public Iterator<E> iterator()
+    {
+        return new PublicIdCollections.ListItr<E>(this, size());
+    }
+
+    @Override
+        public ListIterator<E> listIterator()
+    {
+        return listIterator(0);
+    }
+
+    @Override
+        public ListIterator<E> listIterator(final int index)
+    {
+        int size = size();
+        if (index < 0 || index > size)
+        {
+            throw outOfBounds(index);
+        }
+        return new PublicIdCollections.ListItr<E>(this, size, index);
+    }
+
+    @Override
+        public boolean equals(Object o)
+    {
+        if (o == this)
+        {
+            return true;
         }
 
-        static void subListRangeCheck(int fromIndex, int toIndex, int size) {
-            if (fromIndex < 0)
-                throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-            if (toIndex > size)
-                throw new IndexOutOfBoundsException("toIndex = " + toIndex);
-            if (fromIndex > toIndex)
-                throw new IllegalArgumentException("fromIndex(" + fromIndex +
-                        ") > toIndex(" + toIndex + ")");
+        if (!(o instanceof List)) {
+        return false;
+    }
+
+    Iterator <?> oit = ((List <?>) o).iterator();
+    for (int i = 0, s = size(); i < s; i++)
+    {
+        if (!oit.hasNext() || !get(i).equals(oit.next()))
+        {
+            return false;
         }
+    }
+    return !oit.hasNext();
+}
 
-        @Override
-        public Iterator<E> iterator() {
-            return new PublicIdCollections.ListItr<E>(this, size());
+@Override
+        public int indexOf(Object o)
+{
+    Objects.requireNonNull(o);
+    for (int i = 0, s = size(); i < s; i++)
+    {
+        if (o.equals(get(i)))
+        {
+            return i;
         }
+    }
+    return -1;
+}
 
-        @Override
-        public ListIterator<E> listIterator() {
-            return listIterator(0);
+@Override
+        public int lastIndexOf(Object o)
+{
+    Objects.requireNonNull(o);
+    for (int i = size() - 1; i >= 0; i--)
+    {
+        if (o.equals(get(i)))
+        {
+            return i;
         }
+    }
+    return -1;
+}
 
-        @Override
-        public ListIterator<E> listIterator(final int index) {
-            int size = size();
-            if (index < 0 || index > size) {
-                throw outOfBounds(index);
-            }
-            return new PublicIdCollections.ListItr<E>(this, size, index);
-        }
+@Override
+        public int hashCode()
+{
+    int hash = 1;
+    for (int i = 0, s = size(); i < s; i++)
+    {
+        hash = 31 * hash + get(i).hashCode();
+    }
+    return hash;
+}
 
-        @Override
-        public bool equals(Object o) {
-            if (o == this) {
-                return true;
-            }
+@Override
+        public boolean contains(Object o)
+{
+    return indexOf(o) >= 0;
+}
 
-            if (!(o instanceof List)) {
-                return false;
-            }
-
-            Iterator<?> oit = ((List<?>) o).iterator();
-            for (int i = 0, s = size(); i < s; i++) {
-                if (!oit.hasNext() || !get(i).equals(oit.next())) {
-                    return false;
-                }
-            }
-            return !oit.hasNext();
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            Objects.requireNonNull(o);
-            for (int i = 0, s = size(); i < s; i++) {
-                if (o.equals(get(i))) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            Objects.requireNonNull(o);
-            for (int i = size() - 1; i >= 0; i--) {
-                if (o.equals(get(i))) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 1;
-            for (int i = 0, s = size(); i < s; i++) {
-                hash = 31 * hash + get(i).hashCode();
-            }
-            return hash;
-        }
-
-        @Override
-        public bool contains(Object o) {
-            return indexOf(o) >= 0;
-        }
-
-        IndexOutOfBoundsException outOfBounds(int index) {
-            return new IndexOutOfBoundsException("Index: " + index + " Size: " + size());
-        }
+IndexOutOfBoundsException outOfBounds(int index)
+{
+    return new IndexOutOfBoundsException("Index: " + index + " Size: " + size());
+}
     }
 
     static final class ListItr<E> implements ListIterator<E> {
 
-        
+
+
         private final List<E> list;
 
-        
-        private final int size;
 
-        
-        private final bool isListIterator;
+private final int size;
 
-        private int cursor;
 
-        ListItr(List<E> list, int size) {
-            this.list = list;
-            this.size = size;
-            this.cursor = 0;
-            isListIterator = false;
-        }
+private final boolean isListIterator;
 
-        ListItr(List<E> list, int size, int index) {
-            this.list = list;
-            this.size = size;
-            this.cursor = index;
-            isListIterator = true;
-        }
+private int cursor;
 
-        public bool hasNext() {
-            return cursor != size;
-        }
+ListItr(List < E > list, int size) {
+    this.list = list;
+    this.size = size;
+    this.cursor = 0;
+    isListIterator = false;
+}
 
-        public E next() {
-            try {
-                int i = cursor;
-                E next = list.get(i);
-                cursor = i + 1;
-                return next;
-            } catch (IndexOutOfBoundsException e) {
-                throw new NoSuchElementException();
-            }
-        }
+ListItr(List < E > list, int size, int index) {
+    this.list = list;
+    this.size = size;
+    this.cursor = index;
+    isListIterator = true;
+}
 
-        public void remove() {
-            throw uoe();
-        }
+public boolean hasNext()
+{
+    return cursor != size;
+}
 
-        public bool hasPrevious() {
-            if (!isListIterator) {
-                throw uoe();
-            }
-            return cursor != 0;
-        }
+public E next()
+{
+    try
+    {
+        int i = cursor;
+        E next = list.get(i);
+        cursor = i + 1;
+        return next;
+    }
+    catch (IndexOutOfBoundsException e)
+    {
+        throw new NoSuchElementException();
+    }
+}
 
-        public E previous() {
-            if (!isListIterator) {
-                throw uoe();
-            }
-            try {
-                int i = cursor - 1;
-                E previous = list.get(i);
-                cursor = i;
-                return previous;
-            } catch (IndexOutOfBoundsException e) {
-                throw new NoSuchElementException();
-            }
-        }
+public void remove()
+{
+    throw uoe();
+}
 
-        public int nextIndex() {
-            if (!isListIterator) {
-                throw uoe();
-            }
-            return cursor;
-        }
+public boolean hasPrevious()
+{
+    if (!isListIterator)
+    {
+        throw uoe();
+    }
+    return cursor != 0;
+}
 
-        public int previousIndex() {
-            if (!isListIterator) {
-                throw uoe();
-            }
-            return cursor - 1;
-        }
+public E previous()
+{
+    if (!isListIterator)
+    {
+        throw uoe();
+    }
+    try
+    {
+        int i = cursor - 1;
+        E previous = list.get(i);
+        cursor = i;
+        return previous;
+    }
+    catch (IndexOutOfBoundsException e)
+    {
+        throw new NoSuchElementException();
+    }
+}
 
-        public void set(E e) {
-            throw uoe();
-        }
+public int nextIndex()
+{
+    if (!isListIterator)
+    {
+        throw uoe();
+    }
+    return cursor;
+}
 
-        public void add(E e) {
-            throw uoe();
-        }
+public int previousIndex()
+{
+    if (!isListIterator)
+    {
+        throw uoe();
+    }
+    return cursor - 1;
+}
+
+public void set(E e)
+{
+    throw uoe();
+}
+
+public void add(E e)
+{
+    throw uoe();
+}
     }
 
     static final class SubList<E extends PublicId> extends PublicIdCollections.AbstractImmutableList<E>
             implements RandomAccess {
 
 
-        private final List<E> root;
+    private final List<E> root;
 
 
         private final int offset;
 
 
-        private final int size;
+private final int size;
 
-        private SubList(List<E> root, int offset, int size) {
-            this.root = root;
-            this.offset = offset;
-            this.size = size;
-        }
+private SubList(List<E> root, int offset, int size)
+{
+    this.root = root;
+    this.offset = offset;
+    this.size = size;
+}
 
-        /**
-         * Constructs a sublist of another SubList.
-         */
-        static <E extends PublicId> PublicIdCollections.SubList<E> fromSubList(PublicIdCollections.SubList<E> parent, int fromIndex, int toIndex) {
-            return new PublicIdCollections.SubList<>(parent.root, parent.offset + fromIndex, toIndex - fromIndex);
-        }
+/**
+ * Constructs a sublist of another SubList.
+ */
+static < E extends PublicId> PublicIdCollections.SubList<E> fromSubList(PublicIdCollections.SubList<E> parent, int fromIndex, int toIndex) {
+    return new PublicIdCollections.SubList<>(parent.root, parent.offset + fromIndex, toIndex - fromIndex);
+}
 
-        /**
-         * Constructs a sublist of an arbitrary AbstractImmutableList, which is
-         * not a SubList itself.
-         */
-        static <E extends PublicId> PublicIdCollections.SubList<E> fromList(List<E> list, int fromIndex, int toIndex) {
-            return new PublicIdCollections.SubList<>(list, fromIndex, toIndex - fromIndex);
-        }
+/**
+ * Constructs a sublist of an arbitrary AbstractImmutableList, which is
+ * not a SubList itself.
+ */
+static < E extends PublicId> PublicIdCollections.SubList<E> fromList(List<E> list, int fromIndex, int toIndex) {
+    return new PublicIdCollections.SubList<>(list, fromIndex, toIndex - fromIndex);
+}
 
-        public E get(int index) {
-            Objects.checkIndex(index, size);
-            return root.get(offset + index);
-        }
+public E get(int index)
+{
+    Objects.checkIndex(index, size);
+    return root.get(offset + index);
+}
 
-        public int size() {
-            return size;
-        }
+public int size()
+{
+    return size;
+}
 
-        public Iterator<E> iterator() {
-            return new PublicIdCollections.ListItr<>(this, size());
-        }
+public Iterator<E> iterator()
+{
+    return new PublicIdCollections.ListItr<>(this, size());
+}
 
-        public ListIterator<E> listIterator(int index) {
-            rangeCheck(index);
-            return new PublicIdCollections.ListItr<>(this, size(), index);
-        }
+public ListIterator<E> listIterator(int index)
+{
+    rangeCheck(index);
+    return new PublicIdCollections.ListItr<>(this, size(), index);
+}
 
-        private void rangeCheck(int index) {
-            if (index < 0 || index > size) {
-                throw outOfBounds(index);
-            }
-        }
+private void rangeCheck(int index)
+{
+    if (index < 0 || index > size)
+    {
+        throw outOfBounds(index);
+    }
+}
 
-        @Override
-        public void forEach(Consumer<? super E> consumer) {
-            iterator().forEachRemaining(consumer);
-        }
+@Override
+        public void forEach(Consumer<? super E> consumer)
+{
+    iterator().forEachRemaining(consumer);
+}
 
-        @Override
-        public PublicId[] toIdArray() {
-            return new PublicId[0];
-        }
+@Override
+        public PublicId[] toIdArray()
+{
+    return new PublicId[0];
+}
 
-        @Override
-        public bool contains(PublicId value) {
-            Iterator<E> itr = iterator();
-            while (itr.hasNext()) {
-                if (value.equals(itr.next())) {
-                    return true;
-                }
-            }
-            return false;
+@Override
+        public boolean contains(PublicId value)
+{
+    Iterator<E> itr = iterator();
+    while (itr.hasNext())
+    {
+        if (value.equals(itr.next()))
+        {
+            return true;
         }
+    }
+    return false;
+}
     }
 
     public static final class List12<E extends PublicId> extends PublicIdCollections.AbstractImmutableList<E>
             {
 
-        
+
+
         private final E e0;
 
-        
-        private final E e1;
 
-        public List12(E e0) {
-            this.e0 = Objects.requireNonNull(e0);
-            this.e1 = null;
+private final E e1;
+
+public List12(E e0)
+{
+    this.e0 = Objects.requireNonNull(e0);
+    this.e1 = null;
+}
+
+public List12(E e0, E e1)
+{
+    this.e0 = Objects.requireNonNull(e0);
+    this.e1 = Objects.requireNonNull(e1);
+}
+
+@Override
+        public int size()
+{
+    return e1 != null ? 2 : 1;
+}
+
+@Override
+        public E get(int index)
+{
+    if (index == 0)
+    {
+        return e0;
+    }
+    else if (index == 1 && e1 != null)
+    {
+        return e1;
+    }
+    throw outOfBounds(index);
+}
+
+@Override
+                public void forEach(Consumer<? super E> consumer)
+{
+    if (e0 != null)
+    {
+        consumer.accept(e0);
+    }
+    if (e1 != null)
+    {
+        consumer.accept(e1);
+    }
+}
+
+@Override
+                public PublicId[] toIdArray()
+{
+    if (e0 != null)
+    {
+        if (e1 != null)
+        {
+            return new PublicId[] { e0, e1 };
         }
+        return new PublicId[] { e0 };
+    }
+    return new PublicId[0];
+}
 
-        public List12(E e0, E e1) {
-            this.e0 = Objects.requireNonNull(e0);
-            this.e1 = Objects.requireNonNull(e1);
+@Override
+                public boolean contains(PublicId value)
+{
+    if (e0 != null)
+    {
+        if (value.equals(e0))
+        {
+            return true;
         }
-
-        @Override
-        public int size() {
-            return e1 != null ? 2 : 1;
-        }
-
-        @Override
-        public E get(int index) {
-            if (index == 0) {
-                return e0;
-            } else if (index == 1 && e1 != null) {
-                return e1;
-            }
-            throw outOfBounds(index);
-        }
-
-                @Override
-                public void forEach(Consumer<? super E> consumer) {
-                    if (e0 != null) {
-                        consumer.accept(e0);
-                    }
-                    if (e1 != null) {
-                        consumer.accept(e1);
-                    }
-                }
-
-                @Override
-                public PublicId[] toIdArray() {
-                    if (e0 != null) {
-                        if (e1 != null) {
-                            return new PublicId[] {e0, e1};
-                        }
-                        return new PublicId[] {e0};
-                    }
-                    return new PublicId[0];
-                }
-
-                @Override
-                public bool contains(PublicId value) {
-                    if (e0 != null) {
-                        if (value.equals(e0)) {
-                            return true;
-                        }
-                    }
-                    if (e1 != null) {
-                        return value.equals(e1);
-                    }
-                    return false;
-                }
+    }
+    if (e1 != null)
+    {
+        return value.equals(e1);
+    }
+    return false;
+}
             }
 
     public static final class ListN<E extends PublicId> extends PublicIdCollections.AbstractImmutableList<E>
@@ -419,57 +496,67 @@ namespace Tinkar.Common
 
         public static final PublicIdList EMPTY_LIST = new PublicIdCollections.ListN<>();
 
-        
-        private final E[] elements;
 
-        @SafeVarargs
-        public ListN(E... input) {
-            // copy and check manually to avoid TOCTOU
-            @SuppressWarnings("unchecked")
+private final E[] elements;
+
+@SafeVarargs
+        public ListN(E...input)
+{
+    // copy and check manually to avoid TOCTOU
+    @SuppressWarnings("unchecked")
             E[] tmp = (E[])new Object[input.length]; // implicit nullcheck of input
-            for (int i = 0; i < input.length; i++) {
-                tmp[i] = Objects.requireNonNull(input[i]);
-            }
-            elements = tmp;
-        }
+    for (int i = 0; i < input.length; i++)
+    {
+        tmp[i] = Objects.requireNonNull(input[i]);
+    }
+    elements = tmp;
+}
 
-        @Override
-        public bool isEmpty() {
-            return size() == 0;
-        }
+@Override
+        public boolean isEmpty()
+{
+    return size() == 0;
+}
 
-        @Override
-        public int size() {
-            return elements.length;
-        }
+@Override
+        public int size()
+{
+    return elements.length;
+}
 
-        @Override
-        public E get(int index) {
-            return elements[index];
-        }
+@Override
+        public E get(int index)
+{
+    return elements[index];
+}
 
-                @Override
-                public void forEach(Consumer<? super E> consumer) {
-                    for (E element: elements) {
-                        if (element != null) {
-                            consumer.accept(element);
-                        }
-                    }
+@Override
+                public void forEach(Consumer<? super E> consumer)
+{
+    for (E element: elements) {
+    if (element != null)
+    {
+        consumer.accept(element);
+    }
+}
                 }
 
                 @Override
-                public PublicId[] toIdArray() {
-                    return elements;
-                }
+                public PublicId[] toIdArray()
+{
+    return elements;
+}
 
-                @Override
-                public bool contains(PublicId value) {
-                    for (E element: elements) {
-                        if (value.equals(element)) {
-                            return true;
-                        }
-                    }
-                    return false;
+@Override
+                public boolean contains(PublicId value)
+{
+    for (E element: elements) {
+    if (value.equals(element))
+    {
+        return true;
+    }
+}
+return false;
                 }
     }
 
@@ -478,129 +565,160 @@ namespace Tinkar.Common
     static abstract class AbstractImmutableSet<E extends PublicId> extends PublicIdCollections.AbstractImmutableCollection<E>
             implements Set<E>, PublicIdSet<E> {
 
-        @Override
-        public bool equals(Object o) {
-            if (o == this) {
-                return true;
-            } else if (!(o instanceof Set)) {
-                return false;
-            }
-
-            Collection<?> c = (Collection<?>) o;
-            if (c.size() != size()) {
-                return false;
-            }
-            for (Object e : c) {
-                if (e == null || !contains(e)) {
-                    return false;
-                }
-            }
+    @Override
+        public boolean equals(Object o)
+    {
+        if (o == this)
+        {
             return true;
         }
+        else if (!(o instanceof Set)) {
+        return false;
+    }
 
-        @Override
+    Collection <?> c = (Collection <?>) o;
+    if (c.size() != size())
+    {
+        return false;
+    }
+    for (Object e : c)
+    {
+        if (e == null || !contains(e))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+@Override
         public abstract int hashCode();
     }
 
     @SuppressWarnings("unchecked")
-    public static <E extends PublicId> Set<E> emptySet() {
-        return (Set<E>) PublicIdCollections.SetN.EMPTY_SET;
-    }
+    public static < E extends PublicId> Set<E> emptySet() {
+    return (Set<E>)PublicIdCollections.SetN.EMPTY_SET;
+}
 
-    public static final class Set12<E extends PublicId> extends PublicIdCollections.AbstractImmutableSet<E>
+public static final class Set12<E extends PublicId> extends PublicIdCollections.AbstractImmutableSet<E>
     {
 
-        
-        final E e0;
-        
-        final E e1;
 
-        public Set12(E e0) {
-            this.e0 = Objects.requireNonNull(e0);
-            this.e1 = null;
-        }
+    final E e0;
 
-        public Set12(E e0, E e1) {
-            if (e0.equals(Objects.requireNonNull(e1))) { // implicit nullcheck of e0
-                throw new IllegalArgumentException("duplicate element: " + e0);
-            }
+    final E e1;
 
-            this.e0 = e0;
-            this.e1 = e1;
-        }
+        public Set12(E e0)
+{
+    this.e0 = Objects.requireNonNull(e0);
+    this.e1 = null;
+}
 
-        @Override
-        public int size() {
-            return (e1 == null) ? 1 : 2;
-        }
+public Set12(E e0, E e1)
+{
+    if (e0.equals(Objects.requireNonNull(e1)))
+    { // implicit nullcheck of e0
+        throw new IllegalArgumentException("duplicate element: " + e0);
+    }
 
-        @Override
-        public bool contains(Object o) {
-            return o.equals(e0) || o.equals(e1); // implicit nullcheck of o
-        }
+    this.e0 = e0;
+    this.e1 = e1;
+}
 
-        @Override
-        public int hashCode() {
-            return e0.hashCode() + (e1 == null ? 0 : e1.hashCode());
-        }
+@Override
+        public int size()
+{
+    return (e1 == null) ? 1 : 2;
+}
 
-        @Override
-        public Iterator<E> iterator() {
-            return new Iterator<>() {
+@Override
+        public boolean contains(Object o)
+{
+    return o.equals(e0) || o.equals(e1); // implicit nullcheck of o
+}
+
+@Override
+        public int hashCode()
+{
+    return e0.hashCode() + (e1 == null ? 0 : e1.hashCode());
+}
+
+@Override
+        public Iterator<E> iterator()
+{
+    return new Iterator<>()
+    {
                 private int idx = size();
 
-                @Override
-                public bool hasNext() {
-                    return idx > 0;
-                }
+@Override
+                public boolean hasNext()
+{
+    return idx > 0;
+}
 
-                @Override
-                public E next() {
-                    if (idx == 1) {
-                        idx = 0;
-                        return SALT >= 0 || e1 == null ? e0 : e1;
-                    } else if (idx == 2) {
-                        idx = 1;
-                        return SALT >= 0 ? e1 : e0;
-                    } else {
-                        throw new NoSuchElementException();
-                    }
-                }
+@Override
+                public E next()
+{
+    if (idx == 1)
+    {
+        idx = 0;
+        return SALT >= 0 || e1 == null ? e0 : e1;
+    }
+    else if (idx == 2)
+    {
+        idx = 1;
+        return SALT >= 0 ? e1 : e0;
+    }
+    else
+    {
+        throw new NoSuchElementException();
+    }
+}
             };
         }
         @Override
-        public void forEach(Consumer<? super E> consumer) {
-            if (e0 != null) {
-                consumer.accept(e0);
-            }
-            if (e1 != null) {
-                consumer.accept(e1);
-            }
-        }
+        public void forEach(Consumer<? super E> consumer)
+{
+    if (e0 != null)
+    {
+        consumer.accept(e0);
+    }
+    if (e1 != null)
+    {
+        consumer.accept(e1);
+    }
+}
 
-        @Override
-        public PublicId[] toIdArray() {
-            if (e0 != null) {
-                if (e1 != null) {
-                    return new PublicId[] {e0, e1};
-                }
-                return new PublicId[] {e0};
-            }
-            return new PublicId[0];
+@Override
+        public PublicId[] toIdArray()
+{
+    if (e0 != null)
+    {
+        if (e1 != null)
+        {
+            return new PublicId[] { e0, e1 };
         }
+        return new PublicId[] { e0 };
+    }
+    return new PublicId[0];
+}
 
-        @Override
-        public bool contains(PublicId value) {
-            if (e0 != null) {
-                if (value.equals(e0)) {
-                    return true;
-                }
-            }
-            if (e1 != null) {
-                return value.equals(e1);
-            }
-            return false;
+@Override
+        public boolean contains(PublicId value)
+{
+    if (e0 != null)
+    {
+        if (value.equals(e0))
+        {
+            return true;
         }
+    }
+    if (e1 != null)
+    {
+        return value.equals(e1);
+    }
+    return false;
+}
     }
 
     /**
@@ -614,143 +732,177 @@ namespace Tinkar.Common
 
             public static final Set<?> EMPTY_SET = new PublicIdCollections.SetN<>();
 
-        
-        final PublicId[] elements;
-        
-        final int size;
 
-        @SafeVarargs
-        @SuppressWarnings("unchecked")
-        public SetN(E... input) {
-            size = input.length; // implicit nullcheck of input
+final PublicId[] elements;
 
-            elements = new PublicId[EXPAND_FACTOR * input.length];
-            for (int i = 0; i < input.length; i++) {
-                E e = input[i];
-                int idx = probe(e); // implicit nullcheck of e
-                if (idx >= 0) {
-                    throw new IllegalArgumentException("duplicate element: " + e);
-                } else {
-                    elements[-(idx + 1)] = e;
-                }
-            }
+final int size;
+
+@SafeVarargs
+@SuppressWarnings("unchecked")
+        public SetN(E...input)
+{
+    size = input.length; // implicit nullcheck of input
+
+    elements = new PublicId[EXPAND_FACTOR * input.length];
+    for (int i = 0; i < input.length; i++)
+    {
+        E e = input[i];
+        int idx = probe(e); // implicit nullcheck of e
+        if (idx >= 0)
+        {
+            throw new IllegalArgumentException("duplicate element: " + e);
         }
-
-        @Override
-        public int size() {
-            return size;
+        else
+        {
+            elements[-(idx + 1)] = e;
         }
+    }
+}
 
-        @Override
-        public bool contains(Object o) {
-            Objects.requireNonNull(o);
-            return size > 0 && probe(o) >= 0;
-        }
+@Override
+        public int size()
+{
+    return size;
+}
 
-        private final class SetNIterator implements Iterator<E> {
+@Override
+        public boolean contains(Object o)
+{
+    Objects.requireNonNull(o);
+    return size > 0 && probe(o) >= 0;
+}
+
+private final class SetNIterator implements Iterator<E> {
 
             private int remaining;
 
-            private int idx;
+private int idx;
 
-            SetNIterator() {
-                remaining = size();
-                if (remaining > 0) {
-                    idx = Math.floorMod(SALT, elements.length);
-                }
-            }
+SetNIterator() {
+    remaining = size();
+    if (remaining > 0)
+    {
+        idx = Math.floorMod(SALT, elements.length);
+    }
+}
 
-            @Override
-            public bool hasNext() {
-                return remaining > 0;
-            }
+@Override
+            public boolean hasNext()
+{
+    return remaining > 0;
+}
 
-            private int nextIndex() {
-                int idx = this.idx;
-                if (SALT >= 0) {
-                    if (++idx >= elements.length) {
-                        idx = 0;
-                    }
-                } else {
-                    if (--idx < 0) {
-                        idx = elements.length - 1;
-                    }
-                }
-                return this.idx = idx;
-            }
+private int nextIndex()
+{
+    int idx = this.idx;
+    if (SALT >= 0)
+    {
+        if (++idx >= elements.length)
+        {
+            idx = 0;
+        }
+    }
+    else
+    {
+        if (--idx < 0)
+        {
+            idx = elements.length - 1;
+        }
+    }
+    return this.idx = idx;
+}
 
-            @Override
-            public E next() {
-                if (hasNext()) {
-                    E element;
-                    // skip null elements
-                    while ((element = (E) elements[nextIndex()]) == null) {}
-                    remaining--;
-                    return element;
-                } else {
-                    throw new NoSuchElementException();
-                }
-            }
+@Override
+            public E next()
+{
+    if (hasNext())
+    {
+        E element;
+        // skip null elements
+        while ((element = (E)elements[nextIndex()]) == null) { }
+        remaining--;
+        return element;
+    }
+    else
+    {
+        throw new NoSuchElementException();
+    }
+}
         }
 
         @Override
-        public Iterator<E> iterator() {
-            return new PublicIdCollections.SetN.SetNIterator();
-        }
+        public Iterator<E> iterator()
+{
+    return new PublicIdCollections.SetN.SetNIterator();
+}
 
-        @Override
-        public int hashCode() {
-            int h = 0;
-            for (PublicId e : elements) {
-                if (e != null) {
-                    h += e.hashCode();
-                }
-            }
-            return h;
+@Override
+        public int hashCode()
+{
+    int h = 0;
+    for (PublicId e : elements) {
+    if (e != null)
+    {
+        h += e.hashCode();
+    }
+}
+return h;
         }
 
         // returns index at which element is present; or if absent,
         // (-i - 1) where i is location where element should be inserted.
         // Callers are relying on this method to perform an implicit nullcheck
         // of pe
-        private int probe(Object pe) {
-            int idx = Math.floorMod(pe.hashCode(), elements.length);
-            while (true) {
-                E ee = (E) elements[idx];
-                if (ee == null) {
-                    return -idx - 1;
-                } else if (pe.equals(ee)) {
-                    return idx;
-                } else if (++idx == elements.length) {
-                    idx = 0;
-                }
+        private int probe(Object pe)
+{
+    int idx = Math.floorMod(pe.hashCode(), elements.length);
+    while (true)
+    {
+        E ee = (E)elements[idx];
+        if (ee == null)
+        {
+            return -idx - 1;
+        }
+        else if (pe.equals(ee))
+        {
+            return idx;
+        }
+        else if (++idx == elements.length)
+        {
+            idx = 0;
+        }
+    }
+}
+@Override
+            public void forEach(Consumer<? super E> consumer)
+{
+    for (PublicId element: elements) {
+    if (element != null)
+    {
+        consumer.accept((E)element);
+    }
+
+}
+            }
+
+            @Override
+            public PublicId[] toIdArray()
+{
+    return elements;
+}
+
+@Override
+            public boolean contains(PublicId value)
+{
+    for (PublicId element: elements) {
+    if (value.equals(element))
+    {
+        return true;
+    }
+}
+return false;
             }
         }
-            @Override
-            public void forEach(Consumer<? super E> consumer) {
-                for (PublicId element: elements) {
-                    if (element != null) {
-                        consumer.accept((E) element);
-                    }
-
-                }
-            }
-
-            @Override
-            public PublicId[] toIdArray() {
-                return elements;
-            }
-
-            @Override
-            public bool contains(PublicId value) {
-                for (PublicId element: elements) {
-                    if (value.equals(element)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
+#endif
 }
 }

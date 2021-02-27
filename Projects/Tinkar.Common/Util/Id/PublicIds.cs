@@ -15,7 +15,7 @@ namespace Tinkar.Common
 
     public static  PublicId newRandom()
         {
-            return new PublicId1(UUID.randomUUID());
+            return new PublicId1(Guid.randomUUID());
         }
 
         public static  PublicId of(long msb, long lsb)
@@ -30,15 +30,15 @@ namespace Tinkar.Common
         {
             return new PublicId3(msb, lsb, msb2, lsb2, msb3, lsb3);
         }
-        public static  PublicId of(List<UUID> list)
+        public static  PublicId of(List<Guid> list)
         {
-            return of(list.toArray(new UUID[list.size()]));
+            return of(list.toArray(new Guid[list.size()]));
         }
-        public static  PublicId of(ImmutableList<UUID> list)
+        public static  PublicId of(ImmutableList<Guid> list)
         {
-            return of(list.toArray(new UUID[list.size()]));
+            return of(list.toArray(new Guid[list.size()]));
         }
-        public static  PublicId of(UUID...uuids)
+        public static  PublicId of(Guid...uuids)
         {
             if (uuids.length == 1)
             {
