@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "MergeHelper": {
-      "commandName": "Project",
-      "commandLineArgs": "-d tinkar-java\\component\\src\\main\\java\\org\\hl7\\tinkar tinkar-java.cs\\component\\src\\main\\java\\org\\hl7\\tinkar tinkar-cs\\Projects\\Tinkar",
-      "workingDirectory": "C:\\Development\\Tinkar"
-    }
-  }
-}
