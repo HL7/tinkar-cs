@@ -16,7 +16,7 @@ namespace Tinkar.XUnitTests
         {
             SemanticDTO dtoStart = Misc.CreateSemanticDTO;
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.DefinitionForSemanticUuids, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
+            Misc.Compare(dtoStart.PatternForSemanticUuids, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
             Misc.Compare(dtoStart.ReferencedComponentUuids, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
         }
 

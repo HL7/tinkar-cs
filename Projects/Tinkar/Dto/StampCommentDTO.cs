@@ -21,7 +21,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar StampComment record.
     /// </summary>
-    public record StampCommentDTO : BaseDTO<StampCommentDTO>,
+    public record StampCommentDTO : ComponentDTO<StampCommentDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -32,7 +32,7 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -73,7 +73,7 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public StampCommentDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(MarshalVersion);
+            input.CheckMarshalVersion(LocalMarshalVersion);
             this.StampDTO = new StampDTO(input);
             this.Comment = input.ReadUTF();
         }
@@ -119,7 +119,7 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
             this.StampDTO.Marshal(output);
             output.WriteUTF(this.Comment);
         }

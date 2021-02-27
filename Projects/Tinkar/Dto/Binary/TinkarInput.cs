@@ -29,6 +29,7 @@ namespace Tinkar
     public class TinkarInput : IDisposable
     {
         private BinaryReader reader;
+        private Int32 marshalVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TinkarInput"/> class.
@@ -37,6 +38,7 @@ namespace Tinkar
         public TinkarInput(Stream inStream)
         {
             this.reader = new BinaryReader(inStream);
+            this.marshalVersion = this.ReadInt32();
         }
 
         /// <summary>
@@ -103,6 +105,12 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Read PublicId from input stream.
+        /// </summary>
+        /// <returns>PublicId.</returns>
+        public IPublicId ReadPublicId() => new PublicId(ReadUuids());
+
+        /// <summary>
         /// Read data tome from input stream.
         /// </summary>
         /// <returns>DateTime.</returns>
@@ -125,43 +133,43 @@ namespace Tinkar
         /// <summary>
         /// Read an array or ConceptVersionDTO items.
         /// </summary>
-        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="publicId">Public id (component ids).</param>
         /// <returns>ConceptVersionDTO[].</returns>
-        public ConceptVersionDTO[] ReadConceptVersionList(IEnumerable<Guid> componentUuids)
+        public ConceptVersionDTO[] ReadConceptVersionList(IPublicId publicId)
         {
             int length = this.ReadInt32();
             ConceptVersionDTO[] retVal = new ConceptVersionDTO[length];
             for (int i = 0; i < length; i++)
-                retVal[i] = ConceptVersionDTO.Make(this, componentUuids);
+                retVal[i] = ConceptVersionDTO.Make(this, publicId);
             return retVal;
         }
 
         /// <summary>
-        /// Read an array or DefinitionForSemanticVersionDTO items.
+        /// Read an array or PatternForSemanticVersionDTO items.
         /// </summary>
-        /// <param name="componentUuids">Component UUIDs.</param>
-        /// <returns>DefinitionForSemanticVersionDTO[].</returns>
-        public DefinitionForSemanticVersionDTO[] ReadDefinitionForSemanticVersionList(IEnumerable<Guid> componentUuids)
+        /// <param name="publicId">Public id (component ids).</param>
+        /// <returns>PatternForSemanticVersionDTO[].</returns>
+        public PatternForSemanticVersionDTO[] ReadPatternForSemanticVersionList(IPublicId publicId)
         {
             Int32 length = this.ReadInt32();
-            DefinitionForSemanticVersionDTO[] retVal = new DefinitionForSemanticVersionDTO[length];
+            PatternForSemanticVersionDTO[] retVal = new PatternForSemanticVersionDTO[length];
 
             // Generate array to avoid multiple enumerations of componentUuids.
-            Guid[] componentUuidArr = componentUuids.ToArray();
+            Guid[] componentUuidArr = publicId.ToArray();
             for (int i = 0; i < length; i++)
-                retVal[i] = DefinitionForSemanticVersionDTO.Make(this, componentUuidArr);
+                retVal[i] = PatternForSemanticVersionDTO.Make(this, publicId);
             return retVal;
         }
 
         /// <summary>
         /// Read an array or SemanticVersionDTO items.
         /// </summary>
-        /// <param name="componentUuids">Component UUIDs.</param>
-        /// <param name="definitionForSemanticUuids">DefinitionForSemantic UUIDs.</param>
+        /// <param name="publicId">Public id (component ids).</param>
+        /// <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
         /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         /// <returns>SemanticVersionDTO[].</returns>
         public SemanticVersionDTO[] ReadSemanticVersionList(
-            IEnumerable<Guid> componentUuids,
+            IPublicId publicId,
             IEnumerable<Guid> definitionForSemanticUuids,
             IEnumerable<Guid> referencedComponentUuids)
         {
@@ -171,7 +179,7 @@ namespace Tinkar
             {
                 retVal[i] = SemanticVersionDTO.Make(
                     this,
-                    componentUuids,
+                    publicId,
                     definitionForSemanticUuids,
                     referencedComponentUuids);
             }
@@ -221,10 +229,10 @@ namespace Tinkar
                     return ConceptChronologyDTO.Make(this);
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
-                case FieldDataType.DefinitionForSemanticChronologyType:
-                    return DefinitionForSemanticChronologyDTO.Make(this);
-                case FieldDataType.DefinitionForSemanticType:
-                    return DefinitionForSemanticDTO.Make(this);
+                case FieldDataType.PatternForSemanticChronologyType:
+                    return PatternForSemanticChronologyDTO.Make(this);
+                case FieldDataType.PatternForSemanticType:
+                    return PatternForSemanticDTO.Make(this);
                 case FieldDataType.SemanticChronologyType:
                     return SemanticChronologyDTO.Make(this);
                 case FieldDataType.SemanticType:
@@ -241,8 +249,7 @@ namespace Tinkar
         /// <param name="marshalVersion">Expected version.</param>
         public void CheckMarshalVersion(Int32 marshalVersion)
         {
-            int objectMarshalVersion = this.ReadInt32();
-            if (objectMarshalVersion != marshalVersion)
+            if (this.marshalVersion != marshalVersion)
                 throw new ArgumentException($"Unsupported version: {objectMarshalVersion}");
         }
     }

@@ -117,11 +117,11 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticDTO item:
+                case PatternForSemanticDTO item:
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticChronologyDTO item:
+                case PatternForSemanticChronologyDTO item:
                     item.Marshal(this);
                     break;
 
@@ -158,6 +158,13 @@ namespace Tinkar
                 item.Marshal(this);
             this.writer.WriteEndArray();
         }
+
+        /// <summary>
+        /// Write property that is array of guids.
+        /// </summary>
+        /// <param name="propertyName">Name of json property to write.</param>
+        /// <param name="publicId">PublicId to write.</param>
+        public void WritePublicId(String propertyName, IPublicId publicId) => WriteUuids(propertyName, publicId.AsUuidArray);
 
         /// <summary>
         /// Write property that is array of guids.

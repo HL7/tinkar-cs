@@ -23,7 +23,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar ConceptChronology record.
     /// </summary>
-    public record ConceptChronologyDTO : BaseDTO<ConceptChronologyDTO>,
+    public record ConceptChronologyDTO : ComponentDTO<ConceptChronologyDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -34,7 +34,7 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -45,17 +45,17 @@ namespace Tinkar
         /// <summary>
         /// Gets ChronologySet.
         /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetUuids);
+        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
 
         /// <summary>
-        /// Gets Component UUIDs.
+        /// Gets public id.
         /// </summary>
-        public IEnumerable<Guid> ComponentUuids { get; init; }
+        public IPublicId PublicId { get; init; }
 
         /// <summary>
-        /// Gets ChronologySet UUIDs.
+        /// Gets ChronologySet PublicId.
         /// </summary>
-        public IEnumerable<Guid> ChronologySetUuids { get; init; }
+        public IPublicId ChronologySetPublicId { get; init; }
 
         /// <summary>
         /// Gets ConceptVersions.
@@ -71,16 +71,16 @@ namespace Tinkar
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids.</param>
-        /// <param name="chronologySetUuids">ChronologySetUuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
         /// <param name="conceptVersions">ConceptVersions.</param>
         public ConceptChronologyDTO(
-            IEnumerable<Guid> componentUuids,
-            IEnumerable<Guid> chronologySetUuids,
+            IPublicId publicId,
+            IPublicId chronologySetPublicId,
             IEnumerable<ConceptVersionDTO> conceptVersions)
         {
-            this.ComponentUuids = componentUuids;
-            this.ChronologySetUuids = chronologySetUuids;
+            this.PublicId = publicId;
+            this.ChronologySetPublicId = chronologySetPublicId;
             this.ConceptVersions = conceptVersions;
         }
 
@@ -91,10 +91,10 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public ConceptChronologyDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.ComponentUuids = input.ReadUuids();
-            this.ChronologySetUuids = input.ReadUuids();
-            this.ConceptVersions = input.ReadConceptVersionList(this.ComponentUuids);
+            input.CheckMarshalVersion(LocalMarshalVersion);
+            this.PublicId = input.ReadPublicId();
+            this.ChronologySetPublicId = input.ReadPublicId();
+            this.ConceptVersions = input.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         public ConceptChronologyDTO(JObject jObj)
         {
-            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
-            this.ChronologySetUuids = jObj.ReadUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS);
-            this.ConceptVersions = jObj.ReadConceptVersionList(this.ComponentUuids);
+            this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID);
+            this.ConceptVersions = jObj.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace Tinkar
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(ConceptChronologyDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
+            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
             if (cmp != 0)
                 return cmp;
             cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.ConceptVersions, other.ConceptVersions);
@@ -142,9 +142,9 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
-            output.WriteUuids(this.ComponentUuids);
-            output.WriteUuids(this.ChronologySetUuids);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.WritePublicId(this.PublicId);
+            output.WritePublicId(this.ChronologySetPublicId);
 
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
@@ -169,12 +169,12 @@ namespace Tinkar
             // in writeConceptVersionList...
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(
-                ComponentFieldForJson.COMPONENT_UUIDS,
-                this.ComponentUuids);
-            output.WriteUuids(
-                ComponentFieldForJson.CHRONOLOGY_SET_UUIDS,
-                this.ChronologySetUuids);
+            output.WritePublicId(
+                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
+                this.PublicId);
+            output.WritePublicId(
+                ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID,
+                this.ChronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.CONCEPT_VERSIONS,
                 this.ConceptVersions);

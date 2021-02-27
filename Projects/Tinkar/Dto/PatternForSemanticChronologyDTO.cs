@@ -21,11 +21,11 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar DefinitionForSemanticChronology record.
+    /// Tinkar PatternForSemanticChronology record.
     /// </summary>
-    public record DefinitionForSemanticChronologyDTO :
-        BaseDTO<DefinitionForSemanticChronologyDTO>,
-        IDefinitionForSemanticChronology<IConcept>,
+    public record PatternForSemanticChronologyDTO :
+        ComponentDTO<PatternForSemanticChronologyDTO>,
+        IPatternForSemanticChronology<IConcept>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
@@ -35,29 +35,29 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "DefinitionForSemanticChronologyDTO";
+        public const String JsonClassName = "PatternForSemanticChronologyDTO";
 
         /// <summary>
-        /// Gets Component UUIDs.
+        /// Gets public id.
         /// </summary>
-        public IEnumerable<Guid> ComponentUuids { get; init; }
+        public IPublicId PublicId { get; init; }
 
         /// <summary>
         /// Gets Versions record.
         /// </summary>
-        public IEnumerable<DefinitionForSemanticVersionDTO> DefinitionVersions { get; init; }
+        public IEnumerable<PatternForSemanticVersionDTO> DefinitionVersions { get; init; }
 
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<IDefinitionForSemanticVersion> Versions =>
-            this.DefinitionVersions.Select((dto) => (IDefinitionForSemanticVersion)dto);
+        public IEnumerable<IPatternForSemanticVersion> Versions =>
+            this.DefinitionVersions.Select((dto) => (IPatternForSemanticVersion)dto);
 
         /// <summary>
         /// Gets ChronologySet.
@@ -70,47 +70,47 @@ namespace Tinkar
         public IEnumerable<Guid> ChronologySetUuids { get; init; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class.
+        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
         /// <param name="chronologySetUuids">ChronologySetUuids.</param>
         /// <param name="definitionVersions">DefinitionVersions.</param>
-        public DefinitionForSemanticChronologyDTO(
-            IEnumerable<Guid> componentUuids,
+        public PatternForSemanticChronologyDTO(
+            IPublicId publicId,
             IEnumerable<Guid> chronologySetUuids,
-            IEnumerable<DefinitionForSemanticVersionDTO> definitionVersions)
+            IEnumerable<PatternForSemanticVersionDTO> definitionVersions)
         {
-            this.ComponentUuids = componentUuids;
+            this.PublicId = publicId;
             this.ChronologySetUuids = chronologySetUuids;
             this.DefinitionVersions = definitionVersions;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class
+        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public DefinitionForSemanticChronologyDTO(TinkarInput input)
+        public PatternForSemanticChronologyDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.ComponentUuids = input.ReadUuids();
+            input.CheckMarshalVersion(LocalMarshalVersion);
+            this.PublicId = input.ReadPublicId();
             this.ChronologySetUuids = input.ReadUuids();
             this.DefinitionVersions =
-                input.ReadDefinitionForSemanticVersionList(this.ComponentUuids);
+                input.ReadPatternForSemanticVersionList(this.PublicId);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticChronologyDTO"/> class
+        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        public DefinitionForSemanticChronologyDTO(JObject jObj)
+        public PatternForSemanticChronologyDTO(JObject jObj)
         {
             jObj.GetClass(JsonClassName);
-            this.ComponentUuids = jObj.ReadUuids(ComponentFieldForJson.COMPONENT_UUIDS);
-            this.ChronologySetUuids = jObj.ReadUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS);
+            this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.ChronologySetUuids = jObj.ReadUuids(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID);
             this.DefinitionVersions =
-                jObj.ReadDefinitionForSemanticVersionList(this.ComponentUuids);
+                jObj.ReadPatternForSemanticVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -118,15 +118,15 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(DefinitionForSemanticChronologyDTO other)
+        public override Int32 CompareTo(PatternForSemanticChronologyDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.ComparePublicIds(this.PublicId, other.PublicId);
             if (cmp != 0)
                 return cmp;
             cmp = FieldCompare.CompareGuids(this.ChronologySetUuids, other.ChronologySetUuids);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareSequence<DefinitionForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
+            cmp = FieldCompare.CompareSequence<PatternForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -137,8 +137,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static DefinitionForSemanticChronologyDTO Make(TinkarInput input) =>
-            new DefinitionForSemanticChronologyDTO(input);
+        public static PatternForSemanticChronologyDTO Make(TinkarInput input) =>
+            new PatternForSemanticChronologyDTO(input);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -146,8 +146,8 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
-            output.WriteUuids(this.ComponentUuids);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.WriteUuids(this.PublicId);
             output.WriteUuids(this.ChronologySetUuids);
             output.WriteMarshalableList(this.DefinitionVersions);
         }
@@ -157,8 +157,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <returns>new DTO item.</returns>
-        public static DefinitionForSemanticChronologyDTO Make(JObject jObj) =>
-            new DefinitionForSemanticChronologyDTO(jObj);
+        public static PatternForSemanticChronologyDTO Make(JObject jObj) =>
+            new PatternForSemanticChronologyDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
@@ -168,8 +168,8 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_UUIDS, this.ComponentUuids);
-            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_SET_UUIDS, this.ChronologySetUuids);
+            output.WriteUuids(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID, this.ChronologySetUuids);
             output.WriteMarshalableList(
                 ComponentFieldForJson.DEFINITION_VERSIONS,
                 this.DefinitionVersions);

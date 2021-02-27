@@ -72,8 +72,8 @@ namespace Tinkar.XUnitTests
                 new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
             );
 
-        public static DefinitionForSemanticDTO CreateDefinitionForSemanticDTO =>
-            new DefinitionForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+        public static PatternForSemanticDTO CreatePatternForSemanticDTO =>
+            new PatternForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
 
         public static SemanticChronologyDTO CreateSemanticChronologyDTO =>
             new SemanticChronologyDTO(
@@ -157,16 +157,16 @@ namespace Tinkar.XUnitTests
                 Assert.True(inArr[i].IsEquivalent((T)cmpArr[i]));
         }
 
-        public static DefinitionForSemanticChronologyDTO CreateDefinitionForSemanticChronologyDTO =>
-            new DefinitionForSemanticChronologyDTO(
+        public static PatternForSemanticChronologyDTO CreatePatternForSemanticChronologyDTO =>
+            new PatternForSemanticChronologyDTO(
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
                 new Guid[] { Misc.h1, Misc.h2, Misc.h3 },
-                new DefinitionForSemanticVersionDTO[] { Misc.CreateDefinitionForSemanticVersionDTO }
+                new PatternForSemanticVersionDTO[] { Misc.CreatePatternForSemanticVersionDTO }
             );
 
 
-        public static DefinitionForSemanticVersionDTO CreateDefinitionForSemanticVersionDTO =>
-            new DefinitionForSemanticVersionDTO(
+        public static PatternForSemanticVersionDTO CreatePatternForSemanticVersionDTO =>
+            new PatternForSemanticVersionDTO(
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
                 Misc.CreateStampDTO,
                 new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },

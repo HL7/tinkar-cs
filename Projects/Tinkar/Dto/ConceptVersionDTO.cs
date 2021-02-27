@@ -22,7 +22,7 @@ namespace Tinkar
     /// <summary>
     /// ConceptVersion record.
     /// </summary>
-    public record ConceptVersionDTO : BaseDTO<ConceptVersionDTO>,
+    public record ConceptVersionDTO : VersionDTO<ConceptVersionDTO>,
         IConceptVersion,
         IChangeSetThing,
         IJsonMarshalable,
@@ -33,7 +33,7 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -42,31 +42,12 @@ namespace Tinkar
         public const String JsonClassName = "ConceptVersionDTO";
 
         /// <summary>
-        /// Gets the concept version component uuids.
-        /// </summary>
-        public IEnumerable<Guid> ComponentUuids { get; init; }
-
-        /// <summary>
-        /// Gets the Stamp DTO.
-        /// </summary>
-        public StampDTO StampDTO { get; init; }
-
-        /// <summary>
-        /// Gets the Stamp.
-        /// </summary>
-        public IStamp Stamp => this.StampDTO;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">Component Uuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
         /// <param name="stampDTO">Stamp.</param>
-        public ConceptVersionDTO(
-            IEnumerable<Guid> componentUuids,
-            StampDTO stampDTO)
+        public ConceptVersionDTO(IPublicId publicId, StampDTO stampDTO) : base(publicId, stampDTO)
         {
-            this.ComponentUuids = componentUuids;
-            this.StampDTO = stampDTO;
         }
 
         /// <summary>
@@ -74,14 +55,10 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">binary input stream.</param>
-        /// <param name="componentUuids">component uuids.</param>
-        public ConceptVersionDTO(
-            TinkarInput input,
-            IEnumerable<Guid> componentUuids)
+        /// <param name = "publicId" > Public id(component ids).</param>
+        public ConceptVersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
         {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.ComponentUuids = componentUuids;
-            this.StampDTO = new StampDTO(input);
+            input.CheckMarshalVersion(LocalMarshalVersion);
         }
 
         /// <summary>
@@ -89,15 +66,9 @@ namespace Tinkar
         /// from input JSON stream.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name="componentUuids">component uuids.</param>
-        public ConceptVersionDTO(
-            JObject jObj,
-            IEnumerable<Guid> componentUuids)
+        /// <param name = "publicId" > Public id(component ids).</param>
+        public ConceptVersionDTO(JObject jObj, IPublicId publicId) : base(jObj, publicId, JsonClassName)
         {
-            this.ComponentUuids = componentUuids;
-            jObj.GetClass(JsonClassName);
-            JObject jObjStamp = jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP);
-            this.StampDTO = new StampDTO(jObjStamp);
         }
 
         /// <summary>
@@ -107,10 +78,7 @@ namespace Tinkar
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(ConceptVersionDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
-            if (cmp != 0)
-                return cmp;
-            cmp = FieldCompare.CompareItem(this.StampDTO, other.StampDTO);
+            Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -120,36 +88,27 @@ namespace Tinkar
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="publicId">Public id (component ids).</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptVersionDTO Make(
-            TinkarInput input,
-            IEnumerable<Guid> componentUuids) =>
-            new ConceptVersionDTO(input, componentUuids);
+        public static ConceptVersionDTO Make(TinkarInput input, IPublicId publicId) => new ConceptVersionDTO(input, publicId);
 
         /// <summary>
         /// Marshal all fields to binary output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarOutput output)
+        public new void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
-
-            // note that componentUuids are not written redundantly here,
-            // they are written with the ConceptChronologyDTO...
-            this.StampDTO.Marshal(output);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
+            base.Marshal(output);
         }
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="publicId">Public id (component ids).</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptVersionDTO Make(
-            JObject jObj,
-            IEnumerable<Guid> componentUuids) =>
-            new ConceptVersionDTO(jObj, componentUuids);
+        public static ConceptVersionDTO Make(JObject jObj, IPublicId publicId) => new ConceptVersionDTO(jObj, publicId);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
@@ -157,13 +116,7 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
-            // note that componentUuids are not written redundantly here,
-            // they are written with the ConceptChronologyDTO...
-            output.WriteStartObject();
-            output.WriteClass(JsonClassName);
-            output.WritePropertyName(ComponentFieldForJson.STAMP);
-            this.StampDTO.Marshal(output);
-            output.WriteEndObject();
+            base.Marshal(output, JsonClassName);
         }
     }
 }

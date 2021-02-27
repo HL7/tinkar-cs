@@ -24,7 +24,7 @@ namespace Tinkar
     /// FieldDefinition record.
     /// </summary>
     public record FieldDefinitionDTO :
-        BaseDTO<FieldDefinitionDTO>,
+        ComponentDTO<FieldDefinitionDTO>,
         IFieldDefinition,
         IChangeSetThing,
         IJsonMarshalable,
@@ -35,7 +35,7 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -46,47 +46,47 @@ namespace Tinkar
         /// <summary>
         /// Gets DataType record.
         /// </summary>
-        public IConcept DataType => new ConceptDTO(this.DataTypeUuids);
+        public IConcept DataType => new ConceptDTO(this.DataTypePublicId);
 
         /// <summary>
         /// Gets Purpose concept.
         /// </summary>
-        public IConcept Purpose => new ConceptDTO(this.PurposeUuids);
+        public IConcept Purpose => new ConceptDTO(this.PurposePublicId);
 
         /// <summary>
-        /// Gets Use concept.
+        /// Gets Meaning concept.
         /// </summary>
-        public IConcept Use => new ConceptDTO(this.UseUuids);
+        public IConcept Meaning => new ConceptDTO(this.MeaningPublicId);
 
         /// <summary>
         /// Gets DataType uuids.
         /// </summary>
-        public IEnumerable<Guid> DataTypeUuids { get; init; }
+        public PublicId DataTypePublicId { get; init; }
 
         /// <summary>
         /// Gets Purpose UUIDs.
         /// </summary>
-        public IEnumerable<Guid> PurposeUuids { get; init; }
+        public PublicId PurposePublicId { get; init; }
 
         /// <summary>
-        /// Gets Use uuids.
+        /// Gets Meaning public id.
         /// </summary>
-        public IEnumerable<Guid> UseUuids { get; init; }
+        public PublicId MeaningPublicId { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class.
         /// </summary>
-        /// <param name="dataTypeUuids">DataTypeUuids.</param>
-        /// <param name="purposeUuids">PurposeUuids.</param>
-        /// <param name="useUuids">useUuids.</param>
+        /// <param name="dataTypePublicId">dataTypePublicId.</param>
+        /// <param name="purposePublicId">purposePublicId.</param>
+        /// <param name="meaningPublicId">meaningPublicId.</param>
         public FieldDefinitionDTO(
-            IEnumerable<Guid> dataTypeUuids,
-            IEnumerable<Guid> purposeUuids,
-            IEnumerable<Guid> useUuids)
+            PublicId dataTypePublicId,
+            PublicId purposePublicId,
+            PublicId meaningPublicId)
         {
-            this.DataTypeUuids = dataTypeUuids;
-            this.PurposeUuids = purposeUuids;
-            this.UseUuids = useUuids;
+            this.DataTypePublicId = dataTypePublicId;
+            this.PurposePublicId = purposePublicId;
+            this.MeaningPublicId = meaningPublicId;
         }
 
         /// <summary>
@@ -96,10 +96,10 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public FieldDefinitionDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.DataTypeUuids = input.ReadUuids();
-            this.PurposeUuids = input.ReadUuids();
-            this.UseUuids = input.ReadUuids();
+            input.CheckMarshalVersion(LocalMarshalVersion);
+            this.DataTypePublicId = input.ReadPublicId();
+            this.PurposePublicId = input.ReadPublicId();
+            this.MeaningPublicId = input.ReadPublicId();
         }
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         public FieldDefinitionDTO(JObject jObj)
         {
-            this.DataTypeUuids = jObj.ReadUuids(ComponentFieldForJson.DATATYPE_UUIDS);
-            this.PurposeUuids = jObj.ReadUuids(ComponentFieldForJson.PURPOSE_UUIDS);
-            this.UseUuids = jObj.ReadUuids(ComponentFieldForJson.USE_UUIDS);
+            this.DataTypePublicId = jObj.ReadPublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID);
+            this.PurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID);
+            this.MeaningPublicId = jObj.ReadPublicId(ComponentFieldForJson.MEANING_PUBLIC_ID);
         }
 
         /// <summary>
@@ -121,13 +121,13 @@ namespace Tinkar
         /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(FieldDefinitionDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
+            Int32 cmp = FieldCompare.ComparePublicIds(this.DataTypePublicId, other.DataTypePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.PurposeUuids, other.PurposeUuids);
+            cmp = FieldCompare.ComparePublicIds(this.PurposePublicId, other.PurposePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.UseUuids, other.UseUuids);
+            cmp = FieldCompare.ComparePublicIds(this.MeaningPublicId, other.MeaningPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -147,10 +147,10 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
-            output.WriteUuids(this.DataTypeUuids);
-            output.WriteUuids(this.PurposeUuids);
-            output.WriteUuids(this.UseUuids);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.WritePublicId(this.DataTypePublicId);
+            output.WritePublicId(this.PurposePublicId);
+            output.WritePublicId(this.MeaningPublicId);
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace Tinkar
         {
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.DATATYPE_UUIDS, this.DataTypeUuids);
-            output.WriteUuids(ComponentFieldForJson.PURPOSE_UUIDS, this.PurposeUuids);
-            output.WriteUuids(ComponentFieldForJson.USE_UUIDS, this.UseUuids);
+            output.WritePublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID, this.DataTypePublicId);
+            output.WritePublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID, this.PurposePublicId);
+            output.WritePublicId(ComponentFieldForJson.MEANING_PUBLIC_ID, this.MeaningPublicId);
             output.WriteEndObject();
         }
     }

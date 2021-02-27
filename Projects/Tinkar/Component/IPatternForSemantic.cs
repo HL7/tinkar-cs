@@ -21,8 +21,8 @@ namespace Tinkar
     /// <summary>
     /// Definition for Semantic interface.
     /// </summary>
-    [JavaAttribute("DefinitionForSemantic")]
-    public interface IDefinitionForSemantic : IComponent
+    [JavaAttribute("PatternForSemantic")]
+    public interface IPatternForSemantic : IComponent
     {
     }
 }

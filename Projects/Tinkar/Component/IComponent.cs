@@ -26,8 +26,8 @@ namespace Tinkar
     public interface IComponent
     {
         /// <summary>
-        /// Gets component uuids.
+        /// Gets public id.
         /// </summary>
-        IEnumerable<Guid> ComponentUuids { get; }
+        IPublicId PublicId { get; }
     }
 }

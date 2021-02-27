@@ -8,38 +8,38 @@ using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
-    public class DefinitionForSemanticDTOTests
+    public class PatternForSemanticDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticDTOFieldsTest()
+        public void PatternForSemanticDTOFieldsTest()
         {
-            DefinitionForSemanticDTO dtoStart = new DefinitionForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+            PatternForSemanticDTO dtoStart = new PatternForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticDTOIsEquivalentTest()
+        public void PatternForSemanticDTOIsEquivalentTest()
         {
             {
-                DefinitionForSemanticDTO a = Misc.CreateDefinitionForSemanticDTO;
-                DefinitionForSemanticDTO b = Misc.CreateDefinitionForSemanticDTO;
+                PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;
+                PatternForSemanticDTO b = Misc.CreatePatternForSemanticDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticDTO a = Misc.CreateDefinitionForSemanticDTO;
-                DefinitionForSemanticDTO b = new DefinitionForSemanticDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
+                PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;
+                PatternForSemanticDTO b = new PatternForSemanticDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
                 Assert.False(a.IsEquivalent(b));
             }
         }
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticDTOMarshalTest()
+        public void PatternForSemanticDTOMarshalTest()
         {
-            DefinitionForSemanticDTO dtoStart = Misc.CreateDefinitionForSemanticDTO;
+            PatternForSemanticDTO dtoStart = Misc.CreatePatternForSemanticDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -50,15 +50,15 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                DefinitionForSemanticDTO dtoRead = (DefinitionForSemanticDTO)input.ReadField();
+                PatternForSemanticDTO dtoRead = (PatternForSemanticDTO)input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticDTOJsonMarshal()
+        public void PatternForSemanticDTOJsonMarshal()
         {
-            DefinitionForSemanticDTO dtoStart = Misc.CreateDefinitionForSemanticDTO;
+            PatternForSemanticDTO dtoStart = Misc.CreatePatternForSemanticDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -69,7 +69,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                DefinitionForSemanticDTO dtoEnd = DefinitionForSemanticDTO.Make(input.ReadJsonObject());
+                PatternForSemanticDTO dtoEnd = PatternForSemanticDTO.Make(input.ReadJsonObject());
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

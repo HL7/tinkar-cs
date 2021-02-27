@@ -44,12 +44,6 @@ namespace Tinkar
         /// "SNOMED code" in a mapping, or the location of an image if a URI.
         /// @return Concept designating the use of the defined field.
         /// </summary>
-        IConcept Use { get; }
-
-        //$default FieldDefinitionDTO toChangeSetThing()
-        //{
-        //    return new FieldDefinitionDTO(getDataType().componentUuids(),
-        //        getPurpose().componentUuids(), getUse().componentUuids());
-        //}
+        IConcept Meaning { get; }
     }
 }

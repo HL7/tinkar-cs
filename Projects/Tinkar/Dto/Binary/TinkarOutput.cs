@@ -31,14 +31,18 @@ namespace Tinkar
         /// Binary writer that gets written to.
         /// </summary>
         private BinaryWriter writer;
+        private Int32 marshalVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TinkarOutput"/> class.
         /// </summary>
         /// <param name="outStream">Output stream.</param>
-        public TinkarOutput(Stream outStream)
+        /// <param name="marshalVersion">Marshal version number.</param>
+        public TinkarOutput(Stream outStream, Int32 marshalVersion)
         {
             this.writer = new BinaryWriter(outStream);
+            this.WriteInt32(marshalVersion);
+            this.marshalVersion = marshalVersion;
         }
 
         /// <summary>
@@ -186,13 +190,13 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSemanticType);
+                case PatternForSemanticDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticType);
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSemanticChronologyType);
+                case PatternForSemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticChronologyType);
                     item.Marshal(this);
                     break;
 
@@ -223,6 +227,12 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Write a stream of Uuids (guids) to output stream.
+        /// </summary>
+        /// <param name="publicId">publicId to write.</param>
+        public void WritePublicId(IPublicId publicId) => WriteUuids(publicId.AsUuidArray);
+
+        /// <summary>
         /// Write out a stream ob simple objects.
         /// </summary>
         /// <param name="fields">Values to write.</param>
@@ -237,8 +247,11 @@ namespace Tinkar
         /// Write marshal version to output stream.
         /// </summary>
         /// <param name="marshalVersion">value to write.</param>
-        public void WriteMarshalVersion(Int32 marshalVersion) =>
-            this.WriteInt32(marshalVersion);
+        public void CheckMarshalVersion(Int32 marshalVersion)
+        {
+            if (this.marshalVersion != marshalVersion)
+                throw new ArgumentException($"Unsupported version: {this.marshalVersion}. Require {marshalVersion}");
+        }
 
         //private void WriteDigraph() => throw new NotImplementedException("WriteDigraph");
 

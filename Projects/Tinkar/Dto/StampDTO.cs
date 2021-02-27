@@ -22,7 +22,7 @@ namespace Tinkar
     /// <summary>
     /// Stamp record.
     /// </summary>
-    public record StampDTO : BaseDTO<StampDTO>,
+    public record StampDTO : ComponentDTO<StampDTO>,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable,
@@ -33,7 +33,7 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Gets Status UUIDs.
@@ -109,7 +109,7 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public StampDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(MarshalVersion);
+            input.CheckMarshalVersion(LocalMarshalVersion);
             this.StatusUuids = input.ReadUuids();
             this.Time = input.ReadInstant();
             this.AuthorUuids = input.ReadUuids();
@@ -178,7 +178,7 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
             output.WriteUuids(this.StatusUuids);
             output.WriteInstant(this.Time);
             output.WriteUuids(this.AuthorUuids);

@@ -69,6 +69,15 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Compare two PublicId instances and return true if each has the same
+        /// Guid values.
+        /// </summary>
+        /// <param name="a">First item to compare.</param>
+        /// <param name="b">Second item to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static Int32 ComparePublicIds(IPublicId a, IPublicId b) => CompareGuids(a.AsUuidArray, b.AsUuidArray);
+
+        /// <summary>
         /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
         /// items that are equal.
         /// </summary>
@@ -175,11 +184,11 @@ namespace Tinkar
                 case ConceptDTO a:
                     return a.CompareTo((ConceptDTO)bObj);
 
-                case DefinitionForSemanticChronologyDTO a:
-                    return a.CompareTo((DefinitionForSemanticChronologyDTO)bObj);
+                case PatternForSemanticChronologyDTO a:
+                    return a.CompareTo((PatternForSemanticChronologyDTO)bObj);
 
-                case DefinitionForSemanticDTO a:
-                    return a.CompareTo((DefinitionForSemanticDTO)bObj);
+                case PatternForSemanticDTO a:
+                    return a.CompareTo((PatternForSemanticDTO)bObj);
 
                 case SemanticChronologyDTO a:
                     return a.CompareTo((SemanticChronologyDTO)bObj);

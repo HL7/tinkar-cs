@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar Stamp with comment interface.
+    /// Defines the fields and purpose of a Semantic Version.
+    /// SemanticVersion instances all reference a IPatternForSemanticVersion
+    /// to define the expected fields of that Semantic Version.
     /// </summary>
-    [JavaAttribute("StampComment")]
-    public interface IStampComment
+    [JavaAttribute("PatternForSemanticVersion")]
+    public interface IPatternForSemanticVersion<TFieldDefinition> : IVersion, IPatternForSemantic
+        where TFieldDefinition : IFieldDefinition
     {
         /// <summary>
-        /// Gets stamp.
+        /// Gets the SemanticVersion field definitions.
         /// </summary>
-        IStamp Stamp { get; }
+        IEnumerable<TFieldDefinition> FieldDefinitions { get; }
 
         /// <summary>
-        /// Gets Comment field.
+        /// Gets the purpose of referenced component.
         /// </summary>
-        String Comment { get; }
+        IConcept ReferencedComponentPurpose { get; }
     }
 }

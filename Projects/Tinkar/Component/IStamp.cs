@@ -21,7 +21,7 @@ namespace Tinkar
     /// Tinkar Stamp interface.
     /// </summary>
     [JavaAttribute("Stamp")]
-    public interface IStamp
+    public interface IStamp : IComponent
     {
         /// <summary>
         /// Gets stamp status.
@@ -62,11 +62,11 @@ namespace Tinkar
         public static StampDTO ToChangeSetThing(this IStamp me)
         {
             return new StampDTO(
-                me.Status.ComponentUuids,
+                me.Status.PublicId,
                 me.Time,
-                me.Author.ComponentUuids,
-                me.Module.ComponentUuids,
-                me.Path.ComponentUuids);
+                me.Author.PublicId,
+                me.Module.PublicId,
+                me.Path.PublicId);
         }
     }
 }

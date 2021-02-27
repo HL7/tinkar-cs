@@ -30,7 +30,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores chronology set UUIDs.
         /// </summary>
-        public const String CHRONOLOGY_SET_UUIDS = "chronologySetUuids";
+        public const String CHRONOLOGY_PUBLIC_ID = "chronologySetUuids";
 
         /// <summary>
         /// Name of JSON property that stores class name.
@@ -45,7 +45,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores component UUIDs.
         /// </summary>
-        public const String COMPONENT_UUIDS = "componentUuids";
+        public const String COMPONENT_PUBLIC_ID = "componentUuids";
 
         /// <summary>
         /// Name of JSON property that stores concept version UUIDs.
@@ -55,7 +55,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores data type UUIDs.
         /// </summary>
-        public const String DATATYPE_UUIDS = "dataTypeUuids";
+        public const String DATATYPE_PUBLIC_ID = "dataTypePublicId";
 
         /// <summary>
         /// Name of JSON property that stores definition for semantic UUIDs.
@@ -78,6 +78,11 @@ namespace Tinkar
         public const String FIELD_DEFINITIONS = "fieldDefinitions";
 
         /// <summary>
+        /// Name of JSON property that stores use UUIDs.
+        /// </summary>
+        public const String MEANING_PUBLIC_ID = "meaningPublicId";
+
+        /// <summary>
         /// Name of JSON property that stores module UUIDs.
         /// </summary>
         public const String MODULE_UUIDS = "moduleUuids";
@@ -90,7 +95,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores purpose UUIDs.
         /// </summary>
-        public const String PURPOSE_UUIDS = "purposeUuids";
+        public const String PURPOSE_PUBLIC_ID = "purposePublicId";
 
         /// <summary>
         /// Name of JSON property that stores referenced component purpose UUIDs.
@@ -116,11 +121,6 @@ namespace Tinkar
         /// Name of JSON property that stores time field.
         /// </summary>
         public const String TIME = "time";
-
-        /// <summary>
-        /// Name of JSON property that stores use UUIDs.
-        /// </summary>
-        public const String USE_UUIDS = "useUuids";
 
         /// <summary>
         /// Name of JSON property that stores versions record.

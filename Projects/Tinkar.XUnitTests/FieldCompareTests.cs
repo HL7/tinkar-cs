@@ -65,11 +65,11 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(Misc.CreateDefinitionForSemanticChronologyDTO,
-                    Misc.CreateDefinitionForSemanticChronologyDTO));
+                Assert.True(FieldCompare.Equivalent(Misc.CreatePatternForSemanticChronologyDTO,
+                    Misc.CreatePatternForSemanticChronologyDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    Misc.CreateDefinitionForSemanticChronologyDTO,
-                    Misc.CreateDefinitionForSemanticChronologyDTO
+                    Misc.CreatePatternForSemanticChronologyDTO,
+                    Misc.CreatePatternForSemanticChronologyDTO
                 with
                     {
                         ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
@@ -77,11 +77,11 @@ namespace Tinkar.XUnitTests
             }
             {
                 Assert.True(FieldCompare.Equivalent(
-                    Misc.CreateDefinitionForSemanticDTO,
-                    Misc.CreateDefinitionForSemanticDTO));
+                    Misc.CreatePatternForSemanticDTO,
+                    Misc.CreatePatternForSemanticDTO));
                 Assert.False(FieldCompare.Equivalent(
-                    Misc.CreateDefinitionForSemanticDTO,
-                    Misc.CreateDefinitionForSemanticDTO
+                    Misc.CreatePatternForSemanticDTO,
+                    Misc.CreatePatternForSemanticDTO
                 with
                     {
                         ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }

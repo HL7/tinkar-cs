@@ -70,14 +70,14 @@ namespace Tinkar
         ConceptType = 9,
 
         /// <summary>
-        /// DefinitionForSemanticChronology Type.
+        /// PatternForSemanticChronology Type.
         /// </summary>
-        DefinitionForSemanticChronologyType = 10,
+        PatternForSemanticChronologyType = 10,
 
         /// <summary>
-        /// DefinitionForSemantic Type.
+        /// PatternForSemantic Type.
         /// </summary>
-        DefinitionForSemanticType = 11,
+        PatternForSemanticType = 11,
 
         /// <summary>
         /// SemanticChronology Type.
@@ -90,9 +90,9 @@ namespace Tinkar
         SemanticType = 13,
 
         /// <summary>
-        /// IdentifiedThing Type.
+        /// Component Type.
         /// </summary>
-        // Identified thing needs to go last...
-        IdentifiedThingType = Byte.MaxValue,
+        // Component needs to go last...
+        ComponentType = Byte.MaxValue,
     }
 }

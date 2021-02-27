@@ -22,11 +22,11 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar DefinitionForSemanticVersion record.
+    /// Tinkar PatternForSemanticVersion record.
     /// </summary>
-    public record DefinitionForSemanticVersionDTO :
-        BaseDTO<DefinitionForSemanticVersionDTO>,
-        IDefinitionForSemanticVersion,
+    public record PatternForSemanticVersionDTO :
+        ComponentDTO<PatternForSemanticVersionDTO>,
+        IPatternForSemanticVersion,
         IChangeSetThing,
         IJsonMarshalable,
         IMarshalable
@@ -36,18 +36,18 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        private const int MarshalVersion = 1;
+        private const int LocalMarshalVersion = 3;
 
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "DefinitionForSemanticVersionDTO";
+        public const String JsonClassName = "PatternForSemanticVersionDTO";
 
         /// <summary>
-        /// Gets Component UUIDs.
+        /// Gets public id.
         /// </summary>
-        public IEnumerable<Guid> ComponentUuids { get; init; }
+        public IPublicId PublicId { get; init; }
 
         /// <summary>
         /// Gets Stamp.
@@ -82,53 +82,51 @@ namespace Tinkar
         public IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class.
+        /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class.
         /// </summary>
-        /// <param name="componentUuids">ComponentUuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
         /// <param name="stampDTO">StampDTO.</param>
         /// <param name="referencedComponentPurposeUuids">ReferencedComponentPurposeUuids.</param>
         /// <param name="fieldDefinitionDTOs">FieldDefinitionDTOs.</param>
-        public DefinitionForSemanticVersionDTO(
-            IEnumerable<Guid> componentUuids,
+        public PatternForSemanticVersionDTO(
+            IPublicId publicId,
             StampDTO stampDTO,
             IEnumerable<Guid> referencedComponentPurposeUuids,
             IEnumerable<FieldDefinitionDTO> fieldDefinitionDTOs)
         {
-            this.ComponentUuids = componentUuids;
+            this.PublicId = publicId;
             this.StampDTO = stampDTO;
             this.ReferencedComponentPurposeUuids = referencedComponentPurposeUuids;
             this.FieldDefinitionDTOs = fieldDefinitionDTOs;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class
+        /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
-        public DefinitionForSemanticVersionDTO(
+        /// <param name="publicId">Public id (component ids).</param>
+        public PatternForSemanticVersionDTO(
             JObject jObj,
-            IEnumerable<Guid> componentUuids)
+            IPublicId publicId)
         {
             jObj.GetClass(JsonClassName);
-            this.ComponentUuids = componentUuids;
+            this.PublicId = publicId;
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
             this.ReferencedComponentPurposeUuids = jObj.ReadUuids(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS);
             this.FieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefinitionForSemanticVersionDTO"/> class
+        /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
-        public DefinitionForSemanticVersionDTO(
-            TinkarInput input,
-            IEnumerable<Guid> componentUuids)
+        /// <param name="publicId">Public id (component ids).</param>
+        public PatternForSemanticVersionDTO(TinkarInput input, IPublicId publicId)
         {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.ComponentUuids = componentUuids;
+            input.CheckMarshalVersion(LocalMarshalVersion);
+            this.PublicId = publicId;
             this.StampDTO = new StampDTO(input);
             this.ReferencedComponentPurposeUuids = input.ReadUuids();
             this.FieldDefinitionDTOs = input.ReadFieldDefinitionList();
@@ -139,9 +137,9 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(DefinitionForSemanticVersionDTO other)
+        public override Int32 CompareTo(PatternForSemanticVersionDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.ComponentUuids, other.ComponentUuids);
+            Int32 cmp = FieldCompare.ComparePublicIds(this.PublicId, other.PublicId);
             if (cmp != 0)
                 return cmp;
 
@@ -163,12 +161,10 @@ namespace Tinkar
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
+        /// <param name="publicId">Public id (component ids).</param>
         /// <returns>new DTO item.</returns>
-        public static DefinitionForSemanticVersionDTO Make(
-            TinkarInput input,
-            IEnumerable<Guid> componentUuids) =>
-            new DefinitionForSemanticVersionDTO(input, componentUuids);
+        public static PatternForSemanticVersionDTO Make(TinkarInput input, IPublicId publicId) =>
+            new PatternForSemanticVersionDTO(input, publicId);
 
         /// <summary>
         /// Marshal DTO item to output stream.
@@ -176,7 +172,7 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public void Marshal(TinkarOutput output)
         {
-            output.WriteMarshalVersion(MarshalVersion);
+            output.CheckMarshalVersion(LocalMarshalVersion);;
             this.StampDTO.Marshal(output);
             output.WriteUuids(this.ReferencedComponentPurposeUuids);
             output.WriteMarshalableList(this.FieldDefinitionDTOs);
@@ -186,12 +182,12 @@ namespace Tinkar
         /// Static method to Create DTO item from json .
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        /// <param name="componentUuids">Component UUIDs.</param>
-        /// <returns>Deserialized DefinitionForSemanticVersion record.</returns>
-        public static DefinitionForSemanticVersionDTO Make(
+        /// <param name="publicId">Public id (component ids).</param>
+        /// <returns>Deserialized PatternForSemanticVersion record.</returns>
+        public static PatternForSemanticVersionDTO Make(
             JObject jObj,
-            IEnumerable<Guid> componentUuids) =>
-            new DefinitionForSemanticVersionDTO(jObj, componentUuids);
+            IPublicId publicId) =>
+            new PatternForSemanticVersionDTO(jObj, publicId);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
@@ -202,8 +198,8 @@ namespace Tinkar
             output.WriteStartObject();
             output.WriteClass(JsonClassName);
             output.WriteUuids(
-                ComponentFieldForJson.COMPONENT_UUIDS,
-                this.ComponentUuids);
+                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
+                this.PublicId);
             output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
             output.WriteUuids(

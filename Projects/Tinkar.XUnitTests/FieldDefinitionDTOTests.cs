@@ -19,9 +19,9 @@ namespace Tinkar.XUnitTests
                 new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
                 new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
                 );
-            Misc.Compare(dtoStart.DataTypeUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.PurposeUuids, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
-            Misc.Compare(dtoStart.UseUuids, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
+            Misc.Compare(dtoStart.DataTypePublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.PurposePublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
+            Misc.Compare(dtoStart.MeaningPublicId, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
         }
 
         [DoNotParallelize]
@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    DataTypePublicId = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -48,7 +48,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    PurposeUuids = new Guid[] { Misc.h1, Misc.h3, Misc.h3, Misc.h4 }
+                    PurposePublicId = new Guid[] { Misc.h1, Misc.h3, Misc.h3, Misc.h4 }
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -57,7 +57,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    UseUuids = new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i3 }
+                    MeaningPublicId = new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i3 }
                 };
                 Assert.False(a.IsEquivalent(b));
             }

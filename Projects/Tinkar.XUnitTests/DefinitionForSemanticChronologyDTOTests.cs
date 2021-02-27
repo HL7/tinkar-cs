@@ -8,34 +8,34 @@ using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
-    public class DefinitionForSemanticChronologyDTOTests
+    public class PatternForSemanticChronologyDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticChronologyDTOFieldsTest()
+        public void PatternForSemanticChronologyDTOFieldsTest()
         {
-            DefinitionForSemanticChronologyDTO dtoStart = Misc.CreateDefinitionForSemanticChronologyDTO;
+            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
             Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.ChronologySetUuids, Misc.h1, Misc.h2, Misc.h3);
-            Misc.Compare<DefinitionForSemanticVersionDTO>(dtoStart.DefinitionVersions,
-                new DefinitionForSemanticVersionDTO[]
-                    { Misc.CreateDefinitionForSemanticVersionDTO }
+            Misc.Compare<PatternForSemanticVersionDTO>(dtoStart.DefinitionVersions,
+                new PatternForSemanticVersionDTO[]
+                    { Misc.CreatePatternForSemanticVersionDTO }
                 );
         }
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticChronologyDTOIsEquivalentTest()
+        public void PatternForSemanticChronologyDTOIsEquivalentTest()
         {
             {
-                DefinitionForSemanticChronologyDTO a = Misc.CreateDefinitionForSemanticChronologyDTO;
-                DefinitionForSemanticChronologyDTO b = Misc.CreateDefinitionForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticChronologyDTO a = Misc.CreateDefinitionForSemanticChronologyDTO;
-                DefinitionForSemanticChronologyDTO b = Misc.CreateDefinitionForSemanticChronologyDTO
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
                     ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
@@ -44,8 +44,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                DefinitionForSemanticChronologyDTO a = Misc.CreateDefinitionForSemanticChronologyDTO;
-                DefinitionForSemanticChronologyDTO b = Misc.CreateDefinitionForSemanticChronologyDTO
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
                     ChronologySetUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
@@ -55,13 +55,13 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                DefinitionForSemanticChronologyDTO a = Misc.CreateDefinitionForSemanticChronologyDTO;
-                DefinitionForSemanticChronologyDTO b = Misc.CreateDefinitionForSemanticChronologyDTO
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    DefinitionVersions = new DefinitionForSemanticVersionDTO[]
+                    DefinitionVersions = new PatternForSemanticVersionDTO[]
                     {
-                        Misc.CreateDefinitionForSemanticVersionDTO
+                        Misc.CreatePatternForSemanticVersionDTO
                         with
                         {
                             ComponentUuids = new Guid[] { Misc.g3, Misc.g2, Misc.g1, Misc.g4 }
@@ -75,9 +75,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticChronologyDTOMarshalTest()
+        public void PatternForSemanticChronologyDTOMarshalTest()
         {
-            DefinitionForSemanticChronologyDTO dtoStart = Misc.CreateDefinitionForSemanticChronologyDTO;
+            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -88,15 +88,15 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                DefinitionForSemanticChronologyDTO dtoRead = (DefinitionForSemanticChronologyDTO)input.ReadField();
+                PatternForSemanticChronologyDTO dtoRead = (PatternForSemanticChronologyDTO)input.ReadField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticChronologyDTOJsonMarshal()
+        public void PatternForSemanticChronologyDTOJsonMarshal()
         {
-            DefinitionForSemanticChronologyDTO dtoStart = Misc.CreateDefinitionForSemanticChronologyDTO;
+            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -107,7 +107,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                DefinitionForSemanticChronologyDTO dtoEnd = DefinitionForSemanticChronologyDTO.Make(input.ReadJsonObject());
+                PatternForSemanticChronologyDTO dtoEnd = PatternForSemanticChronologyDTO.Make(input.ReadJsonObject());
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }
