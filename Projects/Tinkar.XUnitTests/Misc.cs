@@ -52,7 +52,7 @@ namespace Tinkar.XUnitTests
         public static ConceptVersionDTO cv2(IEnumerable<Guid> componentGuids) =>
             new ConceptVersionDTO(
                 componentGuids,
-                Misc.CreateStampDTO with { StatusUuids = new Guid[] { Misc.g2 } }
+                Misc.CreateStampDTO with { StatusPublicId = new Guid[] { Misc.g2 } }
         );
 
         public static ConceptVersionDTO[] ConceptVersionsBase(IEnumerable<Guid> componentGuids) =>
@@ -120,8 +120,6 @@ namespace Tinkar.XUnitTests
                 Misc.CreateStampDTO
             );
 
-        public static StampCommentDTO CreateStampCommentDTO =>
-            new StampCommentDTO(Misc.CreateStampDTO, "xxyyz");
 
         public static StampDTO CreateStampDTO => new StampDTO(
             new Guid[]

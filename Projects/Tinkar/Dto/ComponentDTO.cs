@@ -20,6 +20,12 @@ namespace Tinkar
         where TDto : IComponent
     {
         /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public abstract String JsonClassName { get; }
+
+        /// <summary>
         /// Version of marshalling code.
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
@@ -35,9 +41,20 @@ namespace Tinkar
         /// Constructor
         /// </summary>
         /// <param name="publicId">Public id for this item</param>
-        public ComponentDTO(IPublicId publicId)
+        protected ComponentDTO(IPublicId publicId)
         {
             this.PublicId = publicId;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class
+        /// from binary stream.
+        /// </summary>
+        /// <param name="input">binary input stream.</param>
+        protected ComponentDTO(TinkarInput input)
+        {
+            input.CheckMarshalVersion(LocalMarshalVersion);
+            this.PublicId = input.ReadPublicId();
         }
 
         /// <summary>
@@ -57,12 +74,23 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name = "jsonClassName" > Name of Json class</param>
-        public ComponentDTO(JObject jObj, IPublicId publicId, String jsonClassName) : this(publicId)
+        public ComponentDTO(JObject jObj, IPublicId publicId) : this(publicId)
         {
             this.PublicId = publicId;
+            jObj.GetClass(JsonClassName);
+        }
 
-            jObj.GetClass(jsonClassName);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentDTO"/> class.
+        /// from input JSON stream.
+        /// </summary>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <param name="getClassFlag">If true, call jObj.GetClass to read subclass. If false caller must set up json</param>
+        protected ComponentDTO(JObject jObj, bool getClassFlag = true)
+        {
+            if (getClassFlag == true)
+                jObj.GetClass(JsonClassName);
+            this.PublicId = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
         }
 
         /// <summary>
@@ -87,6 +115,47 @@ namespace Tinkar
             if (cmp != 0)
                 return cmp;
             return 0;
+        }
+
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// </summary>
+        /// <param name="output">output data stream.</param>
+        public void Marshal(TinkarOutput output)
+        {
+            MarshalFields(output);
+        }
+
+        /// <summary>
+        /// Marshal DTO item fields to output stream.
+        /// </summary>
+        /// <param name="output">output data stream.</param>
+        public virtual void MarshalFields(TinkarOutput output)
+        {
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            output.WritePublicId(this.PublicId);
+        }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream.</param>
+        public void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            MarshalFields(output);
+            output.WriteEndObject();
+        }
+
+        /// <summary>
+        /// Marshal DTO item fields to output stream.
+        /// </summary>
+        /// <param name="output">output data stream.</param>
+        public virtual void MarshalFields(TinkarJsonOutput output)
+        {
+            output.WritePublicId(
+                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
+                this.PublicId);
         }
     }
 }

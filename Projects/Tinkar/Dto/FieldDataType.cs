@@ -20,74 +20,124 @@ namespace Tinkar
     public enum FieldDataType : byte
     {
         /// <summary>
-        /// String type.
-        /// </summary>
-        StringType = 0,
-
-        /// <summary>
-        /// Integer Type.
-        /// </summary>
-        IntegerType = 1,
-
-        /// <summary>
-        /// Float Type.
-        /// </summary>
-        FloatType = 2,
-
-        /// <summary>
-        /// Boolean Type.
-        /// </summary>
-        BooleanType = 3,
-
-        /// <summary>
-        /// ByteArray Type.
-        /// </summary>
-        ByteArrayType = 4,
-
-        /// <summary>
-        /// ObjectArray Type.
-        /// </summary>
-        ObjectArrayType = 5,
-
-        /// <summary>
-        /// DiGraph Type.
-        /// </summary>
-        DiGraphType = 6,
-
-        /// <summary>
-        /// Instant Type.
-        /// </summary>
-        InstantType = 7,
-
-        /// <summary>
         /// ConceptChronology Type.
         /// </summary>
-        ConceptChronologyType = 8,
+        ConceptChronologyType = 1,
 
         /// <summary>
-        /// Concept Type.
+        /// PatternForConceptChronology Type.
         /// </summary>
-        ConceptType = 9,
-
-        /// <summary>
-        /// PatternForSemanticChronology Type.
-        /// </summary>
-        PatternForSemanticChronologyType = 10,
-
-        /// <summary>
-        /// PatternForSemantic Type.
-        /// </summary>
-        PatternForSemanticType = 11,
+        PatternForConceptChronologyType = 2,
 
         /// <summary>
         /// SemanticChronology Type.
         /// </summary>
-        SemanticChronologyType = 12,
+        SemanticChronologyType = 3,
+
+        /// <summary>
+        /// ConceptVersionType.
+        /// </summary>
+        ConceptVersionType = 4,
+
+        /// <summary>
+        /// PatternForSemanticVersion Type.
+        /// </summary>
+        PatternForSemanticVersionType = 5,
+
+        /// <summary>
+        /// SemanticVersion Type.
+        /// </summary>
+        SemanticVersionType = 6,
+
+        /// <summary>
+        /// Stamp Type.
+        /// </summary>
+        StampType = 7,
+
+        /// <summary>
+        /// String type.
+        /// </summary>
+        StringType = 8,
+
+        /// <summary>
+        /// Integer Type.
+        /// </summary>
+        IntegerType = 9,
+
+        /// <summary>
+        /// Float Type.
+        /// </summary>
+        FloatType = 10,
+
+        /// <summary>
+        /// Boolean Type.
+        /// </summary>
+        BooleanType = 11,
+
+        /// <summary>
+        /// ByteArray Type.
+        /// </summary>
+        ByteArrayType = 12,
+
+        /// <summary>
+        /// ObjectArray Type.
+        /// </summary>
+        ObjectArrayType = 13,
+
+        /// <summary>
+        /// DiGraph Type.
+        /// </summary>
+        DiGraphType = 14,
+
+        /// <summary>
+        /// Instant Type.
+        /// </summary>
+        InstantType = 15,
+
+        /// <summary>
+        /// Concept Type.
+        /// </summary>
+        ConceptType = 16,
+
+        /// <summary>
+        /// PatternForSemantic Type.
+        /// </summary>
+        PatternForSemanticType = 17,
 
         /// <summary>
         /// Semantic Type.
         /// </summary>
-        SemanticType = 13,
+        SemanticType = 18,
+
+        /// <summary>
+        /// DiTree Type.
+        /// </summary>
+        DiTreeType = 19,
+
+        /// <summary>
+        /// Vertex Type.
+        /// </summary>
+        VertexType = 20,
+
+        /// <summary>
+        /// ComponentIdListType.
+        /// </summary>
+        ComponentIdList = 21,
+
+        /// <summary>
+        /// ComponentIdSetType.
+        /// </summary>
+        ComponentIdSet = 22,
+
+        /// <summary>
+        /// PlanarPoint Type.
+        /// </summary>
+        PlanarPointList = 23,
+
+        /// <summary>
+        /// SpatialPoint Type.
+        /// </summary>
+        SpatialPointList = 24,
 
         /// <summary>
         /// Component Type.

@@ -11,5 +11,6 @@ namespace Tinkar
         Guid[] AsUuidArray { get; }
         IEnumerable<Guid> AsUuidList { get; }
         int UuidCount { get; }
+        Int32 CompareTo(IPublicId publicId);
     }
 }

@@ -23,12 +23,13 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "SemanticDTO";
+        public const String JSONCLASSNAME = "SemanticDTO";
 
         /// <summary>
-        /// Gets public id.
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
         /// </summary>
-        public IPublicId PublicId { get; init; }
+        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Gets ReferencedComponent.
@@ -59,9 +60,8 @@ namespace Tinkar
         public SemanticDTO(
             IPublicId publicId,
             IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids)
+            IEnumerable<Guid> referencedComponentUuids) : base(publicId)
         {
-            this.PublicId = publicId;
             this.PatternForSemanticUuids = definitionForSemanticUuids;
             this.ReferencedComponentUuids = referencedComponentUuids;
         }
@@ -71,10 +71,9 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public SemanticDTO(TinkarInput input)
+        public SemanticDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.PublicId = input.ReadPublicId();
             this.PatternForSemanticUuids = input.ReadUuids();
             this.ReferencedComponentUuids = input.ReadUuids();
         }
@@ -84,7 +83,7 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public SemanticDTO(JObject jObj)
+        public SemanticDTO(JObject jObj) : base(jObj)
         {
             this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             this.PatternForSemanticUuids = jObj.ReadUuids(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
@@ -122,10 +121,11 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
-            output.WriteUuids(this.PublicId);
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            base.MarshalFields(output);
+            output.WritePublicId(this.PublicId);
             output.WriteUuids(this.PatternForSemanticUuids);
             output.WriteUuids(this.ReferencedComponentUuids);
         }
@@ -141,14 +141,12 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
-            output.WriteStartObject();
-            output.WriteClass(JsonClassName);
+            base.MarshalFields(output);
             output.WriteUuids(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
             output.WriteUuids(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS, this.PatternForSemanticUuids);
             output.WriteUuids(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS, this.ReferencedComponentUuids);
-            output.WriteEndObject();
         }
     }
 }

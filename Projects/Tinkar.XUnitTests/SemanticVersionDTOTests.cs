@@ -68,7 +68,7 @@ namespace Tinkar.XUnitTests
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO
                 with
                 {
-                    StampDTO = Misc.CreateStampDTO with { StatusUuids = new Guid[] { Misc.g2 } }
+                    StampDTO = Misc.CreateStampDTO with { StatusPublicId = new Guid[] { Misc.g2 } }
                 };
                 Assert.False(a.IsEquivalent(b));
             }

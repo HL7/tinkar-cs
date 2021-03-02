@@ -40,17 +40,18 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "ConceptChronologyDTO";
+        public const String JSONCLASSNAME = "ConceptChronologyDTO";
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Gets ChronologySet.
         /// </summary>
         public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
-
-        /// <summary>
-        /// Gets public id.
-        /// </summary>
-        public IPublicId PublicId { get; init; }
 
         /// <summary>
         /// Gets ChronologySet PublicId.
@@ -77,9 +78,8 @@ namespace Tinkar
         public ConceptChronologyDTO(
             IPublicId publicId,
             IPublicId chronologySetPublicId,
-            IEnumerable<ConceptVersionDTO> conceptVersions)
+            IEnumerable<ConceptVersionDTO> conceptVersions) : base(publicId)
         {
-            this.PublicId = publicId;
             this.ChronologySetPublicId = chronologySetPublicId;
             this.ConceptVersions = conceptVersions;
         }
@@ -89,10 +89,9 @@ namespace Tinkar
         /// from a TinkarInput Stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public ConceptChronologyDTO(TinkarInput input)
+        public ConceptChronologyDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.PublicId = input.ReadPublicId();
             this.ChronologySetPublicId = input.ReadPublicId();
             this.ConceptVersions = input.ReadConceptVersionList(this.PublicId);
         }
@@ -102,9 +101,8 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public ConceptChronologyDTO(JObject jObj)
+        public ConceptChronologyDTO(JObject jObj) : base(jObj)
         {
-            this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID);
             this.ConceptVersions = jObj.ReadConceptVersionList(this.PublicId);
         }
@@ -140,9 +138,10 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            base.MarshalFields(output);
             output.WritePublicId(this.PublicId);
             output.WritePublicId(this.ChronologySetPublicId);
 
@@ -163,22 +162,17 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-            output.WriteStartObject();
-            output.WriteClass(JsonClassName);
-            output.WritePublicId(
-                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
-                this.PublicId);
+            base.MarshalFields(output);
             output.WritePublicId(
                 ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID,
                 this.ChronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.CONCEPT_VERSIONS,
                 this.ConceptVersions);
-            output.WriteEndObject();
         }
     }
 }

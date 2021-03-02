@@ -39,7 +39,13 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "ConceptVersionDTO";
+        public const String JSONCLASSNAME = "ConceptVersionDTO";
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class.
@@ -96,9 +102,9 @@ namespace Tinkar
         /// Marshal all fields to binary output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public new void Marshal(TinkarOutput output)
+        public new void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.CheckMarshalVersion(LocalMarshalVersion);
             base.Marshal(output);
         }
 
@@ -114,7 +120,7 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
             base.Marshal(output, JsonClassName);
         }

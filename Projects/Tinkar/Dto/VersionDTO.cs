@@ -82,7 +82,7 @@ namespace Tinkar
         /// Marshal all fields to binary output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        protected void Marshal(TinkarOutput output)
+        protected void MarshalFields(TinkarOutput output)
         {
             output.CheckMarshalVersion(LocalMarshalVersion); ;
             // note that PublicId is not written redundantly here,
@@ -95,15 +95,13 @@ namespace Tinkar
         /// </summary>
         /// <param name="output">Json output stream.</param>
         /// <param name = "jsonClassName" > Name of Json class</param>
-        protected void Marshal(TinkarJsonOutput output, String jsonClassName)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
+            base.MarshalFields(output);
             // note that PublicId is not written redundantly here,
             // they are written with the ConceptChronologyDTO...
-            output.WriteStartObject();
-            output.WriteClass(jsonClassName);
             output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
-            output.WriteEndObject();
         }
     }
 }

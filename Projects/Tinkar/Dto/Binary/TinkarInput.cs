@@ -209,6 +209,21 @@ namespace Tinkar
             FieldDataType token = (FieldDataType)this.reader.ReadByte();
             switch (token)
             {
+                case FieldDataType.ConceptChronologyType:
+                    return ConceptChronologyDTO.Make(this);
+                case FieldDataType.PatternForConceptChronologyType:
+                    return PatternForSemanticChronologyDTO.Make(this);
+                case FieldDataType.SemanticChronologyType:
+                    return SemanticChronologyDTO.Make(this);
+                case FieldDataType.ConceptVersionType:
+                    throw new NotImplementedException();
+                case FieldDataType.PatternForSemanticVersionType:
+                    throw new NotImplementedException();
+                case FieldDataType.SemanticVersionType:
+                    throw new NotImplementedException();
+                case FieldDataType.StampType:
+                    throw new NotImplementedException();
+ 
                 case FieldDataType.StringType:
                     return this.ReadUTF();
                 case FieldDataType.IntegerType:
@@ -225,18 +240,22 @@ namespace Tinkar
                     throw new NotImplementedException();
                 case FieldDataType.InstantType:
                     return this.ReadInstant();
-                case FieldDataType.ConceptChronologyType:
-                    return ConceptChronologyDTO.Make(this);
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
-                case FieldDataType.PatternForSemanticChronologyType:
-                    return PatternForSemanticChronologyDTO.Make(this);
                 case FieldDataType.PatternForSemanticType:
                     return PatternForSemanticDTO.Make(this);
-                case FieldDataType.SemanticChronologyType:
-                    return SemanticChronologyDTO.Make(this);
                 case FieldDataType.SemanticType:
                     return SemanticDTO.Make(this);
+                case FieldDataType.DiTreeType:
+                    throw new NotImplementedException();
+                case FieldDataType.VertexType:
+                    throw new NotImplementedException();
+                case FieldDataType.ComponentIdList:
+                    throw new NotImplementedException();
+                case FieldDataType.PlanarPointList:
+                    throw new NotImplementedException();
+                case FieldDataType.SpatialPointList:
+                    throw new NotImplementedException();
                 default:
                     throw new NotImplementedException($"FieldDataType {token} not known");
             }

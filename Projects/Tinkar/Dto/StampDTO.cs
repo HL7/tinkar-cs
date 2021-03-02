@@ -36,24 +36,36 @@ namespace Tinkar
         private const int LocalMarshalVersion = 3;
 
         /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public const String JSONCLASSNAME = "StampDTO";
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
         /// Gets Status UUIDs.
         /// </summary>
-        public IEnumerable<Guid> StatusUuids { get; init; }
+        public IPublicId StatusPublicId { get; init; }
 
         /// <summary>
         /// Gets Author UUIDs.
         /// </summary>
-        public IEnumerable<Guid> AuthorUuids { get; init; }
+        public IPublicId AuthorPublicId { get; init; }
 
         /// <summary>
         /// Gets Module UUIDs.
         /// </summary>
-        public IEnumerable<Guid> ModuleUuids { get; init; }
+        public IPublicId ModulePublicId { get; init; }
 
         /// <summary>
         /// Gets Path UUIDs.
         /// </summary>
-        public IEnumerable<Guid> PathUuids { get; init; }
+        public IPublicId PathPublicId { get; init; }
 
         /// <summary>
         /// Gets Time.
@@ -63,43 +75,45 @@ namespace Tinkar
         /// <summary>
         /// Gets Status.
         /// </summary>
-        public IConcept Status => new ConceptDTO(this.StatusUuids);
+        public IConcept Status => new ConceptDTO(this.StatusPublicId);
 
         /// <summary>
         /// Gets Author.
         /// </summary>
-        public IConcept Author => new ConceptDTO(this.AuthorUuids);
+        public IConcept Author => new ConceptDTO(this.AuthorPublicId);
 
         /// <summary>
         /// Gets Module.
         /// </summary>
-        public IConcept Module => new ConceptDTO(this.ModuleUuids);
+        public IConcept Module => new ConceptDTO(this.ModulePublicId);
 
         /// <summary>
         /// Gets Path.
         /// </summary>
-        public IConcept Path => new ConceptDTO(this.PathUuids);
+        public IConcept Path => new ConceptDTO(this.PathPublicId);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StampDTO"/> class.
         /// </summary>
-        /// <param name="statusUuids">StatusUuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name="statusPublicId">StatusPublicId.</param>
         /// <param name="time">Time.</param>
-        /// <param name="authorUuids">AuthorUuids.</param>
-        /// <param name="moduleUuids">ModuleUuids.</param>
-        /// <param name="pathUuids">PathUuids.</param>
+        /// <param name="authorPublicId">AuthorPublicId.</param>
+        /// <param name="modulePublicId">ModulePublicId.</param>
+        /// <param name="pathPublicId">PathPublicId.</param>
         public StampDTO(
-            IEnumerable<Guid> statusUuids,
+            IPublicId publicId,
+            IPublicId statusPublicId,
             DateTime time,
-            IEnumerable<Guid> authorUuids,
-            IEnumerable<Guid> moduleUuids,
-            IEnumerable<Guid> pathUuids)
+            IPublicId authorPublicId,
+            IPublicId modulePublicId,
+            IPublicId pathPublicId) : base(publicId)
         {
-            this.StatusUuids = statusUuids;
+            this.StatusPublicId = statusPublicId;
             this.Time = time;
-            this.AuthorUuids = authorUuids;
-            this.ModuleUuids = moduleUuids;
-            this.PathUuids = pathUuids;
+            this.AuthorPublicId = authorPublicId;
+            this.ModulePublicId = modulePublicId;
+            this.PathPublicId = pathPublicId;
         }
 
         /// <summary>
@@ -107,14 +121,14 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public StampDTO(TinkarInput input)
+        public StampDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.StatusUuids = input.ReadUuids();
+            this.StatusPublicId = input.ReadPublicId();
             this.Time = input.ReadInstant();
-            this.AuthorUuids = input.ReadUuids();
-            this.ModuleUuids = input.ReadUuids();
-            this.PathUuids = input.ReadUuids();
+            this.AuthorPublicId = input.ReadPublicId();
+            this.ModulePublicId = input.ReadPublicId();
+            this.PathPublicId = input.ReadPublicId();
         }
 
         /// <summary>
@@ -122,13 +136,13 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public StampDTO(JObject jObj)
+        public StampDTO(JObject jObj) : base(jObj, false)
         {
-            this.StatusUuids = jObj.ReadUuids(ComponentFieldForJson.STATUS_UUIDS);
+            this.StatusPublicId = jObj.ReadPublicId(ComponentFieldForJson.STATUS_PUBLIC_ID);
             this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
-            this.AuthorUuids = jObj.ReadUuids(ComponentFieldForJson.AUTHOR_UUIDS);
-            this.ModuleUuids = jObj.ReadUuids(ComponentFieldForJson.MODULE_UUIDS);
-            this.PathUuids = jObj.ReadUuids(ComponentFieldForJson.PATH_UUIDS);
+            this.AuthorPublicId = jObj.ReadPublicId(ComponentFieldForJson.AUTHOR_PUBLIC_ID);
+            this.ModulePublicId = jObj.ReadPublicId(ComponentFieldForJson.MODULE_PUBLIC_ID);
+            this.PathPublicId = jObj.ReadPublicId(ComponentFieldForJson.PATH_PUBLIC_ID);
         }
 
         /// <summary>
@@ -138,19 +152,23 @@ namespace Tinkar
         /// <returns> -1, 0, or 1.</returns>
         public override Int32 CompareTo(StampDTO other)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.StatusUuids, other.StatusUuids);
+            Int32 cmp = base.CompareTo(other);
+            if (cmp != 0)
+                return cmp;
+
+            cmp = this.StatusPublicId.CompareTo(other.StatusPublicId);
             if (cmp != 0)
                 return cmp;
             cmp = this.Time.CompareTo(other.Time);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.AuthorUuids, other.AuthorUuids);
+            cmp = this.AuthorPublicId.CompareTo(other.AuthorPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.ModuleUuids, other.ModuleUuids);
+            cmp = this.ModulePublicId.CompareTo(other.ModulePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.PathUuids, other.PathUuids);
+            cmp = this.PathPublicId.CompareTo(other.PathPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -176,29 +194,29 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
-            output.WriteUuids(this.StatusUuids);
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            base.MarshalFields(output);
+            output.WritePublicId(this.StatusPublicId);
             output.WriteInstant(this.Time);
-            output.WriteUuids(this.AuthorUuids);
-            output.WriteUuids(this.ModuleUuids);
-            output.WriteUuids(this.PathUuids);
+            output.WritePublicId(this.AuthorPublicId);
+            output.WritePublicId(this.ModulePublicId);
+            output.WritePublicId(this.PathPublicId);
         }
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
-            output.WriteStartObject();
-            output.WriteUuids(ComponentFieldForJson.STATUS_UUIDS, this.StatusUuids);
+            base.MarshalFields(output);
+            output.WritePublicId(ComponentFieldForJson.STATUS_PUBLIC_ID, this.StatusPublicId);
             output.WriteInstant(ComponentFieldForJson.TIME, this.Time);
-            output.WriteUuids(ComponentFieldForJson.AUTHOR_UUIDS, this.AuthorUuids);
-            output.WriteUuids(ComponentFieldForJson.MODULE_UUIDS, this.ModuleUuids);
-            output.WriteUuids(ComponentFieldForJson.PATH_UUIDS, this.PathUuids);
-            output.WriteEndObject();
+            output.WritePublicId(ComponentFieldForJson.AUTHOR_PUBLIC_ID, this.AuthorPublicId);
+            output.WritePublicId(ComponentFieldForJson.MODULE_PUBLIC_ID, this.ModulePublicId);
+            output.WritePublicId(ComponentFieldForJson.PATH_PUBLIC_ID, this.PathPublicId);
         }
     }
 }

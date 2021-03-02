@@ -10,7 +10,7 @@ namespace Tinkar
     /// <summary>
     /// Concept record.
     /// </summary>
-    public record ConceptDTO : BaseDTO<ConceptDTO>,
+    public record ConceptDTO : ComponentDTO<ConceptDTO>,
         IConcept,
         IJsonMarshalable,
         IMarshalable
@@ -26,20 +26,20 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "ConceptDTO";
+        public const String JSONCLASSNAME = "ConceptDTO";
 
         /// <summary>
-        /// Gets public id.
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
         /// </summary>
-        public IPublicId PublicId { get; init; }
+        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
         /// </summary>
         /// <param name = "publicId" > Public id(component ids).</param>
-        public ConceptDTO(IPublicId publicId)
+        public ConceptDTO(IPublicId publicId) : base(publicId)
         {
-            this.PublicId = publicId;
         }
 
         /// <summary>
@@ -47,10 +47,8 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public ConceptDTO(JObject jObj)
+        public ConceptDTO(JObject jObj) : base(jObj)
         {
-            jObj.GetClass(JsonClassName);
-            this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
         }
 
         /// <summary>
@@ -58,10 +56,9 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public ConceptDTO(TinkarInput input)
+        public ConceptDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.PublicId = input.ReadPublicId();
         }
 
         /// <summary>
@@ -69,8 +66,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(ConceptDTO other) =>
-            FieldCompare.ComparePublicIds(this.PublicId, other.PublicId);
+        public override Int32 CompareTo(ConceptDTO other) => base.CompareTo(other);
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -84,10 +80,10 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
-            output.WriteUuids(this.PublicId);
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            base.MarshalFields(output);
         }
 
         /// <summary>
@@ -102,14 +98,9 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
-            output.WriteStartObject();
-            output.WriteClass(JsonClassName);
-            output.WriteUuids(
-                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
-                this.PublicId);
-            output.WriteEndObject();
+            base.MarshalFields(output);
         }
     }
 }

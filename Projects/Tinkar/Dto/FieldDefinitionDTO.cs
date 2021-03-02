@@ -41,7 +41,13 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "FieldDefinitionDTO";
+        public const String JSONCLASSNAME = "FieldDefinitionDTO";
+
+        /// <summary>
+        /// Name of this class in JSON serialization.
+        /// This must be consistent with Java implementation.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Gets DataType record.
@@ -145,9 +151,10 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);;
+            output.CheckMarshalVersion(LocalMarshalVersion);
+            base.MarshalFields(output);
             output.WritePublicId(this.DataTypePublicId);
             output.WritePublicId(this.PurposePublicId);
             output.WritePublicId(this.MeaningPublicId);
@@ -165,14 +172,12 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public override void MarshalFields(TinkarJsonOutput output)
         {
-            output.WriteStartObject();
-            output.WriteClass(JsonClassName);
+            base.MarshalFields(output);
             output.WritePublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID, this.DataTypePublicId);
             output.WritePublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID, this.PurposePublicId);
             output.WritePublicId(ComponentFieldForJson.MEANING_PUBLIC_ID, this.MeaningPublicId);
-            output.WriteEndObject();
         }
     }
 }
