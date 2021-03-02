@@ -24,7 +24,7 @@ namespace Tinkar
     /// </summary>
     public record ConceptVersionDTO : VersionDTO<ConceptVersionDTO>,
         IConceptVersion,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
@@ -45,7 +45,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public override String JsonClassName => JSONCLASSNAME";
+        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class.

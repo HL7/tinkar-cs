@@ -25,7 +25,7 @@ namespace Tinkar
     /// </summary>
     public record SemanticVersionDTO : ComponentDTO<SemanticVersionDTO>,
         ISemanticVersion,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
@@ -56,13 +56,13 @@ namespace Tinkar
         /// <summary>
         /// Gets ReferencedComponent.
         /// </summary>
-        public IComponent ReferencedComponent => new ComponentDTO(this.ReferencedComponentUuids);
+        public IComponent ReferencedComponent => new ComponentDTO<IComponent>(this.ReferencedComponentUuids);
 
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
         public IPatternForSemantic PatternForSemantic =>
-            new PatternForSemanticDTO(this.PatternForSemanticUuids);
+            new PatternForSemanticDTO(this.definitionForSemanticPublicId);
 
         /// <summary>
         /// Gets Fields array.
@@ -72,12 +72,12 @@ namespace Tinkar
         /// <summary>
         /// Gets PatternForSemantic UUID's.
         /// </summary>
-        public IEnumerable<Guid> PatternForSemanticUuids { get; init; }
+        IPublicId definitionForSemanticPublicId { get; init; }
 
         /// <summary>
         /// Gets ReferencedComponent Uuids.
         /// </summary>
-        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+        IPublicId ReferencedComponentUuids { get; init; }
 
         /// <summary>
         /// Gets Stamp.
@@ -94,12 +94,12 @@ namespace Tinkar
         /// <param name="fields">Fields.</param>
         public SemanticVersionDTO(
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids,
+            IPublicId definitionForSemanticUuids,
+            IPublicId referencedComponentUuids,
             StampDTO stampDTO,
             IEnumerable<Object> fields) : base(publicId)
         {
-            this.PatternForSemanticUuids = definitionForSemanticUuids;
+            this.definitionForSemanticPublicId = definitionForSemanticUuids;
             this.ReferencedComponentUuids = referencedComponentUuids;
             this.StampDTO = stampDTO;
             this.Fields = fields;
@@ -116,10 +116,10 @@ namespace Tinkar
         public SemanticVersionDTO(
             JObject jObj,
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids) : base(jObj, publicId)
+            IPublicId definitionForSemanticUuids,
+            IPublicId referencedComponentUuids) : base(jObj, publicId)
         {
-            this.PatternForSemanticUuids = definitionForSemanticUuids;
+            this.definitionForSemanticPublicId = definitionForSemanticUuids;
             this.ReferencedComponentUuids = referencedComponentUuids;
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
             this.Fields = jObj.ReadObjects(ComponentFieldForJson.FIELDS);
@@ -136,11 +136,11 @@ namespace Tinkar
         public SemanticVersionDTO(
             TinkarInput input,
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids) : base(input, publicId)
+            IPublicId definitionForSemanticUuids,
+            IPublicId referencedComponentUuids) : base(input, publicId)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.PatternForSemanticUuids = definitionForSemanticUuids;
+            this.definitionForSemanticPublicId = definitionForSemanticUuids;
             this.ReferencedComponentUuids = referencedComponentUuids;
             this.StampDTO = new StampDTO(input);
             this.Fields = input.ReadObjects();
@@ -162,8 +162,8 @@ namespace Tinkar
             IEnumerable<Object> fields)
             : this(
                 publicId,
-                definitionForSemantic.PublicId.AsUuidArray,
-                referencedComponent.PublicId.AsUuidArray,
+                definitionForSemantic.PublicId,
+                referencedComponent.PublicId,
                 stamp.ToChangeSetThing(),
                 fields)
         {
@@ -179,10 +179,10 @@ namespace Tinkar
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.PatternForSemanticUuids, other.PatternForSemanticUuids);
+            cmp = this.definitionForSemanticPublicId.CompareTo(other.definitionForSemanticPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            cmp = this.ReferencedComponentUuids.CompareTo(other.ReferencedComponentUuids);
             if (cmp != 0)
                 return cmp;
             cmp = FieldCompare.CompareItem<StampDTO>(this.StampDTO, other.StampDTO);
@@ -207,8 +207,8 @@ namespace Tinkar
         public static SemanticVersionDTO Make(
             TinkarInput input,
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids) =>
+            PublicId definitionForSemanticUuids,
+            PublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
                 input,
                 publicId,
@@ -238,8 +238,8 @@ namespace Tinkar
         public static SemanticVersionDTO Make(
             JObject jObj,
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids) =>
+            PublicId definitionForSemanticUuids,
+            PublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
                 jObj,
                 publicId,

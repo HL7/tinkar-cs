@@ -21,7 +21,7 @@ namespace Tinkar
     /// <summary>
     /// ???.
     /// </summary>
-    public interface IChangeSetThing
+    public interface IDTO : IComponent
     {
     }
 }

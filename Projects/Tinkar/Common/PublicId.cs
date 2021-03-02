@@ -28,7 +28,7 @@ namespace Tinkar
             Int32 cmp = myGuids.Length - otherGuids.Length;
             if (cmp != 0)
                 return cmp;
-            for (Int32 i = 0; i < myGuids.Length)
+            for (Int32 i = 0; i < myGuids.Length; i++)
             {
                 cmp = myGuids[i].CompareTo(otherGuids[i]);
                 if (cmp != 0)

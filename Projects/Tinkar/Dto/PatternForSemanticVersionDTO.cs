@@ -27,7 +27,7 @@ namespace Tinkar
     public record PatternForSemanticVersionDTO :
         ComponentDTO<PatternForSemanticVersionDTO>,
         IPatternForSemanticVersion<FieldDefinitionDTO>,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {

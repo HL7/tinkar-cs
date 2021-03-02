@@ -26,7 +26,7 @@ namespace Tinkar
     public record PatternForSemanticChronologyDTO :
         ComponentDTO<PatternForSemanticChronologyDTO>,
         IPatternForSemanticChronology<IConcept>,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
@@ -80,7 +80,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        public PatternForSemanticChronologyDTO(TinkarInput input) : base(input)
+        protected PatternForSemanticChronologyDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
             this.ChronologySetPublicId = input.ReadPublicId();

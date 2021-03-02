@@ -60,7 +60,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores definition for semantic public id.
         /// </summary>
-        public const String DEFINITION_FOR_SEMANTIC_PUBLIC_ID = "definitionForSemanticPublicId";
+        public const String PATTERN_FOR_SEMANTIC_PUBLIC_ID = "definitionForSemanticPublicId";
 
         /// <summary>
         /// Name of JSON property that stores definition version records.

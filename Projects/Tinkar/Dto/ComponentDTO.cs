@@ -13,7 +13,7 @@ namespace Tinkar
     /// Base class for all Tinkar DTO classes.
     /// </summary>
     /// <typeparam name="TDto">Type of concrete child class.</typeparam>
-    public abstract record ComponentDTO<TDto> :
+    public record ComponentDTO<TDto> :
         IComponent,
         IComparable<TDto>,
         IEquivalent<TDto>
@@ -23,7 +23,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public abstract String JsonClassName { get; }
+        public virtual String JsonClassName { get; } = "ComponentDTO";
 
         /// <summary>
         /// Version of marshalling code.
@@ -41,7 +41,7 @@ namespace Tinkar
         /// Constructor
         /// </summary>
         /// <param name="publicId">Public id for this item</param>
-        protected ComponentDTO(IPublicId publicId)
+        public ComponentDTO(IPublicId publicId)
         {
             this.PublicId = publicId;
         }

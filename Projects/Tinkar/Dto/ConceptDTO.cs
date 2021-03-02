@@ -56,7 +56,7 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public ConceptDTO(TinkarInput input) : base(input)
+        protected ConceptDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
         }

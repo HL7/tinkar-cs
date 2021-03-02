@@ -24,7 +24,7 @@ namespace Tinkar
     /// Tinkar ConceptChronology record.
     /// </summary>
     public record ConceptChronologyDTO : ComponentDTO<ConceptChronologyDTO>,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable,
         IConceptChronology<IConcept>
@@ -89,7 +89,7 @@ namespace Tinkar
         /// from a TinkarInput Stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public ConceptChronologyDTO(TinkarInput input) : base(input)
+        protected ConceptChronologyDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
             this.ChronologySetPublicId = input.ReadPublicId();
@@ -142,7 +142,6 @@ namespace Tinkar
         {
             output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
-            output.WritePublicId(this.PublicId);
             output.WritePublicId(this.ChronologySetPublicId);
 
             // Note that the componentIds are not written redundantly

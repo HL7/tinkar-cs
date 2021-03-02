@@ -54,7 +54,7 @@ namespace Tinkar
         /// from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public PatternForSemanticDTO(TinkarInput input) : base(input)
+        protected PatternForSemanticDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
         }

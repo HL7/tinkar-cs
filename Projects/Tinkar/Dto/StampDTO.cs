@@ -23,7 +23,7 @@ namespace Tinkar
     /// Stamp record.
     /// </summary>
     public record StampDTO : ComponentDTO<StampDTO>,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable,
         IStamp

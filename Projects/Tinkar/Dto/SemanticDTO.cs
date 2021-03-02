@@ -34,36 +34,36 @@ namespace Tinkar
         /// <summary>
         /// Gets ReferencedComponent.
         /// </summary>
-        public IComponent ReferencedComponent => new ComponentDTO(this.ReferencedComponentUuids);
+        public IComponent ReferencedComponent => new ComponentDTO(this.referencedComponentPublicId);
 
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public IPatternForSemantic PatternForSemantic => new PatternForSemanticDTO(this.PatternForSemanticUuids);
+        public IPatternForSemantic PatternForSemantic => new PatternForSemanticDTO(this.definitionForSemanticPublicId);
 
         /// <summary>
         /// Gets PatternForSemantic UUIDs.
         /// </summary>
-        public IEnumerable<Guid> PatternForSemanticUuids { get; init; }
+        IPublicId definitionForSemanticPublicId { get; init; }
 
         /// <summary>
         /// Gets ReferencedComponent UUIDs.
         /// </summary>
-        public IEnumerable<Guid> ReferencedComponentUuids { get; init; }
+        IPublicId referencedComponentPublicId { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticDTO"/> class.
         /// </summary>
         /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name="definitionForSemanticUuids">PatternForSemanticUuids.</param>
-        /// <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
+        /// <param name="definitionForSemanticPublicId">PatternForSemanticUuids.</param>
+        /// <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
         public SemanticDTO(
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids) : base(publicId)
+            IPublicId definitionForSemanticPublicId,
+            IPublicId referencedComponentPublicId) : base(publicId)
         {
-            this.PatternForSemanticUuids = definitionForSemanticUuids;
-            this.ReferencedComponentUuids = referencedComponentUuids;
+            this.definitionForSemanticPublicId = definitionForSemanticPublicId;
+            this.referencedComponentPublicId = referencedComponentPublicId;
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace Tinkar
         public SemanticDTO(TinkarInput input) : base(input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
-            this.PatternForSemanticUuids = input.ReadUuids();
-            this.ReferencedComponentUuids = input.ReadUuids();
+            this.definitionForSemanticPublicId = input.ReadPublicId();
+            this.referencedComponentPublicId = input.ReadPublicId();
         }
 
         /// <summary>
@@ -85,9 +85,8 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         public SemanticDTO(JObject jObj) : base(jObj)
         {
-            this.PublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            this.PatternForSemanticUuids = jObj.ReadUuids(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS);
-            this.ReferencedComponentUuids = jObj.ReadUuids(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS);
+            this.definitionForSemanticPublicId = jObj.ReadPublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID);
+            this.referencedComponentPublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID);
         }
 
         /// <summary>
@@ -100,10 +99,10 @@ namespace Tinkar
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.PatternForSemanticUuids, other.PatternForSemanticUuids);
+            cmp = this.definitionForSemanticPublicId.CompareTo(other.definitionForSemanticPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.ReferencedComponentUuids, other.ReferencedComponentUuids);
+            cmp = this.referencedComponentPublicId.CompareTo(other.referencedComponentPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -125,9 +124,8 @@ namespace Tinkar
         {
             output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
-            output.WritePublicId(this.PublicId);
-            output.WriteUuids(this.PatternForSemanticUuids);
-            output.WriteUuids(this.ReferencedComponentUuids);
+            output.WritePublicId(this.definitionForSemanticPublicId);
+            output.WritePublicId(this.referencedComponentPublicId);
         }
 
         /// <summary>
@@ -144,9 +142,8 @@ namespace Tinkar
         public override void MarshalFields(TinkarJsonOutput output)
         {
             base.MarshalFields(output);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
-            output.WriteUuids(ComponentFieldForJson.DEFINITION_FOR_SEMANTIC_UUIDS, this.PatternForSemanticUuids);
-            output.WriteUuids(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_UUIDS, this.ReferencedComponentUuids);
+            output.WritePublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID, this.definitionForSemanticPublicId);
+            output.WritePublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID, this.referencedComponentPublicId);
         }
     }
 }

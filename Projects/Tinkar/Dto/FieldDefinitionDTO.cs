@@ -26,7 +26,7 @@ namespace Tinkar
     public record FieldDefinitionDTO :
         ComponentDTO<FieldDefinitionDTO>,
         IFieldDefinition,
-        IChangeSetThing,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
@@ -100,7 +100,7 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        public FieldDefinitionDTO(TinkarInput input)
+        protected FieldDefinitionDTO(TinkarInput input)
         {
             input.CheckMarshalVersion(LocalMarshalVersion);
             this.DataTypePublicId = input.ReadPublicId();
