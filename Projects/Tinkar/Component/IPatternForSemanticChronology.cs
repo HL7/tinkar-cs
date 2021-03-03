@@ -21,15 +21,15 @@ namespace Tinkar
     /// PatternForSemanticChronology interace.
     /// </summary>
     /// <typeparam name="TPatternForSemanticVersion">Generic type pattern  for semantic version. </typeparam>
-    /// <typeparam name="TComponent">Generic type for IChronology. </typeparam>
     /// <typeparam name="TFieldDefinition">Generic type for Field definition. </typeparam>
+    /// <typeparam name="TComponent">Generic type for component definition. </typeparam>
     [JavaAttribute("PatternForSemanticChronology")]
-    public interface IPatternForSemanticChronology<TComponent, TFieldDefinition, TPatternForSemanticVersion> :
+    public interface IPatternForSemanticChronology<TPatternForSemanticVersion, TFieldDefinition, TComponent> :
         IChronology<TPatternForSemanticVersion, TComponent>,
         IPatternForSemantic
-        where TComponent : IComponent
         where TPatternForSemanticVersion : IPatternForSemanticVersion<TFieldDefinition>
         where TFieldDefinition : IFieldDefinition
+        where TComponent : IComponent
     {
     }
 }

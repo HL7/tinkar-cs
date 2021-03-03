@@ -27,7 +27,7 @@ namespace Tinkar
         /// <summary>
         /// PatternForConceptChronology Type.
         /// </summary>
-        PatternForConceptChronologyType = 2,
+        PatternForSemanticChronologyType = 2,
 
         /// <summary>
         /// SemanticChronology Type.

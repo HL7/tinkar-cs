@@ -24,8 +24,8 @@ namespace Tinkar
     /// Tinkar PatternForSemanticChronology record.
     /// </summary>
     public record PatternForSemanticChronologyDTO :
-        ComponentDTO,
-        IPatternForSemanticChronology<IConcept>,
+        PatternForSemanticDTO,
+        IPatternForSemanticChronology<PatternForSemanticVersionDTO, FieldDefinitionDTO, IConcept>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -34,7 +34,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JSONCLASSNAME = "PatternForSemanticChronologyDTO";
+        public new const String JSONCLASSNAME = "PatternForSemanticChronologyDTO";
 
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -52,12 +52,16 @@ namespace Tinkar
         /// </summary>
         IEnumerable<PatternForSemanticVersionDTO> definitionVersions { get; init; }
 
+        public IEnumerable<PatternForSemanticVersionDTO> Versions => definitionVersions;
+
+        public IConcept ChronologySet => new ConceptDTO(chronologySetPublicId);
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
-        /// </summary>
-        /// <param name = "componentPublicId" > Public id(component ids).</param>
-        /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
-        /// <param name="definitionVersions">DefinitionVersions.</param>
+                 /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
+                 /// </summary>
+                 /// <param name = "componentPublicId" > Public id(component ids).</param>
+                 /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
+                 /// <param name="definitionVersions">DefinitionVersions.</param>
         public PatternForSemanticChronologyDTO(
             IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
@@ -121,7 +125,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static PatternForSemanticChronologyDTO Make(TinkarInput input) =>
+        public static new PatternForSemanticChronologyDTO Make(TinkarInput input) =>
             new PatternForSemanticChronologyDTO(input);
 
         /// <summary>
@@ -141,7 +145,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <returns>new DTO item.</returns>
-        public static PatternForSemanticChronologyDTO Make(JObject jObj) =>
+        public static new PatternForSemanticChronologyDTO Make(JObject jObj) =>
             new PatternForSemanticChronologyDTO(jObj);
 
         /// <summary>

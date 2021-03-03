@@ -25,7 +25,7 @@ namespace Tinkar
     /// </summary>
     public record SemanticChronologyDTO :
         ComponentDTO,
-        ISemanticChronology<ISemanticVersion, PatternForSemanticDTO>,
+        ISemanticChronology<SemanticVersionDTO, PatternForSemanticDTO>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -70,7 +70,7 @@ namespace Tinkar
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<ISemanticVersion> Versions =>
+        public IEnumerable<SemanticVersionDTO> Versions =>
             this.SemanticVersions.Select((dto) => dto);
 
         /// <summary>
@@ -141,8 +141,8 @@ namespace Tinkar
             IEnumerable<SemanticVersionDTO> semanticVersions)
             : this(
                     publicId,
-                    definitionForSemantic.PublicId.AsUuidArray,
-                    referencedComponent.PublicId.AsUuidArray,
+                    definitionForSemantic.PublicId,
+                    referencedComponent.PublicId,
                     semanticVersions)
         {
         }

@@ -191,14 +191,14 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name="definitionForSemanticUuids">Externally defined definition for semantic uuids.</param>
-        /// <param name="referencedComponentUuids">Externally defined referenced component uuids.</param>
+        /// <param name="definitionForSemanticPublicId">Externally defined definition for semantic uuids.</param>
+        /// <param name="referencedComponentPublicId">Externally defined referenced component uuids.</param>
         /// <returns>Semantic version values.</returns>
         public static IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(
             this JObject jObj,
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids)
+            IPublicId definitionForSemanticPublicId,
+            IPublicId referencedComponentPublicId)
         {
             List<SemanticVersionDTO> retVal = new List<SemanticVersionDTO>();
 
@@ -208,8 +208,8 @@ namespace Tinkar
                 retVal.Add(SemanticVersionDTO.Make(
                     item,
                     publicId,
-                    definitionForSemanticUuids,
-                    referencedComponentUuids));
+                    definitionForSemanticPublicId,
+                    referencedComponentPublicId));
             }
 
             return retVal;
@@ -227,18 +227,19 @@ namespace Tinkar
             {
                 case null:
                     throw new Exception($"{TErr} Missing CLASS Declaration");
-                case ConceptChronologyDTO.JsonClassName:
+                case ConceptChronologyDTO.JSONCLASSNAME:
                     return ConceptChronologyDTO.Make(jObj);
-                case ConceptDTO.JsonClassName:
+                case ConceptDTO.JSONCLASSNAME:
                     return ConceptDTO.Make(jObj);
-                case PatternForSemanticChronologyDTO.JsonClassName:
+                case PatternForSemanticChronologyDTO.JSONCLASSNAME:
                     return PatternForSemanticChronologyDTO.Make(jObj);
-                case PatternForSemanticDTO.JsonClassName:
+                case PatternForSemanticDTO.JSONCLASSNAME:
                     return PatternForSemanticDTO.Make(jObj);
-                case SemanticChronologyDTO.JsonClassName:
+                case SemanticChronologyDTO.JSONCLASSNAME:
                     return SemanticChronologyDTO.Make(jObj);
-                case SemanticDTO.JsonClassName:
+                case SemanticDTO.JSONCLASSNAME:
                     return SemanticDTO.Make(jObj);
+                #warning ' add new classes'
                 default:
                     throw new NotImplementedException($"Class {actualClassName} not known");
             }

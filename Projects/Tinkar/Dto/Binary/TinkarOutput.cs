@@ -190,13 +190,13 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case PatternForSemanticDTO item:
-                    this.WriteFieldType(FieldDataType.PatternForSemanticType);
+                case PatternForSemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticChronologyType);
                     item.Marshal(this);
                     break;
 
-                case PatternForSemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.PatternForSemanticChronologyType);
+                case PatternForSemanticDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticType);
                     item.Marshal(this);
                     break;
 

@@ -48,9 +48,9 @@ namespace Tinkar
         /// </summary>
         public IStamp Stamp => this.StampDTO;
 
-        IPublicId referencedComponentPurposePublicId;
-        IPublicId referencedComponentMeaningPublicId;
-        IEnumerable<FieldDefinitionDTO> fieldDefinitionDTOS;
+        IPublicId referencedComponentPurposePublicId { get; init; }
+        IPublicId referencedComponentMeaningPublicId { get; init; }
+        IEnumerable<FieldDefinitionDTO> fieldDefinitionDTOs { get; init; }
 
         public IConcept ReferencedComponentPurpose =>
                 new ConceptDTO(this.referencedComponentPurposePublicId);
@@ -58,18 +58,12 @@ namespace Tinkar
         /// <summary>
         /// Gets FieldDefinitions.
         /// </summary>
-        public IEnumerable<FieldDefinitionDTO> FieldDefinitions =>
-            this.FieldDefinitionDTOs.Select((dto) => dto);
+        public IEnumerable<FieldDefinitionDTO> FieldDefinitions => this.fieldDefinitionDTOs;
 
         /// <summary>
         /// Gets Stamp record.
         /// </summary>
         public StampDTO StampDTO { get; init; }
-
-        /// <summary>
-        /// Gets FieldDefinition UUIDs.
-        /// </summary>
-        public IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class.
@@ -89,7 +83,7 @@ namespace Tinkar
             this.StampDTO = stampDTO;
             this.referencedComponentPurposePublicId = referencedComponentPurposePublicId;
             this.referencedComponentMeaningPublicId = referencedComponentMeaningPublicId;
-            this.FieldDefinitionDTOs = fieldDefinitionDTOs;
+            this.fieldDefinitionDTOs = fieldDefinitionDTOs;
         }
 
         /// <summary>
@@ -105,7 +99,7 @@ namespace Tinkar
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
             this.referencedComponentPurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_PUBLIC_ID);
             this.referencedComponentMeaningPublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_MEANING_PUBLIC_ID);
-            this.FieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
+            this.fieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
         }
 
         /// <summary>
@@ -119,7 +113,7 @@ namespace Tinkar
             this.StampDTO = new StampDTO(input);
             this.referencedComponentPurposePublicId = input.ReadPublicId();
             this.referencedComponentMeaningPublicId = input.ReadPublicId();
-            this.FieldDefinitionDTOs = input.ReadFieldDefinitionList();
+            this.fieldDefinitionDTOs = input.ReadFieldDefinitionList();
         }
 
         /// <summary>
@@ -170,7 +164,7 @@ namespace Tinkar
             this.StampDTO.Marshal(output);
             output.WritePublicId(this.referencedComponentPurposePublicId);
             output.WritePublicId(this.referencedComponentPurposePublicId);
-            output.WriteMarshalableList(this.FieldDefinitionDTOs);
+            output.WriteMarshalableList(this.fieldDefinitionDTOs);
         }
 
         /// <summary>
@@ -201,7 +195,7 @@ namespace Tinkar
                 this.referencedComponentMeaningPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.FIELD_DEFINITIONS,
-                this.FieldDefinitionDTOs);
+                this.fieldDefinitionDTOs);
         }
     }
 }

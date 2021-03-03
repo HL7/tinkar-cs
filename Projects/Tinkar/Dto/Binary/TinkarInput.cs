@@ -155,7 +155,7 @@ namespace Tinkar
             PatternForSemanticVersionDTO[] retVal = new PatternForSemanticVersionDTO[length];
 
             // Generate array to avoid multiple enumerations of componentUuids.
-            Guid[] componentUuidArr = publicId.ToArray();
+            Guid[] componentUuidArr = publicId.AsUuidArray;
             for (int i = 0; i < length; i++)
                 retVal[i] = PatternForSemanticVersionDTO.Make(this, publicId);
             return retVal;
@@ -165,13 +165,13 @@ namespace Tinkar
         /// Read an array or SemanticVersionDTO items.
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
-        /// <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
-        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+        /// <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
+        /// <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
         /// <returns>SemanticVersionDTO[].</returns>
         public SemanticVersionDTO[] ReadSemanticVersionList(
             IPublicId publicId,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids)
+            IPublicId definitionForSemanticPublicId,
+            IPublicId referencedComponentPublicId)
         {
             int length = this.ReadInt32();
             SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
@@ -180,8 +180,8 @@ namespace Tinkar
                 retVal[i] = SemanticVersionDTO.Make(
                     this,
                     publicId,
-                    definitionForSemanticUuids,
-                    referencedComponentUuids);
+                    definitionForSemanticPublicId,
+                    referencedComponentPublicId);
             }
 
             return retVal;
@@ -211,7 +211,7 @@ namespace Tinkar
             {
                 case FieldDataType.ConceptChronologyType:
                     return ConceptChronologyDTO.Make(this);
-                case FieldDataType.PatternForConceptChronologyType:
+                case FieldDataType.PatternForSemanticChronologyType:
                     return PatternForSemanticChronologyDTO.Make(this);
                 case FieldDataType.SemanticChronologyType:
                     return SemanticChronologyDTO.Make(this);
@@ -269,7 +269,7 @@ namespace Tinkar
         public void CheckMarshalVersion(Int32 marshalVersion)
         {
             if (this.marshalVersion != marshalVersion)
-                throw new ArgumentException($"Unsupported version: {objectMarshalVersion}");
+                throw new ArgumentException($"Unsupported version: {marshalVersion}");
         }
     }
 }

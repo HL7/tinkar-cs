@@ -150,13 +150,13 @@ namespace Tinkar
             IPublicId publicId,
             IPatternForSemantic definitionForSemantic,
             IComponent referencedComponent,
-            IStamp stamp,
+            StampDTO stamp,
             IEnumerable<Object> fields)
             : this(
                 publicId,
                 definitionForSemantic.PublicId,
                 referencedComponent.PublicId,
-                stamp.ToChangeSetThing(),
+                stamp,
                 fields)
         {
         }
@@ -203,8 +203,8 @@ namespace Tinkar
         public static SemanticVersionDTO Make(
             TinkarInput input,
             IPublicId publicId,
-            PublicId definitionForSemanticUuids,
-            PublicId referencedComponentUuids) =>
+            IPublicId definitionForSemanticUuids,
+            IPublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
                 input,
                 publicId,
@@ -233,8 +233,8 @@ namespace Tinkar
         public static SemanticVersionDTO Make(
             JObject jObj,
             IPublicId publicId,
-            PublicId definitionForSemanticUuids,
-            PublicId referencedComponentUuids) =>
+            IPublicId definitionForSemanticUuids,
+            IPublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
                 jObj,
                 publicId,

@@ -21,6 +21,7 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Semantic Chronology interface.
     /// </summary>
+    /// <typeparam name="TSemanticVersion">Generic param for IChnronology interface.</typeparam>
     /// <typeparam name="TComponent">Generic param for IChnronology interface.</typeparam>
     [JavaAttribute("SemanticChronology")]
     public interface ISemanticChronology<TSemanticVersion, TComponent> :

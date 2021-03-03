@@ -117,11 +117,11 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case PatternForSemanticDTO item:
+                case PatternForSemanticChronologyDTO item:
                     item.Marshal(this);
                     break;
 
-                case PatternForSemanticChronologyDTO item:
+                case PatternForSemanticDTO item:
                     item.Marshal(this);
                     break;
 

@@ -27,7 +27,7 @@ namespace Tinkar
         IDTO,
         IJsonMarshalable,
         IMarshalable,
-        IConceptChronology<IConcept>
+        IConceptChronology<ConceptVersionDTO, IConcept>
     {
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -59,8 +59,7 @@ namespace Tinkar
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<IConceptVersion> Versions =>
-            this.conceptVersions.Select((dto) => (IConceptVersion)dto);
+        public IEnumerable<ConceptVersionDTO> Versions => conceptVersions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.

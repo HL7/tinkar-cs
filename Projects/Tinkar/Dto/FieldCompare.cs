@@ -162,7 +162,6 @@ namespace Tinkar
             {
                 case IComparable a:
                     return a.CompareTo(bObj);
-                    break;
 
                 case byte[] a:
                     return CompareByteArray(a, (byte[])bObj);
