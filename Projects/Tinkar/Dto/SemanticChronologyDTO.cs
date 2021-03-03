@@ -24,19 +24,12 @@ namespace Tinkar
     /// Tinkar Semantic Chronology record.
     /// </summary>
     public record SemanticChronologyDTO :
-        ComponentDTO<SemanticChronologyDTO>,
+        ComponentDTO,
         ISemanticChronology<ISemanticVersion, PatternForSemanticDTO>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -67,7 +60,7 @@ namespace Tinkar
         /// <summary>
         /// Gets ReferencedComponent.
         /// </summary>
-        public IComponent ReferencedComponent => new ComponentDTO<IComponent>(this.ReferencedComponentPublicId);
+        public IComponent ReferencedComponent => new ComponentDTO(this.ReferencedComponentPublicId);
 
         /// <summary>
         /// Gets PatternForSemantic.
@@ -111,7 +104,6 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         protected SemanticChronologyDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.PatternForSemanticPublicId = input.ReadPublicId();
             this.ReferencedComponentPublicId = input.ReadPublicId();
             this.SemanticVersions = input.ReadSemanticVersionList(
@@ -158,10 +150,14 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(SemanticChronologyDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            SemanticChronologyDTO other = otherObject as SemanticChronologyDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
@@ -191,7 +187,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
             output.WritePublicId(this.PatternForSemanticPublicId);
             output.WritePublicId(this.ReferencedComponentPublicId);

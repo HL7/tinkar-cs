@@ -7,18 +7,11 @@ namespace Tinkar
     /// <summary>
     /// Semantic record.
     /// </summary>
-    public record SemanticDTO : ComponentDTO<SemanticDTO>,
+    public record SemanticDTO : ComponentDTO,
         IJsonMarshalable,
         IMarshalable,
         ISemantic
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -73,7 +66,6 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public SemanticDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.definitionForSemanticPublicId = input.ReadPublicId();
             this.referencedComponentPublicId = input.ReadPublicId();
         }
@@ -92,10 +84,14 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(SemanticDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            SemanticDTO other = otherObject as SemanticDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
@@ -122,7 +118,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
             output.WritePublicId(this.definitionForSemanticPublicId);
             output.WritePublicId(this.referencedComponentPublicId);

@@ -23,19 +23,12 @@ namespace Tinkar
     /// <summary>
     /// Tinkar ConceptChronology record.
     /// </summary>
-    public record ConceptChronologyDTO : ComponentDTO<ConceptChronologyDTO>,
+    public record ConceptChronologyDTO : ComponentDTO,
         IDTO,
         IJsonMarshalable,
         IMarshalable,
         IConceptChronology<IConcept>
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -51,23 +44,23 @@ namespace Tinkar
         /// <summary>
         /// Gets ChronologySet.
         /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
+        public IConcept ChronologySet => new ConceptDTO(this.chronologySetPublicId);
 
         /// <summary>
         /// Gets ChronologySet PublicId.
         /// </summary>
-        public IPublicId ChronologySetPublicId { get; init; }
+        IPublicId chronologySetPublicId { get; init; }
 
         /// <summary>
         /// Gets ConceptVersions.
         /// </summary>
-        public IEnumerable<ConceptVersionDTO> ConceptVersions { get; init; }
+        IEnumerable<ConceptVersionDTO> conceptVersions { get; init; }
 
         /// <summary>
         /// Gets Versions.
         /// </summary>
         public IEnumerable<IConceptVersion> Versions =>
-            this.ConceptVersions.Select((dto) => (IConceptVersion)dto);
+            this.conceptVersions.Select((dto) => (IConceptVersion)dto);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
@@ -80,8 +73,8 @@ namespace Tinkar
             IPublicId chronologySetPublicId,
             IEnumerable<ConceptVersionDTO> conceptVersions) : base(publicId)
         {
-            this.ChronologySetPublicId = chronologySetPublicId;
-            this.ConceptVersions = conceptVersions;
+            this.chronologySetPublicId = chronologySetPublicId;
+            this.conceptVersions = conceptVersions;
         }
 
         /// <summary>
@@ -91,9 +84,8 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         protected ConceptChronologyDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
-            this.ChronologySetPublicId = input.ReadPublicId();
-            this.ConceptVersions = input.ReadConceptVersionList(this.PublicId);
+            this.chronologySetPublicId = input.ReadPublicId();
+            this.conceptVersions = input.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -103,24 +95,28 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         public ConceptChronologyDTO(JObject jObj) : base(jObj)
         {
-            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID);
-            this.ConceptVersions = jObj.ReadConceptVersionList(this.PublicId);
+            this.chronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
+            this.conceptVersions = jObj.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(ConceptChronologyDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            ConceptChronologyDTO other = otherObject as ConceptChronologyDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
+            cmp = FieldCompare.ComparePublicIds(this.chronologySetPublicId, other.chronologySetPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.ConceptVersions, other.ConceptVersions);
+            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -140,13 +136,12 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
-            output.WritePublicId(this.ChronologySetPublicId);
+            output.WritePublicId(this.chronologySetPublicId);
 
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-            output.WriteMarshalableList(this.ConceptVersions);
+            output.WriteMarshalableList(this.conceptVersions);
         }
 
         /// <summary>
@@ -167,11 +162,11 @@ namespace Tinkar
             // in writeConceptVersionList...
             base.MarshalFields(output);
             output.WritePublicId(
-                ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID,
-                this.ChronologySetPublicId);
+                ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID,
+                this.chronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.CONCEPT_VERSIONS,
-                this.ConceptVersions);
+                this.conceptVersions);
         }
     }
 }

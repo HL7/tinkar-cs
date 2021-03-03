@@ -86,7 +86,7 @@ namespace Tinkar
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
-            where TSeq : IComparable<TSeq>
+            where TSeq : IComparable
         {
             if ((a == null) && (b == null))
                 return 0;
@@ -160,41 +160,12 @@ namespace Tinkar
 
             switch (aObj)
             {
-                case String a:
-                    return a.CompareTo((String)bObj);
-
-                case Int32 a:
-                    return a.CompareTo((Int32)bObj);
-
-                case Single a:
-                    return a.CompareTo((Single)bObj);
-
-                case Boolean a:
-                    return a.CompareTo((Boolean)bObj);
-
-                case DateTime a:
-                    return a.CompareTo((DateTime)bObj);
+                case IComparable a:
+                    return a.CompareTo(bObj);
+                    break;
 
                 case byte[] a:
                     return CompareByteArray(a, (byte[])bObj);
-
-                case ConceptChronologyDTO a:
-                    return a.CompareTo((ConceptChronologyDTO)bObj);
-
-                case ConceptDTO a:
-                    return a.CompareTo((ConceptDTO)bObj);
-
-                case PatternForSemanticChronologyDTO a:
-                    return a.CompareTo((PatternForSemanticChronologyDTO)bObj);
-
-                case PatternForSemanticDTO a:
-                    return a.CompareTo((PatternForSemanticDTO)bObj);
-
-                case SemanticChronologyDTO a:
-                    return a.CompareTo((SemanticChronologyDTO)bObj);
-
-                case SemanticDTO a:
-                    return a.CompareTo((SemanticDTO)bObj);
 
                 // DiGraphType = 6,
                 case Object[] aArr:

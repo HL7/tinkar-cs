@@ -24,19 +24,12 @@ namespace Tinkar
     /// Tinkar PatternForSemanticChronology record.
     /// </summary>
     public record PatternForSemanticChronologyDTO :
-        ComponentDTO<PatternForSemanticChronologyDTO>,
+        ComponentDTO,
         IPatternForSemanticChronology<IConcept>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -52,12 +45,12 @@ namespace Tinkar
         /// <summary>
         /// Gets public id.
         /// </summary>
-        public IPublicId ChronologySetPublicId { get; init; }
+        IPublicId chronologySetPublicId { get; init; }
 
         /// <summary>
         /// Gets Versions record.
         /// </summary>
-        public IEnumerable<PatternForSemanticVersionDTO> DefinitionVersions { get; init; }
+        IEnumerable<PatternForSemanticVersionDTO> definitionVersions { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
@@ -70,8 +63,8 @@ namespace Tinkar
             IPublicId chronologySetPublicId,
             IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
         {
-            this.ChronologySetPublicId = componentPublicId;
-            this.DefinitionVersions = definitionVersions;
+            this.chronologySetPublicId = componentPublicId;
+            this.definitionVersions = definitionVersions;
         }
 
         /// <summary>
@@ -79,13 +72,11 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        /// <param name = "componentPublicId" > Public id(component ids).</param>
         protected PatternForSemanticChronologyDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
-            this.ChronologySetPublicId = input.ReadPublicId();
-            this.DefinitionVersions =
-                input.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
+            this.chronologySetPublicId = input.ReadPublicId();
+            this.definitionVersions =
+                input.ReadPatternForSemanticVersionList(this.chronologySetPublicId);
         }
 
         /// <summary>
@@ -93,31 +84,33 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name = "componentPublicId" > Public id(component ids).</param>
-        public PatternForSemanticChronologyDTO(JObject jObj) : base(jObj, JsonClassName)
+        public PatternForSemanticChronologyDTO(JObject jObj) : base(jObj)
         {
-            jObj.GetClass(JsonClassName);
-            this.ChronologySetPublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            this.DefinitionVersions =
-                jObj.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
+            this.chronologySetPublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.definitionVersions =
+                jObj.ReadPatternForSemanticVersionList(this.chronologySetPublicId);
         }
 
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(PatternForSemanticChronologyDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            PatternForSemanticChronologyDTO other = otherObject as PatternForSemanticChronologyDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
 
-            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
+            cmp = FieldCompare.ComparePublicIds(this.chronologySetPublicId, other.chronologySetPublicId);
             if (cmp != 0)
                 return cmp;
 
-            cmp = FieldCompare.CompareSequence<PatternForSemanticVersionDTO>(this.DefinitionVersions, other.DefinitionVersions);
+            cmp = FieldCompare.CompareSequence(this.definitionVersions, other.definitionVersions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -137,11 +130,10 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
-            output.WritePublicId(this.ChronologySetPublicId);
-            output.WritePublicId(this.ChronologySetPublicId);
-            output.WriteMarshalableList(this.DefinitionVersions);
+            output.WritePublicId(this.chronologySetPublicId);
+            output.WritePublicId(this.chronologySetPublicId);
+            output.WriteMarshalableList(this.definitionVersions);
         }
 
         /// <summary>
@@ -159,11 +151,11 @@ namespace Tinkar
         public override void MarshalFields(TinkarJsonOutput output)
         {
             base.MarshalFields(output);
-            output.WriteUuids(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.ChronologySetPublicId);
-            output.WriteUuids(ComponentFieldForJson.CHRONOLOGY_PUBLIC_ID, this.ChronologySetUuids);
+            output.WritePublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.chronologySetPublicId);
+            output.WritePublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.chronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.DEFINITION_VERSIONS,
-                this.DefinitionVersions);
+                this.definitionVersions);
         }
     }
 }

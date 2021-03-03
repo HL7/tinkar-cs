@@ -22,19 +22,12 @@ namespace Tinkar
     /// <summary>
     /// Stamp record.
     /// </summary>
-    public record StampDTO : ComponentDTO<StampDTO>,
+    public record StampDTO : ComponentDTO,
         IDTO,
         IJsonMarshalable,
         IMarshalable,
         IStamp
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -46,6 +39,11 @@ namespace Tinkar
         /// This must be consistent with Java implementation.
         /// </summary>
         public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
+        /// Do not create json sub class on json marshaling.
+        /// </summary>
+        protected override bool jsonClassFlag => false;
 
         /// <summary>
         /// Gets Status UUIDs.
@@ -123,7 +121,6 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         public StampDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.StatusPublicId = input.ReadPublicId();
             this.Time = input.ReadInstant();
             this.AuthorPublicId = input.ReadPublicId();
@@ -136,7 +133,7 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public StampDTO(JObject jObj) : base(jObj, false)
+        public StampDTO(JObject jObj) : base(jObj)
         {
             this.StatusPublicId = jObj.ReadPublicId(ComponentFieldForJson.STATUS_PUBLIC_ID);
             this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
@@ -148,10 +145,14 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality.</param>
+        /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public override Int32 CompareTo(StampDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            StampDTO other = otherObject as StampDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
@@ -196,7 +197,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
             output.WritePublicId(this.StatusPublicId);
             output.WriteInstant(this.Time);

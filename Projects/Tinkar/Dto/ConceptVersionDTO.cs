@@ -22,19 +22,12 @@ namespace Tinkar
     /// <summary>
     /// ConceptVersion record.
     /// </summary>
-    public record ConceptVersionDTO : VersionDTO<ConceptVersionDTO>,
+    public record ConceptVersionDTO : VersionDTO,
         IConceptVersion,
         IDTO,
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -64,7 +57,6 @@ namespace Tinkar
         /// <param name = "publicId" > Public id(component ids).</param>
         public ConceptVersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
         }
 
         /// <summary>
@@ -73,17 +65,21 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
-        public ConceptVersionDTO(JObject jObj, IPublicId publicId) : base(jObj, publicId, JsonClassName)
+        public ConceptVersionDTO(JObject jObj, IPublicId publicId) : base(jObj, publicId)
         {
         }
 
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(ConceptVersionDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            ConceptVersionDTO other = otherObject as ConceptVersionDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
@@ -104,7 +100,6 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public new void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.Marshal(output);
         }
 
@@ -122,7 +117,7 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public override void MarshalFields(TinkarJsonOutput output)
         {
-            base.Marshal(output, JsonClassName);
+            base.Marshal(output);
         }
     }
 }

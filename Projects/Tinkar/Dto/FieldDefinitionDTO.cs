@@ -23,20 +23,11 @@ namespace Tinkar
     /// <summary>
     /// FieldDefinition record.
     /// </summary>
-    public record FieldDefinitionDTO :
-        ComponentDTO<FieldDefinitionDTO>,
+    public record FieldDefinitionDTO : MarshalableDTO,
         IFieldDefinition,
-        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -67,17 +58,17 @@ namespace Tinkar
         /// <summary>
         /// Gets DataType uuids.
         /// </summary>
-        public PublicId DataTypePublicId { get; init; }
+        public IPublicId DataTypePublicId { get; init; }
 
         /// <summary>
         /// Gets Purpose UUIDs.
         /// </summary>
-        public PublicId PurposePublicId { get; init; }
+        public IPublicId PurposePublicId { get; init; }
 
         /// <summary>
         /// Gets Meaning public id.
         /// </summary>
-        public PublicId MeaningPublicId { get; init; }
+        public IPublicId MeaningPublicId { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class.
@@ -100,9 +91,8 @@ namespace Tinkar
         /// from binary stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        protected FieldDefinitionDTO(TinkarInput input)
+        protected FieldDefinitionDTO(TinkarInput input) : base(input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.DataTypePublicId = input.ReadPublicId();
             this.PurposePublicId = input.ReadPublicId();
             this.MeaningPublicId = input.ReadPublicId();
@@ -113,7 +103,7 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        public FieldDefinitionDTO(JObject jObj)
+        public FieldDefinitionDTO(JObject jObj) : base(jObj)
         {
             this.DataTypePublicId = jObj.ReadPublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID);
             this.PurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID);
@@ -123,10 +113,14 @@ namespace Tinkar
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality.</param>
+        /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public override Int32 CompareTo(FieldDefinitionDTO other)
+        public Int32 CompareTo(Object otherObject)
         {
+            FieldDefinitionDTO other = otherObject as FieldDefinitionDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = FieldCompare.ComparePublicIds(this.DataTypePublicId, other.DataTypePublicId);
             if (cmp != 0)
                 return cmp;
@@ -153,7 +147,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
             output.WritePublicId(this.DataTypePublicId);
             output.WritePublicId(this.PurposePublicId);

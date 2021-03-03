@@ -25,19 +25,12 @@ namespace Tinkar
     /// Tinkar PatternForSemanticVersion record.
     /// </summary>
     public record PatternForSemanticVersionDTO :
-        ComponentDTO<PatternForSemanticVersionDTO>,
+        ComponentDTO,
         IPatternForSemanticVersion<FieldDefinitionDTO>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
@@ -123,7 +116,6 @@ namespace Tinkar
         /// <param name="publicId">Public id (component ids).</param>
         public PatternForSemanticVersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.StampDTO = new StampDTO(input);
             this.referencedComponentPurposePublicId = input.ReadPublicId();
             this.referencedComponentMeaningPublicId = input.ReadPublicId();
@@ -133,15 +125,19 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(PatternForSemanticVersionDTO other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            PatternForSemanticVersionDTO other = otherObject as PatternForSemanticVersionDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
 
-            cmp = FieldCompare.CompareItem(this.StampDTO, other.StampDTO);
+            cmp = this.StampDTO.CompareTo(other.StampDTO);
             if (cmp != 0)
                 return cmp;
 
@@ -170,7 +166,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
             base.MarshalFields(output);
             this.StampDTO.Marshal(output);
             output.WritePublicId(this.referencedComponentPurposePublicId);

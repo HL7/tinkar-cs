@@ -10,17 +10,8 @@ namespace Tinkar
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TDto">Type of concrete child class.</typeparam>
-    public abstract record VersionDTO<TDto> : ComponentDTO<TDto>, IVersion
-        where TDto : IVersion
+    public abstract record VersionDTO : ComponentDTO, IVersion
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
         /// <summary>
         /// Gets the Stamp DTO.
         /// </summary>
@@ -44,7 +35,6 @@ namespace Tinkar
         /// <param name = "publicId" > Public id(component ids).</param>
         public VersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
             this.StampDTO = new StampDTO(input);
         }
 
@@ -54,8 +44,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name = "jsonClassName" > Name of Json class</param>
-        public VersionDTO(JObject jObj, IPublicId publicId, String jsonClassName) : base(jObj, publicId, jsonClassName)
+        public VersionDTO(JObject jObj, IPublicId publicId) : base(jObj, publicId)
         {
             // base calls jObj.GetClass(jsonClassName);
             JObject jObjStamp = jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP);
@@ -65,14 +54,18 @@ namespace Tinkar
         /// <summary>
         /// Compares this to another item.
         /// </summary>
-        /// <param name="other">Item to compare to.</param>
+        /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(TDto other)
+        public override Int32 CompareTo(Object otherObject)
         {
+            VersionDTO other = otherObject as VersionDTO;
+            if (other == null)
+                return -1;
+
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareItem((StampDTO) this.Stamp, (StampDTO)other.Stamp);
+            cmp = this.Stamp.CompareTo(other.Stamp);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -82,9 +75,9 @@ namespace Tinkar
         /// Marshal all fields to binary output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        protected void MarshalFields(TinkarOutput output)
+        public override void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion); ;
+            base.MarshalFields(output);
             // note that PublicId is not written redundantly here,
             // they are written with the ConceptChronologyDTO...
             this.StampDTO.Marshal(output);
@@ -94,7 +87,6 @@ namespace Tinkar
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        /// <param name = "jsonClassName" > Name of Json class</param>
         public override void MarshalFields(TinkarJsonOutput output)
         {
             base.MarshalFields(output);
