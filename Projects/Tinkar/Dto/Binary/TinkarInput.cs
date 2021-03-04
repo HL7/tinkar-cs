@@ -29,16 +29,18 @@ namespace Tinkar
     public class TinkarInput : IDisposable
     {
         private BinaryReader reader;
-        private Int32 marshalVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TinkarInput"/> class.
         /// </summary>
         /// <param name="inStream">Binary input stream.</param>
-        public TinkarInput(Stream inStream)
+        /// <param name="marshalVersion">Marshal version number.</param>
+        public TinkarInput(Stream inStream, Int32 marshalVersion = MarshalVersion.LocalMarshalVersion)
         {
             this.reader = new BinaryReader(inStream);
-            this.marshalVersion = this.ReadInt32();
+            Int32 readMarshalVersion = this.ReadInt32();
+            if (readMarshalVersion != marshalVersion)
+                throw new Exception($"Invalid Marshal Version in file. Found {readMarshalVersion}, expected {marshalVersion}");
         }
 
         /// <summary>
@@ -259,17 +261,6 @@ namespace Tinkar
                 default:
                     throw new NotImplementedException($"FieldDataType {token} not known");
             }
-        }
-
-        /// <summary>
-        /// Read version number from input stream and compare it to the
-        /// passed expected value. Throw exception if doesnt match.
-        /// </summary>
-        /// <param name="marshalVersion">Expected version.</param>
-        public void CheckMarshalVersion(Int32 marshalVersion)
-        {
-            if (this.marshalVersion != marshalVersion)
-                throw new ArgumentException($"Unsupported version: {marshalVersion}");
         }
     }
 }

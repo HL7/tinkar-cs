@@ -221,6 +221,13 @@
             </summary>
             <param name="output">binary output stream.</param>
         </member>
+        <member name="F:Tinkar.MarshalVersion.LocalMarshalVersion">
+            <summary>
+            Version of marshalling code.
+            If code is modified in a way that renders old serialized data
+            non-conformant, then this number should be incremented.
+            </summary>
+        </member>
         <member name="T:Tinkar.TinkarByteArrayOutput">
             <summary>
             Tinkar binary output stream that writes to a byte arrray.
@@ -265,11 +272,12 @@
             serializer.
             </summary>
         </member>
-        <member name="M:Tinkar.TinkarInput.#ctor(System.IO.Stream)">
+        <member name="M:Tinkar.TinkarInput.#ctor(System.IO.Stream,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.TinkarInput"/> class.
             </summary>
             <param name="inStream">Binary input stream.</param>
+            <param name="marshalVersion">Marshal version number.</param>
         </member>
         <member name="M:Tinkar.TinkarInput.Dispose">
             <summary>
@@ -372,13 +380,6 @@
             </summary>
             <returns>Object[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.CheckMarshalVersion(System.Int32)">
-            <summary>
-            Read version number from input stream and compare it to the
-            passed expected value. Throw exception if doesnt match.
-            </summary>
-            <param name="marshalVersion">Expected version.</param>
-        </member>
         <member name="T:Tinkar.TinkarOutput">
             <summary>
             Tinkar binary output stream. Writes Tinkar objects to serialized
@@ -476,12 +477,6 @@
             Write out a stream ob simple objects.
             </summary>
             <param name="fields">Values to write.</param>
-        </member>
-        <member name="M:Tinkar.TinkarOutput.CheckMarshalVersion(System.Int32)">
-            <summary>
-            Write marshal version to output stream.
-            </summary>
-            <param name="marshalVersion">value to write.</param>
         </member>
         <member name="M:Tinkar.TinkarOutput.WriteFieldType(Tinkar.FieldDataType)">
             <summary>
@@ -592,14 +587,9 @@
             Gets ChronologySet.
             </summary>
         </member>
-        <member name="P:Tinkar.ConceptChronologyDTO.chronologySetPublicId">
+        <member name="P:Tinkar.ConceptChronologyDTO.ChronologySetPublicId">
             <summary>
             Gets ChronologySet PublicId.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ConceptChronologyDTO.conceptVersions">
-            <summary>
-            Gets ConceptVersions.
             </summary>
         </member>
         <member name="P:Tinkar.ConceptChronologyDTO.Versions">
@@ -1061,7 +1051,7 @@
             Gets Meaning public id.
             </summary>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.#ctor(Tinkar.PublicId,Tinkar.PublicId,Tinkar.PublicId)">
+        <member name="M:Tinkar.FieldDefinitionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.FieldDefinitionDTO"/> class.
             </summary>
@@ -1082,6 +1072,16 @@
             from json stream.
             </summary>
             <param name="jObj">JSON parent container to read from.</param>
+        </member>
+        <member name="M:Tinkar.FieldDefinitionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Implementation of IEquivalent.IsEquivalent
+            We manually create this rather than using the default
+            record implementation because we want to compare to
+            do a deep comparison, not just compare reference equality.
+            </summary>
+            <param name="other">Item to compare to for equivalence.</param>
+            <returns>true if equal.</returns>
         </member>
         <member name="M:Tinkar.FieldDefinitionDTO.CompareTo(System.Object)">
             <summary>
@@ -1152,13 +1152,6 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="F:Tinkar.MarshalableDTO.LocalMarshalVersion">
-            <summary>
-            Version of marshalling code.
-            If code is modified in a way that renders old serialized data
-            non-conformant, then this number should be incremented.
-            </summary>
-        </member>
         <member name="M:Tinkar.MarshalableDTO.#ctor">
             <summary>
             Constructor
@@ -1219,12 +1212,12 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.PatternForSemanticChronologyDTO.chronologySetPublicId">
+        <member name="P:Tinkar.PatternForSemanticChronologyDTO.ChronologySetPublicId">
             <summary>
             Gets public id.
             </summary>
         </member>
-        <member name="P:Tinkar.PatternForSemanticChronologyDTO.definitionVersions">
+        <member name="P:Tinkar.PatternForSemanticChronologyDTO.Versions">
             <summary>
             Gets Versions record.
             </summary>
@@ -1386,7 +1379,7 @@
             Gets Stamp record.
             </summary>
         </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.StampDTO,Tinkar.PublicId,Tinkar.PublicId,System.Collections.Generic.IEnumerable{Tinkar.FieldDefinitionDTO})">
+        <member name="M:Tinkar.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.FieldDefinitionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticVersionDTO"/> class.
             </summary>
@@ -1693,7 +1686,7 @@
             Gets Fields array.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticVersionDTO.definitionForSemanticPublicId">
+        <member name="P:Tinkar.SemanticVersionDTO.DefinitionForSemanticPublicId">
             <summary>
             Gets PatternForSemantic UUID's.
             </summary>

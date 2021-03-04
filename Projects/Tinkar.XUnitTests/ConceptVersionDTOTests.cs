@@ -19,7 +19,7 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             ConceptVersionDTO dtoStart = Misc.CreateConceptVersionDTO;
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
         }
 
@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
                 ConceptVersionDTO a = Misc.CreateConceptVersionDTO;
 
                 ConceptVersionDTO b = new ConceptVersionDTO(
-                    new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 },
+                    new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4),
                     Misc.CreateStampDTO);
                 Assert.False(a.IsEquivalent(b));
             }
@@ -61,7 +61,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+                    new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4 ));
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }
@@ -82,7 +82,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             TinkarJsonInput input = new TinkarJsonInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input.ReadJsonObject(),
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+                new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4));
             Assert.True(dtoStart.IsEquivalent(dtoRead));
         }
         [DoNotParallelize]
@@ -102,7 +102,7 @@ namespace Tinkar.XUnitTests
             {
                 ConceptVersionDTO dtoEnd = ConceptVersionDTO.Make(
                     input.ReadJsonObject(),
-                    dtoStart.ComponentUuids);
+                    dtoStart.PublicId);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

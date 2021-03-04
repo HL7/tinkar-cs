@@ -15,9 +15,9 @@ namespace Tinkar.XUnitTests
         public void FieldDefinitionDTOFieldsTest()
         {
             FieldDefinitionDTO dtoStart = new FieldDefinitionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+                Misc.PublicIdG,
+                Misc.PublicIdH,
+                Misc.PublicIdI
                 );
             Misc.Compare(dtoStart.DataTypePublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.PurposePublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    DataTypePublicId = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -48,7 +48,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    PurposePublicId = new Guid[] { Misc.h1, Misc.h3, Misc.h3, Misc.h4 }
+                    PurposePublicId = Misc.PublicIdH
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -57,7 +57,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    MeaningPublicId = new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i3 }
+                    MeaningPublicId = new PublicId(Misc.i1, Misc.i2, Misc.i3, Misc.i3)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -68,9 +68,9 @@ namespace Tinkar.XUnitTests
         public void FieldDefinitionDTOMarshalTest()
         {
             FieldDefinitionDTO dtoStart = new FieldDefinitionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+                Misc.PublicIdG,
+                Misc.PublicIdH,
+                Misc.PublicIdI
             );
 
             MemoryStream ms = new MemoryStream();

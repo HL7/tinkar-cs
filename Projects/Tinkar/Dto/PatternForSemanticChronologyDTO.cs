@@ -45,16 +45,14 @@ namespace Tinkar
         /// <summary>
         /// Gets public id.
         /// </summary>
-        IPublicId chronologySetPublicId { get; init; }
+        public IPublicId ChronologySetPublicId { get; init; }
 
         /// <summary>
         /// Gets Versions record.
         /// </summary>
-        IEnumerable<PatternForSemanticVersionDTO> definitionVersions { get; init; }
+        public IEnumerable<PatternForSemanticVersionDTO> Versions { get; init; }
 
-        public IEnumerable<PatternForSemanticVersionDTO> Versions => definitionVersions;
-
-        public IConcept ChronologySet => new ConceptDTO(chronologySetPublicId);
+        public IConcept ChronologySet => new ConceptDTO(ChronologySetPublicId);
         
         /// <summary>
                  /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
@@ -67,8 +65,8 @@ namespace Tinkar
             IPublicId chronologySetPublicId,
             IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
         {
-            this.chronologySetPublicId = componentPublicId;
-            this.definitionVersions = definitionVersions;
+            this.ChronologySetPublicId = componentPublicId;
+            this.Versions = definitionVersions;
         }
 
         /// <summary>
@@ -78,9 +76,9 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         protected PatternForSemanticChronologyDTO(TinkarInput input) : base(input)
         {
-            this.chronologySetPublicId = input.ReadPublicId();
-            this.definitionVersions =
-                input.ReadPatternForSemanticVersionList(this.chronologySetPublicId);
+            this.ChronologySetPublicId = input.ReadPublicId();
+            this.Versions =
+                input.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
         }
 
         /// <summary>
@@ -90,9 +88,9 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container.</param>
         public PatternForSemanticChronologyDTO(JObject jObj) : base(jObj)
         {
-            this.chronologySetPublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            this.definitionVersions =
-                jObj.ReadPatternForSemanticVersionList(this.chronologySetPublicId);
+            this.ChronologySetPublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.Versions =
+                jObj.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
         }
 
         /// <summary>
@@ -110,11 +108,11 @@ namespace Tinkar
             if (cmp != 0)
                 return cmp;
 
-            cmp = FieldCompare.ComparePublicIds(this.chronologySetPublicId, other.chronologySetPublicId);
+            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
             if (cmp != 0)
                 return cmp;
 
-            cmp = FieldCompare.CompareSequence(this.definitionVersions, other.definitionVersions);
+            cmp = FieldCompare.CompareSequence(this.Versions, other.Versions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -135,9 +133,9 @@ namespace Tinkar
         public override void MarshalFields(TinkarOutput output)
         {
             base.MarshalFields(output);
-            output.WritePublicId(this.chronologySetPublicId);
-            output.WritePublicId(this.chronologySetPublicId);
-            output.WriteMarshalableList(this.definitionVersions);
+            output.WritePublicId(this.ChronologySetPublicId);
+            output.WritePublicId(this.ChronologySetPublicId);
+            output.WriteMarshalableList(this.Versions);
         }
 
         /// <summary>
@@ -155,11 +153,11 @@ namespace Tinkar
         public override void MarshalFields(TinkarJsonOutput output)
         {
             base.MarshalFields(output);
-            output.WritePublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.chronologySetPublicId);
-            output.WritePublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.chronologySetPublicId);
+            output.WritePublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.ChronologySetPublicId);
+            output.WritePublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.DEFINITION_VERSIONS,
-                this.definitionVersions);
+                this.Versions);
         }
     }
 }

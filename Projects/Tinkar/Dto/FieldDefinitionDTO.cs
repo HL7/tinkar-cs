@@ -26,7 +26,9 @@ namespace Tinkar
     public record FieldDefinitionDTO : MarshalableDTO,
         IFieldDefinition,
         IJsonMarshalable,
-        IMarshalable
+        IMarshalable,
+        IEquivalent,
+        IComparable
     {
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -77,9 +79,9 @@ namespace Tinkar
         /// <param name="purposePublicId">purposePublicId.</param>
         /// <param name="meaningPublicId">meaningPublicId.</param>
         public FieldDefinitionDTO(
-            PublicId dataTypePublicId,
-            PublicId purposePublicId,
-            PublicId meaningPublicId)
+            IPublicId dataTypePublicId,
+            IPublicId purposePublicId,
+            IPublicId meaningPublicId)
         {
             this.DataTypePublicId = dataTypePublicId;
             this.PurposePublicId = purposePublicId;
@@ -109,6 +111,16 @@ namespace Tinkar
             this.PurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID);
             this.MeaningPublicId = jObj.ReadPublicId(ComponentFieldForJson.MEANING_PUBLIC_ID);
         }
+
+        /// <summary>
+        /// Implementation of IEquivalent.IsEquivalent
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
+        /// </summary>
+        /// <param name="other">Item to compare to for equivalence.</param>
+        /// <returns>true if equal.</returns>
+        public Boolean IsEquivalent(Object other) => this.CompareTo(other) == 0;
 
         /// <summary>
         /// Compare this with another item of same type.

@@ -44,22 +44,17 @@ namespace Tinkar
         /// <summary>
         /// Gets ChronologySet.
         /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.chronologySetPublicId);
+        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
 
         /// <summary>
         /// Gets ChronologySet PublicId.
         /// </summary>
-        IPublicId chronologySetPublicId { get; init; }
-
-        /// <summary>
-        /// Gets ConceptVersions.
-        /// </summary>
-        IEnumerable<ConceptVersionDTO> conceptVersions { get; init; }
+        public IPublicId ChronologySetPublicId { get; init; }
 
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<ConceptVersionDTO> Versions => conceptVersions;
+        public IEnumerable<ConceptVersionDTO> Versions { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
@@ -72,8 +67,8 @@ namespace Tinkar
             IPublicId chronologySetPublicId,
             IEnumerable<ConceptVersionDTO> conceptVersions) : base(publicId)
         {
-            this.chronologySetPublicId = chronologySetPublicId;
-            this.conceptVersions = conceptVersions;
+            this.ChronologySetPublicId = chronologySetPublicId;
+            this.Versions = conceptVersions;
         }
 
         /// <summary>
@@ -83,8 +78,8 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         protected ConceptChronologyDTO(TinkarInput input) : base(input)
         {
-            this.chronologySetPublicId = input.ReadPublicId();
-            this.conceptVersions = input.ReadConceptVersionList(this.PublicId);
+            this.ChronologySetPublicId = input.ReadPublicId();
+            this.Versions = input.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -94,8 +89,8 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         public ConceptChronologyDTO(JObject jObj) : base(jObj)
         {
-            this.chronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
-            this.conceptVersions = jObj.ReadConceptVersionList(this.PublicId);
+            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
+            this.Versions = jObj.ReadConceptVersionList(this.PublicId);
         }
 
         /// <summary>
@@ -112,10 +107,10 @@ namespace Tinkar
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.ComparePublicIds(this.chronologySetPublicId, other.chronologySetPublicId);
+            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions);
+            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.Versions, other.Versions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -136,11 +131,11 @@ namespace Tinkar
         public override void MarshalFields(TinkarOutput output)
         {
             base.MarshalFields(output);
-            output.WritePublicId(this.chronologySetPublicId);
+            output.WritePublicId(this.ChronologySetPublicId);
 
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-            output.WriteMarshalableList(this.conceptVersions);
+            output.WriteMarshalableList(this.Versions);
         }
 
         /// <summary>
@@ -162,10 +157,10 @@ namespace Tinkar
             base.MarshalFields(output);
             output.WritePublicId(
                 ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID,
-                this.chronologySetPublicId);
+                this.ChronologySetPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.CONCEPT_VERSIONS,
-                this.conceptVersions);
+                this.Versions);
         }
     }
 }

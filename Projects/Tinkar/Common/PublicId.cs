@@ -15,7 +15,7 @@ namespace Tinkar
 
         public Int32 UuidCount => guids.Length;
 
-        public PublicId(Guid[] guids)
+        public PublicId(params Guid[] guids)
         {
             this.guids = guids;
         }

@@ -14,8 +14,8 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void PatternForSemanticDTOFieldsTest()
         {
-            PatternForSemanticDTO dtoStart = new PatternForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            PatternForSemanticDTO dtoStart = new PatternForSemanticDTO(new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4 ));
+            Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
         [DoNotParallelize]
@@ -30,7 +30,7 @@ namespace Tinkar.XUnitTests
 
             {
                 PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;
-                PatternForSemanticDTO b = new PatternForSemanticDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
+                PatternForSemanticDTO b = new PatternForSemanticDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4));
                 Assert.False(a.IsEquivalent(b));
             }
         }

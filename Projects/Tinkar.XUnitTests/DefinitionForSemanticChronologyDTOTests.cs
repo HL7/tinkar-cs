@@ -15,9 +15,9 @@ namespace Tinkar.XUnitTests
         public void PatternForSemanticChronologyDTOFieldsTest()
         {
             PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.ChronologySetUuids, Misc.h1, Misc.h2, Misc.h3);
-            Misc.Compare<PatternForSemanticVersionDTO>(dtoStart.DefinitionVersions,
+            Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3);
+            Misc.Compare(dtoStart.Versions,
                 new PatternForSemanticVersionDTO[]
                     { Misc.CreatePatternForSemanticVersionDTO }
                 );
@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -48,7 +48,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    ChronologySetUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    ChronologySetPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4 )
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -59,12 +59,12 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    DefinitionVersions = new PatternForSemanticVersionDTO[]
+                    Versions = new PatternForSemanticVersionDTO[]
                     {
                         Misc.CreatePatternForSemanticVersionDTO
                         with
                         {
-                            ComponentUuids = new Guid[] { Misc.g3, Misc.g2, Misc.g1, Misc.g4 }
+                            PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.g4)
                         }
                     }
                 }

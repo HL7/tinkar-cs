@@ -18,25 +18,26 @@ namespace Tinkar.XUnitTests
             FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition;
             FieldDefinitionDTO fdob = Misc.CreateFieldDefinition with
             {
-                DataTypePublicId = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
             }
             ;
 
             PatternForSemanticVersionDTO dtoStart = new PatternForSemanticVersionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.PublicIdG,
                 Misc.CreateStampDTO,
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3 },
+                Misc.PublicIdH,
+                Misc.PublicIdI,
                 new FieldDefinitionDTO[] { fdoa, fdob }
                 );
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.PublicId, Misc.PublicIdG);
             Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
-            Misc.Compare<FieldDefinitionDTO>(dtoStart.FieldDefinitionDTOs,
+            Misc.Compare(dtoStart.FieldDefinitions,
                 new FieldDefinitionDTO[]
                 {
                     Misc.CreateFieldDefinition,
                     Misc.CreateFieldDefinition with
                     {
-                        DataTypePublicId = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        DataTypePublicId = new PublicId( Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                     }
                 }
                 );
@@ -57,7 +58,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -67,7 +68,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    StampDTO = Misc.CreateStampDTO with { StatusPublicId = new Guid[] { Misc.g2 } }
+                    StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2 ) }
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -77,7 +78,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    ReferencedComponentPurposeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    ReferencedComponentPurposePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -85,7 +86,7 @@ namespace Tinkar.XUnitTests
             {
                 FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition with
                 {
-                    DataTypePublicId = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
 
                 PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
@@ -114,7 +115,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 PatternForSemanticVersionDTO dtoRead =
-                    PatternForSemanticVersionDTO.Make(input, dtoStart.ComponentUuids);
+                    PatternForSemanticVersionDTO.Make(input, dtoStart.PublicId);
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }
@@ -134,7 +135,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 PatternForSemanticVersionDTO dtoEnd = PatternForSemanticVersionDTO.Make(input.ReadJsonObject(),
-                    dtoStart.ComponentUuids);
+                    dtoStart.PublicId);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

@@ -49,7 +49,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreateConceptChronologyDTO
                     with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                     }));
             }
             {
@@ -61,7 +61,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreateConceptDTO
                     with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4 )
                     }));
             }
             {
@@ -72,7 +72,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreatePatternForSemanticChronologyDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4 )
                     }));
             }
             {
@@ -84,7 +84,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreatePatternForSemanticDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4) 
                     }));
             }
             {
@@ -96,7 +96,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreateSemanticChronologyDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                     }));
             }
             {
@@ -108,7 +108,7 @@ namespace Tinkar.XUnitTests
                     Misc.CreateSemanticDTO
                 with
                     {
-                        ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                     }));
             }
             {

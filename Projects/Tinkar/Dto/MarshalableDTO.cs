@@ -26,13 +26,6 @@ namespace Tinkar
         public virtual String JsonClassName { get; } = "MarshalableDTO";
 
         /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int LocalMarshalVersion = 3;
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public MarshalableDTO()
@@ -46,7 +39,6 @@ namespace Tinkar
         /// <param name="input">binary input stream.</param>
         protected MarshalableDTO(TinkarInput input)
         {
-            input.CheckMarshalVersion(LocalMarshalVersion);
         }
 
         /// <summary>
@@ -75,7 +67,6 @@ namespace Tinkar
         /// <param name="output">output data stream.</param>
         public virtual void MarshalFields(TinkarOutput output)
         {
-            output.CheckMarshalVersion(LocalMarshalVersion);
         }
 
         /// <summary>
