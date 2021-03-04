@@ -35,14 +35,14 @@ namespace Tinkar.XUnitTests
         public void ReadIntTest()
         {
             {
-                MemoryStream ms = new MemoryStream(new byte[] { 1, 2, 3, 4 });
+                MemoryStream ms = MSCreate(new byte[] { 1, 2, 3, 4 });
                 Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
                 Int32 value = ti.ReadInt32();
                 Assert.True(value == this.MakeInt32(1, 2, 3, 4));
             }
 
             {
-                MemoryStream ms = new MemoryStream(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4 });
+                MemoryStream ms = MSCreate(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4 });
                 Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
                 Int32 value = ti.ReadInt32();
                 Assert.True(value == this.MakeInt32(0xf1, 0xf2, 0xf3, 0xf4));
@@ -54,7 +54,7 @@ namespace Tinkar.XUnitTests
         public void ReadLongTest()
         {
             {
-                MemoryStream ms = new MemoryStream(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
+                MemoryStream ms = MSCreate(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
                 Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
                 Int64 value = ti.ReadLong();
                 Int64 compare = MakeInt64(1, 2, 3, 4, 5, 6, 7, 8);
@@ -62,7 +62,7 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                MemoryStream ms = new MemoryStream(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8 });
+                MemoryStream ms = MSCreate(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8 });
                 Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
                 Int64 value = ti.ReadLong();
                 Int64 compare = MakeInt64(0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8);
@@ -76,7 +76,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(DateTime start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -100,7 +100,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(Int32 start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -129,7 +129,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(Int64 start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -158,7 +158,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(String start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -184,7 +184,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(byte[] start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -210,7 +210,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(bool start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -235,7 +235,7 @@ namespace Tinkar.XUnitTests
         {
             void Test(Single start)
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 using (TinkarOutput output = new TinkarOutput(ms))
                 {
                     output.WriteField(start);
@@ -261,6 +261,10 @@ namespace Tinkar.XUnitTests
         MemoryStream MSCreate(params byte[][] blocks)
         {
             MemoryStream ms = new MemoryStream();
+
+            // write version (3);
+            ms.Write(new byte[] { 0, 0, 0, 3 });
+
             foreach (byte[] block in blocks)
                 ms.Write(block);
             ms.Position = 0;
@@ -326,7 +330,14 @@ namespace Tinkar.XUnitTests
                 to.WriteInt32(value);
                 ms.Position = 0;
 
-                Assert.True(ms.Length == 4);
+                Assert.True(ms.Length == 8);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 4);
                 Assert.True(ms.ReadByte() == 3);
                 Assert.True(ms.ReadByte() == 2);
@@ -343,7 +354,14 @@ namespace Tinkar.XUnitTests
                 to.WriteInt32(value);
                 ms.Position = 0;
 
-                Assert.True(ms.Length == 4);
+                Assert.True(ms.Length == 8);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 0x74);
                 Assert.True(ms.ReadByte() == 0xf3);
                 Assert.True(ms.ReadByte() == 0xf2);
@@ -369,7 +387,15 @@ namespace Tinkar.XUnitTests
                 ti.WriteInt64(value);
                 ms.Position = 0;
 
-                Assert.True(ms.Length == 8);
+                Assert.True(ms.Length == 12);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
+
                 Assert.True(ms.ReadByte() == 8);
                 Assert.True(ms.ReadByte() == 7);
                 Assert.True(ms.ReadByte() == 6);
@@ -394,7 +420,14 @@ namespace Tinkar.XUnitTests
                 ti.WriteInt64(value);
                 ms.Position = 0;
 
-                Assert.True(ms.Length == 8);
+                Assert.True(ms.Length == 12);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 0x78);
                 Assert.True(ms.ReadByte() == 0xf7);
                 Assert.True(ms.ReadByte() == 0xf6);
@@ -412,11 +445,18 @@ namespace Tinkar.XUnitTests
         public void WriteUuidArrayTest()
         {
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 TinkarOutput ti = new TinkarOutput(ms);
                 ti.WriteUuids(new Guid[0]);
                 ms.Position = 0;
-                Assert.True(ms.Length == 4);
+                Assert.True(ms.Length == 8);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
@@ -424,12 +464,19 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
                 ti.WriteUuids(new Guid[] { g1 });
                 ms.Position = 0;
-                Assert.True(ms.Length == 20);
+                Assert.True(ms.Length == 24);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
@@ -454,12 +501,19 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff });
                 ti.WriteUuids(new Guid[] { g1 });
                 ms.Position = 0;
-                Assert.True(ms.Length == 20);
+                Assert.True(ms.Length == 24);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
@@ -484,13 +538,21 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = MSCreate();
                 TinkarOutput ti = new TinkarOutput(ms);
                 Guid g1 = new Guid(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
                 Guid g2 = new Guid(new byte[] { 0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff });
                 ti.WriteUuids(new Guid[] { g1, g2 });
                 ms.Position = 0;
-                Assert.True(ms.Length == 36);
+                Assert.True(ms.Length == 40);
+
+                // read 4 byte marshal version
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 0);
+                Assert.True(ms.ReadByte() == 3);
+
+
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
                 Assert.True(ms.ReadByte() == 0);
