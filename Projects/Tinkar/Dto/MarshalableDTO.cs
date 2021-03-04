@@ -15,11 +15,6 @@ namespace Tinkar
     public record MarshalableDTO
     {
         /// <summary>
-        /// If true, create json sub class on json marshaling.
-        /// </summary>
-        protected virtual bool jsonClassFlag => true;
-
-        /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
@@ -48,8 +43,7 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container.</param>
         protected MarshalableDTO(JObject jObj)
         {
-            if (this.jsonClassFlag == true)
-                jObj.GetClass(JsonClassName);
+            jObj.GetClass(JsonClassName);
         }
 
         /// <summary>
@@ -75,11 +69,10 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
-            if (this.jsonClassFlag == true)
-                output.WriteStartObject();
+            output.WriteStartObject();
+            output.WriteClass(this.JsonClassName);
             MarshalFields(output);
-            if (this.jsonClassFlag == true)
-                output.WriteEndObject();
+            output.WriteEndObject();
         }
 
         /// <summary>

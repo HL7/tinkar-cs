@@ -1141,11 +1141,6 @@
             Base class for all Tinkar DTO classes.
             </summary>
         </member>
-        <member name="P:Tinkar.MarshalableDTO.jsonClassFlag">
-            <summary>
-            If true, create json sub class on json marshaling.
-            </summary>
-        </member>
         <member name="P:Tinkar.MarshalableDTO.JsonClassName">
             <summary>
             Name of this class in JSON serialization.
@@ -1795,11 +1790,6 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.StampDTO.jsonClassFlag">
-            <summary>
-            Do not create json sub class on json marshaling.
             </summary>
         </member>
         <member name="P:Tinkar.StampDTO.StatusPublicId">

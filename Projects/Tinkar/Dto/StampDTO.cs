@@ -41,11 +41,6 @@ namespace Tinkar
         public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
-        /// Do not create json sub class on json marshaling.
-        /// </summary>
-        protected override bool jsonClassFlag => false;
-
-        /// <summary>
         /// Gets Status UUIDs.
         /// </summary>
         public IPublicId StatusPublicId { get; init; }
