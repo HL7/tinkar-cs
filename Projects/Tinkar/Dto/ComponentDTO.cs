@@ -53,8 +53,9 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">binary input stream.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
-        public ComponentDTO(TinkarInput input, IPublicId publicId) : this(publicId)
+        public ComponentDTO(TinkarInput input, IPublicId publicId) : base(input)
         {
+            this.PublicId = publicId;
         }
 
         /// <summary>

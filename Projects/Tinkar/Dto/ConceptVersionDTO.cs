@@ -100,7 +100,7 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public new void MarshalFields(TinkarOutput output)
         {
-            base.Marshal(output);
+            base.MarshalFields(output);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Tinkar
         /// <param name="output">Json output stream.</param>
         public override void MarshalFields(TinkarJsonOutput output)
         {
-            base.Marshal(output);
+            base.MarshalFields(output);
         }
     }
 }

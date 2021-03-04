@@ -48,7 +48,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    PurposePublicId = Misc.PublicIdH
+                    PurposePublicId = new PublicId(Misc.h1)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
