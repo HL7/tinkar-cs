@@ -105,6 +105,11 @@
             Gets the purpose of referenced component.
             </summary>
         </member>
+        <member name="P:Tinkar.IPatternForSemanticVersion`1.ReferencedComponentMeaning">
+            <summary>
+            Gets the meaning of referenced component.
+            </summary>
+        </member>
         <member name="T:Tinkar.ISemantic">
             <summary>
             Tinkar Semantic interface.
@@ -359,7 +364,7 @@
             <param name="publicId">Public id (component ids).</param>
             <returns>PatternForSemanticVersionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.GetSemanticVersionList(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarInput.ReadSemanticVersionList(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Read an array or SemanticVersionDTO items.
             </summary>
@@ -466,7 +471,7 @@
             </summary>
             <param name="statusUuids">values to write.</param>
         </member>
-        <member name="M:Tinkar.TinkarOutput.WritePublicId(Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarOutput.PutPublicId(Tinkar.IPublicId)">
             <summary>
             Write a stream of Uuids (guids) to output stream.
             </summary>
@@ -489,12 +494,6 @@
             Base class for all Tinkar DTO classes.
             </summary>
         </member>
-        <member name="P:Tinkar.ComponentDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
         <member name="P:Tinkar.ComponentDTO.PublicId">
             <summary>
             Gets public id.
@@ -504,22 +503,7 @@
             <summary>
             Constructor
             </summary>
-            <param name="publicId">Public id for this item</param>
-        </member>
-        <member name="M:Tinkar.ComponentDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ComponentDTO"/> class.
-            from input JSON stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name = "publicId" > Public id(component ids).</param>
-        </member>
-        <member name="M:Tinkar.ComponentDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ComponentDTO"/> class.
-            from input JSON stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
+            <param name="componentPublicId">Public id for this item</param>
         </member>
         <member name="M:Tinkar.ComponentDTO.IsEquivalent(System.Object)">
             <summary>
@@ -538,18 +522,6 @@
             <param name="otherObject">Item to compare to.</param>
             <returns>-1, 0, or 1.</returns>
         </member>
-        <member name="M:Tinkar.ComponentDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item fields to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
-        <member name="M:Tinkar.ComponentDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal DTO item fields to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="T:Tinkar.ConceptChronologyDTO">
             <summary>
             Tinkar ConceptChronology record.
@@ -561,20 +533,19 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.ConceptChronologyDTO.JsonClassName">
+        <member name="P:Tinkar.ConceptChronologyDTO.ChronologySetPublicId">
             <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
+            Gets ChronologySet PublicId.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ConceptChronologyDTO.conceptVersions">
+            <summary>
+            Gets Versions.
             </summary>
         </member>
         <member name="P:Tinkar.ConceptChronologyDTO.ChronologySet">
             <summary>
             Gets ChronologySet.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ConceptChronologyDTO.ChronologySetPublicId">
-            <summary>
-            Gets ChronologySet PublicId.
             </summary>
         </member>
         <member name="P:Tinkar.ConceptChronologyDTO.Versions">
@@ -586,16 +557,9 @@
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptChronologyDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="conceptVersions">ConceptVersions.</param>
-        </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptChronologyDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
         </member>
         <member name="M:Tinkar.ConceptChronologyDTO.CompareTo(System.Object)">
             <summary>
@@ -610,20 +574,20 @@
             </summary>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.MarshalFields(Tinkar.TinkarOutput)">
+        <member name="M:Tinkar.ConceptChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json stream.
+            </summary>
+            <param name="jsonObject">JSON parent container.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.ConceptChronologyDTO.Marshal(Tinkar.TinkarOutput)">
             <summary>
             Marshal DTO item to output stream.
             </summary>
             <param name="output">output data stream.</param>
         </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Static method to Create DTO item from json stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
-            <returns>new DTO item.</returns>
-        </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.ConceptChronologyDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -640,24 +604,11 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.ConceptDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
         <member name="M:Tinkar.ConceptDTO.#ctor(Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-        </member>
-        <member name="M:Tinkar.ConceptDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
+            <param name = "componentPublicId" > Component Public id(component ids).</param>
         </member>
         <member name="M:Tinkar.ConceptDTO.CompareTo(System.Object)">
             <summary>
@@ -673,12 +624,6 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.ConceptDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="M:Tinkar.ConceptDTO.Make(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Static method to Create DTO item from json .
@@ -686,7 +631,13 @@
             <param name="jObj">JSON parent container to read from.</param>
             <returns>ConceptDTO record.</returns>
         </member>
-        <member name="M:Tinkar.ConceptDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.ConceptDTO.Marshal(Tinkar.TinkarOutput)">
+            <summary>
+            Marshal all fields to output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="M:Tinkar.ConceptDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -697,32 +648,18 @@
             ConceptVersion record.
             </summary>
         </member>
-        <member name="F:Tinkar.ConceptVersionDTO.JSONCLASSNAME">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ConceptVersionDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
         <member name="M:Tinkar.ConceptVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.StampDTO)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
             <param name="stampDTO">Stamp.</param>
         </member>
-        <member name="M:Tinkar.ConceptVersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+        <member name="M:Tinkar.ConceptVersionDTO.#ctor(Tinkar.IConceptVersion)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class.
-            from input JSON stream.
             </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "conceptVersion" > Concept Version DTO.</param>
         </member>
         <member name="M:Tinkar.ConceptVersionDTO.CompareTo(System.Object)">
             <summary>
@@ -739,21 +676,21 @@
             <param name="publicId">Public id (component ids).</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.ConceptVersionDTO.MarshalFields(Tinkar.TinkarOutput)">
+        <member name="M:Tinkar.ConceptVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="jsonObject">JSON parent container.</param>
+            <param name="publicId">Public id (component ids).</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.ConceptVersionDTO.Marshal(Tinkar.TinkarOutput)">
             <summary>
             Marshal all fields to binary output stream.
             </summary>
             <param name="output">Json output stream.</param>
         </member>
-        <member name="M:Tinkar.ConceptVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
-            <summary>
-            Static method to Create DTO item from input stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name="publicId">Public id (component ids).</param>
-            <returns>new DTO item.</returns>
-        </member>
-        <member name="M:Tinkar.ConceptVersionDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.ConceptVersionDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -977,12 +914,6 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.FieldDefinitionDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
         <member name="P:Tinkar.FieldDefinitionDTO.DataType">
             <summary>
             Gets DataType record.
@@ -1021,13 +952,6 @@
             <param name="purposePublicId">purposePublicId.</param>
             <param name="meaningPublicId">meaningPublicId.</param>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.FieldDefinitionDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-        </member>
         <member name="M:Tinkar.FieldDefinitionDTO.IsEquivalent(System.Object)">
             <summary>
             Implementation of IEquivalent.IsEquivalent
@@ -1045,6 +969,13 @@
             <param name="otherObject">Item to compare to for equality.</param>
             <returns> -1, 0, or 1.</returns>
         </member>
+        <member name="M:Tinkar.FieldDefinitionDTO.Make(Tinkar.IFieldDefinition)">
+            <summary>
+            Make a FieldDefinitionDTP instance from a IFieldDefinition instance.
+            </summary>
+            <param name="fieldDefinition"></param>
+            <returns></returns>
+        </member>
         <member name="M:Tinkar.FieldDefinitionDTO.Make(Tinkar.TinkarInput)">
             <summary>
             Static method to Create DTO item from input stream.
@@ -1052,24 +983,12 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="M:Tinkar.FieldDefinitionDTO.Make(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Static method to Create DTO item from input json stream.
             </summary>
-            <param name="input">input data stream.</param>
+            <param name="jsonObject">input data stream.</param>
             <returns>new DTO item.</returns>
-        </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal all fields to Json output stream.
-            </summary>
-            <param name="output">Json output stream.</param>
         </member>
         <member name="T:Tinkar.IDTO">
             <summary>
@@ -1091,65 +1010,12 @@
             <param name="other">other item to compare equivalence to.</param>
             <returns>true if two items are equivalent.</returns>
         </member>
-        <member name="T:Tinkar.MarshalableDTO">
-            <summary>
-            Base class for all Tinkar DTO classes.
-            </summary>
-        </member>
-        <member name="P:Tinkar.MarshalableDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.MarshalableDTO"/> class.
-            from input JSON stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.Marshal(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item fields to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.Marshal(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal all fields to Json output stream.
-            </summary>
-            <param name="output">Json output stream.</param>
-        </member>
-        <member name="M:Tinkar.MarshalableDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal DTO item fields to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="T:Tinkar.PatternForSemanticChronologyDTO">
             <summary>
             Tinkar PatternForSemanticChronology record.
             </summary>
         </member>
         <member name="F:Tinkar.PatternForSemanticChronologyDTO.JSONCLASSNAME">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.PatternForSemanticChronologyDTO.JsonClassName">
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
@@ -1162,23 +1028,16 @@
         </member>
         <member name="P:Tinkar.PatternForSemanticChronologyDTO.Versions">
             <summary>
-            Gets Versions record.
+            Gets Versions list.
             </summary>
         </member>
         <member name="M:Tinkar.PatternForSemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.PatternForSemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticChronologyDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="definitionVersions">DefinitionVersions.</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticChronologyDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticChronologyDTO.CompareTo(System.Object)">
             <summary>
@@ -1194,12 +1053,6 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="M:Tinkar.PatternForSemanticChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Static method to Create DTO item from input stream.
@@ -1207,7 +1060,13 @@
             <param name="jObj">JSON parent container.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.PatternForSemanticChronologyDTO.Marshal(Tinkar.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.PatternForSemanticChronologyDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -1224,24 +1083,11 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.PatternForSemanticDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
         <member name="M:Tinkar.PatternForSemanticDTO.#ctor(Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticDTO.CompareTo(System.Object)">
             <summary>
@@ -1257,20 +1103,20 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.MarshalFields(Tinkar.TinkarOutput)">
+        <member name="M:Tinkar.PatternForSemanticDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jsonObject">JSON parent container to read from.</param>
+            <returns>Deserialized PatternForSemanticDTO record.</returns>
+        </member>
+        <member name="M:Tinkar.PatternForSemanticDTO.Marshal(Tinkar.TinkarOutput)">
             <summary>
             Marshal DTO item to output stream.
             </summary>
             <param name="output">output data stream.</param>
         </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.Make(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Static method to Create DTO item from json .
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-            <returns>Deserialized PatternForSemanticDTO record.</returns>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.PatternForSemanticDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -1281,21 +1127,10 @@
             Tinkar PatternForSemanticVersion record.
             </summary>
         </member>
-        <member name="F:Tinkar.PatternForSemanticVersionDTO.JSONCLASSNAME">
+        <member name="P:Tinkar.PatternForSemanticVersionDTO.ReferencedComponentPurposePublicId">
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.PatternForSemanticVersionDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.PatternForSemanticVersionDTO.Stamp">
-            <summary>
-            Gets Stamp.
             </summary>
         </member>
         <member name="P:Tinkar.PatternForSemanticVersionDTO.FieldDefinitions">
@@ -1303,28 +1138,15 @@
             Gets FieldDefinitions.
             </summary>
         </member>
-        <member name="P:Tinkar.PatternForSemanticVersionDTO.StampDTO">
-            <summary>
-            Gets Stamp record.
-            </summary>
-        </member>
         <member name="M:Tinkar.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.FieldDefinitionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticVersionDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-            <param name="stampDTO">StampDTO.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="stamp">StampDTO.</param>
             <param name="referencedComponentPurposePublicId">Referenced Component Purpose PublicIc.</param>
             <param name="referencedComponentMeaningPublicId">Referenced Component Meaning PublicIc.</param>
             <param name="fieldDefinitionDTOs">FieldDefinitions.</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticVersionDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-            <param name="publicId">Public id (component ids).</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticVersionDTO.CompareTo(System.Object)">
             <summary>
@@ -1338,24 +1160,18 @@
             Static method to Create DTO item from input stream.
             </summary>
             <param name="input">input data stream.</param>
-            <param name="publicId">Public id (component ids).</param>
+            <param name="componentPublicId">Public id (component ids).</param>
             <returns>new DTO item.</returns>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
             <summary>
             Static method to Create DTO item from json .
             </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-            <param name="publicId">Public id (component ids).</param>
+            <param name="jsonObject">JSON parent container to read from.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
             <returns>Deserialized PatternForSemanticVersion record.</returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.PatternForSemanticVersionDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -1372,35 +1188,9 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.JsonClassName">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.PatternForSemanticPublicId">
-            <summary>
-            Gets PatternForSemantic PublicId.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.ReferencedComponentPublicId">
-            <summary>
-            Gets ReferencedComponent PublicId.
-            </summary>
-        </member>
         <member name="P:Tinkar.SemanticChronologyDTO.SemanticVersions">
             <summary>
             Gets SemanticVersion.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.ReferencedComponent">
-            <summary>
-            Gets ReferencedComponent.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.PatternForSemantic">
-            <summary>
-            Gets PatternForSemantic.
             </summary>
         </member>
         <member name="P:Tinkar.SemanticChronologyDTO.Versions">
@@ -1408,34 +1198,22 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticChronologyDTO.ChronologySet">
-            <summary>
-            Gets ChronologySet.
-            </summary>
-        </member>
         <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.SemanticChronologyDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-            <param name="patternForSemanticPublicId">definitionForSemanticPublicId.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticChronologyDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-        </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IComponent,System.Collections.Generic.IEnumerable{Tinkar.SemanticVersionDTO})">
+        <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.SemanticChronologyDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-            <param name="definitionForSemantic">definitionForSemanticPublicId.</param>
-            <param name="referencedComponent">ReferencedComponentPublicId.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternForSemantic">Pattern for semantic.</param>
+            <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
         <member name="M:Tinkar.SemanticChronologyDTO.CompareTo(System.Object)">
@@ -1445,6 +1223,13 @@
             <param name="otherObject">Item to compare to.</param>
             <returns>-1, 0, or 1.</returns>
         </member>
+        <member name="M:Tinkar.SemanticChronologyDTO.Make(Tinkar.SemanticChronologyDTO)">
+            <summary>
+            Static method to Create DTO item from  another SemanticChronology.
+            </summary>
+            <param name="semanticChronology">Semantic Chronology DTO.</param>
+            <returns>new DTO item.</returns>
+        </member>
         <member name="M:Tinkar.SemanticChronologyDTO.Make(Tinkar.TinkarInput)">
             <summary>
             Static method to Create DTO item from input stream.
@@ -1452,24 +1237,24 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="M:Tinkar.SemanticChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Static method to Create DTO item from json stream.
             </summary>
-            <param name="jObj">JSON parent container to read from.</param>
+            <param name="jsonObject">JSON parent container to read from.</param>
             <returns>Deserialized SemanticChronology record.</returns>
         </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.SemanticChronologyDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
             <param name="output">Json output stream.</param>
+        </member>
+        <member name="M:Tinkar.SemanticChronologyDTO.Marshal(Tinkar.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
         </member>
         <member name="T:Tinkar.SemanticDTO">
             <summary>
@@ -1482,10 +1267,14 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticDTO.JsonClassName">
+        <member name="P:Tinkar.SemanticDTO.ReferencedComponentPublicId">
             <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
+            Gets ReferencedComponent UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.SemanticDTO.DefinitionForSemanticPublicId">
+            <summary>
+            Gets PatternForSemantic UUIDs.
             </summary>
         </member>
         <member name="P:Tinkar.SemanticDTO.ReferencedComponent">
@@ -1498,30 +1287,21 @@
             Gets PatternForSemantic.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticDTO.definitionForSemanticPublicId">
-            <summary>
-            Gets PatternForSemantic UUIDs.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticDTO.referencedComponentPublicId">
-            <summary>
-            Gets ReferencedComponent UUIDs.
-            </summary>
-        </member>
         <member name="M:Tinkar.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.SemanticDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
-            <param name="definitionForSemanticPublicId">PatternForSemanticUuids.</param>
-            <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="definitionForSemanticPublicId">Definition ForSemantic PublicId.</param>
+            <param name="referencedComponentPublicId">Referenced Component PublicId.</param>
         </member>
-        <member name="M:Tinkar.SemanticDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Tinkar.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId)">
             <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticDTO"/> class
-            from json stream.
+            Initializes a new instance of the <see cref="T:Tinkar.SemanticDTO"/> class.
             </summary>
-            <param name="jObj">JSON parent container to read from.</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternForSemantic">PatternForSemanticUuids.</param>
+            <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
         </member>
         <member name="M:Tinkar.SemanticDTO.CompareTo(System.Object)">
             <summary>
@@ -1537,12 +1317,6 @@
             <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
-        <member name="M:Tinkar.SemanticDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
         <member name="M:Tinkar.SemanticDTO.Make(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Static method to Create DTO item from json .
@@ -1550,7 +1324,13 @@
             <param name="jObj">JSON parent container to read from.</param>
             <returns>Deserialized Semantic record.</returns>
         </member>
-        <member name="M:Tinkar.SemanticDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.SemanticDTO.Marshal(Tinkar.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.SemanticDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -1567,15 +1347,14 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticVersionDTO.JsonClassName">
+        <member name="P:Tinkar.SemanticVersionDTO.DefinitionForSemanticPublicId">
             <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
+            Gets PatternForSemantic UUID's.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticVersionDTO.Stamp">
+        <member name="P:Tinkar.SemanticVersionDTO.ReferencedComponentPublicId">
             <summary>
-            Gets Stamp.
+            Gets ReferencedComponent Uuids.
             </summary>
         </member>
         <member name="P:Tinkar.SemanticVersionDTO.ReferencedComponent">
@@ -1593,40 +1372,15 @@
             Gets Fields array.
             </summary>
         </member>
-        <member name="P:Tinkar.SemanticVersionDTO.DefinitionForSemanticPublicId">
-            <summary>
-            Gets PatternForSemantic UUID's.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticVersionDTO.ReferencedComponentUuids">
-            <summary>
-            Gets ReferencedComponent Uuids.
-            </summary>
-        </member>
-        <member name="P:Tinkar.SemanticVersionDTO.StampDTO">
-            <summary>
-            Gets Stamp.
-            </summary>
-        </member>
         <member name="M:Tinkar.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.StampDTO,System.Collections.Generic.IEnumerable{System.Object})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.SemanticVersionDTO"/> class.
             </summary>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "componentPublicId" > Public id(component ids).</param>
             <param name="definitionForSemanticUuids">PatternForSemanticUuids.</param>
             <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
             <param name="stampDTO">StampDTO.</param>
             <param name="fields">Fields.</param>
-        </member>
-        <member name="M:Tinkar.SemanticVersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticVersionDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name="publicId">Public id (component ids).</param>
-            <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
-            <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         </member>
         <member name="M:Tinkar.SemanticVersionDTO.CompareTo(System.Object)">
             <summary>
@@ -1640,28 +1394,28 @@
             Static method to Create DTO item from input stream.
             </summary>
             <param name="input">input data stream.</param>
-            <param name="publicId">Public id (component ids).</param>
+            <param name="componentPublicId">Public id (component ids).</param>
             <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
             <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
             <returns>new DTO item.</returns>
-        </member>
-        <member name="M:Tinkar.SemanticVersionDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
         </member>
         <member name="M:Tinkar.SemanticVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Static method to Create DTO item from json .
             </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name="publicId">Public id (component ids).</param>
-            <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
-            <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+            <param name="jsonObject">JSON parent container.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
+            <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
+            <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
             <returns>Deserialized SemanticVersion record.</returns>
         </member>
-        <member name="M:Tinkar.SemanticVersionDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
+        <member name="M:Tinkar.SemanticVersionDTO.Marshal(Tinkar.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.SemanticVersionDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
             Marshal all fields to Json output stream.
             </summary>
@@ -1673,12 +1427,6 @@
             </summary>
         </member>
         <member name="F:Tinkar.StampDTO.JSONCLASSNAME">
-            <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
-            </summary>
-        </member>
-        <member name="P:Tinkar.StampDTO.JsonClassName">
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
@@ -1740,19 +1488,19 @@
             <param name="modulePublicId">ModulePublicId.</param>
             <param name="pathPublicId">PathPublicId.</param>
         </member>
-        <member name="M:Tinkar.StampDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.StampDTO"/> class
-            from json stream.
-            </summary>
-            <param name="jObj">JSON parent container to read from.</param>
-        </member>
         <member name="M:Tinkar.StampDTO.CompareTo(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
             <param name="otherObject">Item to compare to for equality.</param>
             <returns> -1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.StampDTO.Make(Tinkar.IStamp)">
+            <summary>
+            Static method to Create Stamp DTO item from another IStamp instance.
+            </summary>
+            <param name="stamp">Input stamp.</param>
+            <returns>new DTO item.</returns>
         </member>
         <member name="M:Tinkar.StampDTO.Make(Tinkar.TinkarInput)">
             <summary>
@@ -1768,21 +1516,20 @@
             <param name="jObj">JSON parent container to read from.</param>
             <returns>Deserialized Stamp record.</returns>
         </member>
-        <member name="M:Tinkar.StampDTO.MarshalFields(Tinkar.TinkarOutput)">
+        <member name="M:Tinkar.StampDTO.Marshal(Tinkar.TinkarJsonOutput)">
             <summary>
-            Marshal DTO item to output stream.
-            </summary>
-            <param name="output">output data stream.</param>
-        </member>
-        <member name="M:Tinkar.StampDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal all fields to Json output stream.
+            Marshal to Json output stream.
             </summary>
             <param name="output">Json output stream.</param>
         </member>
         <member name="T:Tinkar.VersionDTO">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:Tinkar.VersionDTO.PublicId">
+            <summary>
+            Gets public id.
             </summary>
         </member>
         <member name="P:Tinkar.VersionDTO.StampDTO">
@@ -1795,13 +1542,15 @@
             Gets the Stamp.
             </summary>
         </member>
-        <member name="M:Tinkar.VersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+        <member name="M:Tinkar.VersionDTO.IsEquivalent(System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.VersionDTO"/> class.
-            from input JSON stream.
+            Implementation of IEquivalent.IsEquivalent
+            We manually create this rather than using the default
+            record implementation because we want to compare to
+            do a deep comparison, not just compare reference equality.
             </summary>
-            <param name="jObj">JSON parent container.</param>
-            <param name = "publicId" > Public id(component ids).</param>
+            <param name="other">Item to compare to for equivalence.</param>
+            <returns>true if equal.</returns>
         </member>
         <member name="M:Tinkar.VersionDTO.CompareTo(System.Object)">
             <summary>
@@ -1809,18 +1558,6 @@
             </summary>
             <param name="otherObject">Item to compare to.</param>
             <returns>-1, 0, or 1.</returns>
-        </member>
-        <member name="M:Tinkar.VersionDTO.MarshalFields(Tinkar.TinkarOutput)">
-            <summary>
-            Marshal all fields to binary output stream.
-            </summary>
-            <param name="output">Json output stream.</param>
-        </member>
-        <member name="M:Tinkar.VersionDTO.MarshalFields(Tinkar.TinkarJsonOutput)">
-            <summary>
-            Marshal all fields to Json output stream.
-            </summary>
-            <param name="output">Json output stream.</param>
         </member>
         <member name="T:Tinkar.JavaAttribute">
             <summary>
@@ -2032,7 +1769,7 @@
             <param name="propertyName">child property name.</param>
             <returns>String value.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadUuids(Newtonsoft.Json.Linq.JObject,System.String)">
+        <member name="M:Tinkar.JObjectExtensions.AsUuids(Newtonsoft.Json.Linq.JObject,System.String)">
             <summary>
             Read Guid values from the named child property.
             </summary>
@@ -2040,7 +1777,7 @@
             <param name="propertyName">child property name.</param>
             <returns>Guid values.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadPublicId(Newtonsoft.Json.Linq.JObject,System.String)">
+        <member name="M:Tinkar.JObjectExtensions.AsPublicId(Newtonsoft.Json.Linq.JObject,System.String)">
             <summary>
             Read PublicId from the named child property.
             </summary>
@@ -2048,7 +1785,7 @@
             <param name="propertyName">child property name.</param>
             <returns>Guid values.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadObjects(Newtonsoft.Json.Linq.JObject,System.String)">
+        <member name="M:Tinkar.JObjectExtensions.AsObjects(Newtonsoft.Json.Linq.JObject,System.String)">
             <summary>
             Read Object values from the named child property.
             </summary>
@@ -2064,27 +1801,30 @@
             <param name = "publicId" > Public id(component ids).</param>
             <returns>Definition for semantic version values.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadFieldDefinitionList(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Tinkar.JObjectExtensions.AsFieldDefinitionList(Newtonsoft.Json.Linq.JObject,System.String)">
             <summary>
             Read FieldDefinitionDTO values from the named child property.
             </summary>
             <param name="jObj">JSON parent container.</param>
+            <param name="fieldName">JSON child field name.</param>
             <returns>Field definition values.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadConceptVersionList(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+        <member name="M:Tinkar.JObjectExtensions.AsConceptVersionList(Newtonsoft.Json.Linq.JObject,System.String,Tinkar.IPublicId)">
             <summary>
             Read ConceptVersionDTO values from the named child property.
             </summary>
             <param name="jObj">JSON parent container.</param>
+            <param name = "fieldName" > JSON child field name</param>
             <param name = "publicId" > Public id(component ids).</param>
             <returns>Concept version values.</returns>
         </member>
-        <member name="M:Tinkar.JObjectExtensions.ReadSemanticVersionList(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+        <member name="M:Tinkar.JObjectExtensions.ReadSemanticVersionList(Newtonsoft.Json.Linq.JObject,System.String,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Read SemanticVersionDTO values from the named child property.
             </summary>
             <param name="jObj">JSON parent container.</param>
             <param name = "publicId" > Public id(component ids).</param>
+            <param name = "fieldName" > Json child field name.</param>
             <param name="definitionForSemanticPublicId">Externally defined definition for semantic uuids.</param>
             <param name="referencedComponentPublicId">Externally defined referenced component uuids.</param>
             <returns>Semantic version values.</returns>
@@ -2140,6 +1880,11 @@
             Write JSON end object tag.
             </summary>
         </member>
+        <member name="M:Tinkar.TinkarJsonOutput.WriteClass(System.String)">
+            <summary>
+            Write JSON start object tag.
+            </summary>
+        </member>
         <member name="M:Tinkar.TinkarJsonOutput.WritePropertyName(System.String)">
             <summary>
             Created JSON child property with the indicated name.
@@ -2147,7 +1892,7 @@
             </summary>
             <param name="propertyName">Name of property to create.</param>
         </member>
-        <member name="M:Tinkar.TinkarJsonOutput.WriteObjects(System.String,System.Collections.Generic.IEnumerable{System.Object})">
+        <member name="M:Tinkar.TinkarJsonOutput.Put(System.String,System.Collections.Generic.IEnumerable{System.Object})">
             <summary>
             Write array of objects.
             </summary>
@@ -2160,12 +1905,6 @@
             </summary>
             <param name="field">value to write.</param>
         </member>
-        <member name="M:Tinkar.TinkarJsonOutput.WriteClass(System.String)">
-            <summary>
-            Write class property.
-            </summary>
-            <param name="className">name of class.</param>
-        </member>
         <member name="M:Tinkar.TinkarJsonOutput.WriteMarshalableList(System.String,System.Collections.Generic.IEnumerable{Tinkar.IJsonMarshalable})">
             <summary>
             Write series of IMarshable records to json.
@@ -2173,7 +1912,7 @@
             <param name="propertyName">Name of property containing serialized records.</param>
             <param name="items">item to serialize.</param>
         </member>
-        <member name="M:Tinkar.TinkarJsonOutput.WritePublicId(System.String,Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarJsonOutput.Put(System.String,Tinkar.IPublicId)">
             <summary>
             Write property that is array of guids.
             </summary>

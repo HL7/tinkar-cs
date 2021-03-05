@@ -12,17 +12,11 @@ namespace Tinkar
     /// <summary>
     /// Base class for all Tinkar DTO classes.
     /// </summary>
-    public record ComponentDTO : MarshalableDTO,
+    public record ComponentDTO : IDTO,
         IComponent,
         IComparable,
         IEquivalent
     {
-        /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName { get; } = "ComponentDTO";
-
         /// <summary>
         /// Gets public id.
         /// </summary>
@@ -31,31 +25,10 @@ namespace Tinkar
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="publicId">Public id for this item</param>
-        public ComponentDTO(IPublicId publicId)
+        /// <param name="componentPublicId">Public id for this item</param>
+        public ComponentDTO(IPublicId componentPublicId)
         {
-            this.PublicId = publicId;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ComponentDTO"/> class.
-        /// from input JSON stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container.</param>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        public ComponentDTO(JObject jObj, IPublicId publicId) : this(publicId)
-        {
-            this.PublicId = publicId;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ComponentDTO"/> class.
-        /// from input JSON stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container.</param>
-        protected ComponentDTO(JObject jObj) : base(jObj)
-        {
-            this.PublicId = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.PublicId = componentPublicId;
         }
 
         /// <summary>
@@ -82,26 +55,6 @@ namespace Tinkar
             if (cmp != 0)
                 return cmp;
             return 0;
-        }
-
-        /// <summary>
-        /// Marshal DTO item fields to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
-        {
-            output.WritePublicId(this.PublicId);
-        }
-
-        /// <summary>
-        /// Marshal DTO item fields to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
-        {
-            output.WritePublicId(
-                ComponentFieldForJson.COMPONENT_PUBLIC_ID,
-                this.PublicId);
         }
     }
 }

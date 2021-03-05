@@ -23,7 +23,7 @@ namespace Tinkar
     /// <summary>
     /// FieldDefinition record.
     /// </summary>
-    public record FieldDefinitionDTO : MarshalableDTO,
+    public record FieldDefinitionDTO:
         IFieldDefinition,
         IJsonMarshalable,
         IMarshalable,
@@ -35,12 +35,6 @@ namespace Tinkar
         /// This must be consistent with Java implementation.
         /// </summary>
         public const String JSONCLASSNAME = "FieldDefinitionDTO";
-
-        /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
         /// Gets DataType record.
@@ -88,17 +82,6 @@ namespace Tinkar
             this.MeaningPublicId = meaningPublicId;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public FieldDefinitionDTO(JObject jObj) : base(jObj)
-        {
-            this.DataTypePublicId = jObj.ReadPublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID);
-            this.PurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID);
-            this.MeaningPublicId = jObj.ReadPublicId(ComponentFieldForJson.MEANING_PUBLIC_ID);
-        }
 
         /// <summary>
         /// Implementation of IEquivalent.IsEquivalent
@@ -134,47 +117,48 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Make a FieldDefinitionDTP instance from a IFieldDefinition instance.
+        /// </summary>
+        /// <param name="fieldDefinition"></param>
+        /// <returns></returns>
+        public static FieldDefinitionDTO Make(IFieldDefinition fieldDefinition) =>
+            new FieldDefinitionDTO(fieldDefinition.DataType.PublicId,
+                    fieldDefinition.Purpose.PublicId,
+                    fieldDefinition.Meaning.PublicId);
+
+        /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static FieldDefinitionDTO Make(TinkarInput input) =>
-            new FieldDefinitionDTO(
-                input.GetPublicId(),
-                input.GetPublicId(),
-                input.GetPublicId()
-                );
-
-        /// <summary>
-        /// Marshal DTO item to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
-        {
-            base.MarshalFields(output);
-            output.WritePublicId(this.DataTypePublicId);
-            output.WritePublicId(this.PurposePublicId);
-            output.WritePublicId(this.MeaningPublicId);
-        }
+            new FieldDefinitionDTO(input.GetPublicId(), input.GetPublicId(), input.GetPublicId());
 
         /// <summary>
         /// Static method to Create DTO item from input json stream.
         /// </summary>
-        /// <param name="input">input data stream.</param>
+        /// <param name="jsonObject">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static FieldDefinitionDTO Make(JObject input) =>
-            new FieldDefinitionDTO(input);
+        public static FieldDefinitionDTO Make(JObject jsonObject) =>
+            new FieldDefinitionDTO(jsonObject.AsPublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID),
+                jsonObject.AsPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID),
+                jsonObject.AsPublicId(ComponentFieldForJson.MEANING_PUBLIC_ID));
 
-        /// <summary>
-        /// Marshal all fields to Json output stream.
-        /// </summary>
-        /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public void Marshal(TinkarJsonOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID, this.DataTypePublicId);
-            output.WritePublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID, this.PurposePublicId);
-            output.WritePublicId(ComponentFieldForJson.MEANING_PUBLIC_ID, this.MeaningPublicId);
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.DATATYPE_PUBLIC_ID, this.DataTypePublicId);
+            output.Put(ComponentFieldForJson.PURPOSE_PUBLIC_ID, this.PurposePublicId);
+            output.Put(ComponentFieldForJson.MEANING_PUBLIC_ID, this.MeaningPublicId);
+            output.WriteEndObject();
+        }
+
+        public virtual void Marshal(TinkarOutput output)
+        {
+            output.PutPublicId(this.DataTypePublicId);
+            output.PutPublicId(this.PurposePublicId);
+            output.PutPublicId(this.MeaningPublicId);
         }
     }
 }

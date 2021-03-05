@@ -19,6 +19,16 @@ namespace Tinkar.XUnitTests
             Trace.WriteLine(json);
         }
 
+        public static void JsonDump(IJsonMarshalable m)
+        {
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
+            {
+                m.Marshal(output);
+            }
+            ms.Dump();
+        }
+
         public static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public static IPublicId PublicIdG => new PublicId(g1, g2, g3, g4);

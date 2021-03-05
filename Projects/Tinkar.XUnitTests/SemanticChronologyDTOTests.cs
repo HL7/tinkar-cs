@@ -17,7 +17,7 @@ namespace Tinkar.XUnitTests
         {
             SemanticChronologyDTO dtoStart = Misc.CreateSemanticChronologyDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.PatternForSemanticPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
+            Misc.Compare(dtoStart.DefinitionForSemanticPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
             Misc.Compare(dtoStart.ReferencedComponentPublicId, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
         }
 
@@ -46,7 +46,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    PatternForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                    DefinitionForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }

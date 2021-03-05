@@ -36,17 +36,6 @@ namespace Tinkar
         public const String JSONCLASSNAME = "ConceptChronologyDTO";
 
         /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
-        /// Gets ChronologySet.
-        /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
-
-        /// <summary>
         /// Gets ChronologySet PublicId.
         /// </summary>
         public IPublicId ChronologySetPublicId { get; init; }
@@ -54,32 +43,31 @@ namespace Tinkar
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<ConceptVersionDTO> Versions { get; init; }
+        IEnumerable<ConceptVersionDTO> conceptVersions { get; init; }
+
+        /// <summary>
+        /// Gets ChronologySet.
+        /// </summary>
+        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
+
+        /// <summary>
+        /// Gets Versions.
+        /// </summary>
+        public IEnumerable<ConceptVersionDTO> Versions => conceptVersions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
         /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
         /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
         /// <param name="conceptVersions">ConceptVersions.</param>
         public ConceptChronologyDTO(
-            IPublicId publicId,
+            IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            IEnumerable<ConceptVersionDTO> conceptVersions) : base(publicId)
+            IEnumerable<ConceptVersionDTO> conceptVersions) : base(componentPublicId)
         {
             this.ChronologySetPublicId = chronologySetPublicId;
-            this.Versions = conceptVersions;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public ConceptChronologyDTO(JObject jObj) : base(jObj)
-        {
-            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
-            this.Versions = jObj.ReadConceptVersionList(this.PublicId);
+            this.conceptVersions = conceptVersions;
         }
 
         /// <summary>
@@ -99,7 +87,7 @@ namespace Tinkar
             cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.Versions, other.Versions);
+            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -119,42 +107,47 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from json stream.
+        /// </summary>
+        /// <param name="jsonObject">JSON parent container.</param>
+        /// <returns>new DTO item.</returns>
+        public static ConceptChronologyDTO Make(JObject jsonObject)
+        {
+            PublicId publicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            return new ConceptChronologyDTO(publicId,
+                            jsonObject.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID),
+                            jsonObject.AsConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, publicId));
+        }
+
+
+        /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
+        public virtual void Marshal(TinkarOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(this.ChronologySetPublicId);
+            output.PutPublicId(this.PublicId);
+            output.PutPublicId(this.ChronologySetPublicId);
 
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-            output.WriteMarshalableList(this.Versions);
+            output.WriteMarshalableList(this.conceptVersions);
         }
-
-        /// <summary>
-        /// Static method to Create DTO item from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container.</param>
-        /// <returns>new DTO item.</returns>
-        public static ConceptChronologyDTO Make(JObject jObj) =>
-            new ConceptChronologyDTO(jObj);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public virtual void Marshal(TinkarJsonOutput output)
         {
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
-            base.MarshalFields(output);
-            output.WritePublicId(
-                ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID,
-                this.ChronologySetPublicId);
-            output.WriteMarshalableList(
-                ComponentFieldForJson.CONCEPT_VERSIONS,
-                this.Versions);
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.Put(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
+            output.WriteMarshalableList(ComponentFieldForJson.CONCEPT_VERSIONS, this.conceptVersions);
+            output.WriteEndObject();
         }
     }
 }

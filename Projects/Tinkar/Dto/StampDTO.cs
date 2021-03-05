@@ -35,12 +35,6 @@ namespace Tinkar
         public const String JSONCLASSNAME = "StampDTO";
 
         /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Gets Status UUIDs.
         /// </summary>
         public IPublicId StatusPublicId { get; init; }
@@ -110,20 +104,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StampDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public StampDTO(JObject jObj) : base(jObj)
-        {
-            this.StatusPublicId = jObj.ReadPublicId(ComponentFieldForJson.STATUS_PUBLIC_ID);
-            this.Time = jObj.ReadInstant(ComponentFieldForJson.TIME);
-            this.AuthorPublicId = jObj.ReadPublicId(ComponentFieldForJson.AUTHOR_PUBLIC_ID);
-            this.ModulePublicId = jObj.ReadPublicId(ComponentFieldForJson.MODULE_PUBLIC_ID);
-            this.PathPublicId = jObj.ReadPublicId(ComponentFieldForJson.PATH_PUBLIC_ID);
-        }
-
-        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="otherObject">Item to compare to for equality.</param>
@@ -157,6 +137,21 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create Stamp DTO item from another IStamp instance.
+        /// </summary>
+        /// <param name="stamp">Input stamp.</param>
+        /// <returns>new DTO item.</returns>
+        public static StampDTO Make(IStamp stamp)
+        {
+            return new StampDTO(stamp.PublicId,
+                    stamp.Status.PublicId,
+                    stamp.Time,
+                    stamp.Author.PublicId,
+                    stamp.Module.PublicId,
+                    stamp.Path.PublicId);
+        }
+
+        /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
@@ -176,34 +171,38 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         /// <returns>Deserialized Stamp record.</returns>
         public static StampDTO Make(JObject jObj) =>
-            new StampDTO(jObj);
+            new StampDTO(
+                jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID),
+                jObj.AsPublicId(ComponentFieldForJson.STATUS_PUBLIC_ID),
+                jObj.ReadInstant(ComponentFieldForJson.TIME),
+                jObj.AsPublicId(ComponentFieldForJson.AUTHOR_PUBLIC_ID),
+                jObj.AsPublicId(ComponentFieldForJson.MODULE_PUBLIC_ID),
+                jObj.AsPublicId(ComponentFieldForJson.PATH_PUBLIC_ID));
 
-        /// <summary>
-        /// Marshal DTO item to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
+        public virtual void Marshal(TinkarOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(this.StatusPublicId);
+            output.PutPublicId(this.PublicId);
+            output.PutPublicId(this.StatusPublicId);
             output.WriteInstant(this.Time);
-            output.WritePublicId(this.AuthorPublicId);
-            output.WritePublicId(this.ModulePublicId);
-            output.WritePublicId(this.PathPublicId);
+            output.PutPublicId(this.AuthorPublicId);
+            output.PutPublicId(this.ModulePublicId);
+            output.PutPublicId(this.PathPublicId);
         }
 
         /// <summary>
-        /// Marshal all fields to Json output stream.
+        /// Marshal to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public virtual void Marshal(TinkarJsonOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(ComponentFieldForJson.STATUS_PUBLIC_ID, this.StatusPublicId);
+            output.WriteStartObject();
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.Put(ComponentFieldForJson.STATUS_PUBLIC_ID, this.StatusPublicId);
             output.WriteInstant(ComponentFieldForJson.TIME, this.Time);
-            output.WritePublicId(ComponentFieldForJson.AUTHOR_PUBLIC_ID, this.AuthorPublicId);
-            output.WritePublicId(ComponentFieldForJson.MODULE_PUBLIC_ID, this.ModulePublicId);
-            output.WritePublicId(ComponentFieldForJson.PATH_PUBLIC_ID, this.PathPublicId);
+            output.Put(ComponentFieldForJson.AUTHOR_PUBLIC_ID, this.AuthorPublicId);
+            output.Put(ComponentFieldForJson.MODULE_PUBLIC_ID, this.ModulePublicId);
+            output.Put(ComponentFieldForJson.PATH_PUBLIC_ID, this.PathPublicId);
+            output.WriteEndObject();
         }
     }
 }

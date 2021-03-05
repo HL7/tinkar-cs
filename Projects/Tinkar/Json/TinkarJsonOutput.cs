@@ -39,6 +39,15 @@ namespace Tinkar
         public void WriteEndObject() => this.writer.WriteEndObject();
 
         /// <summary>
+        /// Write JSON start object tag.
+        /// </summary>
+        public void WriteClass(String className)
+        {
+            this.writer.WritePropertyName(ComponentFieldForJson.CLASS);
+            this.writer.WriteValue(className);
+        }
+
+        /// <summary>
         /// Created JSON child property with the indicated name.
         /// This does not assign a value to that property.
         /// </summary>
@@ -51,7 +60,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="propertyName">child property name.</param>
         /// <param name="fields">values to write.</param>
-        public void WriteObjects(String propertyName, IEnumerable<Object> fields)
+        public void Put(String propertyName, IEnumerable<Object> fields)
         {
             this.writer.WritePropertyName(propertyName);
             this.WriteObjects(fields);
@@ -109,11 +118,11 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case SemanticDTO item:
+                case SemanticChronologyDTO item:
                     item.Marshal(this);
                     break;
 
-                case SemanticChronologyDTO item:
+                case SemanticDTO item:
                     item.Marshal(this);
                     break;
 
@@ -131,16 +140,6 @@ namespace Tinkar
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
             }
-        }
-
-        /// <summary>
-        /// Write class property.
-        /// </summary>
-        /// <param name="className">name of class.</param>
-        public void WriteClass(String className)
-        {
-            this.writer.WritePropertyName(ComponentFieldForJson.CLASS);
-            this.writer.WriteValue(className);
         }
 
         /// <summary>
@@ -164,7 +163,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="propertyName">Name of json property to write.</param>
         /// <param name="publicId">PublicId to write.</param>
-        public void WritePublicId(String propertyName, IPublicId publicId) => WriteUuids(propertyName, publicId.AsUuidArray);
+        public void Put(String propertyName, IPublicId publicId) => WriteUuids(propertyName, publicId.AsUuidArray);
 
         /// <summary>
         /// Write property that is array of guids.

@@ -37,18 +37,12 @@ namespace Tinkar
         public new const String JSONCLASSNAME = "PatternForSemanticChronologyDTO";
 
         /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Gets public id.
         /// </summary>
         public IPublicId ChronologySetPublicId { get; init; }
 
         /// <summary>
-        /// Gets Versions record.
+        /// Gets Versions list.
         /// </summary>
         public IEnumerable<PatternForSemanticVersionDTO> Versions { get; init; }
 
@@ -57,28 +51,16 @@ namespace Tinkar
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
         /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
         /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
         /// <param name="definitionVersions">DefinitionVersions.</param>
         public PatternForSemanticChronologyDTO(
-            IPublicId publicId,
+            IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(publicId)
+            IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
         {
-            this.ChronologySetPublicId = publicId;
+            this.ChronologySetPublicId = chronologySetPublicId;
             this.Versions = definitionVersions;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container.</param>
-        public PatternForSemanticChronologyDTO(JObject jObj) : base(jObj)
-        {
-            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            this.Versions =
-                jObj.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
         }
 
         /// <summary>
@@ -113,24 +95,12 @@ namespace Tinkar
         /// <returns>new DTO item.</returns>
         public static new PatternForSemanticChronologyDTO Make(TinkarInput input)
         {
-            IPublicId publicId = input.GetPublicId();
+            IPublicId componentPublicId = input.GetPublicId();
             IPublicId chronologySetPublicId = input.GetPublicId();
             return new PatternForSemanticChronologyDTO(
-                publicId,
+                componentPublicId,
                 chronologySetPublicId,
-                input.GetPatternForSemanticVersionList(chronologySetPublicId));
-        }
-
-        /// <summary>
-        /// Marshal DTO item to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
-        {
-            base.MarshalFields(output);
-            output.WritePublicId(this.ChronologySetPublicId);
-            output.WritePublicId(this.ChronologySetPublicId);
-            output.WriteMarshalableList(this.Versions);
+                input.GetPatternForSemanticVersionList(componentPublicId));
         }
 
         /// <summary>
@@ -138,21 +108,39 @@ namespace Tinkar
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <returns>new DTO item.</returns>
-        public static new PatternForSemanticChronologyDTO Make(JObject jObj) =>
-            new PatternForSemanticChronologyDTO(jObj);
+        public static new PatternForSemanticChronologyDTO Make(JObject jObj)
+        {
+            PublicId componentPublicId = jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            PublicId chronologySetPublicId = jObj.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
+            return new PatternForSemanticChronologyDTO(componentPublicId, 
+                chronologySetPublicId, 
+                jObj.ReadPatternForSemanticVersionList(componentPublicId));
+        }
+
+
+        /// <summary>
+        /// Marshal DTO item to output stream.
+        /// </summary>
+        /// <param name="output">output data stream.</param>
+        public override void Marshal(TinkarOutput output)
+        {
+            output.PutPublicId(this.PublicId);
+            output.PutPublicId(this.ChronologySetPublicId);
+            output.WriteMarshalableList(this.Versions);
+        }
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public override void Marshal(TinkarJsonOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.ChronologySetPublicId);
-            output.WritePublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
-            output.WriteMarshalableList(
-                ComponentFieldForJson.DEFINITION_VERSIONS,
-                this.Versions);
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.Put(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
+            output.WriteMarshalableList(ComponentFieldForJson.DEFINITION_VERSIONS, this.Versions);
+            output.WriteEndObject();
         }
     }
 }

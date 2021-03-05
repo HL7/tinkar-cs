@@ -170,7 +170,7 @@ namespace Tinkar
         /// <param name="patternForSemanticPublicId">PatternForSemantic UUIDs.</param>
         /// <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
         /// <returns>SemanticVersionDTO[].</returns>
-        public SemanticVersionDTO[] GetSemanticVersionList(
+        public SemanticVersionDTO[] ReadSemanticVersionList(
             IPublicId publicId,
             IPublicId patternForSemanticPublicId,
             IPublicId referencedComponentPublicId)

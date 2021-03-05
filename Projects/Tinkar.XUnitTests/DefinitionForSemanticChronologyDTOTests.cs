@@ -108,6 +108,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 PatternForSemanticChronologyDTO dtoEnd = PatternForSemanticChronologyDTO.Make(input.ReadJsonObject());
+                Misc.JsonDump(dtoEnd);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

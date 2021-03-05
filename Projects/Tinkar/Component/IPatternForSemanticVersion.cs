@@ -36,5 +36,10 @@ namespace Tinkar
         /// Gets the purpose of referenced component.
         /// </summary>
         IConcept ReferencedComponentPurpose { get; }
+
+        /// <summary>
+        /// Gets the meaning of referenced component.
+        /// </summary>
+        IConcept ReferencedComponentMeaning { get; }
     }
 }

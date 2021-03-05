@@ -12,6 +12,7 @@ namespace Tinkar
     /// </summary>
     public record ConceptDTO : ComponentDTO,
         IConcept,
+        IDTO,
         IJsonMarshalable,
         IMarshalable
     {
@@ -22,25 +23,10 @@ namespace Tinkar
         public const String JSONCLASSNAME = "ConceptDTO";
 
         /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
         /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        public ConceptDTO(IPublicId publicId) : base(publicId)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public ConceptDTO(JObject jObj) : base(jObj)
+        /// <param name = "componentPublicId" > Component Public id(component ids).</param>
+        public ConceptDTO(IPublicId componentPublicId) : base(componentPublicId)
         {
         }
 
@@ -62,17 +48,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptDTO Make(TinkarInput input) => 
+        public static ConceptDTO Make(TinkarInput input) =>
             new ConceptDTO(input.GetPublicId());
-
-        /// <summary>
-        /// Marshal DTO item to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
-        {
-            base.MarshalFields(output);
-        }
 
         /// <summary>
         /// Static method to Create DTO item from json .
@@ -80,15 +57,27 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container to read from.</param>
         /// <returns>ConceptDTO record.</returns>
         public static ConceptDTO Make(JObject jObj) =>
-            new ConceptDTO(jObj);
+            new ConceptDTO(jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
+
+        /// <summary>
+        /// Marshal all fields to output stream.
+        /// </summary>
+        /// <param name="output">Json output stream.</param>
+        public virtual void Marshal(TinkarOutput output)
+        {
+            output.PutPublicId(this.PublicId);
+        }
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public void Marshal(TinkarJsonOutput output)
         {
-            base.MarshalFields(output);
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.WriteEndObject();
         }
     }
 }

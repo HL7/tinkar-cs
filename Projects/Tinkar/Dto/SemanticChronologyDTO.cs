@@ -24,7 +24,7 @@ namespace Tinkar
     /// Tinkar Semantic Chronology record.
     /// </summary>
     public record SemanticChronologyDTO :
-        ComponentDTO,
+        SemanticDTO,
         ISemanticChronology<SemanticVersionDTO, PatternForSemanticDTO>,
         IDTO,
         IJsonMarshalable,
@@ -34,23 +34,7 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JSONCLASSNAME = "SemanticChronologyDTO";
-
-        /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
-        /// Gets PatternForSemantic PublicId.
-        /// </summary>
-        public IPublicId PatternForSemanticPublicId { get; init; }
-
-        /// <summary>
-        /// Gets ReferencedComponent PublicId.
-        /// </summary>
-        public IPublicId ReferencedComponentPublicId { get; init; }
+        public new const String JSONCLASSNAME = "SemanticChronologyDTO";
 
         /// <summary>
         /// Gets SemanticVersion.
@@ -58,78 +42,42 @@ namespace Tinkar
         public IEnumerable<SemanticVersionDTO> SemanticVersions { get; init; }
 
         /// <summary>
-        /// Gets ReferencedComponent.
-        /// </summary>
-        public IComponent ReferencedComponent => new ComponentDTO(this.ReferencedComponentPublicId);
-
-        /// <summary>
-        /// Gets PatternForSemantic.
-        /// </summary>
-        public IPatternForSemantic PatternForSemantic => new PatternForSemanticDTO(this.PatternForSemanticPublicId);
-
-        /// <summary>
         /// Gets Versions.
         /// </summary>
-        public IEnumerable<SemanticVersionDTO> Versions =>
-            this.SemanticVersions.Select((dto) => dto);
+        public IEnumerable<SemanticVersionDTO> Versions => this.SemanticVersions;
+
+        public PatternForSemanticDTO ChronologySet => new PatternForSemanticDTO(DefinitionForSemanticPublicId);
 
         /// <summary>
-        /// Gets ChronologySet.
-        /// </summary>
-        public PatternForSemanticDTO ChronologySet =>
-            new PatternForSemanticDTO(this.PatternForSemanticPublicId);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
-        /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name="patternForSemanticPublicId">definitionForSemanticPublicId.</param>
-        /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
-        /// <param name="semanticVersions">SemanticVersions.</param>
+                 /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
+                 /// </summary>
+                 /// <param name = "componentPublicId" > Public id(component ids).</param>
+                 /// <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
+                 /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
+                 /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
-            IPublicId publicId,
-            IPublicId patternForSemanticPublicId,
+            IPublicId componentPublicId,
+            IPublicId definitionForSemanticPublicId,
             IPublicId referencedComponentPublicId,
-            IEnumerable<SemanticVersionDTO> semanticVersions) : base(publicId)
+            IEnumerable<SemanticVersionDTO> semanticVersions) : base(componentPublicId, definitionForSemanticPublicId, referencedComponentPublicId)
         {
-            this.PatternForSemanticPublicId = patternForSemanticPublicId;
-            this.ReferencedComponentPublicId = referencedComponentPublicId;
             this.SemanticVersions = semanticVersions;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public SemanticChronologyDTO(JObject jObj) : base(jObj)
-        {
-            this.PatternForSemanticPublicId = jObj.ReadPublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID);
-            this.ReferencedComponentPublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID);
-            this.SemanticVersions = jObj.ReadSemanticVersionList(
-                this.PublicId,
-                this.PatternForSemanticPublicId,
-                this.ReferencedComponentPublicId);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
         /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name="definitionForSemantic">definitionForSemanticPublicId.</param>
-        /// <param name="referencedComponent">ReferencedComponentPublicId.</param>
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
+        /// <param name="patternForSemantic">Pattern for semantic.</param>
+        /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
         /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
-            IPublicId publicId,
-            IPatternForSemantic definitionForSemantic,
-            IComponent referencedComponent,
-            IEnumerable<SemanticVersionDTO> semanticVersions)
-            : this(
-                    publicId,
-                    definitionForSemantic.PublicId,
-                    referencedComponent.PublicId,
-                    semanticVersions)
+            IPublicId componentPublicId,
+            IPatternForSemantic patternForSemantic,
+            IPublicId referencedComponentPublicId,
+            IEnumerable<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
         {
+            this.SemanticVersions = semanticVersions;
         }
 
         /// <summary>
@@ -146,12 +94,6 @@ namespace Tinkar
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = this.PatternForSemanticPublicId.CompareTo(other.PatternForSemanticPublicId);
-            if (cmp != 0)
-                return cmp;
-            cmp = this.ReferencedComponentPublicId.CompareTo(other.ReferencedComponentPublicId);
-            if (cmp != 0)
-                return cmp;
             cmp = FieldCompare.CompareSequence(this.SemanticVersions, other.SemanticVersions);
             if (cmp != 0)
                 return cmp;
@@ -159,61 +101,81 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Static method to Create DTO item from  another SemanticChronology.
+        /// </summary>
+        /// <param name="semanticChronology">Semantic Chronology DTO.</param>
+        /// <returns>new DTO item.</returns>
+        public static SemanticChronologyDTO Make(SemanticChronologyDTO semanticChronology) =>
+            new SemanticChronologyDTO(semanticChronology.PublicId,
+                    semanticChronology.PatternForSemantic,
+                    semanticChronology.ReferencedComponentPublicId,
+                    semanticChronology.SemanticVersions.ToArray());
+
+
+        /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static SemanticChronologyDTO Make(TinkarInput input)
+        public static new SemanticChronologyDTO Make(TinkarInput input)
         {
-            IPublicId publicId = input.GetPublicId();
+            IPublicId componentPublicId = input.GetPublicId();
             IPublicId patternForSemanticPublicId = input.GetPublicId();
             IPublicId referencedComponentPublicId = input.GetPublicId();
             
             return new SemanticChronologyDTO(
-                publicId,
+                componentPublicId,
                 patternForSemanticPublicId,
                 referencedComponentPublicId,
-                input.GetSemanticVersionList(publicId, patternForSemanticPublicId, referencedComponentPublicId)
+                input.ReadSemanticVersionList(componentPublicId, patternForSemanticPublicId, referencedComponentPublicId)
                 );
+        }
+
+        /// <summary>
+        /// Static method to Create DTO item from json stream.
+        /// </summary>
+        /// <param name="jsonObject">JSON parent container to read from.</param>
+        /// <returns>Deserialized SemanticChronology record.</returns>
+        public static new SemanticChronologyDTO Make(JObject jsonObject)
+        {
+            PublicId componentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            PublicId definitionForSemanticPublicId = jsonObject.AsPublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID);
+            PublicId referencedComponentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID);
+            return new SemanticChronologyDTO(componentPublicId,
+                    definitionForSemanticPublicId,
+                    referencedComponentPublicId,
+                    jsonObject.ReadSemanticVersionList(ComponentFieldForJson.VERSIONS,
+                            componentPublicId,
+                            definitionForSemanticPublicId,
+                            referencedComponentPublicId)
+                    );
+        }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream.</param>
+        public override void Marshal(TinkarJsonOutput output)
+        {
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.Put(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID, this.DefinitionForSemanticPublicId);
+            output.Put(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID, this.ReferencedComponentPublicId);
+            output.WriteMarshalableList(
+                ComponentFieldForJson.VERSIONS,
+                this.SemanticVersions);
+            output.WriteEndObject();
         }
 
         /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
+        public override void Marshal(TinkarOutput output)
         {
-            base.MarshalFields(output);
-            output.WritePublicId(this.PatternForSemanticPublicId);
-            output.WritePublicId(this.ReferencedComponentPublicId);
+            base.Marshal(output);
             output.WriteMarshalableList(this.SemanticVersions);
-        }
-
-        /// <summary>
-        /// Static method to Create DTO item from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        /// <returns>Deserialized SemanticChronology record.</returns>
-        public static SemanticChronologyDTO Make(JObject jObj) =>
-            new SemanticChronologyDTO(jObj);
-
-        /// <summary>
-        /// Marshal all fields to Json output stream.
-        /// </summary>
-        /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
-        {
-            base.MarshalFields(output);
-            output.WritePublicId(
-                ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID,
-                this.PatternForSemanticPublicId);
-            output.WritePublicId(
-                ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID,
-                this.ReferencedComponentPublicId);
-            output.WriteMarshalableList(
-                ComponentFieldForJson.VERSIONS,
-                this.SemanticVersions);
-            base.MarshalFields(output);
         }
     }
 }

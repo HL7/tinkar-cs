@@ -20,25 +20,10 @@ namespace Tinkar
         public const String JSONCLASSNAME = "PatternForSemanticDTO";
 
         /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class.
         /// </summary>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        public PatternForSemanticDTO(IPublicId publicId) : base(publicId)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class
-        /// from json stream.
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public PatternForSemanticDTO(JObject jObj) : base(jObj)
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
+        public PatternForSemanticDTO(IPublicId componentPublicId) : base(componentPublicId)
         {
         }
 
@@ -65,29 +50,30 @@ namespace Tinkar
             new PatternForSemanticDTO(input.GetPublicId());
 
         /// <summary>
+        /// Static method to Create DTO item from json .
+        /// </summary>
+        /// <param name="jsonObject">JSON parent container to read from.</param>
+        /// <returns>Deserialized PatternForSemanticDTO record.</returns>
+        public static PatternForSemanticDTO Make(JObject jsonObject) =>
+            new PatternForSemanticDTO(jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
+
+        /// <summary>
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public override void MarshalFields(TinkarOutput output)
-        {
-            base.MarshalFields(output);
-        }
-
-        /// <summary>
-        /// Static method to Create DTO item from json .
-        /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        /// <returns>Deserialized PatternForSemanticDTO record.</returns>
-        public static PatternForSemanticDTO Make(JObject jObj) =>
-            new PatternForSemanticDTO(jObj);
+        public virtual void Marshal(TinkarOutput output) =>
+            output.PutPublicId(this.PublicId);
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public override void MarshalFields(TinkarJsonOutput output)
+        public virtual void Marshal(TinkarJsonOutput output)
         {
-            base.MarshalFields(output);
+            output.WriteStartObject();
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
+            output.WriteEndObject();
         }
     }
 }

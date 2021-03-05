@@ -178,13 +178,13 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case SemanticDTO item:
-                    this.WriteFieldType(FieldDataType.SemanticType);
+                case SemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.SemanticChronologyType);
                     item.Marshal(this);
                     break;
 
-                case SemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.SemanticChronologyType);
+                case SemanticDTO item:
+                    this.WriteFieldType(FieldDataType.SemanticType);
                     item.Marshal(this);
                     break;
 
@@ -228,7 +228,7 @@ namespace Tinkar
         /// Write a stream of Uuids (guids) to output stream.
         /// </summary>
         /// <param name="publicId">publicId to write.</param>
-        public void WritePublicId(IPublicId publicId) => WriteUuids(publicId.AsUuidArray);
+        public void PutPublicId(IPublicId publicId) => WriteUuids(publicId.AsUuidArray);
 
         /// <summary>
         /// Write out a stream ob simple objects.
