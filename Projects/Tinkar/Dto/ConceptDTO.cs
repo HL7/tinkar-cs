@@ -45,15 +45,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected ConceptDTO(TinkarInput input) : base(input)
-        {
-        }
-
-        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
@@ -71,8 +62,8 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptDTO Make(TinkarInput input) =>
-            new ConceptDTO(input);
+        public static ConceptDTO Make(TinkarInput input) => 
+            new ConceptDTO(input.GetPublicId());
 
         /// <summary>
         /// Marshal DTO item to output stream.

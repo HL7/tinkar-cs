@@ -45,7 +45,7 @@ namespace Tinkar
         /// <summary>
         /// Name of JSON property that stores component public id.
         /// </summary>
-        public const String COMPONENT_PUBLIC_ID = "componentPublicId";
+        public const String COMPONENT_PUBLIC_ID = "publicId";
 
         /// <summary>
         /// Name of JSON property that stores concept versions.

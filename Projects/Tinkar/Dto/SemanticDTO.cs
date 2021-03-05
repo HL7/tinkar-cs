@@ -61,17 +61,6 @@ namespace Tinkar
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        public SemanticDTO(TinkarInput input) : base(input)
-        {
-            this.definitionForSemanticPublicId = input.ReadPublicId();
-            this.referencedComponentPublicId = input.ReadPublicId();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
@@ -110,7 +99,9 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static SemanticDTO Make(TinkarInput input) =>
-            new SemanticDTO(input);
+            new SemanticDTO(input.GetPublicId(),
+                input.GetPublicId(),
+                input.GetPublicId());
 
         /// <summary>
         /// Marshal DTO item to output stream.

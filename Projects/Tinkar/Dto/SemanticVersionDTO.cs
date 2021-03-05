@@ -119,49 +119,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">Binary input stream to read from.</param>
-        /// <param name="publicId">Public id (component ids).</param>
-        /// <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
-        /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
-        public SemanticVersionDTO(
-            TinkarInput input,
-            IPublicId publicId,
-            IPublicId definitionForSemanticUuids,
-            IPublicId referencedComponentUuids) : base(input, publicId)
-        {
-            this.DefinitionForSemanticPublicId = definitionForSemanticUuids;
-            this.ReferencedComponentUuids = referencedComponentUuids;
-            this.StampDTO = new StampDTO(input);
-            this.Fields = input.ReadObjects();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
-        /// </summary>
-        /// <param name="publicId">Public id (component ids).</param>
-        /// <param name="definitionForSemantic">PatternForSemantic UUIDs.</param>
-        /// <param name="referencedComponent">ReferencedComponent UUIDs.</param>
-        /// <param name="stamp">Stamp.</param>
-        /// <param name="fields">SemanticVersion fields.</param>
-        public SemanticVersionDTO(
-            IPublicId publicId,
-            IPatternForSemantic definitionForSemantic,
-            IComponent referencedComponent,
-            StampDTO stamp,
-            IEnumerable<Object> fields)
-            : this(
-                publicId,
-                definitionForSemantic.PublicId,
-                referencedComponent.PublicId,
-                stamp,
-                fields)
-        {
-        }
-
-        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="otherObject">Item to compare to for equality.</param>
@@ -206,10 +163,11 @@ namespace Tinkar
             IPublicId definitionForSemanticUuids,
             IPublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
-                input,
                 publicId,
                 definitionForSemanticUuids,
-                referencedComponentUuids);
+                referencedComponentUuids,
+                StampDTO.Make(input),
+                input.GetObjects());
 
         /// <summary>
         /// Marshal DTO item to output stream.

@@ -111,20 +111,6 @@ namespace Tinkar
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StampDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        public StampDTO(TinkarInput input) : base(input)
-        {
-            this.StatusPublicId = input.ReadPublicId();
-            this.Time = input.ReadInstant();
-            this.AuthorPublicId = input.ReadPublicId();
-            this.ModulePublicId = input.ReadPublicId();
-            this.PathPublicId = input.ReadPublicId();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StampDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
@@ -176,7 +162,13 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static StampDTO Make(TinkarInput input) =>
-            new StampDTO(input);
+            new StampDTO(
+                input.GetPublicId(),
+                input.GetPublicId(),
+                input.GetInstant(),
+                input.GetPublicId(),
+                input.GetPublicId(),
+                input.GetPublicId());
 
         /// <summary>
         /// Static method to Create DTO item from json stream.

@@ -73,17 +73,6 @@ namespace Tinkar
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class
-        /// from a TinkarInput Stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected ConceptChronologyDTO(TinkarInput input) : base(input)
-        {
-            this.ChronologySetPublicId = input.ReadPublicId();
-            this.Versions = input.ReadConceptVersionList(this.PublicId);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
@@ -119,10 +108,15 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptChronologyDTO Make(TinkarInput input) =>
-            new ConceptChronologyDTO(input);
+        public static ConceptChronologyDTO Make(TinkarInput input)
+        {
+            IPublicId publicId = input.GetPublicId();
+            return new ConceptChronologyDTO(
+                publicId,
+                input.GetPublicId(),
+                input.GetConceptVersionList(publicId));
+        }
 
         /// <summary>
         /// Marshal DTO item to output stream.

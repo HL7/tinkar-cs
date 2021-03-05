@@ -83,33 +83,18 @@ namespace Tinkar
         /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
         /// </summary>
         /// <param name = "publicId" > Public id(component ids).</param>
-        /// <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
+        /// <param name="patternForSemanticPublicId">definitionForSemanticPublicId.</param>
         /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
         /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
             IPublicId publicId,
-            IPublicId definitionForSemanticPublicId,
+            IPublicId patternForSemanticPublicId,
             IPublicId referencedComponentPublicId,
             IEnumerable<SemanticVersionDTO> semanticVersions) : base(publicId)
         {
-            this.PatternForSemanticPublicId = definitionForSemanticPublicId;
+            this.PatternForSemanticPublicId = patternForSemanticPublicId;
             this.ReferencedComponentPublicId = referencedComponentPublicId;
             this.SemanticVersions = semanticVersions;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected SemanticChronologyDTO(TinkarInput input) : base(input)
-        {
-            this.PatternForSemanticPublicId = input.ReadPublicId();
-            this.ReferencedComponentPublicId = input.ReadPublicId();
-            this.SemanticVersions = input.ReadSemanticVersionList(
-                this.PublicId,
-                this.PatternForSemanticPublicId,
-                this.ReferencedComponentPublicId);
         }
 
         /// <summary>
@@ -178,8 +163,19 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static SemanticChronologyDTO Make(TinkarInput input) =>
-            new SemanticChronologyDTO(input);
+        public static SemanticChronologyDTO Make(TinkarInput input)
+        {
+            IPublicId publicId = input.GetPublicId();
+            IPublicId patternForSemanticPublicId = input.GetPublicId();
+            IPublicId referencedComponentPublicId = input.GetPublicId();
+            
+            return new SemanticChronologyDTO(
+                publicId,
+                patternForSemanticPublicId,
+                referencedComponentPublicId,
+                input.GetSemanticVersionList(publicId, patternForSemanticPublicId, referencedComponentPublicId)
+                );
+        }
 
         /// <summary>
         /// Marshal DTO item to output stream.

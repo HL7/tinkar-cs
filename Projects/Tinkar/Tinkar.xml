@@ -284,97 +284,97 @@
             Dispose function.
             </summary>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadUTF">
+        <member name="M:Tinkar.TinkarInput.GetUTF">
             <summary>
             Read string.
             Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
             </summary>
             <returns>String.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadInt32">
+        <member name="M:Tinkar.TinkarInput.GetInt32">
             <summary>
             Read network ordered  Int32 from input stream.
             </summary>
             <returns>Int32.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadSingle">
+        <member name="M:Tinkar.TinkarInput.GetSingle">
             <summary>
             Read network ordered float from input stream.
             </summary>
             <returns>read single value.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadBoolean">
+        <member name="M:Tinkar.TinkarInput.GetBoolean">
             <summary>
             Read network ordered boolean from input stream.
             </summary>
             <returns>read boolean value.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadLong">
+        <member name="M:Tinkar.TinkarInput.GetLong">
             <summary>
             Read network ordered Int64 from input stream.
             </summary>
             <returns>Int64.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadByteArray">
+        <member name="M:Tinkar.TinkarInput.GetByteArray">
             <summary>
             Read a byte array from input stream.
             </summary>
             <returns>byte[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadUuids">
+        <member name="M:Tinkar.TinkarInput.GetUuids">
             <summary>
             Read array of guids from input stream.
             </summary>
             <returns>Guid[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadPublicId">
+        <member name="M:Tinkar.TinkarInput.GetPublicId">
             <summary>
             Read PublicId from input stream.
             </summary>
             <returns>PublicId.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadInstant">
+        <member name="M:Tinkar.TinkarInput.GetInstant">
             <summary>
             Read data tome from input stream.
             </summary>
             <returns>DateTime.</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadFieldDefinitionList">
+        <member name="M:Tinkar.TinkarInput.GetFieldDefinitionList">
             <summary>
             Read an array or FieldDefinitionDTO items.
             </summary>
             <returns>FieldDefinitionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadConceptVersionList(Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarInput.GetConceptVersionList(Tinkar.IPublicId)">
             <summary>
             Read an array or ConceptVersionDTO items.
             </summary>
             <param name="publicId">Public id (component ids).</param>
             <returns>ConceptVersionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadPatternForSemanticVersionList(Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarInput.GetPatternForSemanticVersionList(Tinkar.IPublicId)">
             <summary>
             Read an array or PatternForSemanticVersionDTO items.
             </summary>
             <param name="publicId">Public id (component ids).</param>
             <returns>PatternForSemanticVersionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadSemanticVersionList(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+        <member name="M:Tinkar.TinkarInput.GetSemanticVersionList(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
             <summary>
             Read an array or SemanticVersionDTO items.
             </summary>
             <param name="publicId">Public id (component ids).</param>
-            <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
+            <param name="patternForSemanticPublicId">PatternForSemantic UUIDs.</param>
             <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
             <returns>SemanticVersionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadObjects">
+        <member name="M:Tinkar.TinkarInput.GetObjects">
             <summary>
             Read an array or Object items.
             </summary>
             <returns>Object[].</returns>
         </member>
-        <member name="M:Tinkar.TinkarInput.ReadField">
+        <member name="M:Tinkar.TinkarInput.GetField">
             <summary>
             Read an array or Object fields.
             </summary>
@@ -506,21 +506,6 @@
             </summary>
             <param name="publicId">Public id for this item</param>
         </member>
-        <member name="M:Tinkar.ComponentDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">binary input stream.</param>
-        </member>
-        <member name="M:Tinkar.ComponentDTO.#ctor(Tinkar.TinkarInput,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">binary input stream.</param>
-            <param name = "publicId" > Public id(component ids).</param>
-        </member>
         <member name="M:Tinkar.ComponentDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ComponentDTO"/> class.
@@ -605,13 +590,6 @@
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="conceptVersions">ConceptVersions.</param>
         </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptChronologyDTO"/> class
-            from a TinkarInput Stream.
-            </summary>
-            <param name="input">input data stream.</param>
-        </member>
         <member name="M:Tinkar.ConceptChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptChronologyDTO"/> class
@@ -630,7 +608,6 @@
             <summary>
             Static method to Create DTO item from input stream.
             </summary>
-            <param name="input">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
         <member name="M:Tinkar.ConceptChronologyDTO.MarshalFields(Tinkar.TinkarOutput)">
@@ -681,13 +658,6 @@
             from json stream.
             </summary>
             <param name="jObj">JSON parent container to read from.</param>
-        </member>
-        <member name="M:Tinkar.ConceptDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
         </member>
         <member name="M:Tinkar.ConceptDTO.CompareTo(System.Object)">
             <summary>
@@ -745,14 +715,6 @@
             </summary>
             <param name = "publicId" > Public id(component ids).</param>
             <param name="stampDTO">Stamp.</param>
-        </member>
-        <member name="M:Tinkar.ConceptVersionDTO.#ctor(Tinkar.TinkarInput,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">binary input stream.</param>
-            <param name = "publicId" > Public id(component ids).</param>
         </member>
         <member name="M:Tinkar.ConceptVersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
             <summary>
@@ -1059,13 +1021,6 @@
             <param name="purposePublicId">purposePublicId.</param>
             <param name="meaningPublicId">meaningPublicId.</param>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.FieldDefinitionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
-        </member>
         <member name="M:Tinkar.FieldDefinitionDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.FieldDefinitionDTO"/> class
@@ -1152,13 +1107,6 @@
             Constructor
             </summary>
         </member>
-        <member name="M:Tinkar.MarshalableDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">binary input stream.</param>
-        </member>
         <member name="M:Tinkar.MarshalableDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.MarshalableDTO"/> class.
@@ -1221,16 +1169,9 @@
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticChronologyDTO"/> class.
             </summary>
-            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name = "publicId" > Public id(component ids).</param>
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="definitionVersions">DefinitionVersions.</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticChronologyDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
@@ -1301,13 +1242,6 @@
             from json stream.
             </summary>
             <param name="jObj">JSON parent container to read from.</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticDTO"/> class
-            from input stream.
-            </summary>
-            <param name="input">input data stream.</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticDTO.CompareTo(System.Object)">
             <summary>
@@ -1390,14 +1324,6 @@
             from json stream.
             </summary>
             <param name="jObj">JSON parent container to read from.</param>
-            <param name="componentPublicId">Public id (component ids).</param>
-        </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.#ctor(Tinkar.TinkarInput,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
             <param name="publicId">Public id (component ids).</param>
         </member>
         <member name="M:Tinkar.PatternForSemanticVersionDTO.CompareTo(System.Object)">
@@ -1492,16 +1418,9 @@
             Initializes a new instance of the <see cref="T:Tinkar.SemanticChronologyDTO"/> class.
             </summary>
             <param name = "publicId" > Public id(component ids).</param>
-            <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
+            <param name="patternForSemanticPublicId">definitionForSemanticPublicId.</param>
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
-        </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticChronologyDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
         </member>
         <member name="M:Tinkar.SemanticChronologyDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
@@ -1596,13 +1515,6 @@
             <param name = "publicId" > Public id(component ids).</param>
             <param name="definitionForSemanticPublicId">PatternForSemanticUuids.</param>
             <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
-        </member>
-        <member name="M:Tinkar.SemanticDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
         </member>
         <member name="M:Tinkar.SemanticDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
@@ -1716,26 +1628,6 @@
             <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
             <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         </member>
-        <member name="M:Tinkar.SemanticVersionDTO.#ctor(Tinkar.TinkarInput,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">Binary input stream to read from.</param>
-            <param name="publicId">Public id (component ids).</param>
-            <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
-            <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
-        </member>
-        <member name="M:Tinkar.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IComponent,Tinkar.StampDTO,System.Collections.Generic.IEnumerable{System.Object})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.SemanticVersionDTO"/> class.
-            </summary>
-            <param name="publicId">Public id (component ids).</param>
-            <param name="definitionForSemantic">PatternForSemantic UUIDs.</param>
-            <param name="referencedComponent">ReferencedComponent UUIDs.</param>
-            <param name="stamp">Stamp.</param>
-            <param name="fields">SemanticVersion fields.</param>
-        </member>
         <member name="M:Tinkar.SemanticVersionDTO.CompareTo(System.Object)">
             <summary>
             Compare this with another item of same type.
@@ -1848,13 +1740,6 @@
             <param name="modulePublicId">ModulePublicId.</param>
             <param name="pathPublicId">PathPublicId.</param>
         </member>
-        <member name="M:Tinkar.StampDTO.#ctor(Tinkar.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.StampDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">input data stream.</param>
-        </member>
         <member name="M:Tinkar.StampDTO.#ctor(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.StampDTO"/> class
@@ -1909,14 +1794,6 @@
             <summary>
             Gets the Stamp.
             </summary>
-        </member>
-        <member name="M:Tinkar.VersionDTO.#ctor(Tinkar.TinkarInput,Tinkar.IPublicId)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.ConceptVersionDTO"/> class
-            from binary stream.
-            </summary>
-            <param name="input">binary input stream.</param>
-            <param name = "publicId" > Public id(component ids).</param>
         </member>
         <member name="M:Tinkar.VersionDTO.#ctor(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
             <summary>

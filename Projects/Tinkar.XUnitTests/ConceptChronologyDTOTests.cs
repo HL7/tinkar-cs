@@ -96,7 +96,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.ReadField();
+                ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.GetField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

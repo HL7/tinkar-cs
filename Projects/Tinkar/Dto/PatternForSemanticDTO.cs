@@ -43,15 +43,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class
-        /// from input stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected PatternForSemanticDTO(TinkarInput input) : base(input)
-        {
-        }
-
-        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
@@ -71,7 +62,7 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static PatternForSemanticDTO Make(TinkarInput input) =>
-            new PatternForSemanticDTO(input);
+            new PatternForSemanticDTO(input.GetPublicId());
 
         /// <summary>
         /// Marshal DTO item to output stream.

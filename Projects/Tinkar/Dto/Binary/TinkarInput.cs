@@ -38,7 +38,7 @@ namespace Tinkar
         public TinkarInput(Stream inStream, Int32 marshalVersion = MarshalVersion.LocalMarshalVersion)
         {
             this.reader = new BinaryReader(inStream);
-            Int32 readMarshalVersion = this.ReadInt32();
+            Int32 readMarshalVersion = this.GetInt32();
             if (readMarshalVersion != marshalVersion)
                 throw new Exception($"Invalid Marshal Version in file. Found {readMarshalVersion}, expected {marshalVersion}");
         }
@@ -55,20 +55,20 @@ namespace Tinkar
         /// Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
         /// </summary>
         /// <returns>String.</returns>
-        public String ReadUTF() => this.reader.ReadString();
+        public String GetUTF() => this.reader.ReadString();
 
         /// <summary>
         /// Read network ordered  Int32 from input stream.
         /// </summary>
         /// <returns>Int32.</returns>
-        public Int32 ReadInt32() =>
+        public Int32 GetInt32() =>
             IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
 
         /// <summary>
         /// Read network ordered float from input stream.
         /// </summary>
         /// <returns>read single value.</returns>
-        public Single ReadSingle()
+        public Single GetSingle()
         {
             Int32 v = IPAddress.NetworkToHostOrder(this.reader.ReadInt32());
             return BitConverter.Int32BitsToSingle(v);
@@ -78,28 +78,28 @@ namespace Tinkar
         /// Read network ordered boolean from input stream.
         /// </summary>
         /// <returns>read boolean value.</returns>
-        public Boolean ReadBoolean() => this.reader.ReadBoolean();
+        public Boolean GetBoolean() => this.reader.ReadBoolean();
 
         /// <summary>
         /// Read network ordered Int64 from input stream.
         /// </summary>
         /// <returns>Int64.</returns>
-        public Int64 ReadLong() =>
+        public Int64 GetLong() =>
                 IPAddress.NetworkToHostOrder(this.reader.ReadInt64());
 
         /// <summary>
         /// Read a byte array from input stream.
         /// </summary>
         /// <returns>byte[].</returns>
-        public byte[] ReadByteArray() => this.reader.ReadBytes(this.ReadInt32());
+        public byte[] GetByteArray() => this.reader.ReadBytes(this.GetInt32());
 
         /// <summary>
         /// Read array of guids from input stream.
         /// </summary>
         /// <returns>Guid[].</returns>
-        public Guid[] ReadUuids()
+        public Guid[] GetUuids()
         {
-            int length = this.ReadInt32();
+            int length = this.GetInt32();
             Guid[] array = new Guid[length];
             for (int i = 0; i < length; i++)
                 array[i] = new Guid(this.reader.ReadBytes(16));
@@ -110,22 +110,22 @@ namespace Tinkar
         /// Read PublicId from input stream.
         /// </summary>
         /// <returns>PublicId.</returns>
-        public IPublicId ReadPublicId() => new PublicId(ReadUuids());
+        public IPublicId GetPublicId() => new PublicId(GetUuids());
 
         /// <summary>
         /// Read data tome from input stream.
         /// </summary>
         /// <returns>DateTime.</returns>
-        public DateTime ReadInstant() =>
-            DateTimeExtensions.FromInstant(this.ReadLong(), this.ReadInt32());
+        public DateTime GetInstant() =>
+            DateTimeExtensions.FromInstant(this.GetLong(), this.GetInt32());
 
         /// <summary>
         /// Read an array or FieldDefinitionDTO items.
         /// </summary>
         /// <returns>FieldDefinitionDTO[].</returns>
-        public FieldDefinitionDTO[] ReadFieldDefinitionList()
+        public FieldDefinitionDTO[] GetFieldDefinitionList()
         {
-            int length = this.ReadInt32();
+            int length = this.GetInt32();
             FieldDefinitionDTO[] retVal = new FieldDefinitionDTO[length];
             for (int i = 0; i < length; i++)
                 retVal[i] = FieldDefinitionDTO.Make(this);
@@ -137,9 +137,9 @@ namespace Tinkar
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>ConceptVersionDTO[].</returns>
-        public ConceptVersionDTO[] ReadConceptVersionList(IPublicId publicId)
+        public ConceptVersionDTO[] GetConceptVersionList(IPublicId publicId)
         {
-            int length = this.ReadInt32();
+            int length = this.GetInt32();
             ConceptVersionDTO[] retVal = new ConceptVersionDTO[length];
             for (int i = 0; i < length; i++)
                 retVal[i] = ConceptVersionDTO.Make(this, publicId);
@@ -151,9 +151,9 @@ namespace Tinkar
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>PatternForSemanticVersionDTO[].</returns>
-        public PatternForSemanticVersionDTO[] ReadPatternForSemanticVersionList(IPublicId publicId)
+        public PatternForSemanticVersionDTO[] GetPatternForSemanticVersionList(IPublicId publicId)
         {
-            Int32 length = this.ReadInt32();
+            Int32 length = this.GetInt32();
             PatternForSemanticVersionDTO[] retVal = new PatternForSemanticVersionDTO[length];
 
             // Generate array to avoid multiple enumerations of componentUuids.
@@ -167,22 +167,22 @@ namespace Tinkar
         /// Read an array or SemanticVersionDTO items.
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
-        /// <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
+        /// <param name="patternForSemanticPublicId">PatternForSemantic UUIDs.</param>
         /// <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
         /// <returns>SemanticVersionDTO[].</returns>
-        public SemanticVersionDTO[] ReadSemanticVersionList(
+        public SemanticVersionDTO[] GetSemanticVersionList(
             IPublicId publicId,
-            IPublicId definitionForSemanticPublicId,
+            IPublicId patternForSemanticPublicId,
             IPublicId referencedComponentPublicId)
         {
-            int length = this.ReadInt32();
+            int length = this.GetInt32();
             SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
             for (int i = 0; i < length; i++)
             {
                 retVal[i] = SemanticVersionDTO.Make(
                     this,
                     publicId,
-                    definitionForSemanticPublicId,
+                    patternForSemanticPublicId,
                     referencedComponentPublicId);
             }
 
@@ -193,12 +193,12 @@ namespace Tinkar
         /// Read an array or Object items.
         /// </summary>
         /// <returns>Object[].</returns>
-        public Object[] ReadObjects()
+        public Object[] GetObjects()
         {
-            int fieldCount = this.ReadInt32();
+            int fieldCount = this.GetInt32();
             Object[] retVal = new Object[fieldCount];
             for (int i = 0; i < fieldCount; i++)
-                retVal[i] = this.ReadField();
+                retVal[i] = this.GetField();
             return retVal;
         }
 
@@ -206,7 +206,7 @@ namespace Tinkar
         /// Read an array or Object fields.
         /// </summary>
         /// <returns>Object[].</returns>
-        public Object ReadField()
+        public Object GetField()
         {
             FieldDataType token = (FieldDataType)this.reader.ReadByte();
             switch (token)
@@ -227,21 +227,21 @@ namespace Tinkar
                     throw new NotImplementedException();
  
                 case FieldDataType.StringType:
-                    return this.ReadUTF();
+                    return this.GetUTF();
                 case FieldDataType.IntegerType:
-                    return this.ReadInt32();
+                    return this.GetInt32();
                 case FieldDataType.FloatType:
-                    return this.ReadSingle();
+                    return this.GetSingle();
                 case FieldDataType.BooleanType:
-                    return this.ReadBoolean();
+                    return this.GetBoolean();
                 case FieldDataType.ByteArrayType:
-                    return this.ReadByteArray();
+                    return this.GetByteArray();
                 case FieldDataType.ObjectArrayType:
-                    return this.ReadObjects().ToArray();
+                    return this.GetObjects().ToArray();
                 case FieldDataType.DiGraphType:
                     throw new NotImplementedException();
                 case FieldDataType.InstantType:
-                    return this.ReadInstant();
+                    return this.GetInstant();
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
                 case FieldDataType.PatternForSemanticType:

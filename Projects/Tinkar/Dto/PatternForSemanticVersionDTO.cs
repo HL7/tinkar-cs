@@ -91,29 +91,15 @@ namespace Tinkar
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
-        /// <param name="componentPublicId">Public id (component ids).</param>
+        /// <param name="publicId">Public id (component ids).</param>
         public PatternForSemanticVersionDTO(
             JObject jObj,
-            IPublicId componentPublicId) : base(jObj, componentPublicId)
+            IPublicId publicId) : base(jObj, publicId)
         {
             this.StampDTO = new StampDTO(jObj.ReadToken<JObject>(ComponentFieldForJson.STAMP));
             this.ReferencedComponentPurposePublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_PUBLIC_ID);
             this.ReferencedComponentMeaningPublicId = jObj.ReadPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_MEANING_PUBLIC_ID);
             this.FieldDefinitionDTOs = jObj.ReadFieldDefinitionList();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        /// <param name="publicId">Public id (component ids).</param>
-        public PatternForSemanticVersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
-        {
-            this.StampDTO = new StampDTO(input);
-            this.ReferencedComponentPurposePublicId = input.ReadPublicId();
-            this.ReferencedComponentMeaningPublicId = input.ReadPublicId();
-            this.FieldDefinitionDTOs = input.ReadFieldDefinitionList();
         }
 
         /// <summary>
@@ -152,7 +138,12 @@ namespace Tinkar
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>new DTO item.</returns>
         public static PatternForSemanticVersionDTO Make(TinkarInput input, IPublicId publicId) =>
-            new PatternForSemanticVersionDTO(input, publicId);
+            new PatternForSemanticVersionDTO(
+                publicId,
+                StampDTO.Make(input),
+                input.GetPublicId(),
+                input.GetPublicId(),
+                input.GetFieldDefinitionList());
 
         /// <summary>
         /// Marshal DTO item to output stream.

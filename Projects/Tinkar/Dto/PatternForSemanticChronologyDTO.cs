@@ -53,32 +53,20 @@ namespace Tinkar
         public IEnumerable<PatternForSemanticVersionDTO> Versions { get; init; }
 
         public IConcept ChronologySet => new ConceptDTO(ChronologySetPublicId);
-        
-        /// <summary>
-                 /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
-                 /// </summary>
-                 /// <param name = "componentPublicId" > Public id(component ids).</param>
-                 /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
-                 /// <param name="definitionVersions">DefinitionVersions.</param>
-        public PatternForSemanticChronologyDTO(
-            IPublicId componentPublicId,
-            IPublicId chronologySetPublicId,
-            IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
-        {
-            this.ChronologySetPublicId = componentPublicId;
-            this.Versions = definitionVersions;
-        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class
-        /// from binary stream.
+        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
         /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected PatternForSemanticChronologyDTO(TinkarInput input) : base(input)
+        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
+        /// <param name="definitionVersions">DefinitionVersions.</param>
+        public PatternForSemanticChronologyDTO(
+            IPublicId publicId,
+            IPublicId chronologySetPublicId,
+            IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(publicId)
         {
-            this.ChronologySetPublicId = input.ReadPublicId();
-            this.Versions =
-                input.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
+            this.ChronologySetPublicId = publicId;
+            this.Versions = definitionVersions;
         }
 
         /// <summary>
@@ -88,7 +76,7 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container.</param>
         public PatternForSemanticChronologyDTO(JObject jObj) : base(jObj)
         {
-            this.ChronologySetPublicId  = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            this.ChronologySetPublicId = jObj.ReadPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             this.Versions =
                 jObj.ReadPatternForSemanticVersionList(this.ChronologySetPublicId);
         }
@@ -123,8 +111,15 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static new PatternForSemanticChronologyDTO Make(TinkarInput input) =>
-            new PatternForSemanticChronologyDTO(input);
+        public static new PatternForSemanticChronologyDTO Make(TinkarInput input)
+        {
+            IPublicId publicId = input.GetPublicId();
+            IPublicId chronologySetPublicId = input.GetPublicId();
+            return new PatternForSemanticChronologyDTO(
+                publicId,
+                chronologySetPublicId,
+                input.GetPatternForSemanticVersionList(chronologySetPublicId));
+        }
 
         /// <summary>
         /// Marshal DTO item to output stream.

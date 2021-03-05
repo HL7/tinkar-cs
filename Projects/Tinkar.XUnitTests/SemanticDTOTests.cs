@@ -80,7 +80,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                SemanticDTO dtoRead = (SemanticDTO)input.ReadField();
+                SemanticDTO dtoRead = (SemanticDTO)input.GetField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

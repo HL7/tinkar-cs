@@ -90,18 +90,6 @@ namespace Tinkar
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        protected FieldDefinitionDTO(TinkarInput input) : base(input)
-        {
-            this.DataTypePublicId = input.ReadPublicId();
-            this.PurposePublicId = input.ReadPublicId();
-            this.MeaningPublicId = input.ReadPublicId();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
         /// from json stream.
         /// </summary>
         /// <param name="jObj">JSON parent container to read from.</param>
@@ -151,7 +139,11 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static FieldDefinitionDTO Make(TinkarInput input) =>
-            new FieldDefinitionDTO(input);
+            new FieldDefinitionDTO(
+                input.GetPublicId(),
+                input.GetPublicId(),
+                input.GetPublicId()
+                );
 
         /// <summary>
         /// Marshal DTO item to output stream.

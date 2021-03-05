@@ -28,17 +28,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">binary input stream.</param>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        public VersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
-        {
-            this.StampDTO = new StampDTO(input);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="VersionDTO"/> class.
         /// from input JSON stream.
         /// </summary>

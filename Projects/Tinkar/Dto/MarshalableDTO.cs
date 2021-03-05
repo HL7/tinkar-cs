@@ -28,15 +28,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">binary input stream.</param>
-        protected MarshalableDTO(TinkarInput input)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MarshalableDTO"/> class.
         /// from input JSON stream.
         /// </summary>

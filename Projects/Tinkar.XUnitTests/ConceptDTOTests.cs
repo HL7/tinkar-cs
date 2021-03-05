@@ -70,7 +70,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                ConceptDTO dtoRead = (ConceptDTO)input.ReadField();
+                ConceptDTO dtoRead = (ConceptDTO)input.GetField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

@@ -50,16 +50,6 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">binary input stream.</param>
-        /// <param name = "publicId" > Public id(component ids).</param>
-        public ConceptVersionDTO(TinkarInput input, IPublicId publicId) : base(input, publicId)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class.
         /// from input JSON stream.
         /// </summary>
@@ -92,7 +82,8 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptVersionDTO Make(TinkarInput input, IPublicId publicId) => new ConceptVersionDTO(input, publicId);
+        public static ConceptVersionDTO Make(TinkarInput input, IPublicId publicId) => 
+            new ConceptVersionDTO(publicId, StampDTO.Make(input));
 
         /// <summary>
         /// Marshal all fields to binary output stream.
