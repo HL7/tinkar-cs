@@ -36,9 +36,11 @@ namespace Tinkar
         /// Initializes a new instance of the <see cref="TinkarOutput"/> class.
         /// </summary>
         /// <param name="outStream">Output stream.</param>
-        public TinkarOutput(Stream outStream)
+        /// <param name="marshalVersion">Marshal version number.</param>
+        public TinkarOutput(Stream outStream, Int32 marshalVersion = MarshalVersion.LocalMarshalVersion)
         {
             this.writer = new BinaryWriter(outStream);
+            this.WriteInt32(marshalVersion);
         }
 
         /// <summary>
@@ -176,23 +178,23 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case SemanticDTO item:
-                    this.WriteFieldType(FieldDataType.SemanticType);
-                    item.Marshal(this);
-                    break;
-
                 case SemanticChronologyDTO item:
                     this.WriteFieldType(FieldDataType.SemanticChronologyType);
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSemanticType);
+                case SemanticDTO item:
+                    this.WriteFieldType(FieldDataType.SemanticType);
                     item.Marshal(this);
                     break;
 
-                case DefinitionForSemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.DefinitionForSemanticChronologyType);
+                case PatternForSemanticChronologyDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticChronologyType);
+                    item.Marshal(this);
+                    break;
+
+                case PatternForSemanticDTO item:
+                    this.WriteFieldType(FieldDataType.PatternForSemanticType);
                     item.Marshal(this);
                     break;
 
@@ -223,6 +225,12 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Write a stream of Uuids (guids) to output stream.
+        /// </summary>
+        /// <param name="publicId">publicId to write.</param>
+        public void PutPublicId(IPublicId publicId) => WriteUuids(publicId.AsUuidArray);
+
+        /// <summary>
         /// Write out a stream ob simple objects.
         /// </summary>
         /// <param name="fields">Values to write.</param>
@@ -232,13 +240,6 @@ namespace Tinkar
             foreach (Object field in fields)
                 this.WriteField(field);
         }
-
-        /// <summary>
-        /// Write marshal version to output stream.
-        /// </summary>
-        /// <param name="marshalVersion">value to write.</param>
-        public void WriteMarshalVersion(Int32 marshalVersion) =>
-            this.WriteInt32(marshalVersion);
 
         //private void WriteDigraph() => throw new NotImplementedException("WriteDigraph");
 

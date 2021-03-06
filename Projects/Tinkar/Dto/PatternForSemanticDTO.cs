@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Tinkar
 {
     /// <summary>
-    /// Concept record.
+    /// PatternForSemantic record.
     /// </summary>
-    public record ConceptDTO : ComponentDTO,
-        IConcept,
-        IDTO,
+    public record PatternForSemanticDTO :
+        ComponentDTO,
+        IPatternForSemantic,
         IJsonMarshalable,
         IMarshalable
     {
@@ -20,13 +17,13 @@ namespace Tinkar
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JSONCLASSNAME = "ConceptDTO";
+        public const String JSONCLASSNAME = "PatternForSemanticDTO";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
+        /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class.
         /// </summary>
-        /// <param name = "componentPublicId" > Component Public id(component ids).</param>
-        public ConceptDTO(IPublicId componentPublicId) : base(componentPublicId)
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
+        public PatternForSemanticDTO(IPublicId componentPublicId) : base(componentPublicId)
         {
         }
 
@@ -37,9 +34,10 @@ namespace Tinkar
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(Object otherObject)
         {
-            ConceptDTO other = otherObject as ConceptDTO;
+            PatternForSemanticDTO other = otherObject as PatternForSemanticDTO;
             if (other == null)
                 return -1;
+
             return base.CompareTo(other);
         }
 
@@ -48,31 +46,29 @@ namespace Tinkar
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptDTO Make(TinkarInput input) =>
-            new ConceptDTO(input.GetPublicId());
+        public static PatternForSemanticDTO Make(TinkarInput input) =>
+            new PatternForSemanticDTO(input.GetPublicId());
 
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        /// <returns>ConceptDTO record.</returns>
-        public static ConceptDTO Make(JObject jObj) =>
-            new ConceptDTO(jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
+        /// <param name="jsonObject">JSON parent container to read from.</param>
+        /// <returns>Deserialized PatternForSemanticDTO record.</returns>
+        public static PatternForSemanticDTO Make(JObject jsonObject) =>
+            new PatternForSemanticDTO(jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
 
         /// <summary>
-        /// Marshal all fields to output stream.
+        /// Marshal DTO item to output stream.
         /// </summary>
-        /// <param name="output">Json output stream.</param>
-        public virtual void Marshal(TinkarOutput output)
-        {
+        /// <param name="output">output data stream.</param>
+        public virtual void Marshal(TinkarOutput output) =>
             output.PutPublicId(this.PublicId);
-        }
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output)
+        public virtual void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();
             output.WriteClass(JSONCLASSNAME);

@@ -23,115 +23,108 @@ namespace Tinkar
     /// <summary>
     /// FieldDefinition record.
     /// </summary>
-    public record FieldDefinitionDTO :
-        BaseDTO<FieldDefinitionDTO>,
+    public record FieldDefinitionDTO:
         IFieldDefinition,
-        IChangeSetThing,
         IJsonMarshalable,
-        IMarshalable
+        IMarshalable,
+        IEquivalent,
+        IComparable
     {
-        /// <summary>
-        /// Version of marshalling code.
-        /// If code is modified in a way that renders old serialized data
-        /// non-conformant, then this number should be incremented.
-        /// </summary>
-        private const int MarshalVersion = 1;
-
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JsonClassName = "FieldDefinitionDTO";
+        public const String JSONCLASSNAME = "FieldDefinitionDTO";
 
         /// <summary>
         /// Gets DataType record.
         /// </summary>
-        public IConcept DataType => new ConceptDTO(this.DataTypeUuids);
+        public IConcept DataType => new ConceptDTO(this.DataTypePublicId);
 
         /// <summary>
         /// Gets Purpose concept.
         /// </summary>
-        public IConcept Purpose => new ConceptDTO(this.PurposeUuids);
+        public IConcept Purpose => new ConceptDTO(this.PurposePublicId);
 
         /// <summary>
-        /// Gets Use concept.
+        /// Gets Meaning concept.
         /// </summary>
-        public IConcept Use => new ConceptDTO(this.UseUuids);
+        public IConcept Meaning => new ConceptDTO(this.MeaningPublicId);
 
         /// <summary>
         /// Gets DataType uuids.
         /// </summary>
-        public IEnumerable<Guid> DataTypeUuids { get; init; }
+        public IPublicId DataTypePublicId { get; init; }
 
         /// <summary>
         /// Gets Purpose UUIDs.
         /// </summary>
-        public IEnumerable<Guid> PurposeUuids { get; init; }
+        public IPublicId PurposePublicId { get; init; }
 
         /// <summary>
-        /// Gets Use uuids.
+        /// Gets Meaning public id.
         /// </summary>
-        public IEnumerable<Guid> UseUuids { get; init; }
+        public IPublicId MeaningPublicId { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class.
         /// </summary>
-        /// <param name="dataTypeUuids">DataTypeUuids.</param>
-        /// <param name="purposeUuids">PurposeUuids.</param>
-        /// <param name="useUuids">useUuids.</param>
+        /// <param name="dataTypePublicId">dataTypePublicId.</param>
+        /// <param name="purposePublicId">purposePublicId.</param>
+        /// <param name="meaningPublicId">meaningPublicId.</param>
         public FieldDefinitionDTO(
-            IEnumerable<Guid> dataTypeUuids,
-            IEnumerable<Guid> purposeUuids,
-            IEnumerable<Guid> useUuids)
+            IPublicId dataTypePublicId,
+            IPublicId purposePublicId,
+            IPublicId meaningPublicId)
         {
-            this.DataTypeUuids = dataTypeUuids;
-            this.PurposeUuids = purposeUuids;
-            this.UseUuids = useUuids;
+            this.DataTypePublicId = dataTypePublicId;
+            this.PurposePublicId = purposePublicId;
+            this.MeaningPublicId = meaningPublicId;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
-        /// from binary stream.
-        /// </summary>
-        /// <param name="input">input data stream.</param>
-        public FieldDefinitionDTO(TinkarInput input)
-        {
-            input.CheckMarshalVersion(MarshalVersion);
-            this.DataTypeUuids = input.ReadUuids();
-            this.PurposeUuids = input.ReadUuids();
-            this.UseUuids = input.ReadUuids();
-        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FieldDefinitionDTO"/> class
-        /// from json stream.
+        /// Implementation of IEquivalent.IsEquivalent
+        /// We manually create this rather than using the default
+        /// record implementation because we want to compare to
+        /// do a deep comparison, not just compare reference equality.
         /// </summary>
-        /// <param name="jObj">JSON parent container to read from.</param>
-        public FieldDefinitionDTO(JObject jObj)
-        {
-            this.DataTypeUuids = jObj.ReadUuids(ComponentFieldForJson.DATATYPE_UUIDS);
-            this.PurposeUuids = jObj.ReadUuids(ComponentFieldForJson.PURPOSE_UUIDS);
-            this.UseUuids = jObj.ReadUuids(ComponentFieldForJson.USE_UUIDS);
-        }
+        /// <param name="other">Item to compare to for equivalence.</param>
+        /// <returns>true if equal.</returns>
+        public Boolean IsEquivalent(Object other) => this.CompareTo(other) == 0;
 
         /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
-        /// <param name="other">Item to compare to for equality.</param>
+        /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public override Int32 CompareTo(FieldDefinitionDTO other)
+        public Int32 CompareTo(Object otherObject)
         {
-            Int32 cmp = FieldCompare.CompareGuids(this.DataTypeUuids, other.DataTypeUuids);
+            FieldDefinitionDTO other = otherObject as FieldDefinitionDTO;
+            if (other == null)
+                return -1;
+
+            Int32 cmp = FieldCompare.ComparePublicIds(this.DataTypePublicId, other.DataTypePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.PurposeUuids, other.PurposeUuids);
+            cmp = FieldCompare.ComparePublicIds(this.PurposePublicId, other.PurposePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareGuids(this.UseUuids, other.UseUuids);
+            cmp = FieldCompare.ComparePublicIds(this.MeaningPublicId, other.MeaningPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;
         }
+
+        /// <summary>
+        /// Make a FieldDefinitionDTP instance from a IFieldDefinition instance.
+        /// </summary>
+        /// <param name="fieldDefinition"></param>
+        /// <returns></returns>
+        public static FieldDefinitionDTO Make(IFieldDefinition fieldDefinition) =>
+            new FieldDefinitionDTO(fieldDefinition.DataType.PublicId,
+                    fieldDefinition.Purpose.PublicId,
+                    fieldDefinition.Meaning.PublicId);
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
@@ -139,40 +132,33 @@ namespace Tinkar
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
         public static FieldDefinitionDTO Make(TinkarInput input) =>
-            new FieldDefinitionDTO(input);
-
-        /// <summary>
-        /// Marshal DTO item to output stream.
-        /// </summary>
-        /// <param name="output">output data stream.</param>
-        public void Marshal(TinkarOutput output)
-        {
-            output.WriteMarshalVersion(MarshalVersion);
-            output.WriteUuids(this.DataTypeUuids);
-            output.WriteUuids(this.PurposeUuids);
-            output.WriteUuids(this.UseUuids);
-        }
+            new FieldDefinitionDTO(input.GetPublicId(), input.GetPublicId(), input.GetPublicId());
 
         /// <summary>
         /// Static method to Create DTO item from input json stream.
         /// </summary>
-        /// <param name="input">input data stream.</param>
+        /// <param name="jsonObject">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static FieldDefinitionDTO Make(JObject input) =>
-            new FieldDefinitionDTO(input);
+        public static FieldDefinitionDTO Make(JObject jsonObject) =>
+            new FieldDefinitionDTO(jsonObject.AsPublicId(ComponentFieldForJson.DATATYPE_PUBLIC_ID),
+                jsonObject.AsPublicId(ComponentFieldForJson.PURPOSE_PUBLIC_ID),
+                jsonObject.AsPublicId(ComponentFieldForJson.MEANING_PUBLIC_ID));
 
-        /// <summary>
-        /// Marshal all fields to Json output stream.
-        /// </summary>
-        /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();
-            output.WriteClass(JsonClassName);
-            output.WriteUuids(ComponentFieldForJson.DATATYPE_UUIDS, this.DataTypeUuids);
-            output.WriteUuids(ComponentFieldForJson.PURPOSE_UUIDS, this.PurposeUuids);
-            output.WriteUuids(ComponentFieldForJson.USE_UUIDS, this.UseUuids);
+            output.WriteClass(JSONCLASSNAME);
+            output.Put(ComponentFieldForJson.DATATYPE_PUBLIC_ID, this.DataTypePublicId);
+            output.Put(ComponentFieldForJson.PURPOSE_PUBLIC_ID, this.PurposePublicId);
+            output.Put(ComponentFieldForJson.MEANING_PUBLIC_ID, this.MeaningPublicId);
             output.WriteEndObject();
+        }
+
+        public virtual void Marshal(TinkarOutput output)
+        {
+            output.PutPublicId(this.DataTypePublicId);
+            output.PutPublicId(this.PurposePublicId);
+            output.PutPublicId(this.MeaningPublicId);
         }
     }
 }

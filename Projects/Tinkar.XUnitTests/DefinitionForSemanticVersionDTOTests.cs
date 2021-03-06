@@ -9,34 +9,35 @@ using Assert = Xunit.Assert;
 
 namespace Tinkar.XUnitTests
 {
-    public class DefinitionForSemanticVersionDTOTests
+    public class PatternForSemanticVersionDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticVersionDTOFieldsTest()
+        public void PatternForSemanticVersionDTOFieldsTest()
         {
             FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition;
             FieldDefinitionDTO fdob = Misc.CreateFieldDefinition with
             {
-                DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
             }
             ;
 
-            DefinitionForSemanticVersionDTO dtoStart = new DefinitionForSemanticVersionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+            PatternForSemanticVersionDTO dtoStart = new PatternForSemanticVersionDTO(
+                Misc.PublicIdG,
                 Misc.CreateStampDTO,
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3 },
+                Misc.PublicIdH,
+                Misc.PublicIdI,
                 new FieldDefinitionDTO[] { fdoa, fdob }
                 );
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.PublicId, Misc.PublicIdG);
             Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
-            Misc.Compare<FieldDefinitionDTO>(dtoStart.FieldDefinitionDTOs,
+            Misc.Compare(dtoStart.FieldDefinitions,
                 new FieldDefinitionDTO[]
                 {
                     Misc.CreateFieldDefinition,
                     Misc.CreateFieldDefinition with
                     {
-                        DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                        DataTypePublicId = new PublicId( Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                     }
                 }
                 );
@@ -44,40 +45,40 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticVersionDTOIsEquivalentTest()
+        public void PatternForSemanticVersionDTOIsEquivalentTest()
         {
             {
-                DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
-                DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO;
+                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
+                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
-                DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO
+                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
+                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
-                DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO
+                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
+                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    StampDTO = Misc.CreateStampDTO with { StatusUuids = new Guid[] { Misc.g2 } }
+                    StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2 ) }
                 };
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
-                DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
-                DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO
+                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
+                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    ReferencedComponentPurposeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    ReferencedComponentPurposePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -85,11 +86,11 @@ namespace Tinkar.XUnitTests
             {
                 FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition with
                 {
-                    DataTypeUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
 
-                DefinitionForSemanticVersionDTO a = Misc.CreateDefinitionForSemanticVersionDTO;
-                DefinitionForSemanticVersionDTO b = Misc.CreateDefinitionForSemanticVersionDTO
+                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
+                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
                     FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }
@@ -100,9 +101,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticVersionDTOMarshalTest()
+        public void PatternForSemanticVersionDTOMarshalTest()
         {
-            DefinitionForSemanticVersionDTO dtoStart = Misc.CreateDefinitionForSemanticVersionDTO;
+            PatternForSemanticVersionDTO dtoStart = Misc.CreatePatternForSemanticVersionDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -113,16 +114,16 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                DefinitionForSemanticVersionDTO dtoRead =
-                    DefinitionForSemanticVersionDTO.Make(input, dtoStart.ComponentUuids);
+                PatternForSemanticVersionDTO dtoRead =
+                    PatternForSemanticVersionDTO.Make(input, dtoStart.PublicId);
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }
         [DoNotParallelize]
         [Fact]
-        public void DefinitionForSemanticVersionDTOJsonMarshal()
+        public void PatternForSemanticVersionDTOJsonMarshal()
         {
-            DefinitionForSemanticVersionDTO dtoStart = Misc.CreateDefinitionForSemanticVersionDTO;
+            PatternForSemanticVersionDTO dtoStart = Misc.CreatePatternForSemanticVersionDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -133,8 +134,8 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                DefinitionForSemanticVersionDTO dtoEnd = DefinitionForSemanticVersionDTO.Make(input.ReadJsonObject(),
-                    dtoStart.ComponentUuids);
+                PatternForSemanticVersionDTO dtoEnd = PatternForSemanticVersionDTO.Make(input.ReadJsonObject(),
+                    dtoStart.PublicId);
                 Assert.True(dtoStart.IsEquivalent(dtoEnd));
             }
         }

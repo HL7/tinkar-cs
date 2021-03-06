@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,13 @@
  */
 
 using System;
-using System.Collections.Generic;
 
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar base interface for all identified 'things'.
+    /// ???.
     /// </summary>
-    [JavaAttribute("IdentifiedThing")]
-    public interface IIdentifiedThing
+    public interface IDTO : IComponent
     {
-        /// <summary>
-        /// Gets component uuids.
-        /// </summary>
-        IEnumerable<Guid> ComponentUuids { get; }
     }
 }

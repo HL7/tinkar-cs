@@ -21,24 +21,14 @@ namespace Tinkar
     /// <summary>
     /// Tinkar Semantic Chronology interface.
     /// </summary>
-    /// <typeparam name="TIdentifiedThing">Generic param for IChnronology interface.</typeparam>
+    /// <typeparam name="TSemanticVersion">Generic param for IChnronology interface.</typeparam>
+    /// <typeparam name="TComponent">Generic param for IChnronology interface.</typeparam>
     [JavaAttribute("SemanticChronology")]
-    public interface ISemanticChronology<TIdentifiedThing> :
-        IChronology<ISemanticVersion, TIdentifiedThing>,
+    public interface ISemanticChronology<TSemanticVersion, TComponent> :
+        IChronology<TSemanticVersion, TComponent>,
         ISemantic
-        where TIdentifiedThing : IIdentifiedThing
+        where TSemanticVersion : ISemanticVersion
+        where TComponent : IComponent
     {
-        //$default SemanticChronologyDTO toChangeSetThing()
-        //{
-        //    MutableList<SemanticVersionDTO> changeSetVersions = Lists.mutable.ofInitialCapacity(versions().size());
-        //    for (SemanticVersion semanticVersion :
-        //    versions()) {
-        //        changeSetVersions.add(semanticVersion.toChangeSetThing());
-        //    }
-        //    return new SemanticChronologyDTO(componentUuids(),
-        //        definitionForSemantic(),
-        //        referencedComponent(),
-        //        changeSetVersions.toImmutable());
-        //}
     }
 }

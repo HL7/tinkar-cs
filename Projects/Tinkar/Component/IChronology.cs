@@ -22,16 +22,16 @@ namespace Tinkar
     /// Chronology interaface.
     /// </summary>
     /// <typeparam name="TVersion">Version type.</typeparam>
-    /// <typeparam name="TIdentifiedThing">Thing type.</typeparam>
+    /// <typeparam name="TComponent">Component type.</typeparam>
     [JavaAttribute("Chronology")]
-    public interface IChronology<TVersion, TIdentifiedThing> : IIdentifiedThing
+    public interface IChronology<TVersion, TComponent> : IComponent
         where TVersion : IVersion
-        where TIdentifiedThing : IIdentifiedThing
+        where TComponent : IComponent
     {
         /// <summary>
         /// Gets ChronologySet.
         /// </summary>
-        TIdentifiedThing ChronologySet { get; }
+        TComponent ChronologySet { get; }
 
         /// <summary>
         /// Gets versions.

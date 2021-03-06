@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HL7.
+ * Copyright 2020 kec.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,53 +21,46 @@ using Newtonsoft.Json.Linq;
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar ConceptChronology record.
+    /// Tinkar PatternForSemanticChronology record.
     /// </summary>
-    public record ConceptChronologyDTO : ComponentDTO,
+    public record PatternForSemanticChronologyDTO :
+        PatternForSemanticDTO,
+        IPatternForSemanticChronology<PatternForSemanticVersionDTO, FieldDefinitionDTO, IConcept>,
         IDTO,
         IJsonMarshalable,
-        IMarshalable,
-        IConceptChronology<ConceptVersionDTO, IConcept>
+        IMarshalable
     {
         /// <summary>
         /// Name of this class in JSON serialization.
         /// This must be consistent with Java implementation.
         /// </summary>
-        public const String JSONCLASSNAME = "ConceptChronologyDTO";
+        public new const String JSONCLASSNAME = "PatternForSemanticChronologyDTO";
 
         /// <summary>
-        /// Gets ChronologySet PublicId.
+        /// Gets public id.
         /// </summary>
         public IPublicId ChronologySetPublicId { get; init; }
 
         /// <summary>
-        /// Gets Versions.
+        /// Gets Versions list.
         /// </summary>
-        IEnumerable<ConceptVersionDTO> conceptVersions { get; init; }
+        public IEnumerable<PatternForSemanticVersionDTO> Versions { get; init; }
+
+        public IConcept ChronologySet => new ConceptDTO(ChronologySetPublicId);
 
         /// <summary>
-        /// Gets ChronologySet.
-        /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
-
-        /// <summary>
-        /// Gets Versions.
-        /// </summary>
-        public IEnumerable<ConceptVersionDTO> Versions => conceptVersions;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
+        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
         /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
-        /// <param name="conceptVersions">ConceptVersions.</param>
-        public ConceptChronologyDTO(
+        /// <param name="definitionVersions">DefinitionVersions.</param>
+        public PatternForSemanticChronologyDTO(
             IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            IEnumerable<ConceptVersionDTO> conceptVersions) : base(componentPublicId)
+            IEnumerable<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
         {
             this.ChronologySetPublicId = chronologySetPublicId;
-            this.conceptVersions = conceptVersions;
+            this.Versions = definitionVersions;
         }
 
         /// <summary>
@@ -77,17 +70,19 @@ namespace Tinkar
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(Object otherObject)
         {
-            ConceptChronologyDTO other = otherObject as ConceptChronologyDTO;
+            PatternForSemanticChronologyDTO other = otherObject as PatternForSemanticChronologyDTO;
             if (other == null)
                 return -1;
 
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
+
             cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions);
+
+            cmp = FieldCompare.CompareSequence(this.Versions, other.Versions);
             if (cmp != 0)
                 return cmp;
             return 0;
@@ -96,27 +91,30 @@ namespace Tinkar
         /// <summary>
         /// Static method to Create DTO item from input stream.
         /// </summary>
+        /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptChronologyDTO Make(TinkarInput input)
+        public static new PatternForSemanticChronologyDTO Make(TinkarInput input)
         {
-            IPublicId publicId = input.GetPublicId();
-            return new ConceptChronologyDTO(
-                publicId,
-                input.GetPublicId(),
-                input.GetConceptVersionList(publicId));
+            IPublicId componentPublicId = input.GetPublicId();
+            IPublicId chronologySetPublicId = input.GetPublicId();
+            return new PatternForSemanticChronologyDTO(
+                componentPublicId,
+                chronologySetPublicId,
+                input.GetPatternForSemanticVersionList(componentPublicId));
         }
 
         /// <summary>
-        /// Static method to Create DTO item from json stream.
+        /// Static method to Create DTO item from input stream.
         /// </summary>
-        /// <param name="jsonObject">JSON parent container.</param>
+        /// <param name="jObj">JSON parent container.</param>
         /// <returns>new DTO item.</returns>
-        public static ConceptChronologyDTO Make(JObject jsonObject)
+        public static new PatternForSemanticChronologyDTO Make(JObject jObj)
         {
-            PublicId publicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            return new ConceptChronologyDTO(publicId,
-                            jsonObject.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID),
-                            jsonObject.AsConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, publicId));
+            PublicId componentPublicId = jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
+            PublicId chronologySetPublicId = jObj.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
+            return new PatternForSemanticChronologyDTO(componentPublicId, 
+                chronologySetPublicId, 
+                jObj.ReadPatternForSemanticVersionList(componentPublicId));
         }
 
 
@@ -124,29 +122,24 @@ namespace Tinkar
         /// Marshal DTO item to output stream.
         /// </summary>
         /// <param name="output">output data stream.</param>
-        public virtual void Marshal(TinkarOutput output)
+        public override void Marshal(TinkarOutput output)
         {
             output.PutPublicId(this.PublicId);
             output.PutPublicId(this.ChronologySetPublicId);
-
-            // Note that the componentIds are not written redundantly
-            // in writeConceptVersionList...
-            output.WriteMarshalableList(this.conceptVersions);
+            output.WriteMarshalableList(this.Versions);
         }
 
         /// <summary>
         /// Marshal all fields to Json output stream.
         /// </summary>
         /// <param name="output">Json output stream.</param>
-        public virtual void Marshal(TinkarJsonOutput output)
+        public override void Marshal(TinkarJsonOutput output)
         {
-            // Note that the componentIds are not written redundantly
-            // in writeConceptVersionList...
             output.WriteStartObject();
             output.WriteClass(JSONCLASSNAME);
             output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
             output.Put(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
-            output.WriteMarshalableList(ComponentFieldForJson.CONCEPT_VERSIONS, this.conceptVersions);
+            output.WriteMarshalableList(ComponentFieldForJson.DEFINITION_VERSIONS, this.Versions);
             output.WriteEndObject();
         }
     }

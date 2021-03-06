@@ -18,10 +18,10 @@ namespace Tinkar.XUnitTests
         public void ConceptChronologyDTOFieldsTest()
         {
             ConceptChronologyDTO dtoStart = Misc.CreateConceptChronologyDTO;
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.ChronologySetUuids, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
-            Misc.Compare(dtoStart.ConceptVersions,
-                Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 }));
+            Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
+            Misc.Compare(dtoStart.Versions,
+                Misc.ConceptVersionsBase(Misc.PublicIdG));
         }
 
         [DoNotParallelize]
@@ -39,37 +39,37 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO b = Misc.CreateConceptChronologyDTO
                 with
                 {
-                    ComponentUuids = new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 }
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    new Guid[] { Misc.h1, Misc.h3, Misc.h3, Misc.h4 },
-                    Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                    Misc.PublicIdG,
+                    new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
                 );
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     new ConceptVersionDTO[]
                     {
-                        Misc.cv1(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                        Misc.cv1(Misc.PublicIdG)
                     }
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -81,9 +81,9 @@ namespace Tinkar.XUnitTests
         public void ConceptChronologyDTOMarshalTest()
         {
             ConceptChronologyDTO dtoStart = new ConceptChronologyDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 })
+                Misc.PublicIdG,
+                Misc.PublicIdH,
+                Misc.ConceptVersionsBase(Misc.PublicIdG)
             );
 
             MemoryStream ms = new MemoryStream();
@@ -96,7 +96,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.ReadField();
+                ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.GetField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

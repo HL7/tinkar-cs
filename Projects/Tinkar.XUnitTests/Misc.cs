@@ -19,19 +19,33 @@ namespace Tinkar.XUnitTests
             Trace.WriteLine(json);
         }
 
+        public static void JsonDump(IJsonMarshalable m)
+        {
+            MemoryStream ms = new MemoryStream();
+            using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
+            {
+                m.Marshal(output);
+            }
+            ms.Dump();
+        }
+
         public static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        public static IPublicId PublicIdG => new PublicId(g1, g2, g3, g4);
 
         public static Guid g1 => new Guid(1, 0, 0, zero);
         public static Guid g2 => new Guid(2, 0, 0, zero);
         public static Guid g3 => new Guid(3, 0, 0, zero);
         public static Guid g4 => new Guid(4, 0, 0, zero);
 
+        public static IPublicId PublicIdH => new PublicId(h1, h2, h3, h4);
         public static Guid h1 => new Guid(0x11, 0, 0, zero);
         public static Guid h2 => new Guid(0x12, 0, 0, zero);
         public static Guid h3 => new Guid(0x13, 0, 0, zero);
         public static Guid h4 => new Guid(0x14, 0, 0, zero);
 
 
+        public static IPublicId PublicIdI => new PublicId(i1, i2, i3, i4);
         public static Guid i1 => new Guid(0x21, 0, 0, zero);
         public static Guid i2 => new Guid(0x22, 0, 0, zero);
         public static Guid i3 => new Guid(0x23, 0, 0, zero);
@@ -42,58 +56,56 @@ namespace Tinkar.XUnitTests
         public static Guid j2 => new Guid(0x32, 0, 0, zero);
         public static Guid j3 => new Guid(0x33, 0, 0, zero);
         public static Guid j4 => new Guid(0x34, 0, 0, zero);
+        public static IPublicId PublicIdJ => new PublicId(j1, j2, j3, j4);
 
-        public static ConceptVersionDTO cv1(IEnumerable<Guid> componentGuids) =>
-            new ConceptVersionDTO(
-                componentGuids,
-                Misc.CreateStampDTO
-            );
+        public static Guid k1 => new Guid(0x41, 0, 0, zero);
+        public static Guid k2 => new Guid(0x42, 0, 0, zero);
+        public static Guid k3 => new Guid(0x43, 0, 0, zero);
+        public static Guid k4 => new Guid(0x44, 0, 0, zero);
+        public static IPublicId PublicIdK => new PublicId(k1, k2, k3, k4);
 
-        public static ConceptVersionDTO cv2(IEnumerable<Guid> componentGuids) =>
-            new ConceptVersionDTO(
-                componentGuids,
-                Misc.CreateStampDTO with { StatusUuids = new Guid[] { Misc.g2 } }
-        );
+        public static ConceptVersionDTO cv1(IPublicId publicId) => new ConceptVersionDTO(publicId, Misc.CreateStampDTO);
+        public static ConceptVersionDTO cv2(IPublicId publicId) => new ConceptVersionDTO(publicId, Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2) });
 
-        public static ConceptVersionDTO[] ConceptVersionsBase(IEnumerable<Guid> componentGuids) =>
-            new ConceptVersionDTO[] { cv1(componentGuids), cv2(componentGuids) };
+        public static ConceptVersionDTO[] ConceptVersionsBase(IPublicId publicId) =>
+            new ConceptVersionDTO[] { cv1(publicId), cv2(publicId) };
 
         public static ConceptChronologyDTO CreateConceptChronologyDTO => new ConceptChronologyDTO(
-            new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-            new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-            Misc.ConceptVersionsBase(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 }));
+            PublicIdG,
+            PublicIdH,
+            Misc.ConceptVersionsBase(PublicIdG));
 
-        public static ConceptDTO CreateConceptDTO => new ConceptDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+        public static ConceptDTO CreateConceptDTO => new ConceptDTO(PublicIdG);
 
         public static FieldDefinitionDTO CreateFieldDefinitionDTO =>
             new FieldDefinitionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+                PublicIdG,
+                PublicIdH,
+                PublicIdI
             );
 
-        public static DefinitionForSemanticDTO CreateDefinitionForSemanticDTO =>
-            new DefinitionForSemanticDTO(new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 });
+        public static PatternForSemanticDTO CreatePatternForSemanticDTO =>
+            new PatternForSemanticDTO(PublicIdG);
 
         public static SemanticChronologyDTO CreateSemanticChronologyDTO =>
             new SemanticChronologyDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
+                PublicIdG,
+                PublicIdH,
+                PublicIdI,
                 new SemanticVersionDTO[] { CreateSemanticVersionDTO }
             );
 
         public static SemanticDTO CreateSemanticDTO => new SemanticDTO(
-            new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-            new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-            new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+            PublicIdG,
+            PublicIdH,
+            PublicIdI
         );
 
         public static SemanticVersionDTO CreateSemanticVersionDTO =>
             new SemanticVersionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
+                PublicIdG,
+                PublicIdH,
+                PublicIdI,
                 Misc.CreateStampDTO,
                 new Object[]
                 {
@@ -109,68 +121,67 @@ namespace Tinkar.XUnitTests
 
         public static FieldDefinitionDTO CreateFieldDefinition =>
             new FieldDefinitionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 }
+                PublicIdG,
+                PublicIdH,
+                PublicIdI
             );
 
         public static ConceptVersionDTO CreateConceptVersionDTO =>
             new ConceptVersionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                PublicIdG,
                 Misc.CreateStampDTO
             );
 
-        public static StampCommentDTO CreateStampCommentDTO =>
-            new StampCommentDTO(Misc.CreateStampDTO, "xxyyz");
 
         public static StampDTO CreateStampDTO => new StampDTO(
-            new Guid[]
-            {
-                new Guid(0x80, 0, 0, zero),
-                new Guid(0x81, 0, 0, zero)
-            },
+            new PublicId(new Guid(0x80, 0, 0, zero), new Guid(0x81, 0, 0, zero) ),
+            new PublicId(new Guid(0x80, 1, 0, zero), new Guid(0x81, 1, 0, zero)),
             new DateTime(1990, 3, 4),
-            new Guid[]
-            {
-                new Guid(0x80, 1, 0, zero),
-                new Guid(0x81, 1, 0, zero)
-            },
-            new Guid[] { new Guid(0x80, 2, 0, zero) },
-            new Guid[] { new Guid(0x80, 3, 0, zero) }
+            new PublicId(new Guid(0x80, 2, 0, zero), new Guid(0x81, 1, 0, zero) ),
+            new PublicId(new Guid(0x80, 3, 0, zero) ),
+            new PublicId(new Guid(0x80, 4, 0, zero) )
             );
 
-        public static void Compare(IEnumerable<Guid> inGuids, params Guid[] cmpGuids)
+        public static void Compare(IPublicId inPublicId, IPublicId cmpPublicId) =>
+            Compare(inPublicId.AsUuidArray, cmpPublicId.AsUuidArray);
+
+        public static void Compare(IPublicId inPublicId, params Guid[] cmpGuids) =>
+            Compare(inPublicId.AsUuidArray, cmpGuids);
+
+        public static void Compare(IEnumerable<Guid> inGuids, params Guid[] cmpGuids) =>
+            Compare(inGuids.ToArray(), cmpGuids);
+
+        public static void Compare(Guid[] inGuids, Guid[] cmpGuids)
         {
-            Guid[] guidArr = inGuids.ToArray();
-            Assert.True(guidArr.Length == cmpGuids.Length);
-            for (Int32 i = 0; i < guidArr.Length; i++)
-                Assert.True(guidArr[i].CompareTo(cmpGuids[i]) == 0);
+            Assert.True(inGuids.Length == cmpGuids.Length);
+            for (Int32 i = 0; i < inGuids.Length; i++)
+                Assert.True(inGuids[i].CompareTo(cmpGuids[i]) == 0);
         }
 
-        public static void Compare<T>(IEnumerable<IEquivalent<T>> inItems,
-            IEnumerable<IEquivalent<T>> cmpItems)
+        public static void Compare(IEnumerable<IEquivalent> inItems,
+            IEnumerable<IEquivalent> cmpItems)
         {
-            IEquivalent<T>[] inArr = inItems.ToArray();
-            IEquivalent<T>[] cmpArr = cmpItems.ToArray();
+            IEquivalent[] inArr = inItems.ToArray();
+            IEquivalent[] cmpArr = cmpItems.ToArray();
             Assert.True(inArr.Length == cmpArr.Length);
             for (Int32 i = 0; i < inArr.Length; i++)
-                Assert.True(inArr[i].IsEquivalent((T)cmpArr[i]));
+                Assert.True(inArr[i].IsEquivalent(cmpArr[i]));
         }
 
-        public static DefinitionForSemanticChronologyDTO CreateDefinitionForSemanticChronologyDTO =>
-            new DefinitionForSemanticChronologyDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3 },
-                new DefinitionForSemanticVersionDTO[] { Misc.CreateDefinitionForSemanticVersionDTO }
+        public static PatternForSemanticChronologyDTO CreatePatternForSemanticChronologyDTO =>
+            new PatternForSemanticChronologyDTO(
+                PublicIdG,
+                new PublicId(Misc.h1, Misc.h2, Misc.h3),
+                new PatternForSemanticVersionDTO[] { Misc.CreatePatternForSemanticVersionDTO }
             );
 
 
-        public static DefinitionForSemanticVersionDTO CreateDefinitionForSemanticVersionDTO =>
-            new DefinitionForSemanticVersionDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+        public static PatternForSemanticVersionDTO CreatePatternForSemanticVersionDTO =>
+            new PatternForSemanticVersionDTO(
+                PublicIdG,
                 Misc.CreateStampDTO,
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-
+                PublicIdG,
+                PublicIdH,
                 new FieldDefinitionDTO[] {
                     Misc.CreateFieldDefinition
                 }

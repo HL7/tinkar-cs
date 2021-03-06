@@ -21,7 +21,7 @@ namespace Tinkar
     /// Tinkar Stamp interface.
     /// </summary>
     [JavaAttribute("Stamp")]
-    public interface IStamp
+    public interface IStamp : IComponent, IComparable
     {
         /// <summary>
         /// Gets stamp status.
@@ -47,26 +47,5 @@ namespace Tinkar
         /// Gets stamp path.
         /// </summary>
         IConcept Path { get; }
-    }
-
-    /// <summary>
-    /// IStamp interface extension methods.
-    /// </summary>
-    public static class IStampExtensions
-    {
-        /// <summary>
-        /// Create StampDTO from an IStamp.
-        /// </summary>
-        /// <param name="me">Extension method operated on this element.</param>
-        /// <returns>Stamp.</returns>
-        public static StampDTO ToChangeSetThing(this IStamp me)
-        {
-            return new StampDTO(
-                me.Status.ComponentUuids,
-                me.Time,
-                me.Author.ComponentUuids,
-                me.Module.ComponentUuids,
-                me.Path.ComponentUuids);
-        }
     }
 }

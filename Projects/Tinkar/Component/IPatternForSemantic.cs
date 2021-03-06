@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 
 namespace Tinkar
 {
     /// <summary>
-    /// Tinkar Stamp with comment interface.
+    /// Definition for Semantic interface.
     /// </summary>
-    [JavaAttribute("StampComment")]
-    public interface IStampComment
+    [JavaAttribute("PatternForSemantic")]
+    public interface IPatternForSemantic : IComponent
     {
-        /// <summary>
-        /// Gets stamp.
-        /// </summary>
-        IStamp Stamp { get; }
-
-        /// <summary>
-        /// Gets Comment field.
-        /// </summary>
-        String Comment { get; }
     }
 }

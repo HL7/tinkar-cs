@@ -24,9 +24,5 @@ namespace Tinkar
     public interface IConceptVersion : IVersion,
         IConcept
     {
-        //$default ConceptVersionDTO toChangeSetThing()
-        //{
-        //    return new ConceptVersionDTO(componentUuids(), stamp().toChangeSetThing());
-        //}
     }
 }

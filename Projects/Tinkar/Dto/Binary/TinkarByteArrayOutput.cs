@@ -33,8 +33,9 @@ namespace Tinkar
         /// Initializes a new instance of the <see cref="TinkarByteArrayOutput"/> class.
         /// </summary>
         /// <param name="byteArrayOutputStream">Underlying memory stream.</param>
-        private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream)
-            : base(byteArrayOutputStream)
+        /// <param name="marshalVersion">Version of marshal'ing code.</param>
+        private TinkarByteArrayOutput(MemoryStream byteArrayOutputStream, Int32 marshalVersion)
+            : base(byteArrayOutputStream, marshalVersion)
         {
             this.byteArrayOutputStream = byteArrayOutputStream;
         }
@@ -42,8 +43,9 @@ namespace Tinkar
         /// <summary>
         /// Create a TinkarByteArrayOutput item.
         /// </summary>
+        /// <param name="marshalVersion">Version of marshal'ing code.</param>
         /// <returns>TinkarByteArrayOutput item.</returns>
-        public static TinkarByteArrayOutput Make() => new TinkarByteArrayOutput(new MemoryStream());
+        public static TinkarByteArrayOutput Make(Int32 marshalVersion) => new TinkarByteArrayOutput(new MemoryStream(), marshalVersion);
 
         /// <summary>
         /// Get output stream bytes.

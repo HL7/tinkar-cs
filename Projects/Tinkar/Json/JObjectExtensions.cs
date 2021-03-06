@@ -78,7 +78,7 @@ namespace Tinkar
         /// <param name="jObj">JSON parent container.</param>
         /// <param name="propertyName">child property name.</param>
         /// <returns>Guid values.</returns>
-        public static IEnumerable<Guid> ReadUuids(this JObject jObj, String propertyName)
+        public static IEnumerable<Guid> AsUuids(this JObject jObj, String propertyName)
         {
             String[] guidStrings = jObj.ReadToken<JArray>(propertyName).Values<String>().ToArray();
             Guid[] retVal = new Guid[guidStrings.Length];
@@ -88,12 +88,23 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Read PublicId from the named child property.
+        /// </summary>
+        /// <param name="jObj">JSON parent container.</param>
+        /// <param name="propertyName">child property name.</param>
+        /// <returns>Guid values.</returns>
+        public static PublicId AsPublicId(this JObject jObj, String propertyName)
+        {
+            return new PublicId(jObj.AsUuids(propertyName).ToArray());
+        }
+
+        /// <summary>
         /// Read Object values from the named child property.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <param name="propertyName">child property name.</param>
         /// <returns>Object values.</returns>
-        public static IEnumerable<Object> ReadObjects(this JObject jObj, String propertyName)
+        public static IEnumerable<Object> AsObjects(this JObject jObj, String propertyName)
         {
             Object[] Parse(JArray jArray)
             {
@@ -127,19 +138,19 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Read DefinitionForSemanticVersionDTO values from the named child property.
+        /// Read PatternForSemanticVersionDTO values from the named child property.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name="componentUuids">Externally defined component uuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
         /// <returns>Definition for semantic version values.</returns>
-        public static IEnumerable<DefinitionForSemanticVersionDTO> ReadDefinitionForSemanticVersionList(
+        public static IEnumerable<PatternForSemanticVersionDTO> ReadPatternForSemanticVersionList(
             this JObject jObj,
-            IEnumerable<Guid> componentUuids)
+            IPublicId publicId)
         {
-            List<DefinitionForSemanticVersionDTO> retVal = new List<DefinitionForSemanticVersionDTO>();
+            List<PatternForSemanticVersionDTO> retVal = new List<PatternForSemanticVersionDTO>();
             JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.DEFINITION_VERSIONS);
             foreach (JObject item in items.Values<JObject>())
-                retVal.Add(DefinitionForSemanticVersionDTO.Make(item, componentUuids));
+                retVal.Add(PatternForSemanticVersionDTO.Make(item, publicId));
             return retVal;
         }
 
@@ -147,11 +158,12 @@ namespace Tinkar
         /// Read FieldDefinitionDTO values from the named child property.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
+        /// <param name="fieldName">JSON child field name.</param>
         /// <returns>Field definition values.</returns>
-        public static IEnumerable<FieldDefinitionDTO> ReadFieldDefinitionList(this JObject jObj)
+        public static IEnumerable<FieldDefinitionDTO> AsFieldDefinitionList(this JObject jObj, String fieldName)
         {
             List<FieldDefinitionDTO> retVal = new List<FieldDefinitionDTO>();
-            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.FIELD_DEFINITIONS);
+            JArray items = jObj.ReadToken<JArray>(fieldName);
             foreach (JObject item in items.Values<JObject>())
                 retVal.Add(FieldDefinitionDTO.Make(item));
             return retVal;
@@ -161,17 +173,19 @@ namespace Tinkar
         /// Read ConceptVersionDTO values from the named child property.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name="componentUuids">Externally defined component uuids.</param>
+        /// <param name = "fieldName" > JSON child field name</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
         /// <returns>Concept version values.</returns>
-        public static IEnumerable<ConceptVersionDTO> ReadConceptVersionList(
+        public static IEnumerable<ConceptVersionDTO> AsConceptVersionList(
             this JObject jObj,
-            IEnumerable<Guid> componentUuids)
+            String fieldName,
+            IPublicId publicId)
         {
             List<ConceptVersionDTO> retVal = new List<ConceptVersionDTO>();
 
-            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.CONCEPT_VERSIONS);
+            JArray items = jObj.ReadToken<JArray>(fieldName);
             foreach (JObject item in items.Values<JObject>())
-                retVal.Add(ConceptVersionDTO.Make(item, componentUuids));
+                retVal.Add(ConceptVersionDTO.Make(item, publicId));
             return retVal;
         }
 
@@ -179,26 +193,28 @@ namespace Tinkar
         /// Read SemanticVersionDTO values from the named child property.
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
-        /// <param name="componentUuids">Externally defined component uuids.</param>
-        /// <param name="definitionForSemanticUuids">Externally defined definition for semantic uuids.</param>
-        /// <param name="referencedComponentUuids">Externally defined referenced component uuids.</param>
+        /// <param name = "publicId" > Public id(component ids).</param>
+        /// <param name = "fieldName" > Json child field name.</param>
+        /// <param name="definitionForSemanticPublicId">Externally defined definition for semantic uuids.</param>
+        /// <param name="referencedComponentPublicId">Externally defined referenced component uuids.</param>
         /// <returns>Semantic version values.</returns>
         public static IEnumerable<SemanticVersionDTO> ReadSemanticVersionList(
             this JObject jObj,
-            IEnumerable<Guid> componentUuids,
-            IEnumerable<Guid> definitionForSemanticUuids,
-            IEnumerable<Guid> referencedComponentUuids)
+            String fieldName,
+            IPublicId publicId,
+            IPublicId definitionForSemanticPublicId,
+            IPublicId referencedComponentPublicId)
         {
             List<SemanticVersionDTO> retVal = new List<SemanticVersionDTO>();
 
-            JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.VERSIONS);
+            JArray items = jObj.ReadToken<JArray>(fieldName);
             foreach (JObject item in items.Values<JObject>())
             {
                 retVal.Add(SemanticVersionDTO.Make(
                     item,
-                    componentUuids,
-                    definitionForSemanticUuids,
-                    referencedComponentUuids));
+                    publicId,
+                    definitionForSemanticPublicId,
+                    referencedComponentPublicId));
             }
 
             return retVal;
@@ -216,18 +232,19 @@ namespace Tinkar
             {
                 case null:
                     throw new Exception($"{TErr} Missing CLASS Declaration");
-                case ConceptChronologyDTO.JsonClassName:
+                case ConceptChronologyDTO.JSONCLASSNAME:
                     return ConceptChronologyDTO.Make(jObj);
-                case ConceptDTO.JsonClassName:
+                case ConceptDTO.JSONCLASSNAME:
                     return ConceptDTO.Make(jObj);
-                case DefinitionForSemanticChronologyDTO.JsonClassName:
-                    return DefinitionForSemanticChronologyDTO.Make(jObj);
-                case DefinitionForSemanticDTO.JsonClassName:
-                    return DefinitionForSemanticDTO.Make(jObj);
-                case SemanticChronologyDTO.JsonClassName:
+                case PatternForSemanticChronologyDTO.JSONCLASSNAME:
+                    return PatternForSemanticChronologyDTO.Make(jObj);
+                case PatternForSemanticDTO.JSONCLASSNAME:
+                    return PatternForSemanticDTO.Make(jObj);
+                case SemanticChronologyDTO.JSONCLASSNAME:
                     return SemanticChronologyDTO.Make(jObj);
-                case SemanticDTO.JsonClassName:
+                case SemanticDTO.JSONCLASSNAME:
                     return SemanticDTO.Make(jObj);
+                #warning ' add new classes'
                 default:
                     throw new NotImplementedException($"Class {actualClassName} not known");
             }

@@ -16,16 +16,18 @@ namespace Tinkar.XUnitTests
         {
             DateTime time = new DateTime(2020, 12, 31);
             StampDTO dtoStart = new StampDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.PublicIdG,
+                Misc.PublicIdH,
                 time,
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                Misc.PublicIdI,
+                Misc.PublicIdJ,
+                Misc.PublicIdK
                 );
-            Misc.Compare(dtoStart.StatusUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.AuthorUuids, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
-            Misc.Compare(dtoStart.ModuleUuids, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
-            Misc.Compare(dtoStart.PathUuids, Misc.j1, Misc.j2, Misc.j3, Misc.j4);
+            Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.StatusPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
+            Misc.Compare(dtoStart.AuthorPublicId, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
+            Misc.Compare(dtoStart.ModulePublicId, Misc.j1, Misc.j2, Misc.j3, Misc.j4);
+            Misc.Compare(dtoStart.PathPublicId, Misc.k1, Misc.k2, Misc.k3, Misc.k4);
             Assert.True(dtoStart.Time == time);
         }
 
@@ -36,107 +38,140 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
             {
                 StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
                 StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     new DateTime(2001, 1, 1),
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
                 StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g2, Misc.g2, Misc.g3, Misc.g4 },
+                    new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4),
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 Assert.False(a.IsEquivalent(b));
             }
             {
                 StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    new PublicId(Misc.h2, Misc.h2, Misc.h3, Misc.h4),
                     time,
-                    new Guid[] { Misc.h2, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
-                );
-                Assert.False(a.IsEquivalent(b));
-            }
-
-            {
-                StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
-                );
-                StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
-                    time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i2, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 Assert.False(a.IsEquivalent(b));
             }
 
             {
                 StampDTO a = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
                 );
                 StampDTO b = new StampDTO(
-                    new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
                     time,
-                    new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                    new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                    new Guid[] { Misc.j2, Misc.j2, Misc.j3, Misc.j4 }
+                    new PublicId(Misc.i2, Misc.i2, Misc.i3, Misc.i4 ),
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                StampDTO a = new StampDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    time,
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
+                );
+                StampDTO b = new StampDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    time,
+                    Misc.PublicIdI,
+                    new PublicId(Misc.j2, Misc.j2, Misc.j3, Misc.j4),
+                    Misc.PublicIdK
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+
+            {
+                StampDTO a = new StampDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    time,
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    Misc.PublicIdK
+                );
+                StampDTO b = new StampDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    time,
+                    Misc.PublicIdI,
+                    Misc.PublicIdJ,
+                    new PublicId(Misc.k1, Misc.k2, Misc.k3, Misc.k3)
                 );
                 Assert.False(a.IsEquivalent(b));
             }
@@ -149,11 +184,12 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             StampDTO dtoStart = new StampDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.PublicIdG,
+                Misc.PublicIdH,
                 time,
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                Misc.PublicIdI,
+                Misc.PublicIdJ,
+                Misc.PublicIdK
             );
 
             MemoryStream ms = new MemoryStream();
@@ -177,11 +213,12 @@ namespace Tinkar.XUnitTests
             DateTime time = new DateTime(2020, 12, 31);
 
             StampDTO dtoStart = new StampDTO(
-                new Guid[] { Misc.g1, Misc.g2, Misc.g3, Misc.g4 },
+                Misc.PublicIdG,
+                Misc.PublicIdH,
                 time,
-                new Guid[] { Misc.h1, Misc.h2, Misc.h3, Misc.h4 },
-                new Guid[] { Misc.i1, Misc.i2, Misc.i3, Misc.i4 },
-                new Guid[] { Misc.j1, Misc.j2, Misc.j3, Misc.j4 }
+                Misc.PublicIdI,
+                Misc.PublicIdJ,
+                Misc.PublicIdK
             );
 
             MemoryStream ms = new MemoryStream();

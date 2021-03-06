@@ -35,7 +35,7 @@ namespace Tinkar.XUnitTests
         public void ConceptDTOFieldsTest()
         {
             ConceptDTO dtoStart = Misc.CreateConceptDTO;
-            Misc.Compare(dtoStart.ComponentUuids, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
+            Misc.Compare(dtoStart.PublicId.AsUuidArray, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
         }
 
         [DoNotParallelize]
@@ -50,7 +50,7 @@ namespace Tinkar.XUnitTests
 
             {
                 ConceptDTO a = Misc.CreateConceptDTO;
-                ConceptDTO b = new ConceptDTO(new Guid[] { Misc.g2, Misc.g1, Misc.g3, Misc.g4 });
+                ConceptDTO b = new ConceptDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4 ));
                 Assert.False(a.IsEquivalent(b));
             }
         }
@@ -70,7 +70,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                ConceptDTO dtoRead = (ConceptDTO)input.ReadField();
+                ConceptDTO dtoRead = (ConceptDTO)input.GetField();
                 Assert.True(dtoStart.IsEquivalent(dtoRead));
             }
         }

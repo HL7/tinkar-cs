@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 using System;
+using System.Collections.Generic;
 
 namespace Tinkar
 {
     /// <summary>
     /// ConceptChronology interface.
     /// </summary>
-    /// <typeparam name="TIdentifiedThing">IChronology identified thing generic parameter.</typeparam>
-    public interface IConceptChronology<TIdentifiedThing> :
-        IChronology<IConceptVersion, TIdentifiedThing>, IConcept
-        where TIdentifiedThing : IIdentifiedThing
+    /// <typeparam name="TConceptVersion">Version type.</typeparam>
+    /// <typeparam name="TComponent">Component type.</typeparam>
+    public interface IConceptChronology<TConceptVersion, TComponent> :
+        IChronology<TConceptVersion, TComponent>, IConcept
+        where TConceptVersion : IConceptVersion
+        where TComponent : IComponent
     {
-        //$default ConceptChronologyDTO toChangeSetThing() {
-        //     MutableList<ConceptVersionDTO> versions = Lists.mutable.ofInitialCapacity(versions().size());
-        //     for (ConceptVersion conceptVersion : versions()) {
-        //          versions.add(conceptVersion.toChangeSetThing());
-        //     }
-        //     return new ConceptChronologyDTO(componentUuids(),
-        //             chronologySet().componentUuids(),
-        //             versions.toImmutable());
-        //}
     }
 }

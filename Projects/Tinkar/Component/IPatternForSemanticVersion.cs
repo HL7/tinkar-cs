@@ -20,33 +20,26 @@ namespace Tinkar
 {
     /// <summary>
     /// Defines the fields and purpose of a Semantic Version.
-    /// SemanticVersion instances all reference a IDefinitionForSemanticVersion
+    /// SemanticVersion instances all reference a IPatternForSemanticVersion
     /// to define the expected fields of that Semantic Version.
     /// </summary>
-    [JavaAttribute("DefinitionForSemanticVersion")]
-    public interface IDefinitionForSemanticVersion : IVersion, IDefinitionForSemantic
+    [JavaAttribute("PatternForSemanticVersion")]
+    public interface IPatternForSemanticVersion<TFieldDefinition> : IVersion, IPatternForSemantic
+        where TFieldDefinition : IFieldDefinition
     {
         /// <summary>
         /// Gets the SemanticVersion field definitions.
         /// </summary>
-        IEnumerable<IFieldDefinition> FieldDefinitions { get; }
+        IEnumerable<TFieldDefinition> FieldDefinitions { get; }
 
         /// <summary>
         /// Gets the purpose of referenced component.
         /// </summary>
         IConcept ReferencedComponentPurpose { get; }
 
-        //$default DefinitionForSemanticVersionDTO toChangeSetThing() {
-        //    MutableList<FieldDefinitionDTO> fields = Lists.mutable.ofInitialCapacity(fieldDefinitions().size());
-        //    for (FieldDefinition fieldDefinition : fieldDefinitions()) {
-        //        fields.add(fieldDefinition.toChangeSetThing());
-        //    }
-
-        //    return new DefinitionForSemanticVersionDTO(
-        //            componentUuids(),
-        //            stamp().toChangeSetThing(),
-        //            referencedComponentPurpose().componentUuids(),
-        //            fields.toImmutable());
-        //}
+        /// <summary>
+        /// Gets the meaning of referenced component.
+        /// </summary>
+        IConcept ReferencedComponentMeaning { get; }
     }
 }
