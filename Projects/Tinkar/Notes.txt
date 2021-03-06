@@ -1,7 +1,7 @@
 ﻿PublicId's
 
 Looking at the public ID's. I have some questions.
-a) Can sort the guid array so that comparisons can operation on a sorted array (On rather than On^2)
+a) Can I sort the guid array so that comparisons can operation on a sorted array (Order (n) time rather than Order (n^2))
 b) Can we assume/verify that a guid will not be duplicated?
 c) Looking PublicId.equals code, it looks like true will be returned if all the id's in the first public id are in the second publicid, even if the
 second public id has additional codes.
