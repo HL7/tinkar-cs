@@ -11,7 +11,7 @@ namespace Tinkar
     /// Defines a Union that can access a guid or 2 Int64's.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 16, CharSet = CharSet.Ansi)]
-    public struct GuidUnion : IComparable<GuidUnion>
+    public struct GuidUnion : ISame<GuidUnion>
     {
         [FieldOffset(0)] public Guid Uuid;
         [FieldOffset(0)] public Int64 Int64A;
@@ -32,11 +32,11 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Implementation if IComparable
+        /// Implementation if ISame
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public Int32 CompareTo(GuidUnion other)
+        public Int32 IsSame(GuidUnion other)
         {
             Int32 cmpVal = this.Int64A.CompareTo(other.Int64A);
             if (cmpVal != 0)

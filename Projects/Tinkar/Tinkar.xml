@@ -4,6 +4,32 @@
         <name>Tinkar</name>
     </assembly>
     <members>
+        <member name="T:Tinkar.GuidUnion">
+            <summary>
+            Defines a Union that can access a guid or 2 Int64's.
+            </summary>
+        </member>
+        <member name="M:Tinkar.GuidUnion.IsSame(Tinkar.GuidUnion)">
+            <summary>
+            Implementation if ISame
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Tinkar.PublicId">
+            <summary>
+            Public Id.
+            This is one or more Guids that serve as a unique id's.
+            Notes:
+            a) if there are more than one id, that means that each id identifies this
+            object. Any other PublicId that contains any of these ID's is considered equivelant.
+            b) there are several modifications made to this class to minimize memory allocations. in
+            particular to minimize memory references. That is why we have SingleIdLsb and SingleIdMsb, which 
+            are set if there is only a single id to this. If there are multiple id's, then IdArray is 
+            set to an array of items.
+            It is expected that the bulk of PublicId's created will be a single id.
+            </summary>
+        </member>
         <member name="T:Tinkar.IChronology`2">
             <summary>
             Chronology interaface.
@@ -512,10 +538,10 @@
             record implementation because we want to compare to
             do a deep comparison, not just compare reference equality.
             </summary>
-            <param name="other">Item to compare to for equivalence.</param>
+            <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.ComponentDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.ComponentDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -561,7 +587,15 @@
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="conceptVersions">ConceptVersions.</param>
         </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.ConceptChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.ConceptChronologyDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -610,7 +644,15 @@
             </summary>
             <param name = "componentPublicId" > Component Public id(component ids).</param>
         </member>
-        <member name="M:Tinkar.ConceptDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.ConceptDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.ConceptDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -661,7 +703,15 @@
             </summary>
             <param name = "conceptVersion" > Concept Version DTO.</param>
         </member>
-        <member name="M:Tinkar.ConceptVersionDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.ConceptVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.ConceptVersionDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -703,7 +753,7 @@
         </member>
         <member name="M:Tinkar.FieldCompare.CompareItem``1(``0,``0)">
             <summary>
-            Compare two IComparable instances.
+            Compare two ISame instances.
             </summary>
             <typeparam name="TItem">Items types to compare.</typeparam>
             <param name="a">First item to compare.</param>
@@ -737,9 +787,19 @@
             <param name="b">Second item to compare.</param>
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         </member>
+        <member name="M:Tinkar.FieldCompare.EquivelateSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+            items that are equal.
+            </summary>
+            <typeparam name="TSeq">Sequence type to compare.</typeparam>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
         <member name="M:Tinkar.FieldCompare.CompareSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+            Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
             items that are equal.
             </summary>
             <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -755,7 +815,7 @@
             <param name="b">Second item to compare.</param>
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         </member>
-        <member name="M:Tinkar.FieldCompare.Equivalent(System.Object,System.Object)">
+        <member name="M:Tinkar.FieldCompare.Same(System.Object,System.Object)">
             <summary>
             Returns true if two bojects are equivalent, or the same with
             a deep comparison.
@@ -765,6 +825,22 @@
             <returns>true if equivalent.</returns>
         </member>
         <member name="M:Tinkar.FieldCompare.Compare(System.Object,System.Object)">
+            <summary>
+            Compares two objects for 'sameness'. Does deep compare.
+            </summary>
+            <param name="aObj">First objec to compare.</param>
+            <param name="bObj">Second object to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.FieldCompare.Equivalent(System.Object[],System.Object[])">
+            <summary>
+            Compare two Object arrays.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.FieldCompare.Equivalent(System.Object,System.Object)">
             <summary>
             Compares two objects for 'sameness'. Does deep compare.
             </summary>
@@ -959,10 +1035,10 @@
             record implementation because we want to compare to
             do a deep comparison, not just compare reference equality.
             </summary>
-            <param name="other">Item to compare to for equivalence.</param>
+            <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.FieldDefinitionDTO.IsSame(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1010,6 +1086,39 @@
             <param name="other">other item to compare equivalence to.</param>
             <returns>true if two items are equivalent.</returns>
         </member>
+        <member name="M:Tinkar.IEquivalent`1.IsEquivalent(`0)">
+            <summary>
+            Returns true if 'this' item is equivalent to 'other'
+            item.
+            </summary>
+            <param name="other">other item to compare equivalence to.</param>
+            <returns>true if two items are equivalent.</returns>
+        </member>
+        <member name="T:Tinkar.ISame">
+            <summary>
+            IEquivalent.
+            Tests if two items are the 'same'. This looks at actual values,
+            not references, to determine equivalency.
+            </summary>
+        </member>
+        <member name="M:Tinkar.ISame.IsSame(System.Object)">
+            <summary>
+            Returns true if 'this' item and 'other' item are identical in values.
+            This is a deep comparison.
+            item.
+            </summary>
+            <param name="other">other item to compare equivalence to.</param>
+            <returns>true if two items are same.</returns>
+        </member>
+        <member name="M:Tinkar.ISame`1.IsSame(`0)">
+            <summary>
+            Returns true if 'this' item and 'other' item are identical in values.
+            This is a deep comparison.
+            item.
+            </summary>
+            <param name="other">other item to compare equivalence to.</param>
+            <returns>true if two items are same.</returns>
+        </member>
         <member name="T:Tinkar.PatternForSemanticChronologyDTO">
             <summary>
             Tinkar PatternForSemanticChronology record.
@@ -1039,7 +1148,15 @@
             <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="definitionVersions">DefinitionVersions.</param>
         </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.PatternForSemanticChronologyDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1089,7 +1206,15 @@
             </summary>
             <param name = "componentPublicId" > Public id(component ids).</param>
         </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.PatternForSemanticDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1148,7 +1273,15 @@
             <param name="referencedComponentMeaningPublicId">Referenced Component Meaning PublicIc.</param>
             <param name="fieldDefinitionDTOs">FieldDefinitions.</param>
         </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.PatternForSemanticVersionDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1216,7 +1349,15 @@
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.SemanticChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.SemanticChronologyDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1303,7 +1444,15 @@
             <param name="patternForSemantic">PatternForSemanticUuids.</param>
             <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
         </member>
-        <member name="M:Tinkar.SemanticDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.SemanticDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.SemanticDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1382,7 +1531,15 @@
             <param name="stampDTO">StampDTO.</param>
             <param name="fields">Fields.</param>
         </member>
-        <member name="M:Tinkar.SemanticVersionDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.SemanticVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.SemanticVersionDTO.IsSame(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1488,7 +1645,15 @@
             <param name="modulePublicId">ModulePublicId.</param>
             <param name="pathPublicId">PathPublicId.</param>
         </member>
-        <member name="M:Tinkar.StampDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.StampDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.StampDTO.IsSame(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1549,10 +1714,10 @@
             record implementation because we want to compare to
             do a deep comparison, not just compare reference equality.
             </summary>
-            <param name="other">Item to compare to for equivalence.</param>
+            <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.VersionDTO.CompareTo(System.Object)">
+        <member name="M:Tinkar.VersionDTO.IsSame(System.Object)">
             <summary>
             Compares this to another item.
             </summary>

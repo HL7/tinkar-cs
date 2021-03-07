@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                    DataTypePublicId = new PublicId(Misc.other)
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -48,7 +48,7 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    PurposePublicId = new PublicId(Misc.h1)
+                    PurposePublicId = new PublicId(Misc.other)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -57,11 +57,54 @@ namespace Tinkar.XUnitTests
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;
                 FieldDefinitionDTO b = Misc.CreateFieldDefinition with
                 {
-                    MeaningPublicId = new PublicId(Misc.i1, Misc.i2, Misc.i3, Misc.i3)
+                    MeaningPublicId = new PublicId(Misc.other)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
         }
+
+
+
+        [DoNotParallelize]
+        [Fact]
+        public void FieldDefinitionDTOIsSameTest()
+        {
+            {
+                FieldDefinitionDTO a = Misc.CreateFieldDefinition;
+                FieldDefinitionDTO b = Misc.CreateFieldDefinition;
+                Assert.True(a.IsSame(b) == 0);
+            }
+
+            {
+                FieldDefinitionDTO a = Misc.CreateFieldDefinition;
+                FieldDefinitionDTO b = Misc.CreateFieldDefinition with
+                {
+                    DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                }
+                ;
+                Assert.False(a.IsSame(b) == 0);
+            }
+
+            {
+                FieldDefinitionDTO a = Misc.CreateFieldDefinition;
+                FieldDefinitionDTO b = Misc.CreateFieldDefinition with
+                {
+                    PurposePublicId = new PublicId(Misc.h1)
+                };
+                Assert.False(a.IsSame(b) == 0);
+            }
+
+            {
+                FieldDefinitionDTO a = Misc.CreateFieldDefinition;
+                FieldDefinitionDTO b = Misc.CreateFieldDefinition with
+                {
+                    MeaningPublicId = new PublicId(Misc.i1, Misc.i2, Misc.i3, Misc.i3)
+                };
+                Assert.False(a.IsSame(b) == 0);
+            }
+        }
+
+
 
         [DoNotParallelize]
         [Fact]
@@ -83,7 +126,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 FieldDefinitionDTO dtoRead = FieldDefinitionDTO.Make(input);
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.IsSame(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -102,7 +145,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 FieldDefinitionDTO dtoEnd = FieldDefinitionDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
             }
         }
     }

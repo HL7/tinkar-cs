@@ -72,25 +72,49 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Returns zero of the two items are equivalent. This is not necessarily the
+        /// same is same.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public override Boolean IsEquivalent(Object otherObject)
+        {
+            if (base.IsEquivalent(otherObject) == false)
+                return false;
+
+            PatternForSemanticVersionDTO other = otherObject as PatternForSemanticVersionDTO;
+            if (other == null)
+                return false;
+
+            if (this.ReferencedComponentPurposePublicId.IsEquivalent(other.ReferencedComponentPurposePublicId) == false)
+                return false;
+            if (this.ReferencedComponentMeaningPublicId.IsEquivalent(other.ReferencedComponentMeaningPublicId) == false)
+                return false;
+            if (FieldCompare.EquivelateSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs) == false)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(Object otherObject)
+        public override Int32 IsSame(Object otherObject)
         {
             PatternForSemanticVersionDTO other = otherObject as PatternForSemanticVersionDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.CompareTo(other);
+            Int32 cmp = base.IsSame(other);
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.ReferencedComponentPurposePublicId.CompareTo(other.ReferencedComponentPurposePublicId);
+            cmp = this.ReferencedComponentPurposePublicId.IsSame(other.ReferencedComponentPurposePublicId);
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.ReferencedComponentMeaningPublicId.CompareTo(other.ReferencedComponentMeaningPublicId);
+            cmp = this.ReferencedComponentMeaningPublicId.IsSame(other.ReferencedComponentMeaningPublicId);
             if (cmp != 0)
                 return cmp;
 

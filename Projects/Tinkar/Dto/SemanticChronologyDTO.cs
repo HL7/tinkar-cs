@@ -81,17 +81,40 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Returns zero of the two items are equivalent. This is not necessarily the
+        /// same is same.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public override Boolean IsEquivalent(Object otherObject)
+        {
+            if (base.IsEquivalent(otherObject) == false)
+                return false;
+
+            SemanticChronologyDTO other = otherObject as SemanticChronologyDTO;
+            if (other == null)
+                return false;
+
+            if (this == other)
+                return true;
+
+            if (FieldCompare.EquivelateSequence(this.SemanticVersions, other.SemanticVersions) == false)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(Object otherObject)
+        public override Int32 IsSame(Object otherObject)
         {
             SemanticChronologyDTO other = otherObject as SemanticChronologyDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.CompareTo(other);
+            Int32 cmp = base.IsSame(other);
             if (cmp != 0)
                 return cmp;
             cmp = FieldCompare.CompareSequence(this.SemanticVersions, other.SemanticVersions);

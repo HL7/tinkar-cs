@@ -104,33 +104,64 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Returns zero of the two items are equivalent. This is not necessarily the
+        /// same is same.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public override Boolean IsEquivalent(Object otherObject)
+        {
+            if (base.IsEquivalent(otherObject) == false)
+                return false;
+
+            StampDTO other = otherObject as StampDTO;
+            if (other == null)
+                return false;
+
+            if (this == other)
+                return true;
+
+            if (this.StatusPublicId.IsEquivalent(other.StatusPublicId) == false)
+                return false;
+            if (this.Time.CompareTo(other.Time) != 0)
+                return false;
+            if (this.AuthorPublicId.IsEquivalent(other.AuthorPublicId) == false)
+                return false;
+            if (this.ModulePublicId.IsEquivalent(other.ModulePublicId) == false)
+                return false;
+            if (this.PathPublicId.IsEquivalent(other.PathPublicId) == false)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Compare this with another item of same type.
         /// </summary>
         /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public override Int32 CompareTo(Object otherObject)
+        public override Int32 IsSame(Object otherObject)
         {
             StampDTO other = otherObject as StampDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.CompareTo(other);
+            Int32 cmp = base.IsSame(other);
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.StatusPublicId.CompareTo(other.StatusPublicId);
+            cmp = this.StatusPublicId.IsSame(other.StatusPublicId);
             if (cmp != 0)
                 return cmp;
             cmp = this.Time.CompareTo(other.Time);
             if (cmp != 0)
                 return cmp;
-            cmp = this.AuthorPublicId.CompareTo(other.AuthorPublicId);
+            cmp = this.AuthorPublicId.IsSame(other.AuthorPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.ModulePublicId.CompareTo(other.ModulePublicId);
+            cmp = this.ModulePublicId.IsSame(other.ModulePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.PathPublicId.CompareTo(other.PathPublicId);
+            cmp = this.PathPublicId.IsSame(other.PathPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;

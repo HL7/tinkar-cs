@@ -31,16 +31,37 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Returns zero of the two items are equivalent. This is not necessarily the
+        /// same is same.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public override Boolean IsEquivalent(Object otherObject)
+        {
+            if (base.IsEquivalent(otherObject) == false)
+                return false;
+
+            ConceptDTO other = otherObject as ConceptDTO;
+            if (other == null)
+                return false;
+
+            if (this == other)
+                return true;
+
+            return true;
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(Object otherObject)
+        public override Int32 IsSame(Object otherObject)
         {
             ConceptDTO other = otherObject as ConceptDTO;
             if (other == null)
                 return -1;
-            return base.CompareTo(other);
+            return base.IsSame(other);
         }
 
         /// <summary>

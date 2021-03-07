@@ -135,7 +135,7 @@ namespace Tinkar
                     break;
 
                 //case DigraphDTO item:
-                //    throw new NotImplementedException();
+                //    throw new NotImplementedException("xxyyz");
 
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");

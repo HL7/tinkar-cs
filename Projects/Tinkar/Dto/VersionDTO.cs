@@ -10,7 +10,7 @@ namespace Tinkar
     /// <summary>
     /// 
     /// </summary>
-    public abstract record VersionDTO : IDTO, IVersion, IEquivalent, IComparable
+    public abstract record VersionDTO : IDTO, IVersion, IEquivalent, ISame
     {
         /// <summary>
         /// Gets public id.
@@ -39,25 +39,36 @@ namespace Tinkar
         /// record implementation because we want to compare to
         /// do a deep comparison, not just compare reference equality.
         /// </summary>
-        /// <param name="other">Item to compare to for equivalence.</param>
+        /// <param name="otherObject">Item to compare to for equivalence.</param>
         /// <returns>true if equal.</returns>
-        public Boolean IsEquivalent(Object other) => this.CompareTo(other) == 0;
+        public virtual Boolean IsEquivalent(Object otherObject)
+        {
+            VersionDTO other = otherObject as VersionDTO;
+            if (other == null)
+                return false;
+
+            if (this.PublicId.IsEquivalent(other.PublicId) == false)
+                return false;
+            if (this.Stamp.IsEquivalent(other.Stamp) == false)
+                return false;
+            return true;
+        }
 
         /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public virtual Int32 CompareTo(Object otherObject)
+        public virtual Int32 IsSame(Object otherObject)
         {
             VersionDTO other = otherObject as VersionDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = this.PublicId.CompareTo(other.PublicId);
+            Int32 cmp = this.PublicId.IsSame(other.PublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.Stamp.CompareTo(other.Stamp);
+            cmp = this.Stamp.IsSame(other.Stamp);
             if (cmp != 0)
                 return cmp;
             return 0;

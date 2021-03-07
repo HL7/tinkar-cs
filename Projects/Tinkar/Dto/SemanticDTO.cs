@@ -67,23 +67,48 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Returns zero of the two items are equivalent. This is not necessarily the
+        /// same is same.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public override Boolean IsEquivalent(Object otherObject)
+        {
+            if (base.IsEquivalent(otherObject) == false)
+                return false;
+
+            SemanticDTO other = otherObject as SemanticDTO;
+            if (other == null)
+                return false;
+
+            if (this == other)
+                return true;
+
+            if (this.DefinitionForSemanticPublicId.IsEquivalent(other.DefinitionForSemanticPublicId) == false)
+                return false;
+            if (this.ReferencedComponentPublicId.IsEquivalent(other.ReferencedComponentPublicId) == false)
+                return false;
+            return true;
+        }
+
+        /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 CompareTo(Object otherObject)
+        public override Int32 IsSame(Object otherObject)
         {
             SemanticDTO other = otherObject as SemanticDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.CompareTo(other);
+            Int32 cmp = base.IsSame(other);
             if (cmp != 0)
                 return cmp;
-            cmp = this.DefinitionForSemanticPublicId.CompareTo(other.DefinitionForSemanticPublicId);
+            cmp = this.DefinitionForSemanticPublicId.IsSame(other.DefinitionForSemanticPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.ReferencedComponentPublicId.CompareTo(other.ReferencedComponentPublicId);
+            cmp = this.ReferencedComponentPublicId.IsSame(other.ReferencedComponentPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;

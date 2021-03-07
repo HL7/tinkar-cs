@@ -32,6 +32,7 @@ namespace Tinkar.XUnitTests
         public static byte[] zero => new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public static IPublicId PublicIdG => new PublicId(g1, g2, g3, g4);
+        public static Guid other => new Guid(0xff, 0xfe, 0xfd, zero);
 
         public static Guid g1 => new Guid(1, 0, 0, zero);
         public static Guid g2 => new Guid(2, 0, 0, zero);
@@ -158,14 +159,14 @@ namespace Tinkar.XUnitTests
                 Assert.True(inGuids[i].CompareTo(cmpGuids[i]) == 0);
         }
 
-        public static void Compare(IEnumerable<IEquivalent> inItems,
-            IEnumerable<IEquivalent> cmpItems)
+        public static void Compare(IEnumerable<ISame> inItems,
+            IEnumerable<ISame> cmpItems)
         {
-            IEquivalent[] inArr = inItems.ToArray();
-            IEquivalent[] cmpArr = cmpItems.ToArray();
+            ISame[] inArr = inItems.ToArray();
+            ISame[] cmpArr = cmpItems.ToArray();
             Assert.True(inArr.Length == cmpArr.Length);
             for (Int32 i = 0; i < inArr.Length; i++)
-                Assert.True(inArr[i].IsEquivalent(cmpArr[i]));
+                Assert.True(inArr[i].IsSame(cmpArr[i]) == 0);
         }
 
         public static PatternForSemanticChronologyDTO CreatePatternForSemanticChronologyDTO =>

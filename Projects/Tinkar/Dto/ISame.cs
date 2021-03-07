@@ -11,25 +11,27 @@ namespace Tinkar
     /// Tests if two items are the 'same'. This looks at actual values,
     /// not references, to determine equivalency.
     /// </summary>
-    public interface IEquivalent
+    public interface ISame
     {
         /// <summary>
-        /// Returns true if 'this' item is equivalent to 'other'
+        /// Returns true if 'this' item and 'other' item are identical in values.
+        /// This is a deep comparison.
         /// item.
         /// </summary>
         /// <param name="other">other item to compare equivalence to.</param>
-        /// <returns>true if two items are equivalent.</returns>
-        bool IsEquivalent(Object other);
+        /// <returns>true if two items are same.</returns>
+        Int32 IsSame(Object other);
     }
 
-    public interface IEquivalent<T>
+    public interface ISame<T>
     {
         /// <summary>
-        /// Returns true if 'this' item is equivalent to 'other'
+        /// Returns true if 'this' item and 'other' item are identical in values.
+        /// This is a deep comparison.
         /// item.
         /// </summary>
         /// <param name="other">other item to compare equivalence to.</param>
-        /// <returns>true if two items are equivalent.</returns>
-        bool IsEquivalent(T other);
+        /// <returns>true if two items are same.</returns>
+        Int32 IsSame(T other);
     }
 }

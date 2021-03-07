@@ -10,16 +10,16 @@ namespace Tinkar
     public static class FieldCompare
     {
         /// <summary>
-        /// Compare two IComparable instances.
+        /// Compare two ISame instances.
         /// </summary>
         /// <typeparam name="TItem">Items types to compare.</typeparam>
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareItem<TItem>(TItem a, TItem b)
-            where TItem : IComparable<TItem>
+            where TItem : ISame<TItem>
         {
-            return a.CompareTo(b);
+            return a.IsSame(b);
         }
 
         /// <summary>
@@ -78,7 +78,42 @@ namespace Tinkar
         public static Int32 ComparePublicIds(IPublicId a, IPublicId b) => CompareGuids(a.AsUuidArray, b.AsUuidArray);
 
         /// <summary>
-        /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+        /// Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+        /// items that are equal.
+        /// </summary>
+        /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
+        /// <param name="a">First item to compare.</param>
+        /// <param name="b">Second item to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static bool EquivelateSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
+            where TSeq : IEquivalent
+        {
+            if ((a == null) && (b == null))
+                return true;
+            if (a == null)
+                return false;
+            if (b == null)
+                return false;
+            Int32 cmp = a.Count().CompareTo(b.Count());
+            if (cmp != 0)
+                return false;
+            IEnumerator<TSeq> aIterator = a.GetEnumerator();
+            IEnumerator<TSeq> bIterator = b.GetEnumerator();
+            for (Int32 i = 0; i < a.Count(); i++)
+            {
+                aIterator.MoveNext();
+                bIterator.MoveNext();
+                TSeq aItem = aIterator.Current;
+                TSeq bItem = bIterator.Current;
+                if (aItem.IsEquivalent(bItem) == false)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
         /// items that are equal.
         /// </summary>
         /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -86,7 +121,7 @@ namespace Tinkar
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
-            where TSeq : IComparable
+            where TSeq : ISame
         {
             if ((a == null) && (b == null))
                 return 0;
@@ -105,7 +140,7 @@ namespace Tinkar
                 bIterator.MoveNext();
                 TSeq aItem = aIterator.Current;
                 TSeq bItem = bIterator.Current;
-                cmp = aItem.CompareTo(bItem);
+                cmp = aItem.IsSame(bItem);
                 if (cmp != 0)
                     return cmp;
             }
@@ -141,7 +176,7 @@ namespace Tinkar
         /// <param name="aObj">First item to compare.</param>
         /// <param name="bObj">Second item to compare.</param>
         /// <returns>true if equivalent.</returns>
-        public static Boolean Equivalent(Object aObj, Object bObj)
+        public static Boolean Same(Object aObj, Object bObj)
         {
             return Compare(aObj, bObj) == 0;
         }
@@ -160,6 +195,9 @@ namespace Tinkar
 
             switch (aObj)
             {
+                case ISame a:
+                    return a.IsSame(bObj);
+
                 case IComparable a:
                     return a.CompareTo(bObj);
 
@@ -174,5 +212,63 @@ namespace Tinkar
                     throw new NotImplementedException($"Can not handle type {aObj.GetType().Name}");
             }
         }
+
+
+
+
+        /// <summary>
+        /// Compare two Object arrays.
+        /// </summary>
+        /// <param name="a">First item to compare.</param>
+        /// <param name="b">Second item to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static bool Equivalent(Object[] a, Object[] b)
+        {
+            Int32 cmp = a.Length.CompareTo(b.Length);
+            if (cmp != 0)
+                return false;
+            for (Int32 i = 0; i < a.Count(); i++)
+            {
+                if (Equivalent(a[i], b[i]) == false)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Compares two objects for 'sameness'. Does deep compare.
+        /// </summary>
+        /// <param name="aObj">First objec to compare.</param>
+        /// <param name="bObj">Second object to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static bool Equivalent(Object aObj, Object bObj)
+        {
+            Int32 cmp = aObj.GetType().Name.CompareTo(bObj.GetType().Name);
+            if (cmp != 0)
+                return false;
+
+            switch (aObj)
+            {
+                case IEquivalent a:
+                    return a.IsEquivalent(bObj);
+
+                case IComparable a:
+                    return a.CompareTo(bObj) == 0;
+
+                case byte[] a:
+                    return CompareByteArray(a, (byte[])bObj) == 0;
+
+                // DiGraphType = 6,
+                case Object[] aArr:
+                    return Equivalent(aArr, (Object[])bObj);
+
+                default:
+                    throw new NotImplementedException($"Can not handle type {aObj.GetType().Name}");
+            }
+        }
+
+
+
     }
 }

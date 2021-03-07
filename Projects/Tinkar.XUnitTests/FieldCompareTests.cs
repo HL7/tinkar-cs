@@ -146,35 +146,35 @@ namespace Tinkar.XUnitTests
         public void FieldCompareTest()
         {
             {
-                Assert.True(FieldCompare.Equivalent("abc", "abc"));
-                Assert.False(FieldCompare.Equivalent("abc", "abcd"));
+                Assert.True(FieldCompare.Same("abc", "abc"));
+                Assert.False(FieldCompare.Same("abc", "abcd"));
             }
             {
-                Assert.True(FieldCompare.Equivalent(0, 0));
-                Assert.False(FieldCompare.Equivalent(0, 1));
+                Assert.True(FieldCompare.Same(0, 0));
+                Assert.False(FieldCompare.Same(0, 1));
             }
             {
-                Assert.True(FieldCompare.Equivalent(0.1F, 0.1F));
-                Assert.False(FieldCompare.Equivalent(0.0F, 1.0F));
+                Assert.True(FieldCompare.Same(0.1F, 0.1F));
+                Assert.False(FieldCompare.Same(0.0F, 1.0F));
             }
             {
-                Assert.True(FieldCompare.Equivalent(true, true));
-                Assert.False(FieldCompare.Equivalent(true, false));
+                Assert.True(FieldCompare.Same(true, true));
+                Assert.False(FieldCompare.Same(true, false));
             }
             {
-                Assert.True(FieldCompare.Equivalent(new DateTime(2020, 1, 1), new DateTime(2020, 1, 1)));
-                Assert.False(FieldCompare.Equivalent(new DateTime(2020, 1, 1), new DateTime(2020, 2, 1)));
+                Assert.True(FieldCompare.Same(new DateTime(2020, 1, 1), new DateTime(2020, 1, 1)));
+                Assert.False(FieldCompare.Same(new DateTime(2020, 1, 1), new DateTime(2020, 2, 1)));
             }
             {
-                Assert.True(FieldCompare.Equivalent(new byte[] { 1, 2, 3 },
+                Assert.True(FieldCompare.Same(new byte[] { 1, 2, 3 },
                                                     new byte[] { 1, 2, 3 }));
-                Assert.False(FieldCompare.Equivalent(new byte[] { 1, 2, 3 },
+                Assert.False(FieldCompare.Same(new byte[] { 1, 2, 3 },
                                                     new byte[] { 1, 3, 2 }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(Misc.CreateConceptChronologyDTO,
+                Assert.True(FieldCompare.Same(Misc.CreateConceptChronologyDTO,
                     Misc.CreateConceptChronologyDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreateConceptChronologyDTO,
                     Misc.CreateConceptChronologyDTO
                     with
@@ -183,10 +183,10 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(
+                Assert.True(FieldCompare.Same(
                     Misc.CreateConceptDTO,
                     Misc.CreateConceptDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreateConceptDTO,
                     Misc.CreateConceptDTO
                     with
@@ -195,9 +195,9 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(Misc.CreatePatternForSemanticChronologyDTO,
+                Assert.True(FieldCompare.Same(Misc.CreatePatternForSemanticChronologyDTO,
                     Misc.CreatePatternForSemanticChronologyDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreatePatternForSemanticChronologyDTO,
                     Misc.CreatePatternForSemanticChronologyDTO
                 with
@@ -206,10 +206,10 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(
+                Assert.True(FieldCompare.Same(
                     Misc.CreatePatternForSemanticDTO,
                     Misc.CreatePatternForSemanticDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreatePatternForSemanticDTO,
                     Misc.CreatePatternForSemanticDTO
                 with
@@ -218,10 +218,10 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(
+                Assert.True(FieldCompare.Same(
                     Misc.CreateSemanticChronologyDTO,
                     Misc.CreateSemanticChronologyDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreateSemanticChronologyDTO,
                     Misc.CreateSemanticChronologyDTO
                 with
@@ -230,10 +230,10 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Equivalent(
+                Assert.True(FieldCompare.Same(
                     Misc.CreateSemanticDTO,
                     Misc.CreateSemanticDTO));
-                Assert.False(FieldCompare.Equivalent(
+                Assert.False(FieldCompare.Same(
                     Misc.CreateSemanticDTO,
                     Misc.CreateSemanticDTO
                 with
@@ -245,8 +245,8 @@ namespace Tinkar.XUnitTests
                 Object[] AArr() => new object[] { "a", 2, 0.1F };
                 Object[] BArr() => new object[] { "a", 2, "ggg" };
 
-                Assert.True(FieldCompare.Equivalent(AArr(), AArr()));
-                Assert.False(FieldCompare.Equivalent(AArr(), BArr()));
+                Assert.True(FieldCompare.Same(AArr(), AArr()));
+                Assert.False(FieldCompare.Same(AArr(), BArr()));
             }
         }
     }

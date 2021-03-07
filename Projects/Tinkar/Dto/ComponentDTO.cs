@@ -14,7 +14,7 @@ namespace Tinkar
     /// </summary>
     public record ComponentDTO : IDTO,
         IComponent,
-        IComparable,
+        ISame,
         IEquivalent
     {
         /// <summary>
@@ -37,16 +37,24 @@ namespace Tinkar
         /// record implementation because we want to compare to
         /// do a deep comparison, not just compare reference equality.
         /// </summary>
-        /// <param name="other">Item to compare to for equivalence.</param>
+        /// <param name="otherObject">Item to compare to for equivalence.</param>
         /// <returns>true if equal.</returns>
-        public Boolean IsEquivalent(Object other) => this.CompareTo(other) == 0;
+        public virtual Boolean IsEquivalent(Object otherObject)
+        {
+            ComponentDTO other = otherObject as ComponentDTO;
+            if (other == null)
+                return false;
+            if (this.PublicId.IsEquivalent(other.PublicId) == false)
+                return false;
+            return true;
+        }
 
         /// <summary>
         /// Compares this to another item.
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public virtual Int32 CompareTo(Object otherObject)
+        public virtual Int32 IsSame(Object otherObject)
         {
             ComponentDTO other = otherObject as ComponentDTO;
             if (other == null)

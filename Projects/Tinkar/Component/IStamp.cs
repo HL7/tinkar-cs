@@ -21,7 +21,7 @@ namespace Tinkar
     /// Tinkar Stamp interface.
     /// </summary>
     [JavaAttribute("Stamp")]
-    public interface IStamp : IComponent, IComparable
+    public interface IStamp : IComponent, ISame, IEquivalent
     {
         /// <summary>
         /// Gets stamp status.
