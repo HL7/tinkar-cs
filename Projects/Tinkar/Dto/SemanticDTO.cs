@@ -19,6 +19,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "SemanticDTO";
 
         /// <summary>
+        /// Gets JSON Name of class.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
         /// Gets ReferencedComponent UUIDs.
         /// </summary>
         public IPublicId ReferencedComponentPublicId { get; init; }

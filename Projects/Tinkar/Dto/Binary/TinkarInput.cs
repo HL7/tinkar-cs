@@ -203,6 +203,16 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Read Tinkar items from file.
+        /// </summary>
+        /// <returns>Object[].</returns>
+        public IEnumerable<ComponentDTO> GetComponents()
+        {
+            while (this.reader.BaseStream.Position < this.reader.BaseStream.Length)
+                yield return (ComponentDTO)GetField();
+        }
+
+        /// <summary>
         /// Read an array or Object fields.
         /// </summary>
         /// <returns>Object[].</returns>
@@ -225,23 +235,7 @@ namespace Tinkar
                     throw new NotImplementedException();
                 case FieldDataType.StampType:
                     throw new NotImplementedException();
- 
-                case FieldDataType.StringType:
-                    return this.GetUTF();
-                case FieldDataType.IntegerType:
-                    return this.GetInt32();
-                case FieldDataType.FloatType:
-                    return this.GetSingle();
-                case FieldDataType.BooleanType:
-                    return this.GetBoolean();
-                case FieldDataType.ByteArrayType:
-                    return this.GetByteArray();
-                case FieldDataType.ObjectArrayType:
-                    return this.GetObjects().ToArray();
-                case FieldDataType.DiGraphType:
-                    throw new NotImplementedException();
-                case FieldDataType.InstantType:
-                    return this.GetInstant();
+
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
                 case FieldDataType.PatternForSemanticType:
@@ -258,6 +252,23 @@ namespace Tinkar
                     throw new NotImplementedException();
                 case FieldDataType.SpatialPointList:
                     throw new NotImplementedException();
+
+                case FieldDataType.StringType:
+                    return this.GetUTF();
+                case FieldDataType.IntegerType:
+                    return this.GetInt32();
+                case FieldDataType.FloatType:
+                    return this.GetSingle();
+                case FieldDataType.BooleanType:
+                    return this.GetBoolean();
+                case FieldDataType.ByteArrayType:
+                    return this.GetByteArray();
+                case FieldDataType.ObjectArrayType:
+                    return this.GetObjects().ToArray();
+                case FieldDataType.DiGraphType:
+                    throw new NotImplementedException();
+                case FieldDataType.InstantType:
+                    return this.GetInstant();
                 default:
                     throw new NotImplementedException($"FieldDataType {token} not known");
             }

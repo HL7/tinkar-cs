@@ -23,6 +23,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "ConceptDTO";
 
         /// <summary>
+        /// Gets JSON Name of class.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Component Public id(component ids).</param>

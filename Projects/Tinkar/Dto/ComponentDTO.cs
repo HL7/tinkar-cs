@@ -18,6 +18,11 @@ namespace Tinkar
         IEquivalent
     {
         /// <summary>
+        /// Gets JSON Name of class.
+        /// </summary>
+        public virtual String JsonClassName => throw new Exception("Should never be called.");
+
+        /// <summary>
         /// Gets public id.
         /// </summary>
         public IPublicId PublicId { get; init; }

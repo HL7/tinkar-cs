@@ -36,6 +36,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "ConceptChronologyDTO";
 
         /// <summary>
+        /// Gets JSON Name of class.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
         /// Gets ChronologySet PublicId.
         /// </summary>
         public IPublicId ChronologySetPublicId { get; init; }

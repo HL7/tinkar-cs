@@ -405,6 +405,12 @@
             </summary>
             <returns>Object[].</returns>
         </member>
+        <member name="M:Tinkar.TinkarInput.GetComponents">
+            <summary>
+            Read Tinkar items from file.
+            </summary>
+            <returns>Object[].</returns>
+        </member>
         <member name="M:Tinkar.TinkarInput.GetField">
             <summary>
             Read an array or Object fields.
@@ -520,6 +526,11 @@
             Base class for all Tinkar DTO classes.
             </summary>
         </member>
+        <member name="P:Tinkar.ComponentDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
+            </summary>
+        </member>
         <member name="P:Tinkar.ComponentDTO.PublicId">
             <summary>
             Gets public id.
@@ -557,6 +568,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ConceptChronologyDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
             </summary>
         </member>
         <member name="P:Tinkar.ConceptChronologyDTO.ChronologySetPublicId">
@@ -636,6 +652,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ConceptDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
             </summary>
         </member>
         <member name="M:Tinkar.ConceptDTO.#ctor(Tinkar.IPublicId)">
@@ -1200,6 +1221,11 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
+        <member name="P:Tinkar.PatternForSemanticDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
+            </summary>
+        </member>
         <member name="M:Tinkar.PatternForSemanticDTO.#ctor(Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticDTO"/> class.
@@ -1408,6 +1434,11 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
+        <member name="P:Tinkar.SemanticDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
+            </summary>
+        </member>
         <member name="P:Tinkar.SemanticDTO.ReferencedComponentPublicId">
             <summary>
             Gets ReferencedComponent UUIDs.
@@ -1587,6 +1618,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.StampDTO.JsonClassName">
+            <summary>
+            Gets JSON Name of class.
             </summary>
         </member>
         <member name="P:Tinkar.StampDTO.StatusPublicId">
@@ -2016,6 +2052,12 @@
             <summary>
             Dispose method. Releases reference to stream.
             </summary>
+        </member>
+        <member name="M:Tinkar.TinkarJsonInput.GetComponents">
+            <summary>
+            Read Tinkar items from file.
+            </summary>
+            <returns>Object[].</returns>
         </member>
         <member name="M:Tinkar.TinkarJsonInput.ReadJsonObject">
             <summary>

@@ -34,6 +34,48 @@ namespace Tinkar
         }
 
         /// <summary>
+        /// Read Tinkar items from file.
+        /// </summary>
+        /// <returns>Object[].</returns>
+        public IEnumerable<ComponentDTO> GetComponents()
+        {
+            JObject jObject = ReadJsonObject();
+            JArray items = (JArray) jObject["root"];
+
+            foreach (JObject item in items)
+            {
+                String className = (String) item["class"];
+                switch (className)
+                {
+                    case ConceptChronologyDTO.JSONCLASSNAME:
+                        yield return ConceptChronologyDTO.Make(item);
+                        break;
+                    case PatternForSemanticChronologyDTO.JSONCLASSNAME:
+                        yield return PatternForSemanticChronologyDTO.Make(item);
+                        break;
+                    case SemanticChronologyDTO.JSONCLASSNAME:
+                        yield return SemanticChronologyDTO.Make(item);
+                        break;
+
+                    case ConceptDTO.JSONCLASSNAME:
+                        yield return ConceptDTO.Make(item);
+                        break;
+
+                    case PatternForSemanticDTO.JSONCLASSNAME:
+                        yield return PatternForSemanticDTO.Make(item);
+                        break;
+
+                    case SemanticDTO.JSONCLASSNAME:
+                        yield return SemanticDTO.Make(item);
+                        break;
+
+                    default:
+                        throw new NotImplementedException($"Tinkar class {className} not known");
+                }
+            }
+        }
+
+        /// <summary>
         /// Read a JSON JObject from stream and return it.
         /// </summary>
         /// <returns>Read JObject.</returns>

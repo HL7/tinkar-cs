@@ -233,7 +233,6 @@ namespace Tinkar
         public virtual void Marshal(TinkarJsonOutput output)
         {
             output.WriteStartObject();
-
             output.WritePropertyName(ComponentFieldForJson.STAMP);
             this.StampDTO.Marshal(output);
             output.Put(ComponentFieldForJson.FIELDS, this.Fields);

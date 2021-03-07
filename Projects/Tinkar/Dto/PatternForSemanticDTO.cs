@@ -20,6 +20,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "PatternForSemanticDTO";
 
         /// <summary>
+        /// Gets JSON Name of class.
+        /// </summary>
+        public override String JsonClassName => JSONCLASSNAME;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
