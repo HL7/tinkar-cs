@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public record PlanarPoint : IComparable, IComparable<PlanarPoint>, IMarshalable, IJsonMarshalable
+    public record PlanarPointDTO : IPlanarPoint, IMarshalable, IJsonMarshalable
     {
         public const String JSONCLASSNAME = "PlanarPoint";
 
@@ -16,15 +16,15 @@ namespace Tinkar
         public Int32 X { get; init; }
         public Int32 Y { get; init; }
 
-        public PlanarPoint(Int32 x, Int32 y)
+        public PlanarPointDTO(Int32 x, Int32 y)
         {
             this.X = x;
             this.Y = y;
         }
 
-        public Int32 CompareTo(Object other) => CompareTo(other as PlanarPoint);
+        public Int32 CompareTo(Object other) => CompareTo(other as PlanarPointDTO);
 
-        public Int32 CompareTo(PlanarPoint other)
+        public Int32 CompareTo(IPlanarPoint other)
         {
             Int32 cmpVal = this.X.CompareTo(other.X);
             if (cmpVal != 0)
@@ -46,9 +46,12 @@ namespace Tinkar
             output.WriteEndObject();
         }
 
-        public static PlanarPoint Make(JObject jsonObject)
+        public static PlanarPointDTO Make(JObject jsonObject)
         {
-            throw new NotImplementedException();
+            Int32[] values = ((JArray)jsonObject["values"]).ToObject<int[]>();
+            if (values.Length != 2)
+                throw new Exception("Invalid json, expected 2 values");
+            return new PlanarPointDTO(values[0], values[1]);
         }
     }
 }

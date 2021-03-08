@@ -244,10 +244,10 @@ namespace Tinkar
                     return SemanticChronologyDTO.Make(jObj);
                 case SemanticDTO.JSONCLASSNAME:
                     return SemanticDTO.Make(jObj);
-                case SpatialPoint.JSONCLASSNAME:
-                    return SpatialPoint.Make(jObj);
-                case PlanarPoint.JSONCLASSNAME:
-                    return PlanarPoint.Make(jObj);
+                case SpatialPointDTO.JSONCLASSNAME:
+                    return SpatialPointDTO.Make(jObj);
+                case PlanarPointDTO.JSONCLASSNAME:
+                    return PlanarPointDTO.Make(jObj);
 #warning ' add new classes'
                 default:
                     throw new NotImplementedException($"Class {actualClassName} not known");

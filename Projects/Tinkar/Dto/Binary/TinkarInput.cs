@@ -249,9 +249,9 @@ namespace Tinkar
                 case FieldDataType.ComponentIdList:
                     throw new NotImplementedException();
                 case FieldDataType.PlanarPoint:
-                    return new PlanarPoint(this.GetInt32(), this.GetInt32());
+                    return new PlanarPointDTO(this.GetInt32(), this.GetInt32());
                 case FieldDataType.SpatialPoint:
-                    return new SpatialPoint(this.GetInt32(), this.GetInt32(), this.GetInt32());
+                    return new SpatialPointDTO(this.GetInt32(), this.GetInt32(), this.GetInt32());
 
                 case FieldDataType.StringType:
                     return this.GetUTF();

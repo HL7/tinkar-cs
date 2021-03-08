@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public record SpatialPoint : IComparable<SpatialPoint>, IComparable, IMarshalable, IJsonMarshalable
+    public record SpatialPointDTO : ISpatialPoint, IMarshalable, IJsonMarshalable
     {
         public const String JSONCLASSNAME = "SpatialPoint";
 
@@ -17,16 +17,16 @@ namespace Tinkar
         public Int32 Y { get; init; }
         public Int32 Z { get; init; }
 
-        public SpatialPoint(Int32 x, Int32 y, Int32 z)
+        public SpatialPointDTO(Int32 x, Int32 y, Int32 z)
         {
             this.X = x;
             this.Y = y;
             this.Z = z;
         }
 
-        public Int32 CompareTo(Object other) => CompareTo(other as SpatialPoint);
+        public Int32 CompareTo(Object other) => CompareTo(other as SpatialPointDTO);
 
-        public Int32 CompareTo(SpatialPoint other)
+        public Int32 CompareTo(ISpatialPoint other)
         {
             Int32 cmpVal = this.X.CompareTo(other.X);
             if (cmpVal != 0)
@@ -52,9 +52,12 @@ namespace Tinkar
             output.WriteEndObject();
         }
 
-        public static SpatialPoint Make(JObject jsonObject)
+        public static SpatialPointDTO Make(JObject jsonObject)
         {
-            throw new NotImplementedException();
+            Int32[] values = ((JArray)jsonObject["values"]).ToObject<int[]>();
+            if (values.Length != 3)
+                throw new Exception("Invalid json, expected 3 values");
+            return new SpatialPointDTO(values[0], values[1], values[2]);
         }
     }
 }

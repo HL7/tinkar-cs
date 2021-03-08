@@ -15,27 +15,27 @@ namespace Tinkar.XUnitTests
         public void PalanarPointTest()
         {
             {
-                PlanarPoint pp = new PlanarPoint(10, 20);
+                PlanarPointDTO pp = new PlanarPointDTO(10, 20);
                 Assert.True(pp.X == 10);
                 Assert.True(pp.Y == 20);
                 {
-                    PlanarPoint other = new PlanarPoint(10, 20);
+                    PlanarPointDTO other = new PlanarPointDTO(10, 20);
                     Assert.True(pp.CompareTo(other) == 0);
                 }
                 {
-                    PlanarPoint other = new PlanarPoint(100, 20);
+                    PlanarPointDTO other = new PlanarPointDTO(100, 20);
                     Assert.True(pp.CompareTo(other) < 0);
                 }
                 {
-                    PlanarPoint other = new PlanarPoint(1, 20);
+                    PlanarPointDTO other = new PlanarPointDTO(1, 20);
                     Assert.True(pp.CompareTo(other) > 0);
                 }
                 {
-                    PlanarPoint other = new PlanarPoint(10, 200);
+                    PlanarPointDTO other = new PlanarPointDTO(10, 200);
                     Assert.True(pp.CompareTo(other) < 0);
                 }
                 {
-                    PlanarPoint other = new PlanarPoint(10, 2);
+                    PlanarPointDTO other = new PlanarPointDTO(10, 2);
                     Assert.True(pp.CompareTo(other) > 0);
                 }
             }
@@ -46,36 +46,36 @@ namespace Tinkar.XUnitTests
         public void SpatialPointTest()
         {
             {
-                SpatialPoint pp = new SpatialPoint(10, 20, 30);
+                SpatialPointDTO pp = new SpatialPointDTO(10, 20, 30);
                 Assert.True(pp.X == 10);
                 Assert.True(pp.Y == 20);
                 Assert.True(pp.Z == 30);
                 {
-                    SpatialPoint other = new SpatialPoint(10, 20, 30);
+                    SpatialPointDTO other = new SpatialPointDTO(10, 20, 30);
                     Assert.True(pp.CompareTo(other) == 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(100, 20, 30);
+                    SpatialPointDTO other = new SpatialPointDTO(100, 20, 30);
                     Assert.True(pp.CompareTo(other) < 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(1, 20, 30);
+                    SpatialPointDTO other = new SpatialPointDTO(1, 20, 30);
                     Assert.True(pp.CompareTo(other) > 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(10, 200, 30);
+                    SpatialPointDTO other = new SpatialPointDTO(10, 200, 30);
                     Assert.True(pp.CompareTo(other) < 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(10, 2, 30);
+                    SpatialPointDTO other = new SpatialPointDTO(10, 2, 30);
                     Assert.True(pp.CompareTo(other) > 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(10, 20, 300);
+                    SpatialPointDTO other = new SpatialPointDTO(10, 20, 300);
                     Assert.True(pp.CompareTo(other) < 0);
                 }
                 {
-                    SpatialPoint other = new SpatialPoint(10, 20, 3);
+                    SpatialPointDTO other = new SpatialPointDTO(10, 20, 3);
                     Assert.True(pp.CompareTo(other) > 0);
                 }
             }

@@ -123,8 +123,8 @@ namespace Tinkar.XUnitTests
                                 -1, 0, 1,
                                 "abcdef",
                                 new DateTime(2020, 1, 2),
-                                new SpatialPoint(1, 2, 3),
-                                new PlanarPoint(-1, -2)
+                                new SpatialPointDTO(1, 2, 3),
+                                new PlanarPointDTO(-1, -2)
                             }
                         )
                     }
@@ -154,8 +154,8 @@ namespace Tinkar.XUnitTests
                             -1, 0, 1,
                             "abcdef",
                             new DateTime(2020, 1, 2),
-                            new SpatialPoint(1, 2, 3),
-                            new PlanarPoint(-1, -2)
+                            new SpatialPointDTO(1, 2, 3),
+                            new PlanarPointDTO(-1, -2)
                         }
                     );
             }
