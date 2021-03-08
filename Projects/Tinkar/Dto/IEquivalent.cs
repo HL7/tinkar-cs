@@ -19,7 +19,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">other item to compare equivalence to.</param>
         /// <returns>true if two items are equivalent.</returns>
-        bool IsEquivalent(Object other);
+        Boolean IsEquivalent(Object other);
     }
 
     public interface IEquivalent<T>
@@ -30,6 +30,6 @@ namespace Tinkar
         /// </summary>
         /// <param name="other">other item to compare equivalence to.</param>
         /// <returns>true if two items are equivalent.</returns>
-        bool IsEquivalent(T other);
+        Boolean IsEquivalent(T other);
     }
 }

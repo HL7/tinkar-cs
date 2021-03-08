@@ -28,6 +28,11 @@ namespace Tinkar
         public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.ConceptType;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Component Public id(component ids).</param>

@@ -41,6 +41,11 @@ namespace Tinkar
         public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public virtual FieldDataType FieldDataType => FieldDataType.ConceptChronologyType;
+
+        /// <summary>
         /// Gets ChronologySet PublicId.
         /// </summary>
         public IPublicId ChronologySetPublicId { get; init; }

@@ -13,6 +13,6 @@ namespace Tinkar
         /// If code is modified in a way that renders old serialized data
         /// non-conformant, then this number should be incremented.
         /// </summary>
-        public const int LocalMarshalVersion = 3;
+        public const Int32 LocalMarshalVersion = 3;
     }
 }

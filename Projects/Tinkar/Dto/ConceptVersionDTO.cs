@@ -29,6 +29,11 @@ namespace Tinkar
         IMarshalable
     {
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.ConceptVersionType;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ConceptVersionDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>

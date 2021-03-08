@@ -24,6 +24,11 @@ namespace Tinkar
         public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public virtual FieldDataType FieldDataType => FieldDataType.SemanticType;
+
+        /// <summary>
         /// Gets ReferencedComponent UUIDs.
         /// </summary>
         public IPublicId ReferencedComponentPublicId { get; init; }

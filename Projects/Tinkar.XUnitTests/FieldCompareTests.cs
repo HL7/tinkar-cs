@@ -248,6 +248,14 @@ namespace Tinkar.XUnitTests
                 Assert.True(FieldCompare.Same(AArr(), AArr()));
                 Assert.False(FieldCompare.Same(AArr(), BArr()));
             }
+
+            {
+                Object[] AArr() => new object[] { new PlanarPoint(10, 20), new SpatialPoint(20, 30, 40) };
+                Object[] BArr() => new object[] { new PlanarPoint(10, 20), new SpatialPoint(20, 30, 50) };
+
+                Assert.True(FieldCompare.Same(AArr(), AArr()));
+                Assert.False(FieldCompare.Same(AArr(), BArr()));
+            }
         }
     }
 }

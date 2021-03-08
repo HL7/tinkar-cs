@@ -246,6 +246,11 @@
             Interface for classes that implement marshaling to a binary stream.
             </summary>
         </member>
+        <member name="P:Tinkar.IMarshalable.FieldDataType">
+            <summary>
+            Unique id for this data field.
+            </summary>
+        </member>
         <member name="M:Tinkar.IMarshalable.Marshal(Tinkar.TinkarOutput)">
             <summary>
             Marshal class data to binary stream.
@@ -575,6 +580,11 @@
             Gets JSON Name of class.
             </summary>
         </member>
+        <member name="P:Tinkar.ConceptChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
         <member name="P:Tinkar.ConceptChronologyDTO.ChronologySetPublicId">
             <summary>
             Gets ChronologySet PublicId.
@@ -659,6 +669,11 @@
             Gets JSON Name of class.
             </summary>
         </member>
+        <member name="P:Tinkar.ConceptDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
         <member name="M:Tinkar.ConceptDTO.#ctor(Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.ConceptDTO"/> class.
@@ -709,6 +724,11 @@
         <member name="T:Tinkar.ConceptVersionDTO">
             <summary>
             ConceptVersion record.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ConceptVersionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="M:Tinkar.ConceptVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.StampDTO)">
@@ -985,12 +1005,12 @@
             ComponentIdSetType.
             </summary>
         </member>
-        <member name="F:Tinkar.FieldDataType.PlanarPointList">
+        <member name="F:Tinkar.FieldDataType.PlanarPoint">
             <summary>
             PlanarPoint Type.
             </summary>
         </member>
-        <member name="F:Tinkar.FieldDataType.SpatialPointList">
+        <member name="F:Tinkar.FieldDataType.SpatialPoint">
             <summary>
             SpatialPoint Type.
             </summary>
@@ -1009,6 +1029,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.FieldDefinitionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="P:Tinkar.FieldDefinitionDTO.DataType">
@@ -1151,6 +1176,11 @@
             This must be consistent with Java implementation.
             </summary>
         </member>
+        <member name="P:Tinkar.PatternForSemanticChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
         <member name="P:Tinkar.PatternForSemanticChronologyDTO.ChronologySetPublicId">
             <summary>
             Gets public id.
@@ -1226,6 +1256,11 @@
             Gets JSON Name of class.
             </summary>
         </member>
+        <member name="P:Tinkar.PatternForSemanticDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
         <member name="M:Tinkar.PatternForSemanticDTO.#ctor(Tinkar.IPublicId)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.PatternForSemanticDTO"/> class.
@@ -1278,10 +1313,9 @@
             Tinkar PatternForSemanticVersion record.
             </summary>
         </member>
-        <member name="P:Tinkar.PatternForSemanticVersionDTO.ReferencedComponentPurposePublicId">
+        <member name="P:Tinkar.PatternForSemanticVersionDTO.FieldDataType">
             <summary>
-            Name of this class in JSON serialization.
-            This must be consistent with Java implementation.
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="P:Tinkar.PatternForSemanticVersionDTO.FieldDefinitions">
@@ -1345,6 +1379,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.SemanticChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="P:Tinkar.SemanticChronologyDTO.SemanticVersions">
@@ -1439,6 +1478,11 @@
             Gets JSON Name of class.
             </summary>
         </member>
+        <member name="P:Tinkar.SemanticDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
         <member name="P:Tinkar.SemanticDTO.ReferencedComponentPublicId">
             <summary>
             Gets ReferencedComponent UUIDs.
@@ -1525,6 +1569,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.SemanticVersionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="P:Tinkar.SemanticVersionDTO.DefinitionForSemanticPublicId">
@@ -1618,6 +1667,11 @@
             <summary>
             Name of this class in JSON serialization.
             This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.StampDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
             </summary>
         </member>
         <member name="P:Tinkar.StampDTO.JsonClassName">

@@ -37,6 +37,11 @@ namespace Tinkar
         public new const String JSONCLASSNAME = "SemanticChronologyDTO";
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public override FieldDataType FieldDataType => FieldDataType.SemanticChronologyType;
+
+        /// <summary>
         /// Gets SemanticVersion.
         /// </summary>
         public IEnumerable<SemanticVersionDTO> SemanticVersions { get; init; }

@@ -29,7 +29,7 @@ namespace Tinkar
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static Int32 CompareByteArray(byte[] a, byte[] b)
+        public static Int32 CompareByteArray(Byte[] a, Byte[] b)
         {
             Int32 cmp = a.Length.CompareTo(b.Length);
             if (cmp != 0)
@@ -85,7 +85,7 @@ namespace Tinkar
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static bool EquivelateSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
+        public static Boolean EquivelateSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
             where TSeq : IEquivalent
         {
             if ((a == null) && (b == null))
@@ -201,8 +201,8 @@ namespace Tinkar
                 case IComparable a:
                     return a.CompareTo(bObj);
 
-                case byte[] a:
-                    return CompareByteArray(a, (byte[])bObj);
+                case Byte[] a:
+                    return CompareByteArray(a, (Byte[])bObj);
 
                 // DiGraphType = 6,
                 case Object[] aArr:
@@ -222,7 +222,7 @@ namespace Tinkar
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static bool Equivalent(Object[] a, Object[] b)
+        public static Boolean Equivalent(Object[] a, Object[] b)
         {
             Int32 cmp = a.Length.CompareTo(b.Length);
             if (cmp != 0)
@@ -242,7 +242,7 @@ namespace Tinkar
         /// <param name="aObj">First objec to compare.</param>
         /// <param name="bObj">Second object to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static bool Equivalent(Object aObj, Object bObj)
+        public static Boolean Equivalent(Object aObj, Object bObj)
         {
             Int32 cmp = aObj.GetType().Name.CompareTo(bObj.GetType().Name);
             if (cmp != 0)
@@ -256,8 +256,8 @@ namespace Tinkar
                 case IComparable a:
                     return a.CompareTo(bObj) == 0;
 
-                case byte[] a:
-                    return CompareByteArray(a, (byte[])bObj) == 0;
+                case Byte[] a:
+                    return CompareByteArray(a, (Byte[])bObj) == 0;
 
                 // DiGraphType = 6,
                 case Object[] aArr:

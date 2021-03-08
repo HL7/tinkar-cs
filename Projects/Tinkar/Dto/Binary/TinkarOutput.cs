@@ -73,7 +73,7 @@ namespace Tinkar
         /// Write float to output stream.
         /// </summary>
         /// <param name="value">value to write.</param>
-        public void WriteSingle(float value)
+        public void WriteSingle(Single value)
         {
             Int32 v = BitConverter.SingleToInt32Bits(value);
             this.writer.Write(IPAddress.HostToNetworkOrder(v));
@@ -127,7 +127,7 @@ namespace Tinkar
                     this.WriteBoolean(item);
                     break;
 
-                case byte[] item:
+                case Byte[] item:
                     this.WriteFieldType(FieldDataType.ByteArrayType);
                     this.WriteInt32(item.Length);
                     this.WriteByteArray(item);
@@ -168,39 +168,11 @@ namespace Tinkar
                     this.WriteObjects(item);
                     break;
 
-                case ConceptDTO item:
-                    this.WriteFieldType(FieldDataType.ConceptType);
+                case IMarshalable item:
+                    this.WriteFieldType(item.FieldDataType);
                     item.Marshal(this);
                     break;
 
-                case ConceptChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.ConceptChronologyType);
-                    item.Marshal(this);
-                    break;
-
-                case SemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.SemanticChronologyType);
-                    item.Marshal(this);
-                    break;
-
-                case SemanticDTO item:
-                    this.WriteFieldType(FieldDataType.SemanticType);
-                    item.Marshal(this);
-                    break;
-
-                case PatternForSemanticChronologyDTO item:
-                    this.WriteFieldType(FieldDataType.PatternForSemanticChronologyType);
-                    item.Marshal(this);
-                    break;
-
-                case PatternForSemanticDTO item:
-                    this.WriteFieldType(FieldDataType.PatternForSemanticType);
-                    item.Marshal(this);
-                    break;
-
-                // case DigraphDTO item:
-                //    this.WriteDigraph();
-                //    break;
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");
             }
@@ -247,6 +219,6 @@ namespace Tinkar
         /// Write field type to output stream.
         /// </summary>
         /// <param name="fieldType">value to write.</param>
-        private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((byte)fieldType);
+        private void WriteFieldType(FieldDataType fieldType) => this.writer.Write((Byte)fieldType);
     }
 }

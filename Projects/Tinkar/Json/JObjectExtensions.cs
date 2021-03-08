@@ -108,7 +108,7 @@ namespace Tinkar
         {
             Object[] Parse(JArray jArray)
             {
-                Object[] retVal = new object[jArray.Count];
+                Object[] retVal = new Object[jArray.Count];
                 for (Int32 i = 0; i < jArray.Count; i++)
                 {
                     JToken item = jArray[i];
@@ -244,7 +244,11 @@ namespace Tinkar
                     return SemanticChronologyDTO.Make(jObj);
                 case SemanticDTO.JSONCLASSNAME:
                     return SemanticDTO.Make(jObj);
-                #warning ' add new classes'
+                case SpatialPoint.JSONCLASSNAME:
+                    return SpatialPoint.Make(jObj);
+                case PlanarPoint.JSONCLASSNAME:
+                    return PlanarPoint.Make(jObj);
+#warning ' add new classes'
                 default:
                     throw new NotImplementedException($"Class {actualClassName} not known");
             }

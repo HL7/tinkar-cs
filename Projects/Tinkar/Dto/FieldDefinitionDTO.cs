@@ -37,6 +37,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "FieldDefinitionDTO";
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => throw new NotImplementedException("FieldDefinition type should never be called");
+
+        /// <summary>
         /// Gets DataType record.
         /// </summary>
         public IConcept DataType => new ConceptDTO(this.DataTypePublicId);

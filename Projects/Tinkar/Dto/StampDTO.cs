@@ -35,6 +35,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "StampDTO";
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.StampType;
+
+        /// <summary>
         /// Gets JSON Name of class.
         /// </summary>
         public override String JsonClassName => JSONCLASSNAME;

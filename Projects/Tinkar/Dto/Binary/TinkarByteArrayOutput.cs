@@ -51,7 +51,7 @@ namespace Tinkar
         /// Get output stream bytes.
         /// </summary>
         /// <returns>array or read bytes.</returns>
-        public byte[] GetBytes() => this.byteArrayOutputStream.ToArray();
+        public Byte[] GetBytes() => this.byteArrayOutputStream.ToArray();
 
         /// <summary>
         /// Convert output stream to an input stream

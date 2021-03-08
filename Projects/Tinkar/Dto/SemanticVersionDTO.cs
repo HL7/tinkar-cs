@@ -35,6 +35,11 @@ namespace Tinkar
         public const String JSONCLASSNAME = "SemanticVersionDTO";
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.SemanticVersionType;
+
+        /// <summary>
         /// Gets PatternForSemantic UUID's.
         /// </summary>
         public IPublicId DefinitionForSemanticPublicId { get; init; }

@@ -21,7 +21,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="outStream">output stream.</param>
         /// <param name="formatted">if true, json is formatted to be easily readable.</param>
-        public TinkarJsonOutput(Stream outStream, bool formatted = false)
+        public TinkarJsonOutput(Stream outStream, Boolean formatted = false)
         {
             this.writer = new JsonTextWriter(new StreamWriter(outStream));
             if (formatted == true)
@@ -78,7 +78,7 @@ namespace Tinkar
                     this.writer.WriteValue(item);
                     break;
 
-                case byte[] item:
+                case Byte[] item:
                     this.writer.WriteValue(item);
                     break;
 
@@ -114,28 +114,9 @@ namespace Tinkar
                     item.Marshal(this);
                     break;
 
-                case ConceptChronologyDTO item:
+                case IJsonMarshalable item:
                     item.Marshal(this);
                     break;
-
-                case SemanticChronologyDTO item:
-                    item.Marshal(this);
-                    break;
-
-                case SemanticDTO item:
-                    item.Marshal(this);
-                    break;
-
-                case PatternForSemanticChronologyDTO item:
-                    item.Marshal(this);
-                    break;
-
-                case PatternForSemanticDTO item:
-                    item.Marshal(this);
-                    break;
-
-                //case DigraphDTO item:
-                //    throw new NotImplementedException("xxyyz");
 
                 default:
                     throw new NotSupportedException($"Can not serialize type {field.GetType().Name}");

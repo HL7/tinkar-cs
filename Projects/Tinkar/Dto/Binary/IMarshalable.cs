@@ -24,6 +24,11 @@ namespace Tinkar
     public interface IMarshalable
     {
         /// <summary>
+        /// Unique id for this data field.
+        /// </summary>
+        public FieldDataType FieldDataType { get; }
+
+        /// <summary>
         /// Marshal class data to binary stream.
         /// </summary>
         /// <param name="output">binary output stream.</param>

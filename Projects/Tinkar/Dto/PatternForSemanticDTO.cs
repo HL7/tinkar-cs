@@ -25,6 +25,11 @@ namespace Tinkar
         public override String JsonClassName => JSONCLASSNAME;
 
         /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public virtual FieldDataType FieldDataType => FieldDataType.PatternForSemanticType;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>

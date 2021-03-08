@@ -91,7 +91,7 @@ namespace Tinkar
         /// Read a byte array from input stream.
         /// </summary>
         /// <returns>byte[].</returns>
-        public byte[] GetByteArray() => this.reader.ReadBytes(this.GetInt32());
+        public Byte[] GetByteArray() => this.reader.ReadBytes(this.GetInt32());
 
         /// <summary>
         /// Read array of guids from input stream.
@@ -99,9 +99,9 @@ namespace Tinkar
         /// <returns>Guid[].</returns>
         public Guid[] GetUuids()
         {
-            int length = this.GetInt32();
+            Int32 length = this.GetInt32();
             Guid[] array = new Guid[length];
-            for (int i = 0; i < length; i++)
+            for (Int32 i = 0; i < length; i++)
                 array[i] = new Guid(this.reader.ReadBytes(16));
             return array;
         }
@@ -125,9 +125,9 @@ namespace Tinkar
         /// <returns>FieldDefinitionDTO[].</returns>
         public FieldDefinitionDTO[] GetFieldDefinitionList()
         {
-            int length = this.GetInt32();
+            Int32 length = this.GetInt32();
             FieldDefinitionDTO[] retVal = new FieldDefinitionDTO[length];
-            for (int i = 0; i < length; i++)
+            for (Int32 i = 0; i < length; i++)
                 retVal[i] = FieldDefinitionDTO.Make(this);
             return retVal;
         }
@@ -139,9 +139,9 @@ namespace Tinkar
         /// <returns>ConceptVersionDTO[].</returns>
         public ConceptVersionDTO[] GetConceptVersionList(IPublicId publicId)
         {
-            int length = this.GetInt32();
+            Int32 length = this.GetInt32();
             ConceptVersionDTO[] retVal = new ConceptVersionDTO[length];
-            for (int i = 0; i < length; i++)
+            for (Int32 i = 0; i < length; i++)
                 retVal[i] = ConceptVersionDTO.Make(this, publicId);
             return retVal;
         }
@@ -158,7 +158,7 @@ namespace Tinkar
 
             // Generate array to avoid multiple enumerations of componentUuids.
             Guid[] componentUuidArr = publicId.AsUuidArray;
-            for (int i = 0; i < length; i++)
+            for (Int32 i = 0; i < length; i++)
                 retVal[i] = PatternForSemanticVersionDTO.Make(this, publicId);
             return retVal;
         }
@@ -175,9 +175,9 @@ namespace Tinkar
             IPublicId patternForSemanticPublicId,
             IPublicId referencedComponentPublicId)
         {
-            int length = this.GetInt32();
+            Int32 length = this.GetInt32();
             SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
-            for (int i = 0; i < length; i++)
+            for (Int32 i = 0; i < length; i++)
             {
                 retVal[i] = SemanticVersionDTO.Make(
                     this,
@@ -195,9 +195,9 @@ namespace Tinkar
         /// <returns>Object[].</returns>
         public Object[] GetObjects()
         {
-            int fieldCount = this.GetInt32();
+            Int32 fieldCount = this.GetInt32();
             Object[] retVal = new Object[fieldCount];
-            for (int i = 0; i < fieldCount; i++)
+            for (Int32 i = 0; i < fieldCount; i++)
                 retVal[i] = this.GetField();
             return retVal;
         }
@@ -248,10 +248,10 @@ namespace Tinkar
                     throw new NotImplementedException();
                 case FieldDataType.ComponentIdList:
                     throw new NotImplementedException();
-                case FieldDataType.PlanarPointList:
-                    throw new NotImplementedException();
-                case FieldDataType.SpatialPointList:
-                    throw new NotImplementedException();
+                case FieldDataType.PlanarPoint:
+                    return new PlanarPoint(this.GetInt32(), this.GetInt32());
+                case FieldDataType.SpatialPoint:
+                    return new SpatialPoint(this.GetInt32(), this.GetInt32(), this.GetInt32());
 
                 case FieldDataType.StringType:
                     return this.GetUTF();

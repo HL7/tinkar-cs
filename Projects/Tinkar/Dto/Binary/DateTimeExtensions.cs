@@ -61,7 +61,7 @@ namespace Tinkar
         /// <param name="nanoSeconds">nanoseconds part of instant.</param>
         /// <returns>read DateTime value.</returns>
         public static DateTime FromInstant(
-            long epoch,
+            Int64 epoch,
             Int32 nanoSeconds)
         {
             TimeSpan ts = new TimeSpan((epoch * TimeSpan.TicksPerSecond) + (nanoSeconds / 100));

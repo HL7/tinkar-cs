@@ -30,11 +30,16 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable
     {
-        /// <summary>
-        /// Name of this class in JSON serialization.
-        /// This must be consistent with Java implementation.
-        /// </summary>
+        // <summary>
+        // Name of this class in JSON serialization.
+        // This must be consistent with Java implementation.
+        // </summary>
         //public const String JSONCLASSNAME = "PatternForSemanticVersionDTO";
+
+        /// <summary>
+        /// Unique ID for binary marshal of this item.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.PatternForSemanticVersionType;
 
         public IPublicId ReferencedComponentPurposePublicId { get; init; }
         public IPublicId ReferencedComponentMeaningPublicId { get; init; }

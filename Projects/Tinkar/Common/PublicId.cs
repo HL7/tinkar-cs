@@ -111,7 +111,7 @@ namespace Tinkar
             return 0;
         }
 
-        public bool IsEquivalent(IPublicId other)
+        public Boolean IsEquivalent(IPublicId other)
         {
             Int32 thisIdIndex = 0;
             Int32 otherIdIndex = 0;

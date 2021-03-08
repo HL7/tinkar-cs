@@ -17,7 +17,7 @@ namespace Tinkar
     /// Field data type enumeration. Unique value for each
     /// data type that can be serializzed.
     /// </summary>
-    public enum FieldDataType : byte
+    public enum FieldDataType : Byte
     {
         /// <summary>
         /// ConceptChronology Type.
@@ -132,12 +132,12 @@ namespace Tinkar
         /// <summary>
         /// PlanarPoint Type.
         /// </summary>
-        PlanarPointList = 23,
+        PlanarPoint = 23,
 
         /// <summary>
         /// SpatialPoint Type.
         /// </summary>
-        SpatialPointList = 24,
+        SpatialPoint = 24,
 
         /// <summary>
         /// Component Type.
