@@ -10,7 +10,7 @@ namespace Tinkar
     /// <summary>
     /// 
     /// </summary>
-    public abstract record VersionDTO : IDTO, IVersion, IEquivalent, ISame
+    public abstract record VersionDTO : IDTO, IVersion, IEquivalent, IComparable
     {
         /// <summary>
         /// Gets public id.
@@ -59,16 +59,16 @@ namespace Tinkar
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public virtual Int32 IsSame(Object otherObject)
+        public virtual Int32 CompareTo(Object otherObject)
         {
             VersionDTO other = otherObject as VersionDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = this.PublicId.IsSame(other.PublicId);
+            Int32 cmp = this.PublicId.CompareTo(other.PublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.Stamp.IsSame(other.Stamp);
+            cmp = this.Stamp.CompareTo(other.Stamp);
             if (cmp != 0)
                 return cmp;
             return 0;

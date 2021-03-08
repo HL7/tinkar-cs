@@ -26,6 +26,7 @@ namespace Tinkar.Common
         {
             this.guid = new GuidUnion(mostSignificantBits, leastSignificantBits);
         }
-        public Int32 CompareTo(IVertexId other) => this.guid.IsSame(((VertexId)other).guid);
+
+        public Int32 CompareTo(IVertexId other) => this.guid.CompareTo(((VertexId)other).guid);
     }
 }

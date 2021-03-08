@@ -78,7 +78,7 @@ namespace Tinkar
                     Int32 i = guidUnionList.Count;
                     while (i > 0)
                     {
-                        Int32 cmpVal = newItem.IsSame(guidUnionList[i - 1]);
+                        Int32 cmpVal = newItem.CompareTo(guidUnionList[i - 1]);
                         // discard duplicates.
                         if (cmpVal == 0)
                             return;
@@ -97,14 +97,14 @@ namespace Tinkar
             }
         }
 
-        public Int32 IsSame(IPublicId other)
+        public Int32 CompareTo(IPublicId other)
         {
             Int32 cmpVal = this.UuidCount.CompareTo(other.UuidCount);
             if (cmpVal != 0)
                 return cmpVal;
             for (Int32 i = 0; i < this.UuidCount; i++)
             {
-                cmpVal = this[i].IsSame(other[i]);
+                cmpVal = this[i].CompareTo(other[i]);
                 if (cmpVal != 0)
                     return cmpVal;
             }
@@ -119,7 +119,7 @@ namespace Tinkar
             Int32 otherCount = other.UuidCount;
             while (true)
             {
-                Int32 cmpVal = this[thisIdIndex].IsSame(other[otherIdIndex]);
+                Int32 cmpVal = this[thisIdIndex].CompareTo(other[otherIdIndex]);
                 if (cmpVal < 0)
                 {
                     if (++thisIdIndex >= thisCount)

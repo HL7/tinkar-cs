@@ -99,13 +99,13 @@ namespace Tinkar
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public override Int32 IsSame(Object otherObject)
+        public override Int32 CompareTo(Object otherObject)
         {
             PatternForSemanticChronologyDTO other = otherObject as PatternForSemanticChronologyDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.IsSame(other);
+            Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
 

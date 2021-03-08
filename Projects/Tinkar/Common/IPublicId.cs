@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IPublicId : IEquivalent<IPublicId>, ISame<IPublicId>
+    public interface IPublicId : IEquivalent<IPublicId>, IComparable<IPublicId>
     {
         GuidUnion this[Int32 index] { get; }
 

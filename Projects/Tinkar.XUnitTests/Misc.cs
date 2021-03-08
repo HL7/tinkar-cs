@@ -159,14 +159,14 @@ namespace Tinkar.XUnitTests
                 Assert.True(inGuids[i].CompareTo(cmpGuids[i]) == 0);
         }
 
-        public static void Compare(IEnumerable<ISame> inItems,
-            IEnumerable<ISame> cmpItems)
+        public static void Compare(IEnumerable<IComparable> inItems,
+            IEnumerable<IComparable> cmpItems)
         {
-            ISame[] inArr = inItems.ToArray();
-            ISame[] cmpArr = cmpItems.ToArray();
+            IComparable[] inArr = inItems.ToArray();
+            IComparable[] cmpArr = cmpItems.ToArray();
             Assert.True(inArr.Length == cmpArr.Length);
             for (Int32 i = 0; i < inArr.Length; i++)
-                Assert.True(inArr[i].IsSame(cmpArr[i]) == 0);
+                Assert.True(inArr[i].CompareTo(cmpArr[i]) == 0);
         }
 
         public static PatternForSemanticChronologyDTO CreatePatternForSemanticChronologyDTO =>

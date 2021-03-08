@@ -85,7 +85,7 @@ namespace Tinkar.XUnitTests
             {
                 ConceptChronologyDTO a = Misc.CreateConceptChronologyDTO;
                 ConceptChronologyDTO b = Misc.CreateConceptChronologyDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
@@ -95,7 +95,7 @@ namespace Tinkar.XUnitTests
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -109,7 +109,7 @@ namespace Tinkar.XUnitTests
                     new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
                     Misc.ConceptVersionsBase(Misc.PublicIdG)
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -126,7 +126,7 @@ namespace Tinkar.XUnitTests
                         Misc.cv1(Misc.PublicIdG)
                     }
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.GetField();
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -172,7 +172,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 ConceptChronologyDTO dtoEnd = ConceptChronologyDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

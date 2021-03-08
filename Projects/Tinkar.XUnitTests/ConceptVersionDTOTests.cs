@@ -20,7 +20,7 @@ namespace Tinkar.XUnitTests
 
             ConceptVersionDTO dtoStart = Misc.CreateConceptVersionDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Assert.True(dtoStart.StampDTO.IsSame(Misc.CreateStampDTO) == 0);
+            Assert.True(dtoStart.StampDTO.CompareTo(Misc.CreateStampDTO) == 0);
         }
 
         [DoNotParallelize]
@@ -52,7 +52,7 @@ namespace Tinkar.XUnitTests
             {
                 ConceptVersionDTO a = Misc.CreateConceptVersionDTO;
                 ConceptVersionDTO b = Misc.CreateConceptVersionDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
@@ -61,7 +61,7 @@ namespace Tinkar.XUnitTests
                 ConceptVersionDTO b = new ConceptVersionDTO(
                     new PublicId(Misc.g1, Misc.g3, Misc.g4),
                     Misc.CreateStampDTO);
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Tinkar.XUnitTests
             {
                 ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
                     new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4 ));
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Tinkar.XUnitTests
             TinkarJsonInput input = new TinkarJsonInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input.ReadJsonObject(),
                 new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4));
-            Assert.True(dtoStart.IsSame(dtoRead) == 0);
+            Assert.True(dtoStart.CompareTo(dtoRead) == 0);
         }
         [DoNotParallelize]
         [Fact]
@@ -124,7 +124,7 @@ namespace Tinkar.XUnitTests
                 ConceptVersionDTO dtoEnd = ConceptVersionDTO.Make(
                     input.ReadJsonObject(),
                     dtoStart.PublicId);
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

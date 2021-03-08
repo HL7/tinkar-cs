@@ -14,7 +14,7 @@ namespace Tinkar
     /// </summary>
     public record ComponentDTO : IDTO,
         IComponent,
-        ISame,
+        IComparable,
         IEquivalent
     {
         /// <summary>
@@ -59,7 +59,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="otherObject">Item to compare to.</param>
         /// <returns>-1, 0, or 1.</returns>
-        public virtual Int32 IsSame(Object otherObject)
+        public virtual Int32 CompareTo(Object otherObject)
         {
             ComponentDTO other = otherObject as ComponentDTO;
             if (other == null)

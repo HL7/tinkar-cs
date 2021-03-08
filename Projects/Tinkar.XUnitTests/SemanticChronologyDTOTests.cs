@@ -80,7 +80,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
@@ -90,7 +90,7 @@ namespace Tinkar.XUnitTests
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -100,7 +100,7 @@ namespace Tinkar.XUnitTests
                 {
                     DefinitionForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -110,7 +110,7 @@ namespace Tinkar.XUnitTests
                 {
                     ReferencedComponentPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
             {
                 SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
@@ -119,7 +119,7 @@ namespace Tinkar.XUnitTests
                 {
                     SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 SemanticChronologyDTO dtoRead = (SemanticChronologyDTO)input.GetField();
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -161,7 +161,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 SemanticChronologyDTO dtoEnd = SemanticChronologyDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

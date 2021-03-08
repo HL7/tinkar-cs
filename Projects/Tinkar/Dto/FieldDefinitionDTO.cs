@@ -28,7 +28,7 @@ namespace Tinkar
         IJsonMarshalable,
         IMarshalable,
         IEquivalent,
-        ISame
+        IComparable
     {
         /// <summary>
         /// Name of this class in JSON serialization.
@@ -116,7 +116,7 @@ namespace Tinkar
         /// </summary>
         /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public Int32 IsSame(Object otherObject)
+        public Int32 CompareTo(Object otherObject)
         {
             FieldDefinitionDTO other = otherObject as FieldDefinitionDTO;
             if (other == null)

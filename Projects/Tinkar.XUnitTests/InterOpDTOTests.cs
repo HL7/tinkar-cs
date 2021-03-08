@@ -188,7 +188,7 @@ namespace Tinkar.XUnitTests
             ComponentDTO[] compareFields = this.CreateComponents().ToArray();
             Assert.True(readFields.Length == compareFields.Length);
             for (Int32 i = 0; i < readFields.Length; i++)
-                Assert.True(readFields[i].IsSame(compareFields[i]) == 0);
+                Assert.True(readFields[i].CompareTo(compareFields[i]) == 0);
         }
 
         [DoNotParallelize]
@@ -223,7 +223,7 @@ namespace Tinkar.XUnitTests
             ComponentDTO[] compareFields = this.CreateComponents().ToArray();
             Assert.True(readFields.Length == compareFields.Length);
             for (Int32 i = 0; i < readFields.Length; i++)
-                Assert.True(readFields[i].IsSame(compareFields[i]) == 0);
+                Assert.True(readFields[i].CompareTo(compareFields[i]) == 0);
         }
     }
 }

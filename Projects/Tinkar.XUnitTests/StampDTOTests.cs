@@ -200,7 +200,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     Misc.PublicIdK
                 );
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
@@ -220,7 +220,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     Misc.PublicIdK
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -240,7 +240,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     Misc.PublicIdK
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
             {
                 StampDTO a = new StampDTO(
@@ -259,7 +259,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     Misc.PublicIdK
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -279,7 +279,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     Misc.PublicIdK
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -299,7 +299,7 @@ namespace Tinkar.XUnitTests
                     new PublicId(Misc.j2, Misc.j2, Misc.j3, Misc.j4),
                     Misc.PublicIdK
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
 
@@ -320,7 +320,7 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdJ,
                     new PublicId(Misc.k1, Misc.k2, Misc.k3, Misc.k3)
                 );
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -351,7 +351,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 StampDTO dtoEnd = StampDTO.Make(input);
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
 
@@ -379,7 +379,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             TinkarJsonInput input = new TinkarJsonInput(ms);
             StampDTO dtoRead = StampDTO.Make(input.ReadJsonObject());
-            Assert.True(dtoStart.IsSame(dtoRead) == 0);
+            Assert.True(dtoStart.CompareTo(dtoRead) == 0);
         }
     }
 }

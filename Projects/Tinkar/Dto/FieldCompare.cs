@@ -10,16 +10,16 @@ namespace Tinkar
     public static class FieldCompare
     {
         /// <summary>
-        /// Compare two ISame instances.
+        /// Compare two IComparable instances.
         /// </summary>
         /// <typeparam name="TItem">Items types to compare.</typeparam>
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareItem<TItem>(TItem a, TItem b)
-            where TItem : ISame<TItem>
+            where TItem : IComparable<TItem>
         {
-            return a.IsSame(b);
+            return a.CompareTo(b);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Tinkar
         public static Int32 ComparePublicIds(IPublicId a, IPublicId b) => CompareGuids(a.AsUuidArray, b.AsUuidArray);
 
         /// <summary>
-        /// Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+        /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
         /// items that are equal.
         /// </summary>
         /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -113,7 +113,7 @@ namespace Tinkar
         }
 
         /// <summary>
-        /// Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+        /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
         /// items that are equal.
         /// </summary>
         /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -121,7 +121,7 @@ namespace Tinkar
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
-            where TSeq : ISame
+            where TSeq : IComparable
         {
             if ((a == null) && (b == null))
                 return 0;
@@ -140,7 +140,7 @@ namespace Tinkar
                 bIterator.MoveNext();
                 TSeq aItem = aIterator.Current;
                 TSeq bItem = bIterator.Current;
-                cmp = aItem.IsSame(bItem);
+                cmp = aItem.CompareTo(bItem);
                 if (cmp != 0)
                     return cmp;
             }
@@ -195,9 +195,6 @@ namespace Tinkar
 
             switch (aObj)
             {
-                case ISame a:
-                    return a.IsSame(bObj);
-
                 case IComparable a:
                     return a.CompareTo(bObj);
 

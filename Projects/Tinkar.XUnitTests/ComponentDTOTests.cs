@@ -42,13 +42,13 @@ namespace Tinkar.XUnitTests
             {
                 ComponentDTO a = new ComponentDTO(Misc.PublicIdG);
                 ComponentDTO b = new ComponentDTO(Misc.PublicIdG);
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
                 ComponentDTO a = new ComponentDTO(Misc.PublicIdG);
                 ComponentDTO b = new ComponentDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4));
-                Assert.False(a.IsSame(b) != 0);
+                Assert.False(a.CompareTo(b) != 0);
             }
         }
     }

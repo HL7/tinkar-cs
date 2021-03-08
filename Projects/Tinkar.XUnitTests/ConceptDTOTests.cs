@@ -26,7 +26,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 ConceptDTO dtoEnd = ConceptDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
 
@@ -62,13 +62,13 @@ namespace Tinkar.XUnitTests
             {
                 ConceptDTO a = Misc.CreateConceptDTO;
                 ConceptDTO b = Misc.CreateConceptDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
                 ConceptDTO a = Misc.CreateConceptDTO;
                 ConceptDTO b = new ConceptDTO(new PublicId(Misc.g1, Misc.g3, Misc.g4));
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 ConceptDTO dtoRead = (ConceptDTO)input.GetField();
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
     }

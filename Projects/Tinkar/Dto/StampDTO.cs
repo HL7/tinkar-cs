@@ -149,29 +149,29 @@ namespace Tinkar
         /// </summary>
         /// <param name="otherObject">Item to compare to for equality.</param>
         /// <returns> -1, 0, or 1.</returns>
-        public override Int32 IsSame(Object otherObject)
+        public override Int32 CompareTo(Object otherObject)
         {
             StampDTO other = otherObject as StampDTO;
             if (other == null)
                 return -1;
 
-            Int32 cmp = base.IsSame(other);
+            Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
 
-            cmp = this.StatusPublicId.IsSame(other.StatusPublicId);
+            cmp = this.StatusPublicId.CompareTo(other.StatusPublicId);
             if (cmp != 0)
                 return cmp;
             cmp = this.Time.CompareTo(other.Time);
             if (cmp != 0)
                 return cmp;
-            cmp = this.AuthorPublicId.IsSame(other.AuthorPublicId);
+            cmp = this.AuthorPublicId.CompareTo(other.AuthorPublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.ModulePublicId.IsSame(other.ModulePublicId);
+            cmp = this.ModulePublicId.CompareTo(other.ModulePublicId);
             if (cmp != 0)
                 return cmp;
-            cmp = this.PathPublicId.IsSame(other.PathPublicId);
+            cmp = this.PathPublicId.CompareTo(other.PathPublicId);
             if (cmp != 0)
                 return cmp;
             return 0;

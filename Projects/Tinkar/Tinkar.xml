@@ -9,9 +9,9 @@
             Defines a Union that can access a guid or 2 Int64's.
             </summary>
         </member>
-        <member name="M:Tinkar.GuidUnion.IsSame(Tinkar.GuidUnion)">
+        <member name="M:Tinkar.GuidUnion.CompareTo(Tinkar.GuidUnion)">
             <summary>
-            Implementation if ISame
+            Implementation if IComparable
             </summary>
             <param name="other"></param>
             <returns></returns>
@@ -557,7 +557,7 @@
             <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.ComponentDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.ComponentDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -621,7 +621,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.ConceptChronologyDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.ConceptChronologyDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -688,7 +688,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.ConceptDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.ConceptDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -752,7 +752,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.ConceptVersionDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.ConceptVersionDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -794,7 +794,7 @@
         </member>
         <member name="M:Tinkar.FieldCompare.CompareItem``1(``0,``0)">
             <summary>
-            Compare two ISame instances.
+            Compare two IComparable instances.
             </summary>
             <typeparam name="TItem">Items types to compare.</typeparam>
             <param name="a">First item to compare.</param>
@@ -830,7 +830,7 @@
         </member>
         <member name="M:Tinkar.FieldCompare.EquivelateSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
             items that are equal.
             </summary>
             <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -840,7 +840,7 @@
         </member>
         <member name="M:Tinkar.FieldCompare.CompareSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Compare two IEnumerable&lt;ISame&gt; instances and return true if list contains
+            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
             items that are equal.
             </summary>
             <typeparam name="TSeq">Sequence type to compare.</typeparam>
@@ -1084,7 +1084,7 @@
             <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.FieldDefinitionDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.FieldDefinitionDTO.CompareTo(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1140,31 +1140,6 @@
             <param name="other">other item to compare equivalence to.</param>
             <returns>true if two items are equivalent.</returns>
         </member>
-        <member name="T:Tinkar.ISame">
-            <summary>
-            IEquivalent.
-            Tests if two items are the 'same'. This looks at actual values,
-            not references, to determine equivalency.
-            </summary>
-        </member>
-        <member name="M:Tinkar.ISame.IsSame(System.Object)">
-            <summary>
-            Returns true if 'this' item and 'other' item are identical in values.
-            This is a deep comparison.
-            item.
-            </summary>
-            <param name="other">other item to compare equivalence to.</param>
-            <returns>true if two items are same.</returns>
-        </member>
-        <member name="M:Tinkar.ISame`1.IsSame(`0)">
-            <summary>
-            Returns true if 'this' item and 'other' item are identical in values.
-            This is a deep comparison.
-            item.
-            </summary>
-            <param name="other">other item to compare equivalence to.</param>
-            <returns>true if two items are same.</returns>
-        </member>
         <member name="T:Tinkar.PatternForSemanticChronologyDTO">
             <summary>
             Tinkar PatternForSemanticChronology record.
@@ -1207,7 +1182,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticChronologyDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticChronologyDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1275,7 +1250,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1341,7 +1316,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.PatternForSemanticVersionDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.PatternForSemanticVersionDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1422,7 +1397,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.SemanticChronologyDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.SemanticChronologyDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1527,7 +1502,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.SemanticDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.SemanticDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>
@@ -1619,7 +1594,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.SemanticVersionDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.SemanticVersionDTO.CompareTo(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1743,7 +1718,7 @@
             <param name="otherObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Tinkar.StampDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.StampDTO.CompareTo(System.Object)">
             <summary>
             Compare this with another item of same type.
             </summary>
@@ -1807,7 +1782,7 @@
             <param name="otherObject">Item to compare to for equivalence.</param>
             <returns>true if equal.</returns>
         </member>
-        <member name="M:Tinkar.VersionDTO.IsSame(System.Object)">
+        <member name="M:Tinkar.VersionDTO.CompareTo(System.Object)">
             <summary>
             Compares this to another item.
             </summary>

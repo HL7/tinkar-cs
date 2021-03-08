@@ -18,7 +18,7 @@ namespace Tinkar.XUnitTests
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.DefinitionForSemanticPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
             Misc.Compare(dtoStart.ReferencedComponentPublicId, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
-            Assert.True(dtoStart.StampDTO.IsSame(Misc.CreateStampDTO) == 0);
+            Assert.True(dtoStart.StampDTO.CompareTo(Misc.CreateStampDTO) == 0);
             FieldCompare.Same(dtoStart.Fields,
                 new Object[] { 1, "abcdef", 0.3F });
         }
@@ -92,7 +92,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticVersionDTO a = Misc.CreateSemanticVersionDTO;
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
@@ -102,7 +102,7 @@ namespace Tinkar.XUnitTests
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -112,7 +112,7 @@ namespace Tinkar.XUnitTests
                 {
                     DefinitionForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -122,7 +122,7 @@ namespace Tinkar.XUnitTests
                 {
                     ReferencedComponentPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -132,7 +132,7 @@ namespace Tinkar.XUnitTests
                 {
                     StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2) }
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -142,7 +142,7 @@ namespace Tinkar.XUnitTests
                 {
                     Fields = new Object[] { 1, "abcdef" }
                 };
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -167,7 +167,7 @@ namespace Tinkar.XUnitTests
                     dtoStart.PublicId,
                     dtoStart.DefinitionForSemanticPublicId,
                     dtoStart.ReferencedComponentPublicId);
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -190,7 +190,7 @@ namespace Tinkar.XUnitTests
                     dtoStart.PublicId,
                     dtoStart.DefinitionForSemanticPublicId,
                     dtoStart.ReferencedComponentPublicId);
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
 

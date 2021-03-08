@@ -42,13 +42,13 @@ namespace Tinkar.XUnitTests
             {
                 PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;
                 PatternForSemanticDTO b = Misc.CreatePatternForSemanticDTO;
-                Assert.True(a.IsSame(b) == 0);
+                Assert.True(a.CompareTo(b) == 0);
             }
 
             {
                 PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;
                 PatternForSemanticDTO b = new PatternForSemanticDTO(new PublicId(Misc.h2, Misc.g1, Misc.g3, Misc.g4));
-                Assert.False(a.IsSame(b) == 0);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 PatternForSemanticDTO dtoRead = (PatternForSemanticDTO)input.GetField();
-                Assert.True(dtoStart.IsSame(dtoRead) == 0);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -87,7 +87,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 PatternForSemanticDTO dtoEnd = PatternForSemanticDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsSame(dtoEnd) == 0);
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }
