@@ -205,8 +205,8 @@ namespace Tinkar.XUnitTests
             Int64 la = BitConverter.ToInt64(gb, 0);
             Int64 lb = BitConverter.ToInt64(gb, 8);
 
-            Assert.True(guidUnion.Int64A == la);
-            Assert.True(guidUnion.Int64B == lb);
+            Assert.True(guidUnion.MostSignificantBits == la);
+            Assert.True(guidUnion.LeastSignificantBits == lb);
         }
     }
 }

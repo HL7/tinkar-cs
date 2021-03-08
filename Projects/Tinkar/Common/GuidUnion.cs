@@ -14,21 +14,21 @@ namespace Tinkar
     public struct GuidUnion : ISame<GuidUnion>
     {
         [FieldOffset(0)] public Guid Uuid;
-        [FieldOffset(0)] public Int64 Int64A;
-        [FieldOffset(8)] public Int64 Int64B;
+        [FieldOffset(0)] public Int64 MostSignificantBits;
+        [FieldOffset(8)] public Int64 LeastSignificantBits;
 
         public GuidUnion(Guid uuid)
         {
-            this.Int64A = 0;
-            this.Int64B = 0;
+            this.MostSignificantBits = 0;
+            this.LeastSignificantBits = 0;
             this.Uuid = uuid;
         }
 
-        public GuidUnion(Int64 a, Int64 b)
+        public GuidUnion(Int64 mostSignificantBits, Int64 leastSignificantBits)
         {
             this.Uuid = Guid.Empty;
-            this.Int64A = a;
-            this.Int64B = b;
+            this.MostSignificantBits = mostSignificantBits;
+            this.LeastSignificantBits = leastSignificantBits;
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace Tinkar
         /// <returns></returns>
         public Int32 IsSame(GuidUnion other)
         {
-            Int32 cmpVal = this.Int64A.CompareTo(other.Int64A);
+            Int32 cmpVal = this.MostSignificantBits.CompareTo(other.MostSignificantBits);
             if (cmpVal != 0)
                 return cmpVal;
-            return this.Int64B.CompareTo(other.Int64B);
+            return this.LeastSignificantBits.CompareTo(other.LeastSignificantBits);
         }
     }
 }
