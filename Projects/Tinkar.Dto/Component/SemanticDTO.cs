@@ -72,7 +72,10 @@ namespace Tinkar.Dto
         public SemanticDTO(
             IPublicId componentPublicId,
             IPatternForSemantic patternForSemantic,
-            IPublicId referencedComponentPublicId) : this(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
+            IComponent referencedComponentPublicId) : 
+                this(componentPublicId, 
+                    patternForSemantic.PublicId, 
+                    referencedComponentPublicId.PublicId)
         {
         }
 

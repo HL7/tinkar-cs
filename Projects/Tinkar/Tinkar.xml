@@ -921,6 +921,51 @@
             <param name="jsonObject">input data stream.</param>
             <returns>new DTO item.</returns>
         </member>
+        <member name="P:Tinkar.Dto.DiGraph`1.Roots">
+            <summary>
+            Gets the roots of this item.
+            A graph can have multiple roots.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.DiGraph`1.Predecessors(`0)">
+            <summary>
+            Get predecessors of the indicated vertex.
+            A directed graph can have multiple predecessors.
+            </summary>
+            <param name="vertex"></param>
+            <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
+        </member>
+        <member name="P:Tinkar.Dto.DiTree`1.Root">
+            <summary>
+            Get root of tree. Tree can only have one root.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.DiTree`1.Predecessor(`0)">
+            <summary>
+            Get predecessor of vertex.
+            </summary>
+            <param name="vertex">Get predecessor of this vertex</param>
+            <returns>Predecessor, or null if root</returns>
+        </member>
+        <member name="P:Tinkar.Dto.DiTree`1.PredecessorMap">
+            <summary>
+            Get dictionary of all predecessors
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.Graph`1.Vertex(System.Guid)">
+            <summary>
+            Gets the vertex associated with the identifier
+            </summary>
+            <param name="vertexId">a universally unique identifier for a vertex</param>
+            <returns>Vertex associated with the identifier</returns>
+        </member>
+        <member name="M:Tinkar.Dto.Graph`1.Successors(`0)">
+            <summary>
+            Gets the successors for the provided vertex
+            </summary>
+            <param name="vertex">vertex a vertex to retrieve the successors of</param>
+            <returns>Successofs of indicated vertex</returns>
+        </member>
         <member name="T:Tinkar.Dto.PatternForSemanticChronologyDTO">
             <summary>
             Tinkar PatternForSemanticChronology record.
@@ -1267,7 +1312,7 @@
             <param name="definitionForSemanticPublicId">Definition ForSemantic PublicId.</param>
             <param name="referencedComponentPublicId">Referenced Component PublicId.</param>
         </member>
-        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId)">
+        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IComponent)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticDTO"/> class.
             </summary>

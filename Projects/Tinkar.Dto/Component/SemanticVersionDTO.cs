@@ -139,48 +139,53 @@ namespace Tinkar.Dto
             return 0;
         }
 
-#warning TODO
-        //public static SemanticVersionDTO make(SemanticVersion semanticVersion)
-        //{
-        //    MutableList<Object> convertedFields = Lists.mutable.empty();
-        //    semanticVersion.fields().forEach(objectToConvert-> {
-        //        if (objectToConvert instanceof Concept) {
-        //            Concept concept = (Concept)objectToConvert;
-        //            convertedFields.add(new ConceptDTO(concept.publicId()));
-        //        } else if (objectToConvert instanceof PatternForSemantic) {
-        //            PatternForSemantic patternForSemantic = (PatternForSemantic)objectToConvert;
-        //            convertedFields.add(new PatternForSemanticDTO(patternForSemantic.publicId()));
-        //        } else if (objectToConvert instanceof Semantic) {
-        //            Semantic semantic = (Semantic)objectToConvert;
-        //            convertedFields.add(new SemanticDTO(semantic.publicId(), semantic.patternForSemantic(),
-        //                    semantic.referencedComponent()));
-        //        } else if (objectToConvert instanceof Component) {
-        //            Component component = (Component)objectToConvert;
-        //            convertedFields.add(new ComponentDTO(component.publicId()));
-        //        } else if (objectToConvert instanceof Number) {
-        //            Number number = (Number)objectToConvert;
-        //            if (number instanceof Long) {
-        //                convertedFields.add(number.intValue());
-        //            } else if (number instanceof Double) {
-        //                convertedFields.add(number.floatValue());
-        //            } else
-        //            {
-        //                convertedFields.add(number);
-        //            }
-        //        } else if (objectToConvert instanceof String) {
-        //            convertedFields.add(objectToConvert);
-        //        } else if (objectToConvert instanceof Instant) {
-        //            convertedFields.add(objectToConvert);
-        //        } else
-        //        {
-        //            throw new UnsupportedOperationException("Can't convert:\n  " + objectToConvert + "\nin\n  " + semanticVersion);
-        //        }
-        //    });
-        //    return new SemanticVersionDTO(semanticVersion.publicId(),
-        //            semanticVersion.patternForSemantic(),
-        //            semanticVersion.referencedComponent(),
-        //            StampDTO.make(semanticVersion.stamp()), convertedFields.toImmutable());
-        //}
+        public static SemanticVersionDTO Make(ISemanticVersion semanticVersion)
+        {
+            List<Object> convertedFields = new List<Object>();
+            foreach (Object field in semanticVersion.Fields)
+            { 
+                switch (field)
+                {
+                    case IConcept item:
+                        convertedFields.Add(new ConceptDTO(item.PublicId));
+                        break;
+                    case IPatternForSemantic item:
+                        convertedFields.Add(new PatternForSemanticDTO(item.PublicId));
+                        break;
+                    case ISemantic item:
+                        convertedFields.Add(new SemanticDTO(item.PublicId,
+                            item.PatternForSemantic,
+                            item.ReferencedComponent));
+                        break;
+                    case IComponent item:
+                        convertedFields.Add(new ComponentDTO(item.PublicId));
+                        break;
+                    case Int64 item:
+                        convertedFields.Add(item);
+                        break;
+                    case Int32 item:
+                        convertedFields.Add(item);
+                        break;
+                    case Double item:
+                        convertedFields.Add(item);
+                        break;
+                    case Single item:
+                        convertedFields.Add(item);
+                        break;
+                    case DateTime item:
+                        convertedFields.Add(item);
+                        break;
+                    default:
+                        throw new NotImplementedException($"Field type {field.GetType().Name} not implemented.");
+                }
+            } 
+
+            return new SemanticVersionDTO(semanticVersion.PublicId,
+                    semanticVersion.PatternForSemantic.PublicId,
+                    semanticVersion.ReferencedComponent.PublicId,
+                    StampDTO.Make(semanticVersion.Stamp), 
+                    convertedFields);
+        }
 
         /// <summary>
         /// Static method to Create DTO item from input stream.
