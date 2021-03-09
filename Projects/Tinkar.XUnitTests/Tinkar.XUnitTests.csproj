@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tinkar.Dto\Tinkar.Dto.csproj" />
     <ProjectReference Include="..\Tinkar\Tinkar.csproj" />
   </ItemGroup>
 

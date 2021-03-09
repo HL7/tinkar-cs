@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {

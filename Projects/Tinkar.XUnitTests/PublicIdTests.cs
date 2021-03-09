@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {

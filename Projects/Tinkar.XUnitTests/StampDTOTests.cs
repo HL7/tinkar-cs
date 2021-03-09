@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Tinkar.Dto;
 using Xunit;
 using Assert = Xunit.Assert;
 

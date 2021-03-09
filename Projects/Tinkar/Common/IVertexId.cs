@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tinkar.Common
+namespace Tinkar
 {
     public interface IVertexId : IComparable<IVertexId>
     {

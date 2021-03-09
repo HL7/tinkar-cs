@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {

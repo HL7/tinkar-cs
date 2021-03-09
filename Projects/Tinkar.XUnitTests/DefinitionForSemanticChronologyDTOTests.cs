@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {

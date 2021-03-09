@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar", "Projects\Tinkar\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar.XUnitTests", "Projects\Tinkar.XUnitTests\Tinkar.XUnitTests.csproj", "{62742954-C463-4F6F-A859-70E14BAFA8B7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar.Dto", "Projects\Tinkar.Dto\Tinkar.Dto.csproj", "{02030BD0-C83D-434A-841B-CC6D73A024A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,14 @@ Global
 		{62742954-C463-4F6F-A859-70E14BAFA8B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62742954-C463-4F6F-A859-70E14BAFA8B7}.Release|x64.ActiveCfg = Release|Any CPU
 		{62742954-C463-4F6F-A859-70E14BAFA8B7}.Release|x64.Build.0 = Release|Any CPU
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Debug|x64.ActiveCfg = Debug|x64
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Debug|x64.Build.0 = Debug|x64
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|x64.ActiveCfg = Release|x64
+		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
