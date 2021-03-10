@@ -10,6 +10,7 @@ using System.Text;
 using Xunit;
 using Assert = Xunit.Assert;
 using Tinkar.Dto;
+using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
@@ -140,6 +141,41 @@ namespace Tinkar.XUnitTests
             }
 
             File.WriteAllText(@"c:\Temp\f.txt", sb.ToString());
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void FieldCompareMapTest()
+        {
+            {
+                ImmutableDictionary<Int32, String> aDict = ImmutableDictionary<int, string>.Empty;
+                aDict = aDict.Add(1, "abc");
+                aDict = aDict.Add(2, "def");
+                Assert.True(FieldCompare.CompareMap<Int32, String>(aDict, aDict) == 0);
+            }
+
+            {
+                ImmutableDictionary<Int32, String> aDict = ImmutableDictionary<int, string>.Empty;
+                aDict = aDict.Add(1, "abc");
+                aDict = aDict.Add(2, "def");
+
+                ImmutableDictionary<Int32, String> bDict = ImmutableDictionary<int, string>.Empty;
+                bDict = bDict.Add(1, "abc");
+                Assert.True(FieldCompare.CompareMap<Int32, String>(aDict, bDict) > 0);
+                Assert.True(FieldCompare.CompareMap<Int32, String>(bDict, aDict) < 0);
+            }
+
+            {
+                ImmutableDictionary<Int32, String> aDict = ImmutableDictionary<int, string>.Empty;
+                aDict = aDict.Add(1, "abc");
+                aDict = aDict.Add(2, "def");
+
+                ImmutableDictionary<Int32, String> bDict = ImmutableDictionary<int, string>.Empty;
+                bDict = bDict.Add(2, "abc");
+                bDict = bDict.Add(1, "def");
+                Assert.True(FieldCompare.CompareMap<Int32, String>(aDict, bDict) < 0);
+                Assert.True(FieldCompare.CompareMap<Int32, String>(bDict, aDict) > 0);
+            }
         }
 
         [DoNotParallelize]

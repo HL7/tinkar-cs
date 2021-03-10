@@ -12,16 +12,8 @@ namespace Tinkar.Dto
     /// <summary>
     /// Base class for all Tinkar DTO classes.
     /// </summary>
-    public record ComponentDTO : IDTO,
-        IComponent,
-        IComparable,
-        IEquivalent
+    public record ComponentDTO : IDTO, IComponent
     {
-        /// <summary>
-        /// Gets JSON Name of class.
-        /// </summary>
-        public virtual String JsonClassName => throw new Exception("Should never be called.");
-
         /// <summary>
         /// Gets public id.
         /// </summary>

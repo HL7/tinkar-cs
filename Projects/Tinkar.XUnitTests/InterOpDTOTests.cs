@@ -17,7 +17,7 @@ namespace Tinkar.XUnitTests
 
         Guid NextGuid()
         {
-            GuidUnion g = new GuidUnion(guidNumber, ~guidNumber);
+            TinkarId g = new TinkarId(guidNumber, ~guidNumber);
             guidNumber += 1;
             return g.Uuid;
         }

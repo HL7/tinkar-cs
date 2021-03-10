@@ -40,11 +40,6 @@ namespace Tinkar.Dto
         public FieldDataType FieldDataType => FieldDataType.StampType;
 
         /// <summary>
-        /// Gets JSON Name of class.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Gets Status UUIDs.
         /// </summary>
         public IPublicId StatusPublicId { get; init; }

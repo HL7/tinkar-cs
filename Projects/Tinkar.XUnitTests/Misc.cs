@@ -136,12 +136,12 @@ namespace Tinkar.XUnitTests
 
 
         public static StampDTO CreateStampDTO => new StampDTO(
-            new PublicId(new Guid(0x80, 0, 0, zero), new Guid(0x81, 0, 0, zero) ),
+            new PublicId(new Guid(0x80, 0, 0, zero), new Guid(0x81, 0, 0, zero)),
             new PublicId(new Guid(0x80, 1, 0, zero), new Guid(0x81, 1, 0, zero)),
             new DateTime(1990, 3, 4),
-            new PublicId(new Guid(0x80, 2, 0, zero), new Guid(0x81, 1, 0, zero) ),
-            new PublicId(new Guid(0x80, 3, 0, zero) ),
-            new PublicId(new Guid(0x80, 4, 0, zero) )
+            new PublicId(new Guid(0x80, 2, 0, zero), new Guid(0x81, 1, 0, zero)),
+            new PublicId(new Guid(0x80, 3, 0, zero)),
+            new PublicId(new Guid(0x80, 4, 0, zero))
             );
 
         public static void Compare(IPublicId inPublicId, IPublicId cmpPublicId) =>
@@ -188,5 +188,25 @@ namespace Tinkar.XUnitTests
                     Misc.CreateFieldDefinition
                 }
             );
+
+        public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);
+        public static VertexDTO CreateVertexDTO()
+        {
+            return new VertexDTO(
+                    g1,
+                    123,
+                    new ConceptDTO(PublicIdH),
+                    new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 1),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x2)), (Int64) 2),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x3)), (Single) 3),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x4)), (Double) 4),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x5)), "abcdef"),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x6)), true),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1))
+                    }
+                );
+        }
     }
 }

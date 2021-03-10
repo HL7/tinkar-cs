@@ -33,6 +33,18 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
+        public void ConceptDTOConstructor()
+        {
+            String uuidString = $"[\"{Misc.g1.ToString()}\" \"{Misc.g2.ToString()}\" \"{Misc.g3.ToString()}\"]";
+            ConceptDTO dto = ConceptDTO.Make(uuidString);
+            Assert.True(dto.PublicId.UuidCount == 3);
+            Assert.True(dto.PublicId.AsUuidArray[0] == Misc.g1);
+            Assert.True(dto.PublicId.AsUuidArray[1] == Misc.g2);
+            Assert.True(dto.PublicId.AsUuidArray[2] == Misc.g3);
+        }
+
+        [DoNotParallelize]
+        [Fact]
         public void ConceptDTOFieldsTest()
         {
             ConceptDTO dtoStart = Misc.CreateConceptDTO;

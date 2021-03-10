@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Tinkar.Dto
@@ -145,6 +146,39 @@ namespace Tinkar.Dto
                     return cmp;
             }
 
+            return 0;
+        }
+
+
+        public static Int32 CompareMap<TKey, TValue>(
+            ImmutableDictionary<TKey, TValue> a,
+            ImmutableDictionary<TKey, TValue> b)
+            where TKey : IComparable
+        {
+            Int32 CompareMapTuples(KeyValuePair<TKey, TValue> cva, KeyValuePair<TKey, TValue> cvb)
+                => cva.Key.CompareTo(cvb.Key);
+
+            List<KeyValuePair<TKey, TValue>> aItems = a.ToList();
+            aItems.Sort(CompareMapTuples);
+
+            List<KeyValuePair<TKey, TValue>> bItems = b.ToList();
+            bItems.Sort(CompareMapTuples);
+
+            Int32 cmpVal = aItems.Count.CompareTo(bItems.Count);
+            if (cmpVal != 0)
+                return cmpVal;
+
+            for (Int32 i = 0; i < aItems.Count; i++)
+            {
+                cmpVal = aItems[i].Key.CompareTo(bItems[i].Key);
+                if (cmpVal != 0)
+                    return cmpVal;
+                IComparable value1 = (IComparable)aItems[i].Value;
+                IComparable value2 = (IComparable)bItems[i].Value;
+                cmpVal = value1.CompareTo(value2);
+                if (cmpVal != 0)
+                    return cmpVal;
+            }
             return 0;
         }
 

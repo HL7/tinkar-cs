@@ -7,9 +7,17 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public class DiGraph<V> :  Graph<V>, IDiGraph<V>
+    public class DiGraphDTO<V> :  GraphDTO<V>, 
+        IDiGraph<V>,
+        IJsonMarshalable,
+        IMarshalable
         where V : IVertex
     {
+        /// <summary>
+        /// Unique id for this data field.
+        /// </summary>
+        public FieldDataType FieldDataType => FieldDataType.DiGraphType;
+
         /// <summary>
         /// Gets the roots of this item.
         /// A graph can have multiple roots.
@@ -24,5 +32,17 @@ namespace Tinkar.Dto
         /// <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
         public IEnumerable<V> Predecessors(V vertex) => 
             throw new NotImplementedException("XXYYZ");
+
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
+        public void Marshal(TinkarOutput output) => throw new NotImplementedException("xxyyz");
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream.</param>
+        public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException("xxyyz");
     }
 }

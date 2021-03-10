@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IVertexId : IComparable<IVertexId>
+    public interface IVertexId : ITinkarId, IComparable<IVertexId>
     {
-        public Guid Uuid { get; }
-        public Int64 MostSignificantBits { get; }
-        public Int64 LeastSignificantBits { get; }
     }
 }

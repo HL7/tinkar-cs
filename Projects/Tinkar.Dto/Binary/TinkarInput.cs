@@ -102,9 +102,15 @@ namespace Tinkar.Dto
             Int32 length = this.GetInt32();
             Guid[] array = new Guid[length];
             for (Int32 i = 0; i < length; i++)
-                array[i] = new Guid(this.reader.ReadBytes(16));
+                array[i] = GetUuid();
             return array;
         }
+
+        /// <summary>
+        /// Read array of guids from input stream.
+        /// </summary>
+        /// <returns>Guid[].</returns>
+        public Guid GetUuid() => new Guid(this.reader.ReadBytes(16));
 
         /// <summary>
         /// Read PublicId from input stream.

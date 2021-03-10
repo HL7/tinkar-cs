@@ -59,6 +59,17 @@ namespace Tinkar.Dto
         /// Write array of objects.
         /// </summary>
         /// <param name="propertyName">child property name.</param>
+        /// <param name="field">values to write.</param>
+        public void Put(String propertyName, Object field)
+        {
+            this.writer.WritePropertyName(propertyName);
+            this.WriteField(field);
+        }
+
+        /// <summary>
+        /// Write array of objects.
+        /// </summary>
+        /// <param name="propertyName">child property name.</param>
         /// <param name="fields">values to write.</param>
         public void Put(String propertyName, IEnumerable<Object> fields)
         {
@@ -145,6 +156,19 @@ namespace Tinkar.Dto
         /// <param name="propertyName">Name of json property to write.</param>
         /// <param name="publicId">PublicId to write.</param>
         public void Put(String propertyName, IPublicId publicId) => WriteUuids(propertyName, publicId.AsUuidArray);
+
+        /// <summary>
+        /// Write property that is array of guids.
+        /// </summary>
+        /// <param name="propertyName">Name of json property to write.</param>
+        /// <param name="guid">Guid to write.</param>
+        public void WriteUuid(
+            String propertyName,
+            Guid guid)
+        {
+            this.writer.WritePropertyName(propertyName);
+            this.writer.WriteValue(guid);
+        }
 
         /// <summary>
         /// Write property that is array of guids.

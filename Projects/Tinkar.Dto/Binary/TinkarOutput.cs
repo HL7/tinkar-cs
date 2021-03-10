@@ -188,13 +188,19 @@ namespace Tinkar.Dto
         /// <summary>
         /// Write a stream of Uuids (guids) to output stream.
         /// </summary>
-        /// <param name="statusUuids">values to write.</param>
-        public void WriteUuids(IEnumerable<Guid> statusUuids)
+        /// <param name="uuids">values to write.</param>
+        public void WriteUuids(IEnumerable<Guid> uuids)
         {
-            this.WriteInt32(statusUuids.Count());
-            foreach (Guid statusUuid in statusUuids)
-                this.writer.Write(statusUuid.ToByteArray());
+            this.WriteInt32(uuids.Count());
+            foreach (Guid uuid in uuids)
+                this.WriteUuid(uuid);
         }
+
+        /// <summary>
+        /// Write a stream of Uuids (guids) to output stream.
+        /// </summary>
+        /// <param name="uuid">values to write.</param>
+        public void WriteUuid(Guid uuid) => this.writer.Write(uuid.ToByteArray());
 
         /// <summary>
         /// Write a stream of Uuids (guids) to output stream.

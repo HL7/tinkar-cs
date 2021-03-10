@@ -21,10 +21,10 @@ namespace Tinkar.Dto
     /// </summary>
     public struct PublicId : IPublicId
     {
-        GuidUnion SingleId;
-        GuidUnion[] MultipleId;
+        TinkarId SingleId;
+        TinkarId[] MultipleId;
 
-        public GuidUnion this[Int32 index]
+        public ITinkarId this[Int32 index]
         { 
             get
             {
@@ -64,14 +64,14 @@ namespace Tinkar.Dto
             else if (guids.Length == 1)
             {
                 this.MultipleId = null;
-                this.SingleId = new GuidUnion(guids[0]);
+                this.SingleId = new TinkarId(guids[0]);
             }
             else
             {
-                List<GuidUnion> guidUnionList = new List<GuidUnion>();
+                List<TinkarId> guidUnionList = new List<TinkarId>();
 
                 // Insert into ordered position. Discard duplicates.
-                void InsertOrdered(GuidUnion newItem)
+                void InsertOrdered(TinkarId newItem)
                 {
                     if (guidUnionList.Count == 0)
                         guidUnionList.Add(newItem);
@@ -90,9 +90,9 @@ namespace Tinkar.Dto
                 }
 
                 for (Int32 i = 0; i < guids.Length; i++)
-                    InsertOrdered(new GuidUnion(guids[i]));
+                    InsertOrdered(new TinkarId(guids[i]));
 
-                this.SingleId = new GuidUnion(Guid.Empty);
+                this.SingleId = new TinkarId(Guid.Empty);
                 this.MultipleId = guidUnionList.ToArray();
             }
         }
@@ -136,5 +136,20 @@ namespace Tinkar.Dto
                 }
             }
         }
+        public String ToUuidString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            String sep = String.Empty;
+            foreach (Guid guid in this.AsUuidArray)
+            {
+                sb.Append($"\"{guid.ToString()}\"{sep}");
+                sep = " ";
+            }
+            sb.Append("]");
+
+            return sb.ToString();
+        }
+
     }
 }

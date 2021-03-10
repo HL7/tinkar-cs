@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,5 +49,8 @@ namespace Tinkar
         /// </summary>
         /// <returns>keys</returns>
         IEnumerable<IConcept> PropertyKeys { get; }
+
+
+        ImmutableDictionary<IConcept, Object> Properties { get;}
     }
 }

@@ -23,14 +23,17 @@ namespace Tinkar.Dto
         public const String JSONCLASSNAME = "ConceptDTO";
 
         /// <summary>
-        /// Gets JSON Name of class.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
         public FieldDataType FieldDataType => FieldDataType.ConceptType;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
+        /// </summary>
+        /// <param name = "uuids" > Component Public id(component ids).</param>
+        public ConceptDTO(params Guid[] uuids) : this(new PublicId(uuids))
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptDTO"/> class.
@@ -89,6 +92,26 @@ namespace Tinkar.Dto
         /// <returns>ConceptDTO record.</returns>
         public static ConceptDTO Make(JObject jObj) =>
             new ConceptDTO(jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
+
+
+        /// <summary>
+        /// Mkae concept from a string of uuid's
+        /// </summary>
+        /// <param name="uuidListString"></param>
+        /// <returns></returns>
+        public static ConceptDTO Make(String uuidListString)
+        {
+            uuidListString = uuidListString
+                .Replace("[", "")
+                .Replace("]", "")
+                .Replace(",", "")
+                .Replace("\"", "");
+            String[] uuidStrings = uuidListString.Split(" ");
+            Guid[] uuids = new Guid[uuidStrings.Length];
+            for (Int32 i = 0; i < uuidStrings.Length; i++)
+                uuids[i] = new Guid(uuidStrings[i]);
+            return new ConceptDTO(uuids);
+        }
 
         /// <summary>
         /// Marshal all fields to output stream.

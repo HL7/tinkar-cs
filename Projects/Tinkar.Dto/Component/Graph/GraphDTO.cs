@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public class Graph<V> : IGraph<V>
+    public class GraphDTO<V> : IGraph<V>
         where V : IVertex
     {
         public IEnumerable<V> VertexMap => throw new NotImplementedException("xxyyz");

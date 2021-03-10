@@ -146,9 +146,9 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void Insert()
         {
-            GuidUnion alpha = new GuidUnion(1L, 0L);
-            GuidUnion beta = new GuidUnion(2L, 0L);
-            GuidUnion delta = new GuidUnion(3L, 0L);
+            TinkarId alpha = new TinkarId(1L, 0L);
+            TinkarId beta = new TinkarId(2L, 0L);
+            TinkarId delta = new TinkarId(3L, 0L);
             {
                 PublicId pid = new PublicId(alpha.Uuid);
                 Guid[] guids = pid.AsUuidArray;
@@ -198,8 +198,8 @@ namespace Tinkar.XUnitTests
         public void Verify()
         {
             Guid guid = Guid.NewGuid();
-            GuidUnion guidUnion = new GuidUnion(guid);
-            Assert.True(sizeof(GuidUnion) == sizeof(Guid));
+            TinkarId guidUnion = new TinkarId(guid);
+            Assert.True(sizeof(TinkarId) == sizeof(Guid));
             Assert.True(guidUnion.Uuid == guid);
 
             byte[] gb = guid.ToByteArray();

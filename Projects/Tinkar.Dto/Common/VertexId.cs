@@ -6,28 +6,27 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public class VertexId : IVertexId, IComparable, IComparable<IVertexId>
+    public class VertexId : IVertexId
     {
-        GuidUnion guid;
+        TinkarId tinkarId;
 
-        public Guid Uuid => guid.Uuid;
+        public Guid Uuid => tinkarId.uuid;
 
-        public Int64 MostSignificantBits => guid.MostSignificantBits;
+        public Int64 MostSignificantBits => tinkarId.MostSignificantBits;
 
-        public Int64 LeastSignificantBits => guid.LeastSignificantBits;
+        public Int64 LeastSignificantBits => tinkarId.LeastSignificantBits;
 
 
-        public VertexId(Guid uuid)
-        {
-            this.guid = new GuidUnion(uuid); 
-        }
+        public VertexId(Guid uuid) => 
+            tinkarId = new TinkarId(uuid);
 
-        public VertexId(Int64 mostSignificantBits, Int64 leastSignificantBits)
-        {
-            this.guid = new GuidUnion(mostSignificantBits, leastSignificantBits);
-        }
+        public VertexId(Int64 mostSignificantBits, Int64 leastSignificantBits) =>
+            tinkarId = new TinkarId(mostSignificantBits, leastSignificantBits);
 
-        public Int32 CompareTo(Object other) => CompareTo(((IVertexId)other));
-        public Int32 CompareTo(IVertexId other) => this.guid.CompareTo(((VertexId)other).guid);
+        public Int32 CompareTo(Object other) 
+            => this.tinkarId.CompareTo(other);
+        public Int32 CompareTo(IVertexId other) => 
+            this.tinkarId.CompareTo(((VertexId)other).tinkarId);
+        public Int32 CompareTo(ITinkarId other) => throw new NotImplementedException();
     }
 }

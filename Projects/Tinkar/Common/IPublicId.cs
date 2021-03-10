@@ -8,10 +8,12 @@ namespace Tinkar
 {
     public interface IPublicId : IEquivalent<IPublicId>, IComparable<IPublicId>
     {
-        GuidUnion this[Int32 index] { get; }
+        ITinkarId this[Int32 index] { get; }
 
         Guid[] AsUuidArray { get; }
         IEnumerable<Guid> AsUuidList { get; }
         Int32 UuidCount { get; }
+
+        String ToUuidString();
     }
 }

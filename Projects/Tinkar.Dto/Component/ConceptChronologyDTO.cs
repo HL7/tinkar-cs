@@ -36,11 +36,6 @@ namespace Tinkar.Dto
         public const String JSONCLASSNAME = "ConceptChronologyDTO";
 
         /// <summary>
-        /// Gets JSON Name of class.
-        /// </summary>
-        public override String JsonClassName => JSONCLASSNAME;
-
-        /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
         public virtual FieldDataType FieldDataType => FieldDataType.ConceptChronologyType;
