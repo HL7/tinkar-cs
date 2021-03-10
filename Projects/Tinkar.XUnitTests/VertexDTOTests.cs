@@ -30,128 +30,146 @@ namespace Tinkar.XUnitTests
             Assert.True(dtoStart.Property<DateTime>(new ConceptDTO(Misc.GID(0x7))) == new DateTime(2000, 1, 1));
         }
 
-        //[DoNotParallelize]
-        //[Fact]
-        //public void VertexDTOIsEquivalentTest()
-        //{
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO;
-        //        Assert.True(a.IsEquivalent(b));
-        //    }
+        [DoNotParallelize]
+        [Fact]
+        public void VertexDTOIsEquivalentTest()
+        {
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO();
+                Assert.True(a.IsEquivalent(b));
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            PublicId = new PublicId(Misc.other)
-        //        };
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    VertexId = new VertexId(Misc.h1)
+                };
+                Assert.False(a.IsEquivalent(b));
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            DefinitionForSemanticPublicId = new PublicId(Misc.other)
-        //        };
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    VertexIndex = 55
+                };
+                Assert.False(a.IsEquivalent(b));
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            ReferencedComponentPublicId = new PublicId(Misc.other)
-        //        };
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Meaning = new ConceptDTO(a.Meaning.PublicId.AsUuidArray[0], Misc.other)
+                };
+                Assert.True(a.IsEquivalent(b));
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2 ) }
-        //        };
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Meaning = new ConceptDTO(Misc.other)
+                };
+                Assert.False(a.IsEquivalent(b));
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            Fields = new Object[] { 1, "abcdef" }
-        //        };
-        //        Assert.False(a.IsEquivalent(b));
-        //    }
-        //}
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Properties = new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x1)), (Int32) 1),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x2)), (Int64) 2),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x3)), (Single) 3),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x4)), (Double) 4),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x5)), "abcdef"),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x6)), true),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31))
+                    }.ToImmutableDict()
+                };
+                Assert.False(a.IsEquivalent(b));
+            }
+        }
 
 
-        //[DoNotParallelize]
-        //[Fact]
-        //public void VertexDTOIsSameTest()
-        //{
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO;
-        //        Assert.True(a.CompareTo(b) == 0);
-        //    }
+        [DoNotParallelize]
+        [Fact]
+        public void VertexDTOIsSameTest()
+        {
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO();
+                Assert.True(a.CompareTo(b) == 0);
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
-        //        };
-        //        Assert.False(a.CompareTo(b) == 0);
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    VertexId = new VertexId(Misc.h1)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            DefinitionForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
-        //        };
-        //        Assert.False(a.CompareTo(b) == 0);
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    VertexIndex = 55
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            ReferencedComponentPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
-        //        };
-        //        Assert.False(a.CompareTo(b) == 0);
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Meaning = new ConceptDTO(a.Meaning.PublicId.AsUuidArray[0], Misc.other)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2) }
-        //        };
-        //        Assert.False(a.CompareTo(b) == 0);
-        //    }
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Meaning = new ConceptDTO(Misc.other)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
 
-        //    {
-        //        VertexDTO a = Misc.CreateVertexDTO;
-        //        VertexDTO b = Misc.CreateVertexDTO
-        //        with
-        //        {
-        //            Fields = new Object[] { 1, "abcdef" }
-        //        };
-        //        Assert.False(a.CompareTo(b) == 0);
-        //    }
-        //}
+            {
+                VertexDTO a = Misc.CreateVertexDTO();
+                VertexDTO b = Misc.CreateVertexDTO()
+                with
+                {
+                    Properties = new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x1)), (Int32) 1),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x2)), (Int64) 2),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x3)), (Single) 3),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x4)), (Double) 4),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x5)), "abcdef"),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x6)), true),
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31))
+                    }.ToImmutableDict()
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+        }
 
 
 
@@ -159,7 +177,7 @@ namespace Tinkar.XUnitTests
         //[Fact]
         //public void VertexDTOMarshalTest()
         //{
-        //    VertexDTO dtoStart = Misc.CreateVertexDTO;
+        //    VertexDTO dtoStart = Misc.CreateVertexDTO();
 
         //    MemoryStream ms = new MemoryStream();
         //    using (TinkarOutput output = new TinkarOutput(ms))
@@ -181,7 +199,7 @@ namespace Tinkar.XUnitTests
         //[Fact]
         //public void VertexDTOJsonMarshal()
         //{
-        //    VertexDTO dtoStart = Misc.CreateVertexDTO;
+        //    VertexDTO dtoStart = Misc.CreateVertexDTO();
         //    MemoryStream ms = new MemoryStream();
         //    using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
         //    {

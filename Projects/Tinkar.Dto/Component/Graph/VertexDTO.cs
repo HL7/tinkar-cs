@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public class VertexDTO : IVertex,
+    public record VertexDTO : IVertex,
         IJsonMarshalable,
         IMarshalable
     {
@@ -127,12 +127,12 @@ namespace Tinkar.Dto
         /// unique within a graph, but not across graphs, or different versions of the same graph.
         /// Vertex index is not used in equality or hash calculations.
         /// </summary>
-        public int VertexIndex { get; }
+        public int VertexIndex { get; init; }
 
         /// <summary>
         /// Concept that represents the meaning of this vertex.
         /// </summary>
-        public IConcept Meaning { get; }
+        public IConcept Meaning { get; init; }
 
 
         /// <summary>
@@ -187,15 +187,8 @@ namespace Tinkar.Dto
             int vertexIndex,
             ConceptDTO meaning,
             IEnumerable<KeyValuePair<IConcept, Object>> properties) : 
-                this(vertexId, vertexIndex, meaning, ToImmutableDict(properties))
+                this(vertexId, vertexIndex, meaning, properties.ToImmutableDict())
         {
-        }
-
-        static ImmutableDictionary<IConcept, Object> ToImmutableDict(IEnumerable<KeyValuePair<IConcept, Object>> properties)
-        {
-            var builder = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            builder.AddRange(properties);
-            return builder.ToImmutable();
         }
 
         /// <summary>
@@ -230,8 +223,10 @@ namespace Tinkar.Dto
         public Int32 CompareTo(Object other) => CompareTo(other as IVertex);
         public Int32 CompareTo(IVertex other)
         {
-            if (this == other) return 0;
             Int32 cmpVal = this.VertexId.CompareTo(other.VertexId);
+            if (cmpVal != 0)
+                return cmpVal;
+            cmpVal = this.VertexIndex.CompareTo(other.VertexIndex);
             if (cmpVal != 0)
                 return cmpVal;
             cmpVal = this.Meaning.CompareTo(other.Meaning);
@@ -270,8 +265,9 @@ namespace Tinkar.Dto
 
         public bool IsEquivalent(IVertex other)
         {
-            if (this == other) return true;
             if (this.VertexId.CompareTo(other.VertexId) != 0)
+                return false;
+            if (this.VertexIndex.CompareTo(other.VertexIndex) != 0)
                 return false;
             if (this.Meaning.IsEquivalent(other.Meaning) == false)
                 return false;
