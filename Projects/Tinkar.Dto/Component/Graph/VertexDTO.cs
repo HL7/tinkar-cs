@@ -33,87 +33,9 @@ namespace Tinkar.Dto
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(vertexIdMsb, vertexIdLsb, meaning);
-    }
-
-    @Override
-    public void jsonMarshal(Writer writer) {
-        final JSONObject json = new JSONObject();
-        json.put(ComponentFieldForJson.CLASS, this.getClass().getCanonicalName());
-        json.put(ComponentFieldForJson.VERTEX_ID, vertexId());
-        json.put(ComponentFieldForJson.VERTEX_INDEX, vertexIndex());
-        json.put(ComponentFieldForJson.VERTEX_MEANING, meaning());
-        final JSONObject jsonPropertyMap = new JSONObject();
-        json.put(ComponentFieldForJson.VERTEX_PROPERTIES, jsonPropertyMap);
-        properties.forEachKeyValue((conceptKey, value) -> {
-            jsonPropertyMap.put(conceptKey.componentPublicId().toString(), value);
-        });
-        json.writeJSONString(writer);
-    }
-
-    @JsonChronologyUnmarshaler
-    public static VertexDTO make(JSONObject jsonObject) {
-        JSONArray idParts = (JSONArray) jsonObject.get(ComponentFieldForJson.VERTEX_ID);
-        UUID vertexUuid = (UUID) idParts.get(0);
-        return VertexDTO.builder().vertexIdMsb(vertexUuid.getMostSignificantBits())
-                .vertexIdLsb(vertexUuid.getLeastSignificantBits())
-                .vertexIndex(((Long) jsonObject.get(ComponentFieldForJson.VERTEX_INDEX)).intValue())
-                .meaning(jsonObject.asConcept(ComponentFieldForJson.VERTEX_MEANING))
-                .properties(jsonObject.getConceptObjectMap(ComponentFieldForJson.VERTEX_PROPERTIES)).build();
-    }
-
-    @Unmarshaler
-    public static VertexDTO make(TinkarInput in) {
-        if (localMarshalVersion == in.getTinkerFormatVersion()) {
-            UUID vertexUuid = in.getUuid();
-            int vertexSequence = in.getInt();
-            PublicId meaningId = in.getPublicId();
-            final ImmutableMap<ConceptDTO, Object> immutableProperties;
-            int propertyCount = in.getInt();
-            if (propertyCount > 0) {
-                MutableMap<ConceptDTO, Object> mutableProperties = Maps.mutable.ofInitialCapacity(propertyCount);
-                for (int i = 0; i < propertyCount; i++) {
-                    ConceptDTO conceptKey = new ConceptDTO(in.getPublicId());
-                    Object object = in.getTinkarNativeObject();
-                    mutableProperties.put(conceptKey, object);
-                }
-                immutableProperties = mutableProperties.toImmutable();
-            } else {
-                immutableProperties = Maps.immutable.empty();
-            }
-
-            return VertexDTO.builder()
-                    .vertexIdMsb(vertexUuid.getMostSignificantBits())
-                    .vertexIdLsb(vertexUuid.getLeastSignificantBits())
-                    .vertexIndex(vertexSequence)
-                    .meaning(new ConceptDTO(meaningId))
-                    .properties(immutableProperties).build();
-        } else {
-            throw new UnsupportedOperationException("Unsupported version: " + marshalVersion);
-        }
-    }
-
-    @Override
     public RichIterable<ConceptDTO> propertyKeys() {
         return this.properties.keysView();
     }
-
-    @Override
-    @Marshaler
-    public void marshal(TinkarOutput out) {
-        out.putLong(vertexIdMsb);
-        out.putLong(vertexIdLsb);
-        out.putInt(vertexIndex);
-        out.putPublicId(meaning.componentPublicId());
-        out.putInt(properties.size());
-        properties.forEachKeyValue((conceptKey, object) -> {
-            out.putPublicId(conceptKey);
-            out.putTinkarNativeObject(object);
-        });
-
-    }
-
 #endif
 
         /// <summary>
@@ -211,6 +133,7 @@ namespace Tinkar.Dto
         /// <typeparam name="T">Type of the property object</typeparam>
         /// <param name="propertyConcept">Property Concept</param>
         /// <returns>Property associated with concept</returns>
+#warning "How is this different from T Property() above"
         public T PropertyFast<T>(IConcept propertyConcept) => throw new NotImplementedException("xxyyz");
 
         //CEnum PropertyKeys<CEnum> { get; }
@@ -218,7 +141,7 @@ namespace Tinkar.Dto
         /// Gets keys for the populated properties
         /// </summary>
         /// <returns>keys</returns>
-        public IEnumerable<IConcept> PropertyKeys => throw new NotImplementedException("xxyyz");
+        public IEnumerable<IConcept> PropertyKeys => this.Properties.Keys;
 
         public Int32 CompareTo(Object other) => CompareTo(other as IVertex);
         public Int32 CompareTo(IVertex other)

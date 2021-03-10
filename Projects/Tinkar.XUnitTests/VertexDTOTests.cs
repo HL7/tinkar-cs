@@ -15,19 +15,29 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void VertexDTOFieldsTest()
         {
-            VertexDTO dtoStart = Misc.CreateVertexDTO();
-            Assert.True(dtoStart.VertexId.Uuid == Misc.GID(1));
-            Assert.True(dtoStart.VertexIndex == 123);
-            Assert.True(dtoStart.Meaning.CompareTo(new ConceptDTO(Misc.PublicIdH)) == 0);
-            Assert.True(dtoStart.Properties.Keys.Count() == 7);
+            VertexDTO dto = Misc.CreateVertexDTO();
+            Assert.True(dto.VertexId.Uuid == Misc.GID(1));
+            Assert.True(dto.VertexIndex == 123);
+            Assert.True(dto.Meaning.CompareTo(new ConceptDTO(Misc.PublicIdH)) == 0);
+            Assert.True(dto.Properties.Keys.Count() == 7);
 
-            Assert.True(dtoStart.Property<Int32>(new ConceptDTO(Misc.GID(0x1))) == 1);
-            Assert.True(dtoStart.Property<Int64>(new ConceptDTO(Misc.GID(0x2))) == 2);
-            Assert.True(dtoStart.Property<Single>(new ConceptDTO(Misc.GID(0x3))) == 3);
-            Assert.True(dtoStart.Property<Double>(new ConceptDTO(Misc.GID(0x4))) == 4);
-            Assert.True(dtoStart.Property<String>(new ConceptDTO(Misc.GID(0x5))) == "abcdef");
-            Assert.True(dtoStart.Property<bool>(new ConceptDTO(Misc.GID(0x6))) == true);
-            Assert.True(dtoStart.Property<DateTime>(new ConceptDTO(Misc.GID(0x7))) == new DateTime(2000, 1, 1));
+            Assert.True(dto.Property<Int32>(new ConceptDTO(Misc.GID(0x1))) == 1);
+            Assert.True(dto.Property<Int64>(new ConceptDTO(Misc.GID(0x2))) == 2);
+            Assert.True(dto.Property<Single>(new ConceptDTO(Misc.GID(0x3))) == 3);
+            Assert.True(dto.Property<Double>(new ConceptDTO(Misc.GID(0x4))) == 4);
+            Assert.True(dto.Property<String>(new ConceptDTO(Misc.GID(0x5))) == "abcdef");
+            Assert.True(dto.Property<bool>(new ConceptDTO(Misc.GID(0x6))) == true);
+            Assert.True(dto.Property<DateTime>(new ConceptDTO(Misc.GID(0x7))) == new DateTime(2000, 1, 1));
+            var keys = dto.PropertyKeys.ToList();
+            keys.Sort();
+            Assert.True(keys.Count == 7);
+            Assert.True(keys[0].CompareTo(new ConceptDTO(Misc.GID(0x1))) == 0);
+            Assert.True(keys[1].CompareTo(new ConceptDTO(Misc.GID(0x2))) == 0);
+            Assert.True(keys[2].CompareTo(new ConceptDTO(Misc.GID(0x3))) == 0);
+            Assert.True(keys[3].CompareTo(new ConceptDTO(Misc.GID(0x4))) == 0);
+            Assert.True(keys[4].CompareTo(new ConceptDTO(Misc.GID(0x5))) == 0);
+            Assert.True(keys[5].CompareTo(new ConceptDTO(Misc.GID(0x6))) == 0);
+            Assert.True(keys[6].CompareTo(new ConceptDTO(Misc.GID(0x7))) == 0);
         }
 
         [DoNotParallelize]
