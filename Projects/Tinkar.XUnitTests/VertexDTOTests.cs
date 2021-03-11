@@ -183,28 +183,27 @@ namespace Tinkar.XUnitTests
 
 
 
-        //[DoNotParallelize]
-        //[Fact]
-        //public void VertexDTOMarshalTest()
-        //{
-        //    VertexDTO dtoStart = Misc.CreateVertexDTO();
+        [DoNotParallelize]
+        [Fact]
+        public void VertexDTOMarshalTest()
+        {
+            VertexDTO dtoStart = Misc.CreateVertexDTO();
 
-        //    MemoryStream ms = new MemoryStream();
-        //    using (TinkarOutput output = new TinkarOutput(ms))
-        //    {
-        //        dtoStart.Marshal(output);
-        //    }
+            MemoryStream ms = new MemoryStream();
+            using (TinkarOutput output = new TinkarOutput(ms))
+            {
+                dtoStart.Marshal(output);
+            }
 
-        //    ms.Position = 0;
-        //    using (TinkarInput input = new TinkarInput(ms))
-        //    {
-        //        VertexDTO dtoRead = VertexDTO.Make(input,
-        //            dtoStart.PublicId,
-        //            dtoStart.DefinitionForSemanticPublicId,
-        //            dtoStart.ReferencedComponentPublicId);
-        //        Assert.True(dtoStart.CompareTo(dtoRead) == 0);
-        //    }
-        //}
+            ms.Position = 0;
+            using (TinkarInput input = new TinkarInput(ms))
+            {
+                VertexDTO dtoRead = VertexDTO.Make(input);
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
+            }
+        }
+
+
         //[DoNotParallelize]
         //[Fact]
         //public void VertexDTOJsonMarshal()
@@ -220,14 +219,9 @@ namespace Tinkar.XUnitTests
         //    ms.Position = 0;
         //    using (TinkarJsonInput input = new TinkarJsonInput(ms))
         //    {
-        //        VertexDTO dtoEnd = VertexDTO.Make(
-        //            input.ReadJsonObject(),
-        //            dtoStart.PublicId,
-        //            dtoStart.DefinitionForSemanticPublicId,
-        //            dtoStart.ReferencedComponentPublicId);
+        //        VertexDTO dtoEnd = VertexDTO.Make(input);
         //        Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
         //    }
         //}
-
     }
 }

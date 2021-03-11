@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IVertex
+    public interface IVertex : 
+        IComparable,
+        IComparable<IVertex>,
+        IEquivalent,
+        IEquivalent<IVertex>
     {
         /// <summary>
         /// Gets universally unique identifier for this vertex

@@ -186,6 +186,8 @@ namespace Tinkar.Dto
             return new VertexDTO(vertexUuid, vertexIndex, new ConceptDTO(meaningId), properties.ToImmutable());
         }
 
+        public bool IsEquivalent(Object other) => this.IsEquivalent(other as IVertex);
+
         public bool IsEquivalent(IVertex other)
         {
             if (this.VertexId.CompareTo(other.VertexId) != 0)

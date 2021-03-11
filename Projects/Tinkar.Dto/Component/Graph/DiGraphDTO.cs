@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
+#if NEVER
     public class DiGraphDTO<V> :  GraphDTO<V>, 
         IDiGraph<V>,
         IJsonMarshalable,
@@ -45,4 +46,5 @@ namespace Tinkar.Dto
         /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException("xxyyz");
     }
+#endif
 }

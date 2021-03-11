@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -207,6 +208,55 @@ namespace Tinkar.XUnitTests
                         KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1))
                     }
                 );
+        }
+
+        public static IEnumerable<VertexDTO> CreateVertexMap =>
+            new VertexDTO[]
+            {
+                new VertexDTO(
+                    g1,
+                    101,
+                    new ConceptDTO(PublicIdG),
+                    new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 1),
+                    }
+                ),
+                new VertexDTO(
+                    g2,
+                    102,
+                    new ConceptDTO(PublicIdH),
+                    new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 2),
+                    }
+                ),
+                new VertexDTO(
+                    g3,
+                    103,
+                    new ConceptDTO(PublicIdI),
+                    new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 3),
+                    }
+                ),
+                new VertexDTO(
+                    g4,
+                    104,
+                    new ConceptDTO(PublicIdJ),
+                    new KeyValuePair<IConcept, Object>[]
+                    {
+                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 4),
+                    }
+                )
+            };
+
+        public static GraphDTO CreateGraphDTO()
+        {
+            List<KeyValuePair<Int32, ImmutableList<Int32>>> items = new List<KeyValuePair<int, ImmutableList<int>>>();
+            items.Add(KeyValuePair.Create<Int32, ImmutableList<Int32>>(101, new Int32[] {1,2 }.ToImmutableList()));
+            items.Add(KeyValuePair.Create<Int32, ImmutableList<Int32>>(102, new Int32[] { 3 }.ToImmutableList()));
+            return new GraphDTO(CreateVertexMap, items);
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public class DiTreeDTO<V> : GraphDTO<V>,
-        IDiTree<V>,
+#if NEVER
+    public class DiTreeDTO : GraphDTO,
+        IDiTree<VertexDTO>,
         IJsonMarshalable,
         IMarshalable
-        where V : IVertex
     {
         /// <summary>
         /// Unique id for this data field.
@@ -21,14 +21,14 @@ namespace Tinkar.Dto
         /// <summary>
         /// Get root of tree. Tree can only have one root.
         /// </summary>
-        public V Root => throw new NotImplementedException("XXYYZ");
+        public VertexDTO Root => throw new NotImplementedException("XXYYZ");
 
         /// <summary>
         /// Get predecessor of vertex.
         /// </summary>
         /// <param name="vertex">Get predecessor of this vertex</param>
         /// <returns>Predecessor, or null if root</returns>
-        public V Predecessor(V vertex) => throw new NotImplementedException("XXYYZ");
+        public VertexDTO Predecessor(VertexDTO vertex) => throw new NotImplementedException("XXYYZ");
 
         /// <summary>
         /// Get dictionary of all predecessors
@@ -48,4 +48,5 @@ namespace Tinkar.Dto
         /// <param name="output">Json output stream.</param>
         public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException("xxyyz");
     }
+#endif
 }

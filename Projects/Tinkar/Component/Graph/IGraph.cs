@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IGraph<V>
+    public interface IGraph<V>:
+        IComparable, IComparable<IGraph<V>>,
+        IEquivalent, IEquivalent<IGraph<V>>
         where V : IVertex
     {
-        IEnumerable<V> VertexMap { get; }
+        ImmutableList<V> VertexMap { get; }
 
         /// <summary>
         /// Gets the vertex associated with the identifier
@@ -20,8 +23,7 @@ namespace Tinkar
 
         V Vertex(int vertexSequence);
 
-        //ImmutableDictionary<>
-        //ImmutableIntObjectMap<ImmutableIntList> successorMap();
+        ImmutableDictionary<Int32, ImmutableList<Int32>> SuccessorMap { get; }
 
         /// <summary>
         /// Gets the successors for the provided vertex
