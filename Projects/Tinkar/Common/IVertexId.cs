@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IVertexId : ITinkarId, IComparable<IVertexId>
+    public interface IVertexId : ITinkarId, IComparable
     {
     }
 }

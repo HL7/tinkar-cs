@@ -95,7 +95,7 @@ namespace Tinkar.Dto
 
             if (this.ChronologySetPublicId.IsEquivalent(other.ChronologySetPublicId) == false)
                 return false;
-            if (FieldCompare.EquivelateSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions) == false)
+            if (FieldCompare.IsEquivalentSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions) == false)
                 return false;
             return true;
         }

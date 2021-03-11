@@ -103,7 +103,7 @@ namespace Tinkar.Dto
             if (this == other)
                 return true;
 
-            if (FieldCompare.EquivelateSequence(this.SemanticVersions, other.SemanticVersions) == false)
+            if (FieldCompare.IsEquivalentSequence(this.SemanticVersions, other.SemanticVersions) == false)
                 return false;
             return true;
         }

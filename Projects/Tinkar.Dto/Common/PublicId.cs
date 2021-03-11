@@ -25,7 +25,7 @@ namespace Tinkar.Dto
         TinkarId[] MultipleId;
 
         public ITinkarId this[Int32 index]
-        { 
+        {
             get
             {
                 if (MultipleId == null)
@@ -97,8 +97,12 @@ namespace Tinkar.Dto
             }
         }
 
-        public Int32 CompareTo(IPublicId other)
+        public Int32 CompareTo(object o)
         {
+            IPublicId other = o as IPublicId;
+            if (other == null)
+                return this.GetType().FullName.CompareTo(o.GetType().FullName);
+
             Int32 cmpVal = this.UuidCount.CompareTo(other.UuidCount);
             if (cmpVal != 0)
                 return cmpVal;
@@ -111,8 +115,12 @@ namespace Tinkar.Dto
             return 0;
         }
 
-        public Boolean IsEquivalent(IPublicId other)
+        public Boolean IsEquivalent(Object o)
         {
+            IPublicId other = o as IPublicId;
+            if (other == null)
+                return false;
+
             Int32 thisIdIndex = 0;
             Int32 otherIdIndex = 0;
             Int32 thisCount = this.UuidCount;

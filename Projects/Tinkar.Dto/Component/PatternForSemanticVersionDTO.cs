@@ -95,7 +95,7 @@ namespace Tinkar.Dto
                 return false;
             if (this.ReferencedComponentMeaningPublicId.IsEquivalent(other.ReferencedComponentMeaningPublicId) == false)
                 return false;
-            if (FieldCompare.EquivelateSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs) == false)
+            if (FieldCompare.IsEquivalentSequence(this.FieldDefinitionDTOs, other.FieldDefinitionDTOs) == false)
                 return false;
             return true;
         }

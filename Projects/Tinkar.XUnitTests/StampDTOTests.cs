@@ -181,7 +181,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void StampDTOIsSameTest()
+        public void StampDTOCompareToTest()
         {
             DateTime time = new DateTime(2020, 12, 31);
             {

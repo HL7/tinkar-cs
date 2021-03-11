@@ -76,7 +76,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOIsSameTest()
+        public void PatternForSemanticChronologyDTOCompareToTest()
         {
             {
                 PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;

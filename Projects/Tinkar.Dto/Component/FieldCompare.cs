@@ -18,7 +18,7 @@ namespace Tinkar.Dto
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 CompareItem<TItem>(TItem a, TItem b)
-            where TItem : IComparable<TItem>
+            where TItem : IComparable
         {
             return a.CompareTo(b);
         }
@@ -86,7 +86,7 @@ namespace Tinkar.Dto
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static Boolean EquivelateSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
+        public static Boolean IsEquivalentSequence<TSeq>(IEnumerable<TSeq> a, IEnumerable<TSeq> b)
             where TSeq : IEquivalent
         {
             if ((a == null) && (b == null))
@@ -154,6 +154,17 @@ namespace Tinkar.Dto
             ImmutableDictionary<TKey, TValue> a,
             ImmutableDictionary<TKey, TValue> b)
             where TKey : IComparable
+            where TValue : IComparable
+        {
+            return CompareMap(a, b, (x, y) => x.CompareTo(y));
+        }
+
+
+        public static Int32 CompareMap<TKey, TValue>(
+        ImmutableDictionary<TKey, TValue> a,
+        ImmutableDictionary<TKey, TValue> b,
+        Comparison<TValue> comparer)
+        where TKey : IComparable
         {
             Int32 CompareMapTuples(KeyValuePair<TKey, TValue> cva, KeyValuePair<TKey, TValue> cvb)
                 => cva.Key.CompareTo(cvb.Key);
@@ -173,9 +184,7 @@ namespace Tinkar.Dto
                 cmpVal = aItems[i].Key.CompareTo(bItems[i].Key);
                 if (cmpVal != 0)
                     return cmpVal;
-                IComparable value1 = (IComparable)aItems[i].Value;
-                IComparable value2 = (IComparable)bItems[i].Value;
-                cmpVal = value1.CompareTo(value2);
+                cmpVal = comparer(aItems[i].Value, bItems[i].Value);
                 if (cmpVal != 0)
                     return cmpVal;
             }
@@ -275,10 +284,6 @@ namespace Tinkar.Dto
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Boolean Equivalent(Object aObj, Object bObj)
         {
-            Int32 cmp = aObj.GetType().Name.CompareTo(bObj.GetType().Name);
-            if (cmp != 0)
-                return false;
-
             switch (aObj)
             {
                 case IEquivalent a:

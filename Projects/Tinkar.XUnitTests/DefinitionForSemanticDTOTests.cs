@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticDTOIsSameTest()
+        public void PatternForSemanticDTOCompareToTest()
         {
             {
                 PatternForSemanticDTO a = Misc.CreatePatternForSemanticDTO;

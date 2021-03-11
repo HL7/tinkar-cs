@@ -70,7 +70,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void SemanticDTOIsSameTest()
+        public void SemanticDTOCompareToTest()
         {
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IPlanarPoint : IComparable, IComparable<IPlanarPoint>
+    public interface IPlanarPoint : IComparable
     {
         public Int32 X { get; init; }
         public Int32 Y { get; init; }

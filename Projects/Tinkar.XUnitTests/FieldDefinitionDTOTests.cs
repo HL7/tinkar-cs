@@ -68,7 +68,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void FieldDefinitionDTOIsSameTest()
+        public void FieldDefinitionDTOCompareToTest()
         {
             {
                 FieldDefinitionDTO a = Misc.CreateFieldDefinition;

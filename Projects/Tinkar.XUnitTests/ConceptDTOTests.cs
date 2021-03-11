@@ -70,7 +70,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void ConceptDTOIsSameTest()
+        public void ConceptDTOCompareToTest()
         {
             {
                 ConceptDTO a = Misc.CreateConceptDTO;

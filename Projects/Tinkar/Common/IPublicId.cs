@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IPublicId : IEquivalent<IPublicId>, IComparable<IPublicId>
+    public interface IPublicId : IComparable, IEquivalent
     {
         ITinkarId this[Int32 index] { get; }
 

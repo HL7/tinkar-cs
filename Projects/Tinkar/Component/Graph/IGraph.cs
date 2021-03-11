@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace Tinkar
 {
     public interface IGraph<V>:
-        IComparable, IComparable<IGraph<V>>,
-        IEquivalent, IEquivalent<IGraph<V>>
+        IComparable,
+        IEquivalent
         where V : IVertex
     {
         ImmutableList<V> VertexMap { get; }

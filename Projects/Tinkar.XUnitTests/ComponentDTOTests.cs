@@ -38,7 +38,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void ComponentDTOIsSameTest()
+        public void ComponentDTOCompareToTest()
         {
             {
                 ComponentDTO a = new ComponentDTO(Misc.PublicIdG);

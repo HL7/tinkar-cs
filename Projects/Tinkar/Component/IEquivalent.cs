@@ -21,15 +21,4 @@ namespace Tinkar
         /// <returns>true if two items are equivalent.</returns>
         Boolean IsEquivalent(Object other);
     }
-
-    public interface IEquivalent<T>
-    {
-        /// <summary>
-        /// Returns true if 'this' item is equivalent to 'other'
-        /// item.
-        /// </summary>
-        /// <param name="other">other item to compare equivalence to.</param>
-        /// <returns>true if two items are equivalent.</returns>
-        Boolean IsEquivalent(T other);
-    }
 }

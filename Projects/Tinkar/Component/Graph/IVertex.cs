@@ -9,9 +9,7 @@ namespace Tinkar
 {
     public interface IVertex : 
         IComparable,
-        IComparable<IVertex>,
-        IEquivalent,
-        IEquivalent<IVertex>
+        IEquivalent
     {
         /// <summary>
         /// Gets universally unique identifier for this vertex

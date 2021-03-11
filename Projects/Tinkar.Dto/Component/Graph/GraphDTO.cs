@@ -62,14 +62,14 @@ namespace Tinkar.Dto
             return retVal;
         }
 
-        protected void MarshalVertexMap(TinkarOutput output)
+        public void MarshalVertexMap(TinkarOutput output)
         {
             output.WriteInt32(this.VertexMap.Count());
             foreach (VertexDTO vertexDTO in this.VertexMap)
                 vertexDTO.Marshal(output);
         }
 
-        protected static ImmutableList<VertexDTO> UnmarshalVertexMap(TinkarInput input)
+        public static ImmutableList<VertexDTO> UnmarshalVertexMap(TinkarInput input)
         {
             int mapSize = input.GetInt32();
             ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
@@ -115,19 +115,46 @@ namespace Tinkar.Dto
         }
 
 
-        public Int32 CompareTo(Object other) => CompareTo(other as IGraph<IVertex>);
-        public Int32 CompareTo(IGraph<IVertex> other)
+        Int32 Comparer(ImmutableList<Int32> value1, ImmutableList<Int32> value2)
         {
+            Int32 cmpVal = value1.Count.CompareTo(value2.Count);
+            if (cmpVal != 0)
+                return cmpVal;
+            for (Int32 j = 0; j < value1.Count; j++)
+            {
+                cmpVal = value1[j].CompareTo(value2[j]);
+                if (cmpVal != 0)
+                    return cmpVal;
+            }
+            return 0;
+        }
+
+        public Int32 CompareTo(Object o)
+        {
+            GraphDTO other = o as GraphDTO;
+            if (o == null)
+                return this.GetType().FullName.CompareTo(o.GetType().FullName);
             Int32 cmpVal = FieldCompare.CompareSequence(this.VertexMap, other.VertexMap);
             if (cmpVal != 0)
                 return cmpVal;
-            cmpVal = FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap);
+            cmpVal = FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, Comparer);
             if (cmpVal != 0)
                 return cmpVal;
             return 0;
         }
 
-        public Boolean IsEquivalent(Object other) => IsEquivalent(other as IGraph<IVertex>);
-        public Boolean IsEquivalent(IGraph<IVertex> other) => throw new NotImplementedException();
+        public Boolean IsEquivalent(Object o)
+        {
+            GraphDTO other = o as GraphDTO;
+            if (other == null)
+                return false;
+
+            if (FieldCompare.IsEquivalentSequence(this.VertexMap, other.VertexMap) == false)
+                return false;
+            if (FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, Comparer) != 0)
+                return false;
+
+            return true;
+        }
     }
 }

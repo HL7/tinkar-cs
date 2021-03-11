@@ -47,7 +47,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void ConceptVersionDTOIsSameTest()
+        public void ConceptVersionDTOCompareToTest()
         {
             DateTime time = new DateTime(2020, 12, 31);
             {

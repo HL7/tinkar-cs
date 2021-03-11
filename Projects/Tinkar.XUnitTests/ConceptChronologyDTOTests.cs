@@ -81,7 +81,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void ConceptChronologyDTOIsSameTest()
+        public void ConceptChronologyDTOCompareToTest()
         {
             {
                 ConceptChronologyDTO a = Misc.CreateConceptChronologyDTO;

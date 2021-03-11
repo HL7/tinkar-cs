@@ -10,7 +10,7 @@ namespace Tinkar
     /// <summary>
     /// Base Tinkar Id.
     /// </summary>
-    public interface ITinkarId : IComparable, IComparable<ITinkarId>
+    public interface ITinkarId : IComparable
     {
         Guid Uuid { get; }
         Int64 MostSignificantBits { get; }

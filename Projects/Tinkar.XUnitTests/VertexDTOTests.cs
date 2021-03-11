@@ -113,7 +113,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void VertexDTOIsSameTest()
+        public void VertexDTOCompareToTest()
         {
             {
                 VertexDTO a = Misc.CreateVertexDTO();

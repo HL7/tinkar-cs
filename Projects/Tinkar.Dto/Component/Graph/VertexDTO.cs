@@ -143,9 +143,19 @@ namespace Tinkar.Dto
         /// <returns>keys</returns>
         public IEnumerable<IConcept> PropertyKeys => this.Properties.Keys;
 
-        public Int32 CompareTo(Object other) => CompareTo(other as IVertex);
-        public Int32 CompareTo(IVertex other)
+        public Int32 CompareTo(Object o)
         {
+            Int32 Comparer(Object a, Object b)
+            {
+                IComparable aCmp = (IComparable)a;
+                IComparable bCmp = (IComparable)b;
+                return aCmp.CompareTo(bCmp);
+            }
+
+            VertexDTO other = o as VertexDTO;
+            if (other == null)
+                return this.GetType().FullName.CompareTo(o.GetType().FullName);
+
             Int32 cmpVal = this.VertexId.CompareTo(other.VertexId);
             if (cmpVal != 0)
                 return cmpVal;
@@ -155,7 +165,7 @@ namespace Tinkar.Dto
             cmpVal = this.Meaning.CompareTo(other.Meaning);
             if (cmpVal != 0)
                 return cmpVal;
-            cmpVal = FieldCompare.CompareMap(this.Properties, other.Properties);
+            cmpVal = FieldCompare.CompareMap(this.Properties, other.Properties, Comparer);
             if (cmpVal != 0)
                 return cmpVal;
             return 0;
@@ -190,13 +200,20 @@ namespace Tinkar.Dto
 
         public bool IsEquivalent(IVertex other)
         {
+            Int32 Comparer(Object a, Object b)
+            {
+                IComparable aCmp = (IComparable)a;
+                IComparable bCmp = (IComparable)b;
+                return aCmp.CompareTo(bCmp);
+            }
+
             if (this.VertexId.CompareTo(other.VertexId) != 0)
                 return false;
             if (this.VertexIndex.CompareTo(other.VertexIndex) != 0)
                 return false;
             if (this.Meaning.IsEquivalent(other.Meaning) == false)
                 return false;
-            if (FieldCompare.CompareMap(this.Properties, other.Properties) != 0)
+            if (FieldCompare.CompareMap(this.Properties, other.Properties, Comparer) != 0)
                 return false;
             return true;
         }

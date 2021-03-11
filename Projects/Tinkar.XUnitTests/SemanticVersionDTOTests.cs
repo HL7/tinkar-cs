@@ -88,7 +88,7 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void SemanticVersionDTOIsSameTest()
+        public void SemanticVersionDTOCompareToTest()
         {
             {
                 SemanticVersionDTO a = Misc.CreateSemanticVersionDTO;
