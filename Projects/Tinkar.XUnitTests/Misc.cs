@@ -193,70 +193,64 @@ namespace Tinkar.XUnitTests
         public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);
         public static VertexDTO CreateVertexDTO()
         {
+            ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            pb1.Add(new ConceptDTO(GID(0x1)), (Int32)1);
+            pb1.Add(new ConceptDTO(GID(0x2)), (Int64)2);
+            pb1.Add(new ConceptDTO(GID(0x3)), (Single)3);
+            pb1.Add(new ConceptDTO(GID(0x4)), (Double)4);
+            pb1.Add(new ConceptDTO(GID(0x5)), "abcdef");
+            pb1.Add(new ConceptDTO(GID(0x6)), true);
+            pb1.Add(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1));
+
             return new VertexDTO(
                     g1,
                     123,
                     new ConceptDTO(PublicIdH),
-                    new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 1),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x2)), (Int64) 2),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x3)), (Single) 3),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x4)), (Double) 4),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x5)), "abcdef"),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x6)), true),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1))
-                    }
+                    pb1.ToImmutable()
                 );
         }
 
-        public static IEnumerable<VertexDTO> CreateVertexMap =>
-            new VertexDTO[]
+        public static IEnumerable<VertexDTO> CreateVertexMap()
+        {
+            ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+
+            ImmutableDictionary<IConcept, Object>.Builder pb2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            pb2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
+
+            ImmutableDictionary<IConcept, Object>.Builder pb3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            pb3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
+
+            ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
+
+            return new VertexDTO[]
             {
-                new VertexDTO(
-                    g1,
-                    101,
-                    new ConceptDTO(PublicIdG),
-                    new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 1),
-                    }
-                ),
-                new VertexDTO(
-                    g2,
-                    102,
-                    new ConceptDTO(PublicIdH),
-                    new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 2),
-                    }
-                ),
-                new VertexDTO(
-                    g3,
-                    103,
-                    new ConceptDTO(PublicIdI),
-                    new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 3),
-                    }
-                ),
-                new VertexDTO(
-                    g4,
-                    104,
-                    new ConceptDTO(PublicIdJ),
-                    new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(GID(0x1)), (Int32) 4),
-                    }
-                )
+                new VertexDTO(g1, 101, new ConceptDTO(PublicIdG),pb1.ToImmutable()),
+                new VertexDTO(g2, 102, new ConceptDTO(PublicIdH), pb2.ToImmutable()),
+                new VertexDTO(g3, 103, new ConceptDTO(PublicIdI), pb3.ToImmutable()),
+                new VertexDTO(g4, 104, new ConceptDTO(PublicIdJ), pb4.ToImmutable())
             };
+        }
 
         public static GraphDTO CreateGraphDTO()
         {
-            List<KeyValuePair<Int32, ImmutableList<Int32>>> items = new List<KeyValuePair<int, ImmutableList<int>>>();
-            items.Add(KeyValuePair.Create<Int32, ImmutableList<Int32>>(101, new Int32[] {1,2 }.ToImmutableList()));
-            items.Add(KeyValuePair.Create<Int32, ImmutableList<Int32>>(102, new Int32[] { 3 }.ToImmutableList()));
-            return new GraphDTO(CreateVertexMap, items);
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder smBuilder = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
+            smBuilder.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
+            smBuilder.Add(102, new Int32[] { 3 }.ToImmutableList());
+            return new GraphDTO(CreateVertexMap(), smBuilder.ToImmutable());
+        }
+
+        public static DiTreeDTO CreateDiTreeDTO()
+        {
+            ImmutableDictionary<Int32, Int32>.Builder predecessors = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
+            predecessors.Add(101, 1);
+            predecessors.Add(102, 3);
+
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successors = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
+            successors.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
+            successors.Add(102, new Int32[] { 3 }.ToImmutableList());
+            return new DiTreeDTO(CreateVertexDTO(), predecessors.ToImmutable(), CreateVertexMap(), successors.ToImmutable());
         }
     }
 }

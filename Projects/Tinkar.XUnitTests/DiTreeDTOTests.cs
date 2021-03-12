@@ -10,13 +10,13 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class GraphDTOTests
+    public class DiTreeDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void GraphDTOFieldsTest()
+        public void DiTreeDTOFieldsTest()
         {
-            GraphDTO dto = Misc.CreateGraphDTO();
+            DiTreeDTO dto = Misc.CreateDiTreeDTO();
             Assert.True(dto.VertexMap.Count == 4);
             Assert.True(dto.VertexMap[0] == dto.Vertex(Misc.g1));
             Assert.True(dto.VertexMap[1] == dto.Vertex(Misc.g2));
@@ -29,30 +29,64 @@ namespace Tinkar.XUnitTests
             Assert.True(dto.VertexMap[3] == dto.Vertex(3));
 
             {
-                VertexDTO[] successors = dto.Successors(dto.Vertex(0)).ToArray();
-                Assert.True(successors.Length == 2);
-                Assert.Contains(dto.Vertex(1), successors);
-                Assert.Contains(dto.Vertex(2), successors);
+                VertexDTO predecessor = dto.Predecessor(dto.Vertex(0));
+                Assert.True(predecessor == dto.Vertex(1));
             }
             {
-                VertexDTO[] successors = dto.Successors(dto.Vertex(1)).ToArray();
-                Assert.True(successors.Length == 1);
-                Assert.Contains(dto.Vertex(3), successors);
-            }
-            {
-                VertexDTO[] successors = dto.Successors(dto.Vertex(2)).ToArray();
-                Assert.True(successors.Length == 0);
+                VertexDTO predecessor = dto.Predecessor(dto.Vertex(1));
+                Assert.True(predecessor == dto.Vertex(3));
             }
         }
 
+
+
         [DoNotParallelize]
         [Fact]
-        public void GraphDTOIsEquivalentTest()
+        public void DiTreeDTOIsEquivalentTest()
         {
             {
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO();
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO();
                 Assert.True(a.IsEquivalent(b));
+            }
+
+            {
+                ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+                pb1.Add(new ConceptDTO(Misc.GID(0x2)), (Int64)2);
+                pb1.Add(new ConceptDTO(Misc.GID(0x3)), (Single)3);
+                pb1.Add(new ConceptDTO(Misc.GID(0x4)), (Double)4);
+                pb1.Add(new ConceptDTO(Misc.GID(0x5)), "abcdef");
+                pb1.Add(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 1, 1));
+
+                VertexDTO newRoot = new VertexDTO(
+                        Misc.g1,
+                        123,
+                        new ConceptDTO(Misc.PublicIdH),
+                        pb1.ToImmutable()
+                    );
+
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
+                with
+                {
+                    Root = newRoot
+                };
+                Assert.True(a.IsEquivalent(b) == false);
+            }
+
+            {
+                ImmutableDictionary<Int32, Int32>.Builder predecessors = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
+                predecessors.Add(101, 1);
+                predecessors.Add(102, 2);
+
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
+                with
+                {
+                    PredecessorMap = predecessors.ToImmutable()
+                };
+                Assert.True(a.IsEquivalent(b) == false);
             }
 
             {
@@ -68,8 +102,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<IConcept, Object>.Builder pBuilder4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 pBuilder4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     VertexMap = new VertexDTO[]
@@ -116,8 +150,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<IConcept, Object>.Builder pBuilder4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 pBuilder4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     VertexMap = new VertexDTO[]
@@ -156,8 +190,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
                 items.Add(102, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -170,8 +204,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 3 }.ToImmutableList());
                 items.Add(102, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -183,8 +217,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -197,8 +231,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
                 items.Add(103, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -210,12 +244,51 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void GraphDTOCompareToTest()
+        public void DiTreeDTOCompareToTest()
         {
             {
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO();
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO();
                 Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+                pb1.Add(new ConceptDTO(Misc.GID(0x2)), (Int64)2);
+                pb1.Add(new ConceptDTO(Misc.GID(0x3)), (Single)3);
+                pb1.Add(new ConceptDTO(Misc.GID(0x4)), (Double)4);
+                pb1.Add(new ConceptDTO(Misc.GID(0x5)), "abcdef");
+                pb1.Add(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 1, 1));
+
+                VertexDTO newRoot = new VertexDTO(
+                        Misc.g1,
+                        123,
+                        new ConceptDTO(Misc.PublicIdH),
+                        pb1.ToImmutable()
+                    );
+
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
+                with
+                {
+                    Root = newRoot
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                ImmutableDictionary<Int32, Int32>.Builder predecessors = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
+                predecessors.Add(101, 1);
+                predecessors.Add(102, 2);
+
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
+                with
+                {
+                    PredecessorMap = predecessors.ToImmutable()
+                };
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -231,8 +304,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     VertexMap = new VertexDTO[]
@@ -259,8 +332,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     VertexMap = new VertexDTO[]
@@ -299,8 +372,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
                 items.Add(102, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -313,8 +386,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 3 }.ToImmutableList());
                 items.Add(102, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -326,8 +399,8 @@ namespace Tinkar.XUnitTests
                 ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -340,8 +413,8 @@ namespace Tinkar.XUnitTests
                 items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
                 items.Add(103, new Int32[] { 3 }.ToImmutableList());
 
-                GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO b = Misc.CreateGraphDTO()
+                DiTreeDTO a = Misc.CreateDiTreeDTO();
+                DiTreeDTO b = Misc.CreateDiTreeDTO()
                 with
                 {
                     SuccessorMap = items.ToImmutable()
@@ -350,23 +423,25 @@ namespace Tinkar.XUnitTests
             }
         }
 
+
+
         [DoNotParallelize]
         [Fact]
-        public void GraphDTOMarshalTest()
+        public void DiTreeDTOMarshalTest()
         {
-            GraphDTO dtoStart = Misc.CreateGraphDTO();
+            DiTreeDTO dtoStart = Misc.CreateDiTreeDTO();
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
             {
-                dtoStart.MarshalVertexMap(output);
+                dtoStart.Marshal(output);
             }
 
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                ImmutableList<VertexDTO> dtoRead = GraphDTO.UnmarshalVertexMap(input);
-                Assert.True(FieldCompare.CompareSequence(dtoRead, dtoStart.VertexMap) == 0);
+                DiTreeDTO dtoRead = DiTreeDTO.Make(input);
+                Assert.True(dtoStart.CompareTo(dtoRead)== 0);
             }
         }
     }

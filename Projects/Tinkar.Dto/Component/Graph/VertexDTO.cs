@@ -98,22 +98,6 @@ namespace Tinkar.Dto
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VertexDTO"/> class.
-        /// </summary>
-        /// <param name="vertexId"></param>
-        /// <param name="vertexIndex"></param>
-        /// <param name="meaning"></param>
-        /// <param name="properties"></param>
-
-        public VertexDTO(Guid vertexId,
-            int vertexIndex,
-            ConceptDTO meaning,
-            IEnumerable<KeyValuePair<IConcept, Object>> properties) : 
-                this(vertexId, vertexIndex, meaning, properties.ToImmutableDict())
-        {
-        }
-
-        /// <summary>
         /// Gets optional object that is associated with the properly concept.
         /// </summary>
         /// <typeparam name="T">Type of the property object</typeparam>

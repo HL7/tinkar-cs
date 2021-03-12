@@ -6,6 +6,7 @@ using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
 using Tinkar.Dto;
+using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
@@ -91,20 +92,20 @@ namespace Tinkar.XUnitTests
             }
 
             {
+                ImmutableDictionary<IConcept, Object>.Builder pBuilder = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x2)), (Int64)2);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x3)), (Single)3);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x4)), (Double)4);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x5)), "abcdef");
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x6)), true);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31));
+
                 VertexDTO a = Misc.CreateVertexDTO();
                 VertexDTO b = Misc.CreateVertexDTO()
                 with
                 {
-                    Properties = new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x1)), (Int32) 1),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x2)), (Int64) 2),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x3)), (Single) 3),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x4)), (Double) 4),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x5)), "abcdef"),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x6)), true),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31))
-                    }.ToImmutableDict()
+                    Properties = pBuilder.ToImmutable()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -162,20 +163,20 @@ namespace Tinkar.XUnitTests
             }
 
             {
+                ImmutableDictionary<IConcept, Object>.Builder pBuilder = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x2)), (Int64)2);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x3)), (Single)3);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x4)), (Double)4);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x5)), "abcdef");
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x6)), true);
+                pBuilder.Add(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31));
+
                 VertexDTO a = Misc.CreateVertexDTO();
                 VertexDTO b = Misc.CreateVertexDTO()
                 with
                 {
-                    Properties = new KeyValuePair<IConcept, Object>[]
-                    {
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x1)), (Int32) 1),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x2)), (Int64) 2),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x3)), (Single) 3),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x4)), (Double) 4),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x5)), "abcdef"),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x6)), true),
-                        KeyValuePair.Create<IConcept, Object>(new ConceptDTO(Misc.GID(0x7)), new DateTime(2000, 12, 31))
-                    }.ToImmutableDict()
+                    Properties = pBuilder.ToImmutable()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

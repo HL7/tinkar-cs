@@ -992,15 +992,6 @@
             <param name="meaning"></param>
             <param name="properties"></param>
         </member>
-        <member name="M:Tinkar.Dto.VertexDTO.#ctor(System.Guid,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Tinkar.IConcept,System.Object}})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.Dto.VertexDTO"/> class.
-            </summary>
-            <param name="vertexId"></param>
-            <param name="vertexIndex"></param>
-            <param name="meaning"></param>
-            <param name="properties"></param>
-        </member>
         <member name="M:Tinkar.Dto.VertexDTO.Property``1(Tinkar.IConcept)">
             <summary>
             Gets optional object that is associated with the properly concept.

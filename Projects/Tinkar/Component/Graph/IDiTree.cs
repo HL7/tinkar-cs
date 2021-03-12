@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IDiTree<V> : IGraph<V>
+    public interface IDiTree<V> : IGraph<V>,
+        IComparable,
+        IEquivalent
         where V : IVertex
     {
         /// <summary>

@@ -20,13 +20,6 @@ namespace Tinkar.Dto
             this.SuccessorMap = successorMap;
         }
 
-        public GraphDTO(IEnumerable<VertexDTO> vertexMap,
-                        IEnumerable<KeyValuePair<Int32, ImmutableList<Int32>>> successorMapValuesPairs) :
-                        this(vertexMap, successorMapValuesPairs.ToImmutableDict())
-        {
-        }
-
-
         /// <summary>
         /// Gets the vertex associated with the identifier
         /// </summary>
@@ -83,7 +76,7 @@ namespace Tinkar.Dto
 
         protected void MarshalSuccessorMap(TinkarOutput output)
         {
-            output.WriteInt32(this.VertexMap.Count());
+            output.WriteInt32(this.SuccessorMap.Count());
             foreach (KeyValuePair<Int32, ImmutableList<Int32>> keyValue in this.SuccessorMap)
             {
                 output.WriteInt32(keyValue.Key);
@@ -129,7 +122,7 @@ namespace Tinkar.Dto
             return 0;
         }
 
-        public Int32 CompareTo(Object o)
+        public virtual Int32 CompareTo(Object o)
         {
             GraphDTO other = o as GraphDTO;
             if (o == null)
@@ -143,7 +136,7 @@ namespace Tinkar.Dto
             return 0;
         }
 
-        public Boolean IsEquivalent(Object o)
+        public virtual Boolean IsEquivalent(Object o)
         {
             GraphDTO other = o as GraphDTO;
             if (other == null)
