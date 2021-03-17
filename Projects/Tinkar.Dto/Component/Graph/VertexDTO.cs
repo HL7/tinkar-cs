@@ -11,6 +11,60 @@ namespace Tinkar.Dto
         IJsonMarshalable,
         IMarshalable
     {
+        public interface IBuilder<TBuilder>
+            where TBuilder : IBuilder<TBuilder>
+        {
+            /// <summary>
+            /// Vertex Index. This should only be set by class that creates Builder().
+            /// </summary>
+            Int32 VertexIndex { get; set; }
+
+            TBuilder SetMeaning(ConceptDTO meaning);
+
+            TBuilder SetVertexId(long vertexIdMsb, long vertexIdLsb);
+
+            TBuilder SetVertexId(Guid vertexId);
+
+            TBuilder AppendProperty(IConcept concept, Object value);
+        }
+
+        public abstract class Builder<TBuilder> : IBuilder<TBuilder>
+            where TBuilder : IBuilder<TBuilder>
+        {
+            protected List<KeyValuePair<IConcept, Object>> properties = new List<KeyValuePair<IConcept, Object>>();
+            protected VertexId vertexId;
+            protected ConceptDTO meaning;
+
+            /// <summary>
+            /// Vertex Index. This should only be set by class that creates Builder().
+            /// </summary>
+            public Int32 VertexIndex { get; set; }
+
+            public TBuilder SetMeaning(ConceptDTO meaning)
+            {
+                this.meaning = meaning;
+                return (TBuilder)(IBuilder<TBuilder>)this;
+            }
+
+            public TBuilder SetVertexId(long vertexIdMsb, long vertexIdLsb)
+            {
+                this.vertexId = new VertexId(vertexIdMsb, vertexIdLsb);
+                return (TBuilder)(IBuilder<TBuilder>)this;
+            }
+
+            public TBuilder SetVertexId(Guid vertexId)
+            {
+                this.vertexId = new VertexId(vertexId);
+                return (TBuilder)(IBuilder<TBuilder>)this;
+            }
+
+            public TBuilder AppendProperty(IConcept concept, Object value)
+            {
+                properties.Add(new KeyValuePair<IConcept, Object>(concept, value));
+                return (TBuilder)(IBuilder<TBuilder>)this;
+            }
+        }
+
         /// <summary>
         /// Name of serialized json field for this item.
         /// </summary>
@@ -24,6 +78,18 @@ namespace Tinkar.Dto
         public ImmutableDictionary<IConcept, Object> Properties { get; init; }
 
 #if Never
+        /// <summary>
+        /// Gets tindex of this vertex within its graph. The index is locally
+        /// unique within a graph, but not across graphs, or different versions of the same graph.
+        /// Vertex index is not used in equality or hash calculations.
+        /// </summary>
+        public int VertexIndex { get; init; }
+
+        /// <summary>
+        /// Concept that represents the meaning of this vertex.
+        /// </summary>
+        public IConcept Meaning { get; init; }
+
     public static ImmutableMap<ConceptDTO, Object> abstractProperties(ImmutableMap<ConceptDTO, Object> incoming) {
         MutableMap<ConceptDTO, Object> outgoing = Maps.mutable.ofInitialCapacity(incoming.size());
         incoming.forEachKeyValue((key, value) -> {
@@ -56,26 +122,32 @@ namespace Tinkar.Dto
         /// </summary>
         public IConcept Meaning { get; init; }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="VertexDTO"/> class.
         /// </summary>
-        /// <param name="vertexIdMsb"></param>
-        /// <param name="vertexIdLsb"></param>
-        /// <param name="vertexIndex"></param>
-        /// <param name="meaning"></param>
-        /// <param name="properties"></param>
-
-        public VertexDTO(long vertexIdMsb,
-            long vertexIdLsb,
-            int vertexIndex,
-            ConceptDTO meaning,
-            ImmutableDictionary<IConcept, Object> properties)
+        /// <param name="input">input</param>
+        /// <returns>new Vertex item</returns>
+        public VertexDTO(TinkarInput input)
         {
-            this.VertexId = new VertexId(vertexIdMsb, vertexIdLsb);
+            Guid vertexUuid = input.GetUuid();
+            int vertexIndex = input.GetInt32();
+            IPublicId meaningId = input.GetPublicId();
+
+            int propertyCount = input.GetInt32();
+            ImmutableDictionary<IConcept, Object>.Builder properties =
+                ImmutableDictionary<IConcept, object>.Empty.ToBuilder();
+
+            for (int i = 0; i < propertyCount; i++)
+            {
+                ConceptDTO conceptKey = new ConceptDTO(input.GetPublicId());
+                Object obj = input.GetField();
+                properties.Add(conceptKey, obj);
+            }
+
+            this.VertexId = new VertexId(vertexUuid);
             this.VertexIndex = vertexIndex;
-            this.Meaning = meaning;
-            this.Properties = properties;
+            this.Meaning = new ConceptDTO(meaningId);
+            this.Properties = properties.ToImmutable();
         }
 
         /// <summary>
@@ -85,13 +157,12 @@ namespace Tinkar.Dto
         /// <param name="vertexIndex"></param>
         /// <param name="meaning"></param>
         /// <param name="properties"></param>
-
-        public VertexDTO(Guid vertexId,
+        protected VertexDTO(VertexId vertexId,
             int vertexIndex,
             ConceptDTO meaning,
             ImmutableDictionary<IConcept, Object> properties)
         {
-            this.VertexId = new VertexId(vertexId);
+            this.VertexId = vertexId;
             this.VertexIndex = vertexIndex;
             this.Meaning = meaning;
             this.Properties = properties;
@@ -108,7 +179,7 @@ namespace Tinkar.Dto
         {
             if (this.Properties.TryGetValue(propertyConcept, out Object value) == false)
                 return default(T);
-            return (T) value;
+            return (T)value;
         }
 
         /// <summary>
@@ -127,7 +198,7 @@ namespace Tinkar.Dto
         /// <returns>keys</returns>
         public IEnumerable<IConcept> PropertyKeys => this.Properties.Keys;
 
-        public Int32 CompareTo(Object o)
+        public virtual Int32 CompareTo(Object o)
         {
             Int32 Comparer(Object a, Object b)
             {
@@ -160,25 +231,7 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>new Vertex item</returns>
-        public static VertexDTO Make(TinkarInput input)
-        {
-            Guid vertexUuid = input.GetUuid();
-            int vertexIndex = input.GetInt32();
-            IPublicId meaningId = input.GetPublicId();
-
-            int propertyCount = input.GetInt32();
-            ImmutableDictionary<IConcept, Object>.Builder properties =
-                ImmutableDictionary<IConcept, object>.Empty.ToBuilder();
-
-            for (int i = 0; i < propertyCount; i++)
-            {
-                ConceptDTO conceptKey = new ConceptDTO(input.GetPublicId());
-                Object obj = input.GetField();
-                properties.Add(conceptKey, obj);
-            }
-
-            return new VertexDTO(vertexUuid, vertexIndex, new ConceptDTO(meaningId), properties.ToImmutable());
-        }
+        public static VertexDTO Make(TinkarInput input) => new VertexDTO(input);
 
         public bool IsEquivalent(Object other) => this.IsEquivalent(other as IVertex);
 
@@ -206,7 +259,7 @@ namespace Tinkar.Dto
         /// Marshal class data to binary stream.
         /// </summary>
         /// <param name="output">binary output stream.</param>
-        public void Marshal(TinkarOutput output)
+        public virtual void Marshal(TinkarOutput output)
         {
             output.WriteUuid(this.VertexId.Uuid);
             output.WriteInt32(this.VertexIndex);

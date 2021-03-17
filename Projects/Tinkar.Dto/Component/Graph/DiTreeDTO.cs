@@ -7,32 +7,58 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public record DiTreeDTO : GraphDTO,
-        IDiTree<VertexDTO>,
+    public record DiTreeDTO : GraphDTO<DiTreeVertexDTO>,
+        IDiTree<DiTreeVertexDTO>,
         IJsonMarshalable,
         IMarshalable
     {
-        public VertexDTO Root { get; init; }
+        public new interface IBuilder<TBuilder, TVertexBuilder> : 
+            GraphDTO<DiTreeVertexDTO>.IBuilder<TBuilder, TVertexBuilder>
+            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : DiTreeVertexDTO.IBuilder<TVertexBuilder>, new()
+        {
+            TBuilder SetRoot(DiTreeVertexDTO.Builder root);
+            new DiTreeDTO Create();
+        }
 
-        public ImmutableDictionary<Int32, Int32> PredecessorMap { get; init; }
+        public new sealed class Builder : Builder<Builder, DiTreeVertexDTO.Builder>
+        {
+        }
+
+        public new abstract class Builder<TBuilder, TVertexBuilder> : 
+            GraphDTO<DiTreeVertexDTO>.Builder<TBuilder, TVertexBuilder>,
+            IBuilder<TBuilder, TVertexBuilder>
+            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : DiTreeVertexDTO.IBuilder<TVertexBuilder>, new()
+        {
+
+            DiTreeVertexDTO.Builder root = default(DiTreeVertexDTO.Builder);
+
+            public TBuilder SetRoot(DiTreeVertexDTO.Builder root)
+            {
+                this.root = root;
+                return (TBuilder)(IBuilder<TBuilder, TVertexBuilder>)this;
+            }
+
+            public new DiTreeDTO Create()
+            {
+                List<DiTreeVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
+                return new DiTreeDTO(root.Create(), vertexMap.ToImmutableList());
+            }
+        }
 
         public FieldDataType FieldDataType => FieldDataType.DiGraphType;
 
-        public DiTreeDTO(VertexDTO root,
-                        ImmutableDictionary<Int32, Int32> predecessorMap,
-                        IEnumerable<VertexDTO> vertexMap,
-                        ImmutableDictionary<Int32, ImmutableList<Int32>> successorMap) : base(vertexMap, successorMap)
+        public DiTreeVertexDTO Root { get; init; }
+
+        public DiTreeDTO(DiTreeVertexDTO root,
+                        ImmutableList<DiTreeVertexDTO> vertexMap) : base(vertexMap)
         {
             this.Root = root;
-            this.PredecessorMap = predecessorMap;
         }
 
-        public VertexDTO Predecessor(VertexDTO vertex)
-        {
-            if (this.PredecessorMap.TryGetValue(vertex.VertexIndex, out int predecessorIndex) == false)
-                return null;
-            return this.VertexMap[predecessorIndex];
-        }
+        public DiTreeVertexDTO Predecessor(DiTreeVertexDTO vertex) =>
+            this.VertexMap[vertex.Predecessor];
 
         public override Int32 CompareTo(Object o)
         {
@@ -44,10 +70,6 @@ namespace Tinkar.Dto
                 return cmpVal;
 
             cmpVal = this.Root.CompareTo(other.Root);
-            if (cmpVal != 0)
-                return cmpVal;
-
-            cmpVal = FieldCompare.CompareMap(this.PredecessorMap, other.PredecessorMap, (a, b) => a.CompareTo(b));
             if (cmpVal != 0)
                 return cmpVal;
 
@@ -65,9 +87,6 @@ namespace Tinkar.Dto
             if (this.Root.IsEquivalent(other.Root) == false)
                 return false;
 
-            if (FieldCompare.CompareMap(this.PredecessorMap, other.PredecessorMap, (a, b) => a.CompareTo(b)) != 0)
-                return false;
-
             return true;
         }
 
@@ -75,28 +94,22 @@ namespace Tinkar.Dto
 
         public static DiTreeDTO Make(TinkarInput input)
         {
-            ImmutableList<VertexDTO> vertexMap = GraphDTO.UnmarshalVertexMap(input);
-            var successorMap = GraphDTO.UnmarshalSuccessorMap(input, vertexMap);
-            VertexDTO root = vertexMap[input.GetInt32()];
-            int predecessorMapSize = input.GetInt32();
-            ImmutableDictionary<Int32, Int32>.Builder predecessorMap = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
-            for (int i = 0; i < predecessorMapSize; i++)
-                predecessorMap.Add(input.GetInt32(), input.GetInt32());
-            return new DiTreeDTO(root, predecessorMap.ToImmutable(), vertexMap, successorMap);
+            throw new NotImplementedException("xxyyz");
+            //$ImmutableList<DiTreeVertexDTO> vertexMap = GraphDTO.UnmarshalVertexMap(input);
+            //var successorMap = GraphDTO.UnmarshalSuccessorMap(input, vertexMap);
+            //DiTreeVertexDTO root = vertexMap[input.GetInt32()];
+            //int predecessorMapSize = input.GetInt32();
+            //ImmutableDictionary<Int32, Int32>.Builder predecessorMap = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
+            //for (int i = 0; i < predecessorMapSize; i++)
+            //    predecessorMap.Add(input.GetInt32(), input.GetInt32());
+            //return new DiTreeDTO(root, predecessorMap.ToImmutable(), vertexMap, successorMap);
         }
 
         public void Marshal(TinkarOutput output)
         {
             this.MarshalVertexMap(output);
-            this.MarshalSuccessorMap(output);
 
             output.WriteInt32(this.Root.VertexIndex);
-            output.WriteInt32(this.PredecessorMap.Count);
-            foreach (KeyValuePair<Int32, Int32> item in this.PredecessorMap)
-            {
-                output.WriteInt32(item.Key);
-                output.WriteInt32(item.Value);
-            }
         }
     }
 }

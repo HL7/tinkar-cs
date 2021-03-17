@@ -23,10 +23,5 @@ namespace Tinkar
         /// <param name="vertex">Get predecessor of this vertex</param>
         /// <returns>Predecessor, or null if root</returns>
         V Predecessor(V vertex);
-
-        /// <summary>
-        /// Get dictionary of all predecessors
-        /// </summary>
-        ImmutableDictionary<Int32, Int32> PredecessorMap { get; }
     }
 }
