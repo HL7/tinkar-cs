@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
+    /// <summary>
+    /// Graph base class.
+    /// This class is instantiable.
+    /// </summary>
     public sealed record GraphDTO : GraphDTO<GraphVertexDTO>
     {
+        /// <summary>
+        /// This is builder class for creating GraphDTO items.
+        /// </summary>
         public sealed class Builder : GraphDTO<GraphVertexDTO>.Builder<Builder, GraphVertexDTO.Builder>
         {
             public GraphDTO Create()
@@ -23,9 +30,19 @@ namespace Tinkar.Dto
         }
     }
 
+    /// <summary>
+    /// Graph abstract base class.
+    /// This class is intended to be used only for inheritance..
+    /// </summary>
     public abstract record GraphDTO<TVertex> : IGraph<TVertex>
         where TVertex : GraphVertexDTO
     {
+        /// <summary>
+        /// This is builder class for creating Builder derived classes.
+        /// This should never be used directly, it only should be inherited from.
+        /// </summary>
+        /// <typeparam name="TBuilder">Derived builder type</typeparam>
+        /// <typeparam name="TVertexBuilder">Derived vertex builder type</typeparam>
         public abstract class Builder<TBuilder, TVertexBuilder> : VertexDTO.Builder<TBuilder>
             where TBuilder : Builder<TBuilder, TVertexBuilder>
             where TVertexBuilder : VertexDTO.Builder<TVertexBuilder>, new()

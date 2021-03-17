@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace Tinkar.Dto
 {
     /// <summary>
-    /// Instantiable sealed builder class.
-    /// This is the class meant for use when directly instantiating a Builder
+    /// Directed Graph abstract base class.
+    /// This class is instantiable.
     /// </summary>
     public sealed record DiGraphDTO : DiGraphDTO<DiGraphVertexDTO>
     {
         /// <summary>
-        /// Builder for sealed class.
+        /// This is builder class for creating DiGraphDTO items.
         /// </summary>
         public sealed class Builder : DiGraphDTO<DiGraphVertexDTO>.Builder<Builder, DiGraphVertexDTO.Builder>
         {
@@ -33,17 +33,23 @@ namespace Tinkar.Dto
     }
 
     /// <summary>
-    /// abstract class.
-    /// This is the class to inherit from when creating child classes.
-    /// This class should never be directly instantiated.
+    /// Directed Graph abstract base class.
+    /// This class is intended to be used only for inheritance..
     /// </summary>
-    /// <typeparam name="TVertex">Child vertex class</typeparam>
+    /// <typeparam name="TVertex">Type of vertex class that child class implements</typeparam>
     public abstract record DiGraphDTO<TVertex> : GraphDTO<TVertex>,
         IDiGraph<TVertex>,
         IJsonMarshalable,
         IMarshalable
         where TVertex : DiGraphVertexDTO
     {
+        /// <summary>
+        /// abstract builder class.
+        /// This is the class to inherit from when creating child classes.
+        /// This class should never be directly instantiated.
+        /// </summary>
+        /// <typeparam name="TBuilder">Child builder class</typeparam>
+        /// <typeparam name="TVertexBuilder">Child vertex builder class</typeparam>
         public new abstract class Builder<TBuilder, TVertexBuilder> :
             GraphDTO<TVertex>.Builder<TBuilder, TVertexBuilder>
             where TBuilder : Builder<TBuilder, TVertexBuilder>

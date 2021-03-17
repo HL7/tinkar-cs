@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
+    /// <summary>
+    /// Directed tree vertex class
+    /// </summary>
     public record DiTreeVertexDTO : GraphVertexDTO, IGraphVertex
     {
         /// <summary>
@@ -17,10 +20,10 @@ namespace Tinkar.Dto
         }
 
         /// <summary>
-        /// This is builder class for creating DiTreeVertexDTO items.
+        /// This is builder class for creating Builder derived classes.
         /// This should never be used directly, it only should be inherited from.
         /// </summary>
-        /// <typeparam name="TBuilder"></typeparam>
+        /// <typeparam name="TBuilder">Derived builder type</typeparam>
         public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>
             where TBuilder : Builder<TBuilder>, new()
         {
@@ -32,7 +35,7 @@ namespace Tinkar.Dto
                 return (TBuilder)this;
             }
 
-            public new DiTreeVertexDTO Create()
+            public DiTreeVertexDTO Create()
             {
                 ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 propBldr.AddRange(this.properties);

@@ -14,7 +14,7 @@ namespace Tinkar.Dto
     public sealed record DiTreeDTO : DiTreeDTO<DiTreeVertexDTO>
     {
         /// <summary>
-        /// Builder for sealed class.
+        /// This is builder class for creating DiTreeDTO items.
         /// </summary>
         public sealed class Builder : DiTreeDTO<DiTreeVertexDTO>.Builder<Builder, DiTreeVertexDTO.Builder>
         {
@@ -33,11 +33,10 @@ namespace Tinkar.Dto
     }
 
     /// <summary>
-    /// abstract class.
-    /// This is the class to inherit from when creating child classes.
-    /// This class should never be directly instantiated.
+    /// This is builder class for creating Builder derived classes.
+    /// This should never be used directly, it only should be inherited from.
     /// </summary>
-    /// <typeparam name="TVertex">Child vertex class</typeparam>
+    /// <typeparam name="TVertex">Vertex class</typeparam>
     public abstract record DiTreeDTO<TVertex> : GraphDTO<TVertex>,
         IJsonMarshalable,
         IMarshalable

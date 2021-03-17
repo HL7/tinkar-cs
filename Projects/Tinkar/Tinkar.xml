@@ -933,22 +933,30 @@
         </member>
         <member name="T:Tinkar.Dto.DiGraphDTO">
             <summary>
-            Instantiable sealed builder class.
-            This is the class meant for use when directly instantiating a Builder
+            Directed Graph abstract base class.
+            This class is instantiable.
             </summary>
         </member>
         <member name="T:Tinkar.Dto.DiGraphDTO.Builder">
             <summary>
-            Builder for sealed class.
+            This is builder class for creating DiGraphDTO items.
             </summary>
         </member>
         <member name="T:Tinkar.Dto.DiGraphDTO`1">
             <summary>
-            abstract class.
+            Directed Graph abstract base class.
+            This class is intended to be used only for inheritance..
+            </summary>
+            <typeparam name="TVertex">Type of vertex class that child class implements</typeparam>
+        </member>
+        <member name="T:Tinkar.Dto.DiGraphDTO`1.Builder`2">
+            <summary>
+            abstract builder class.
             This is the class to inherit from when creating child classes.
             This class should never be directly instantiated.
             </summary>
-            <typeparam name="TVertex">Child vertex class</typeparam>
+            <typeparam name="TBuilder">Child builder class</typeparam>
+            <typeparam name="TVertexBuilder">Child vertex builder class</typeparam>
         </member>
         <member name="P:Tinkar.Dto.DiGraphDTO`1.FieldDataType">
             <summary>
@@ -981,6 +989,11 @@
             </summary>
             <param name="output">Json output stream.</param>
         </member>
+        <member name="T:Tinkar.Dto.DiGraphVertexDTO">
+            <summary>
+            Directed graph vertex class
+            </summary>
+        </member>
         <member name="T:Tinkar.Dto.DiGraphVertexDTO.Builder">
             <summary>
             This is builder class for creating DiGraphVertexDTO items.
@@ -988,10 +1001,10 @@
         </member>
         <member name="T:Tinkar.Dto.DiGraphVertexDTO.Builder`1">
             <summary>
-            This is builder class for creating DiGraphVertexDTO items.
+            This is builder class for creating Builder derived classes.
             This should never be used directly, it only should be inherited from.
             </summary>
-            <typeparam name="TBuilder"></typeparam>
+            <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
         <member name="M:Tinkar.Dto.DiGraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableList{System.Int32},System.Collections.Immutable.ImmutableList{System.Int32})">
             <summary>
@@ -1012,16 +1025,15 @@
         </member>
         <member name="T:Tinkar.Dto.DiTreeDTO.Builder">
             <summary>
-            Builder for sealed class.
+            This is builder class for creating DiTreeDTO items.
             </summary>
         </member>
         <member name="T:Tinkar.Dto.DiTreeDTO`1">
             <summary>
-            abstract class.
-            This is the class to inherit from when creating child classes.
-            This class should never be directly instantiated.
+            This is builder class for creating Builder derived classes.
+            This should never be used directly, it only should be inherited from.
             </summary>
-            <typeparam name="TVertex">Child vertex class</typeparam>
+            <typeparam name="TVertex">Vertex class</typeparam>
         </member>
         <member name="T:Tinkar.Dto.DiTreeDTO`1.Builder`2">
             <summary>
@@ -1032,6 +1044,11 @@
             <typeparam name="TBuilder">Child builder class</typeparam>
             <typeparam name="TVertexBuilder">Child vertex builder class</typeparam>
         </member>
+        <member name="T:Tinkar.Dto.DiTreeVertexDTO">
+            <summary>
+            Directed tree vertex class
+            </summary>
+        </member>
         <member name="T:Tinkar.Dto.DiTreeVertexDTO.Builder">
             <summary>
             This is builder class for creating DiTreeVertexDTO items.
@@ -1039,10 +1056,10 @@
         </member>
         <member name="T:Tinkar.Dto.DiTreeVertexDTO.Builder`1">
             <summary>
-            This is builder class for creating DiTreeVertexDTO items.
+            This is builder class for creating Builder derived classes.
             This should never be used directly, it only should be inherited from.
             </summary>
-            <typeparam name="TBuilder"></typeparam>
+            <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
         <member name="M:Tinkar.Dto.DiTreeVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Int32,System.Collections.Immutable.ImmutableList{System.Int32})">
             <summary>
@@ -1054,6 +1071,31 @@
             Marshal class data to binary stream.
             </summary>
             <param name="output">binary output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.GraphDTO">
+            <summary>
+            Graph base class.
+            This class is instantiable.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.GraphDTO.Builder">
+            <summary>
+            This is builder class for creating GraphDTO items.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.GraphDTO`1">
+            <summary>
+            Graph abstract base class.
+            This class is intended to be used only for inheritance..
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.GraphDTO`1.Builder`2">
+            <summary>
+            This is builder class for creating Builder derived classes.
+            This should never be used directly, it only should be inherited from.
+            </summary>
+            <typeparam name="TBuilder">Derived builder type</typeparam>
+            <typeparam name="TVertexBuilder">Derived vertex builder type</typeparam>
         </member>
         <member name="M:Tinkar.Dto.GraphDTO`1.Vertex(System.Guid)">
             <summary>
@@ -1069,21 +1111,39 @@
             <param name="vertex">vertex a vertex to retrieve the successors of</param>
             <returns>Successofs of indicated vertex</returns>
         </member>
+        <member name="T:Tinkar.Dto.GraphVertexDTO">
+            <summary>
+            Graph vertex class
+            </summary>
+        </member>
         <member name="T:Tinkar.Dto.GraphVertexDTO.Builder">
             <summary>
-            Builder class for GraphVertexDTO.
-            This is the class meant for use when instantiating a GraphVertexDTO.Builder
+            This is builder class for creating GraphVertexDTO items.
             </summary>
         </member>
         <member name="T:Tinkar.Dto.GraphVertexDTO.Builder`1">
             <summary>
-            Inheritable Builder class for GraphVertexDTO.
+            This is builder class for creating Builder derived classes.
+            This should never be used directly, it only should be inherited from.
             </summary>
+            <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
         <member name="M:Tinkar.Dto.GraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableList{System.Int32})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.GraphVertexDTO"/> class.
             </summary>
+        </member>
+        <member name="T:Tinkar.Dto.VertexDTO">
+            <summary>
+            Vertex base class
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.VertexDTO.Builder`1">
+            <summary>
+            This is builder class for creating Builder derived classes.
+            This should never be used directly, it only should be inherited from.
+            </summary>
+            <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
         <member name="P:Tinkar.Dto.VertexDTO.Builder`1.VertexIndex">
             <summary>

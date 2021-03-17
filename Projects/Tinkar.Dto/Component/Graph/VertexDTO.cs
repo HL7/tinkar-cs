@@ -7,10 +7,18 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
+    /// <summary>
+    /// Vertex base class
+    /// </summary>
     public record VertexDTO : IVertex,
         IJsonMarshalable,
         IMarshalable
     {
+        /// <summary>
+        /// This is builder class for creating Builder derived classes.
+        /// This should never be used directly, it only should be inherited from.
+        /// </summary>
+        /// <typeparam name="TBuilder">Derived builder type</typeparam>
         public abstract class Builder<TBuilder>
             where TBuilder : Builder<TBuilder>
         {
