@@ -40,26 +40,17 @@ namespace Tinkar.Dto
         IMarshalable
         where TVertex : DiGraphVertexDTO
     {
-        public new interface IBuilder<TBuilder, TVertexBuilder> :
-            GraphDTO<TVertex>.IBuilder<TBuilder, TVertexBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : DiGraphVertexDTO.IBuilder<TVertexBuilder>, new()
-        {
-            TBuilder AppendRoot(TVertexBuilder root);
-        }
-
         public new abstract class Builder<TBuilder, TVertexBuilder> :
-            GraphDTO<TVertex>.Builder<TBuilder, TVertexBuilder>,
-            IBuilder<TBuilder, TVertexBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : DiGraphVertexDTO.IBuilder<TVertexBuilder>, new()
+            GraphDTO<TVertex>.Builder<TBuilder, TVertexBuilder>
+            where TBuilder : Builder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : DiGraphVertexDTO.Builder<TVertexBuilder>, new()
         {
             protected List<TVertexBuilder> roots { get; } = new List<TVertexBuilder>();
 
             public TBuilder AppendRoot(TVertexBuilder root)
             {
                 this.roots.Add(root);
-                return (TBuilder)(IBuilder<TBuilder, TVertexBuilder>)this;
+                return (TBuilder)this;
             }
         }
 

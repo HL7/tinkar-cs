@@ -11,25 +11,8 @@ namespace Tinkar.Dto
         IJsonMarshalable,
         IMarshalable
     {
-        public interface IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
-        {
-            /// <summary>
-            /// Vertex Index. This should only be set by class that creates Builder().
-            /// </summary>
-            Int32 VertexIndex { get; set; }
-
-            TBuilder SetMeaning(ConceptDTO meaning);
-
-            TBuilder SetVertexId(long vertexIdMsb, long vertexIdLsb);
-
-            TBuilder SetVertexId(Guid vertexId);
-
-            TBuilder AppendProperty(IConcept concept, Object value);
-        }
-
-        public abstract class Builder<TBuilder> : IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
+        public abstract class Builder<TBuilder>
+            where TBuilder : Builder<TBuilder>
         {
             protected List<KeyValuePair<IConcept, Object>> properties = new List<KeyValuePair<IConcept, Object>>();
             protected VertexId vertexId;
@@ -43,25 +26,25 @@ namespace Tinkar.Dto
             public TBuilder SetMeaning(ConceptDTO meaning)
             {
                 this.meaning = meaning;
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public TBuilder SetVertexId(long vertexIdMsb, long vertexIdLsb)
             {
                 this.vertexId = new VertexId(vertexIdMsb, vertexIdLsb);
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public TBuilder SetVertexId(Guid vertexId)
             {
                 this.vertexId = new VertexId(vertexId);
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public TBuilder AppendProperty(IConcept concept, Object value)
             {
                 properties.Add(new KeyValuePair<IConcept, Object>(concept, value));
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
         }
 

@@ -9,18 +9,10 @@ namespace Tinkar.Dto
 {
     public record DiTreeVertexDTO : GraphVertexDTO, IGraphVertex
     {
-        public new interface IBuilder<TBuilder> : GraphVertexDTO.IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
-        {
-            TBuilder SetPredecessor(TBuilder value);
-
-            new DiTreeVertexDTO Create();
-        }
-
         /// <summary>
         /// This is builder class for creating DiTreeVertexDTO items.
         /// </summary>
-        public new sealed class Builder : Builder<Builder>, IBuilder<Builder>
+        public new sealed class Builder : Builder<Builder>
         {
         }
 
@@ -29,15 +21,15 @@ namespace Tinkar.Dto
         /// This should never be used directly, it only should be inherited from.
         /// </summary>
         /// <typeparam name="TBuilder"></typeparam>
-        public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>, IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>, new()
+        public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>
+            where TBuilder : Builder<TBuilder>, new()
         {
             TBuilder predecessor = default(TBuilder);
 
             public TBuilder SetPredecessor(TBuilder value)
             {
                 this.predecessor = value;
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public new DiTreeVertexDTO Create()

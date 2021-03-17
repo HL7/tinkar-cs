@@ -12,38 +12,27 @@ namespace Tinkar.Dto
         IJsonMarshalable,
         IMarshalable
     {
-        public new interface IBuilder<TBuilder, TVertexBuilder> : 
-            GraphDTO<DiTreeVertexDTO>.IBuilder<TBuilder, TVertexBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : DiTreeVertexDTO.IBuilder<TVertexBuilder>, new()
-        {
-            TBuilder SetRoot(DiTreeVertexDTO.Builder root);
-            new DiTreeDTO Create();
-        }
-
         public new sealed class Builder : Builder<Builder, DiTreeVertexDTO.Builder>
         {
+            public DiTreeDTO Create()
+            {
+                List<DiTreeVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
+                return new DiTreeDTO(root.Create(), vertexMap.ToImmutableList());
+            }
         }
 
         public new abstract class Builder<TBuilder, TVertexBuilder> : 
-            GraphDTO<DiTreeVertexDTO>.Builder<TBuilder, TVertexBuilder>,
-            IBuilder<TBuilder, TVertexBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : DiTreeVertexDTO.IBuilder<TVertexBuilder>, new()
+            GraphDTO<DiTreeVertexDTO>.Builder<TBuilder, TVertexBuilder>
+            where TBuilder : Builder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : DiTreeVertexDTO.Builder<TVertexBuilder>, new()
         {
 
-            DiTreeVertexDTO.Builder root = default(DiTreeVertexDTO.Builder);
+            protected DiTreeVertexDTO.Builder root = default(DiTreeVertexDTO.Builder);
 
             public TBuilder SetRoot(DiTreeVertexDTO.Builder root)
             {
                 this.root = root;
-                return (TBuilder)(IBuilder<TBuilder, TVertexBuilder>)this;
-            }
-
-            public new DiTreeDTO Create()
-            {
-                List<DiTreeVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
-                return new DiTreeDTO(root.Create(), vertexMap.ToImmutableList());
+                return (TBuilder)this;
             }
         }
 

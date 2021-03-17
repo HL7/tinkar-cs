@@ -26,19 +26,9 @@ namespace Tinkar.Dto
     public abstract record GraphDTO<TVertex> : IGraph<TVertex>
         where TVertex : GraphVertexDTO
     {
-        public interface IBuilder<TBuilder, TVertexBuilder> : VertexDTO.IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : VertexDTO.IBuilder<TVertexBuilder>, new()
-        {
-            TVertexBuilder AppendVertex();
-            TVertexBuilder AppendVertex(Guid vertexId, ConceptDTO meaning);
-            TVertexBuilder AppendVertex(Int64 vertexIdMsb, Int64 vertexIdLsb, ConceptDTO meaning);
-        }
-
-        public abstract class Builder<TBuilder, TVertexBuilder> : VertexDTO.Builder<TBuilder>,
-            IBuilder<TBuilder, TVertexBuilder>
-            where TBuilder : IBuilder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : VertexDTO.IBuilder<TVertexBuilder>, new()
+        public abstract class Builder<TBuilder, TVertexBuilder> : VertexDTO.Builder<TBuilder>
+            where TBuilder : Builder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : VertexDTO.Builder<TVertexBuilder>, new()
         {
             protected List<TVertexBuilder> vertexMap = new List<TVertexBuilder>();
 

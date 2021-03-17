@@ -1050,11 +1050,6 @@
             Initializes a new instance of the <see cref="T:Tinkar.Dto.GraphVertexDTO"/> class.
             </summary>
         </member>
-        <member name="P:Tinkar.Dto.VertexDTO.IBuilder`1.VertexIndex">
-            <summary>
-            Vertex Index. This should only be set by class that creates Builder().
-            </summary>
-        </member>
         <member name="P:Tinkar.Dto.VertexDTO.Builder`1.VertexIndex">
             <summary>
             Vertex Index. This should only be set by class that creates Builder().

@@ -9,18 +9,10 @@ namespace Tinkar.Dto
 {
     public record DiGraphVertexDTO : GraphVertexDTO, IGraphVertex
     {
-        public new interface IBuilder<TBuilder> : GraphVertexDTO.IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
-        {
-            TBuilder AppendPredecessors(params TBuilder[] values);
-
-            new DiGraphVertexDTO Create();
-        }
-
         /// <summary>
         /// This is builder class for creating DiGraphVertexDTO items.
         /// </summary>
-        public new sealed class Builder : Builder<Builder>, IBuilder<Builder>
+        public new sealed class Builder : Builder<Builder>
         {
         }
 
@@ -29,15 +21,15 @@ namespace Tinkar.Dto
         /// This should never be used directly, it only should be inherited from.
         /// </summary>
         /// <typeparam name="TBuilder"></typeparam>
-        public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>, IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
+        public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>
+            where TBuilder : Builder<TBuilder>
         {
             List<Int32> predecessors = new List<int>();
 
             public TBuilder AppendPredecessors(params TBuilder[] values)
             {
                 this.predecessors.AddRange(values.Select((a) => a.VertexIndex));
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public new DiGraphVertexDTO Create()

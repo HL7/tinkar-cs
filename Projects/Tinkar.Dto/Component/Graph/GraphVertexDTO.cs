@@ -9,14 +9,6 @@ namespace Tinkar.Dto
 {
     public record GraphVertexDTO : VertexDTO, IGraphVertex
     {
-        public new interface IBuilder<TBuilder> : VertexDTO.IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
-        {
-            Int32 SuccessorCount { get; }
-            TBuilder AppendSuccessors(params VertexDTO.Builder<TBuilder>[] children);
-            GraphVertexDTO Create();
-        }
-
         /// <summary>
         /// Builder class for GraphVertexDTO.
         /// </summary>
@@ -27,8 +19,8 @@ namespace Tinkar.Dto
         /// <summary>
         /// Inheritable Builder class for GraphVertexDTO.
         /// </summary>
-        public abstract new class Builder<TBuilder> : VertexDTO.Builder<TBuilder>, IBuilder<TBuilder>
-            where TBuilder : IBuilder<TBuilder>
+        public abstract new class Builder<TBuilder> : VertexDTO.Builder<TBuilder>
+            where TBuilder : Builder<TBuilder>
         {
             protected List<Int32> successorList = new List<int>();
 
@@ -37,7 +29,7 @@ namespace Tinkar.Dto
             public TBuilder AppendSuccessors(params VertexDTO.Builder<TBuilder>[] children)
             {
                 successorList.AddRange(children.Select((a) => a.VertexIndex));
-                return (TBuilder)(IBuilder<TBuilder>)this;
+                return (TBuilder)this;
             }
 
             public new GraphVertexDTO Create()
