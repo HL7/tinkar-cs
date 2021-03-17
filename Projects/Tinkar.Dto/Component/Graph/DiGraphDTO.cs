@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 namespace Tinkar.Dto
 {
     /// <summary>
-    /// DiGraphDTO sealed class.
-    /// This is the class to use when creating DiGraph items.
+    /// Instantiable sealed builder class.
+    /// This is the class meant for use when directly instantiating a Builder
     /// </summary>
     public sealed record DiGraphDTO : DiGraphDTO<DiGraphVertexDTO>
     {
+        /// <summary>
+        /// Builder for sealed class.
+        /// </summary>
         public sealed class Builder : DiGraphDTO<DiGraphVertexDTO>.Builder<Builder, DiGraphVertexDTO.Builder>
         {
             public DiGraphDTO Create()
@@ -30,10 +33,11 @@ namespace Tinkar.Dto
     }
 
     /// <summary>
-    /// DiGraphDTO abstract class.
+    /// abstract class.
     /// This is the class to inherit from when creating child classes.
     /// This class should never be directly instantiated.
     /// </summary>
+    /// <typeparam name="TVertex">Child vertex class</typeparam>
     public abstract record DiGraphDTO<TVertex> : GraphDTO<TVertex>,
         IDiGraph<TVertex>,
         IJsonMarshalable,

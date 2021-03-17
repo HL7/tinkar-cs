@@ -11,9 +11,21 @@ namespace Tinkar.Dto
     {
         /// <summary>
         /// Builder class for GraphVertexDTO.
+        /// This is the class meant for use when instantiating a GraphVertexDTO.Builder
         /// </summary>
         public sealed class Builder : Builder<Builder>
         {
+            public GraphVertexDTO Create()
+            {
+                ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                propBldr.AddRange(this.properties);
+
+                return new GraphVertexDTO(this.vertexId,
+                    this.VertexIndex,
+                    this.meaning,
+                    propBldr.ToImmutableDictionary(),
+                    this.successorList.ToImmutableList());
+            }
         }
 
         /// <summary>
@@ -30,18 +42,6 @@ namespace Tinkar.Dto
             {
                 successorList.AddRange(children.Select((a) => a.VertexIndex));
                 return (TBuilder)this;
-            }
-
-            public new GraphVertexDTO Create()
-            {
-                ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-                propBldr.AddRange(this.properties);
-
-                return new GraphVertexDTO(this.vertexId,
-                    this.VertexIndex,
-                    this.meaning,
-                    propBldr.ToImmutableDictionary(),
-                    this.successorList.ToImmutableList());
             }
         }
 

@@ -7,46 +7,75 @@ using System.Threading.Tasks;
 
 namespace Tinkar.Dto
 {
-    public record DiTreeDTO : GraphDTO<DiTreeVertexDTO>,
-        IDiTree<DiTreeVertexDTO>,
-        IJsonMarshalable,
-        IMarshalable
+    /// <summary>
+    /// Instantiable sealed builder class.
+    /// This is the class meant for use when directly instantiating a Builder
+    /// </summary>
+    public sealed record DiTreeDTO : DiTreeDTO<DiTreeVertexDTO>
     {
-        public new sealed class Builder : Builder<Builder, DiTreeVertexDTO.Builder>
+        /// <summary>
+        /// Builder for sealed class.
+        /// </summary>
+        public sealed class Builder : DiTreeDTO<DiTreeVertexDTO>.Builder<Builder, DiTreeVertexDTO.Builder>
         {
             public DiTreeDTO Create()
             {
+                DiTreeVertexDTO root = this.root.Create();
                 List<DiTreeVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
-                return new DiTreeDTO(root.Create(), vertexMap.ToImmutableList());
+                return new DiTreeDTO(root, vertexMap.ToImmutableList());
             }
         }
 
+        public DiTreeDTO(DiTreeVertexDTO root,
+            ImmutableList<DiTreeVertexDTO> vertexMap) : base(root, vertexMap)
+        {
+        }
+    }
+
+    /// <summary>
+    /// abstract class.
+    /// This is the class to inherit from when creating child classes.
+    /// This class should never be directly instantiated.
+    /// </summary>
+    /// <typeparam name="TVertex">Child vertex class</typeparam>
+    public abstract record DiTreeDTO<TVertex> : GraphDTO<TVertex>,
+        IJsonMarshalable,
+        IMarshalable
+        where TVertex : DiTreeVertexDTO
+    {
+        /// <summary>
+        /// abstract builder class.
+        /// This is the class to inherit from when creating child classes.
+        /// This class should never be directly instantiated.
+        /// </summary>
+        /// <typeparam name="TBuilder">Child builder class</typeparam>
+        /// <typeparam name="TVertexBuilder">Child vertex builder class</typeparam>
         public new abstract class Builder<TBuilder, TVertexBuilder> : 
-            GraphDTO<DiTreeVertexDTO>.Builder<TBuilder, TVertexBuilder>
+            GraphDTO<TVertex>.Builder<TBuilder, TVertexBuilder>
             where TBuilder : Builder<TBuilder, TVertexBuilder>
             where TVertexBuilder : DiTreeVertexDTO.Builder<TVertexBuilder>, new()
         {
 
-            protected DiTreeVertexDTO.Builder root = default(DiTreeVertexDTO.Builder);
+            protected TVertexBuilder root = default(TVertexBuilder);
 
-            public TBuilder SetRoot(DiTreeVertexDTO.Builder root)
+            public TBuilder SetRoot(TVertexBuilder root)
             {
                 this.root = root;
                 return (TBuilder)this;
             }
         }
 
-        public FieldDataType FieldDataType => FieldDataType.DiGraphType;
+        public FieldDataType FieldDataType => FieldDataType.DiTreeType;
 
-        public DiTreeVertexDTO Root { get; init; }
+        public TVertex Root { get; init; }
 
-        public DiTreeDTO(DiTreeVertexDTO root,
-                        ImmutableList<DiTreeVertexDTO> vertexMap) : base(vertexMap)
+        public DiTreeDTO(TVertex root,
+                        ImmutableList<TVertex> vertexMap) : base(vertexMap)
         {
             this.Root = root;
         }
 
-        public DiTreeVertexDTO Predecessor(DiTreeVertexDTO vertex) =>
+        public TVertex Predecessor(TVertex vertex) =>
             this.VertexMap[vertex.Predecessor];
 
         public override Int32 CompareTo(Object o)
@@ -84,9 +113,9 @@ namespace Tinkar.Dto
         public static DiTreeDTO Make(TinkarInput input)
         {
             throw new NotImplementedException("xxyyz");
-            //$ImmutableList<DiTreeVertexDTO> vertexMap = GraphDTO.UnmarshalVertexMap(input);
+            //$ImmutableList<TVertex> vertexMap = GraphDTO.UnmarshalVertexMap(input);
             //var successorMap = GraphDTO.UnmarshalSuccessorMap(input, vertexMap);
-            //DiTreeVertexDTO root = vertexMap[input.GetInt32()];
+            //TVertex root = vertexMap[input.GetInt32()];
             //int predecessorMapSize = input.GetInt32();
             //ImmutableDictionary<Int32, Int32>.Builder predecessorMap = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
             //for (int i = 0; i < predecessorMapSize; i++)
