@@ -138,19 +138,9 @@ namespace Tinkar.Dto
                     this.WriteSingle(item);
                     break;
 
-                case Double item:
-                    this.WriteFieldType(FieldDataType.FloatType);
-                    this.WriteSingle((Single)item);
-                    break;
-
                 case Int32 int32Item:
                     this.WriteFieldType(FieldDataType.IntegerType);
                     this.WriteInt32(int32Item);
-                    break;
-
-                case Int64 item:
-                    this.WriteFieldType(FieldDataType.IntegerType);
-                    this.WriteInt32((Int32)item);
                     break;
 
                 case String item:
@@ -161,11 +151,6 @@ namespace Tinkar.Dto
                 case DateTime item:
                     this.WriteFieldType(FieldDataType.InstantType);
                     this.WriteInstant(item);
-                    break;
-
-                case Object[] item:
-                    this.WriteFieldType(FieldDataType.ObjectArrayType);
-                    this.WriteObjects(item);
                     break;
 
                 case IMarshalable item:

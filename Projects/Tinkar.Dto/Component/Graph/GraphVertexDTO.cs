@@ -15,7 +15,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// This is builder class for creating GraphVertexDTO items.
         /// </summary>
-        public sealed class Builder : Builder<Builder>
+        public new sealed class Builder : Builder<Builder>
         {
             public GraphVertexDTO Create()
             {

@@ -149,32 +149,33 @@ namespace Tinkar.Dto
                     case IConcept item:
                         convertedFields.Add(new ConceptDTO(item.PublicId));
                         break;
+
                     case IPatternForSemantic item:
                         convertedFields.Add(new PatternForSemanticDTO(item.PublicId));
                         break;
+
                     case ISemantic item:
                         convertedFields.Add(new SemanticDTO(item.PublicId,
                             item.PatternForSemantic,
                             item.ReferencedComponent));
                         break;
+
                     case IComponent item:
                         convertedFields.Add(new ComponentDTO(item.PublicId));
                         break;
-                    case Int64 item:
-                        convertedFields.Add(item);
-                        break;
+
                     case Int32 item:
                         convertedFields.Add(item);
                         break;
-                    case Double item:
-                        convertedFields.Add(item);
-                        break;
+
                     case Single item:
                         convertedFields.Add(item);
                         break;
+
                     case DateTime item:
                         convertedFields.Add(item);
                         break;
+
                     default:
                         throw new NotImplementedException($"Field type {field.GetType().Name} not implemented.");
                 }

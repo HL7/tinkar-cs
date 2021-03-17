@@ -1138,6 +1138,11 @@
             Vertex base class
             </summary>
         </member>
+        <member name="T:Tinkar.Dto.VertexDTO.Builder">
+            <summary>
+            Builder class
+            </summary>
+        </member>
         <member name="T:Tinkar.Dto.VertexDTO.Builder`1">
             <summary>
             This is builder class for creating Builder derived classes.
@@ -1177,13 +1182,6 @@
             <summary>
             Concept that represents the meaning of this vertex.
             </summary>
-        </member>
-        <member name="M:Tinkar.Dto.VertexDTO.#ctor(Tinkar.Dto.TinkarInput)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.Dto.VertexDTO"/> class.
-            </summary>
-            <param name="input">input</param>
-            <returns>new Vertex item</returns>
         </member>
         <member name="M:Tinkar.Dto.VertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object})">
             <summary>

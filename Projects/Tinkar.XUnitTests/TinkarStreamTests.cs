@@ -126,35 +126,6 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void Int64Test()
-        {
-            void Test(Int64 start)
-            {
-                MemoryStream ms = MSCreate();
-                using (TinkarOutput output = new TinkarOutput(ms))
-                {
-                    output.WriteField(start);
-                }
-
-                ms.Position = 0;
-                using (TinkarInput input = new TinkarInput(ms))
-                {
-
-                    Int32 value = (Int32)input.GetField();
-                    Assert.True(start == value);
-                }
-
-            }
-
-            Test(0);
-            Test(-1);
-            Test(Int32.MinValue);
-            Test(Int32.MaxValue);
-            Test(100);
-        }
-
-        [DoNotParallelize]
-        [Fact]
         public void StringTest()
         {
             void Test(String start)

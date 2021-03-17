@@ -191,24 +191,20 @@ namespace Tinkar.XUnitTests
             );
 
         public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);
-        //public static VertexDTO CreateVertexDTO()
-        //{
-        //    ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-        //    pb1.Add(new ConceptDTO(GID(0x1)), (Int32)1);
-        //    pb1.Add(new ConceptDTO(GID(0x2)), (Int64)2);
-        //    pb1.Add(new ConceptDTO(GID(0x3)), (Single)3);
-        //    pb1.Add(new ConceptDTO(GID(0x4)), (Double)4);
-        //    pb1.Add(new ConceptDTO(GID(0x5)), "abcdef");
-        //    pb1.Add(new ConceptDTO(GID(0x6)), true);
-        //    pb1.Add(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1));
+        public static VertexDTO CreateVertexDTO()
+        {
+            VertexDTO.Builder bldr = new VertexDTO.Builder(123)
+                .SetMeaning(new ConceptDTO(PublicIdH))
+                .SetVertexId(Misc.g1)
+                .AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1)
+                .AppendProperty(new ConceptDTO(GID(0x2)), (Single)3)
+                .AppendProperty(new ConceptDTO(GID(0x3)), "abcdef")
+                .AppendProperty(new ConceptDTO(GID(0x4)), true)
+                .AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1))
+                ;
 
-        //    return new VertexDTO(
-        //            g1,
-        //            123,
-        //            new ConceptDTO(PublicIdH),
-        //            pb1.ToImmutable()
-        //        );
-        //}
+            return bldr.Create();
+        }
 
         //public static IEnumerable<VertexDTO> CreateVertexMap()
         //{
@@ -262,12 +258,10 @@ namespace Tinkar.XUnitTests
             bldr.SetVertexId(Misc.g1);
             bldr.SetMeaning(new ConceptDTO(PublicIdH));
             bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Int64)2);
-            bldr.AppendProperty(new ConceptDTO(GID(0x3)), (Single)3);
-            bldr.AppendProperty(new ConceptDTO(GID(0x4)), (Double)4);
-            bldr.AppendProperty(new ConceptDTO(GID(0x5)), "abcdef");
-            bldr.AppendProperty(new ConceptDTO(GID(0x6)), true);
-            bldr.AppendProperty(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1));
+            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
+            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
+            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
+            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
 
             DiGraphVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
             vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
@@ -297,12 +291,10 @@ namespace Tinkar.XUnitTests
             bldr.SetVertexId(Misc.g1);
             bldr.SetMeaning(new ConceptDTO(PublicIdH));
             bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Int64)2);
-            bldr.AppendProperty(new ConceptDTO(GID(0x3)), (Single)3);
-            bldr.AppendProperty(new ConceptDTO(GID(0x4)), (Double)4);
-            bldr.AppendProperty(new ConceptDTO(GID(0x5)), "abcdef");
-            bldr.AppendProperty(new ConceptDTO(GID(0x6)), true);
-            bldr.AppendProperty(new ConceptDTO(GID(0x7)), new DateTime(2000, 1, 1));
+            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
+            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
+            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
+            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
 
             DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
             vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);

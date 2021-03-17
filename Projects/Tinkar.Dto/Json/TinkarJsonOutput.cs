@@ -97,15 +97,7 @@ namespace Tinkar.Dto
                     this.writer.WriteValue(item);
                     break;
 
-                case Double item:
-                    this.writer.WriteValue(item);
-                    break;
-
                 case Int32 item:
-                    this.writer.WriteValue(item);
-                    break;
-
-                case Int64 item:
                     this.writer.WriteValue(item);
                     break;
 
@@ -115,10 +107,6 @@ namespace Tinkar.Dto
 
                 case DateTime item:
                     this.writer.WriteValue(item);
-                    break;
-
-                case Object[] item:
-                    this.WriteObjects(item);
                     break;
 
                 case ConceptDTO item:
