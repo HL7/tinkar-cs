@@ -11,8 +11,11 @@ namespace Tinkar.Dto
     /// Instantiable sealed builder class.
     /// This is the class meant for use when directly instantiating a Builder
     /// </summary>
-    public sealed record DiTreeDTO : DiTreeDTO<DiTreeVertexDTO>
+    public sealed record DiTreeDTO : DiTreeDTO<DiTreeVertexDTO>,
+        //IJsonMarshalable,
+        IMarshalable
     {
+#warning are successor and predecessor alawys paired, or can a node havea predecessor thsi it is not a successor of of vice versa.
         /// <summary>
         /// This is builder class for creating DiTreeDTO items.
         /// </summary>
@@ -20,15 +23,46 @@ namespace Tinkar.Dto
         {
             public DiTreeDTO Create()
             {
+                if (this.root == null)
+                    throw new Exception($"No root set fpr DiTree instance");
                 DiTreeVertexDTO root = this.root.Create();
-                List<DiTreeVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
-                return new DiTreeDTO(root, vertexMap.ToImmutableList());
+
+                DiTreeVertexDTO[] vertexMap = new DiTreeVertexDTO[this.vertexMap.Count];
+                for (Int32 i = 0; i < this.vertexMap.Count; i++)
+                {
+                    DiTreeVertexDTO.Builder vmBldr = this.vertexMap[i];
+                    if ((vmBldr.Predecessor == null) && (vmBldr != this.root))
+                        throw new Exception($"DiTree contains item '{vmBldr.VertexId}' with no predecessor that is not marked as a root");
+                    vertexMap[i] = vmBldr.Create();
+                }
+                return new DiTreeDTO(root.VertexIndex, vertexMap.ToImmutableList());
             }
         }
 
-        public DiTreeDTO(DiTreeVertexDTO root,
-            ImmutableList<DiTreeVertexDTO> vertexMap) : base(root, vertexMap)
+        public DiTreeDTO(Int32 rootIndex,
+            ImmutableList<DiTreeVertexDTO> vertexMap) : base(rootIndex, vertexMap)
         {
+        }
+
+        //public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException();
+
+        public static DiTreeDTO Make(TinkarInput input)
+        {
+            Int32 vertexCount = input.GetInt32();
+            DiTreeVertexDTO[] vertexMap = new DiTreeVertexDTO[vertexCount];
+            for (Int32 i = 0; i < vertexCount; i++)
+                vertexMap[i] = DiTreeVertexDTO.Make(input);
+            Int32 rootIndex = input.GetInt32();
+
+            return new DiTreeDTO(rootIndex, vertexMap.ToImmutableList());
+        }
+
+        public void Marshal(TinkarOutput output)
+        {
+            output.WriteInt32(this.VertexMap.Count);
+            for (Int32 i = 0; i < this.VertexMap.Count; i++)
+                this.VertexMap[i].Marshal(output);
+            output.WriteInt32(this.Root.VertexIndex);
         }
     }
 
@@ -37,9 +71,7 @@ namespace Tinkar.Dto
     /// This should never be used directly, it only should be inherited from.
     /// </summary>
     /// <typeparam name="TVertex">Vertex class</typeparam>
-    public abstract record DiTreeDTO<TVertex> : GraphDTO<TVertex>,
-        IJsonMarshalable,
-        IMarshalable
+    public abstract record DiTreeDTO<TVertex> : GraphDTO<TVertex>
         where TVertex : DiTreeVertexDTO
     {
         /// <summary>
@@ -66,16 +98,22 @@ namespace Tinkar.Dto
 
         public FieldDataType FieldDataType => FieldDataType.DiTreeType;
 
-        public TVertex Root { get; init; }
+        public TVertex Root => this.VertexMap[this.rootIndex];
+        Int32 rootIndex = -1;
 
-        public DiTreeDTO(TVertex root,
+        public DiTreeDTO(Int32 rootIndex,
                         ImmutableList<TVertex> vertexMap) : base(vertexMap)
         {
-            this.Root = root;
+            this.rootIndex = rootIndex;
         }
 
-        public TVertex Predecessor(TVertex vertex) =>
-            this.VertexMap[vertex.Predecessor];
+        public TVertex Predecessor(TVertex vertex)
+        {
+            Int32 predecessorIndex = vertex.Predecessor;
+            if (predecessorIndex == vertex.VertexIndex)
+                return null;
+            return this.VertexMap[predecessorIndex];
+        }
 
         public override Int32 CompareTo(Object o)
         {
@@ -105,28 +143,6 @@ namespace Tinkar.Dto
                 return false;
 
             return true;
-        }
-
-        public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException();
-
-        public static DiTreeDTO Make(TinkarInput input)
-        {
-            throw new NotImplementedException("xxyyz");
-            //$ImmutableList<TVertex> vertexMap = GraphDTO.UnmarshalVertexMap(input);
-            //var successorMap = GraphDTO.UnmarshalSuccessorMap(input, vertexMap);
-            //TVertex root = vertexMap[input.GetInt32()];
-            //int predecessorMapSize = input.GetInt32();
-            //ImmutableDictionary<Int32, Int32>.Builder predecessorMap = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
-            //for (int i = 0; i < predecessorMapSize; i++)
-            //    predecessorMap.Add(input.GetInt32(), input.GetInt32());
-            //return new DiTreeDTO(root, predecessorMap.ToImmutable(), vertexMap, successorMap);
-        }
-
-        public void Marshal(TinkarOutput output)
-        {
-            this.MarshalVertexMap(output);
-
-            output.WriteInt32(this.Root.VertexIndex);
         }
     }
 }

@@ -36,8 +36,7 @@ namespace Tinkar.XUnitTests
             }
             {
                 VertexDTO[] successors = dto.Successors(dto.Vertex(1)).ToArray();
-                Assert.True(successors.Length == 1);
-                Assert.Contains(dto.Vertex(3), successors);
+                Assert.True(successors.Length == 0);
             }
             {
                 VertexDTO[] successors = dto.Successors(dto.Vertex(2)).ToArray();
@@ -58,7 +57,7 @@ namespace Tinkar.XUnitTests
 
             {
                 GraphDTO a = Misc.CreateGraphDTO();
-                GraphDTO.Builder b = Misc.CreateGraphDTOBuilder();
+                GraphDTO.Builder b = Misc.CreateGraphDTOBuilder<GraphDTO.Builder, GraphVertexDTO.Builder>(new GraphDTO.Builder());
                 b.Vertex(Misc.g4).SetMeaning(new ConceptDTO(Misc.k1));
                 Assert.False(a.IsEquivalent(b.Create()));
                 Assert.False(a.CompareTo(b.Create()) == 0);
@@ -155,27 +154,6 @@ namespace Tinkar.XUnitTests
                 GraphDTO b = Local();
                 Assert.True(a.CompareTo(b) != 0);
             }
-        }
-
-        [DoNotParallelize]
-        [Fact]
-        public void GraphDTOMarshalTest()
-        {
-            throw new NotImplementedException();
-            //    GraphDTO dtoStart = Misc.CreateGraphDTO();
-
-            //    MemoryStream ms = new MemoryStream();
-            //    using (TinkarOutput output = new TinkarOutput(ms))
-            //    {
-            //        dtoStart.MarshalVertexMap(output);
-            //    }
-
-            //    ms.Position = 0;
-            //    using (TinkarInput input = new TinkarInput(ms))
-            //    {
-            //        ImmutableList<VertexDTO> dtoRead = GraphDTO.UnmarshalVertexMap(input);
-            //        Assert.True(FieldCompare.CompareSequence(dtoRead, dtoStart.VertexMap) == 0);
-            //    }
         }
     }
 }

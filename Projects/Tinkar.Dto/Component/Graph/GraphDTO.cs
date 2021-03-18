@@ -112,19 +112,12 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="vertex">vertex a vertex to retrieve the successors of</param>
         /// <returns>Successofs of indicated vertex</returns>
-        public IEnumerable<TVertex> Successors(TVertex vertex)
+        public ImmutableList<TVertex> Successors(TVertex vertex)
         {
             TVertex[] retVal = new TVertex[vertex.Successors.Count];
             for (Int32 i = 0; i < vertex.Successors.Count; i++)
                 retVal[i] = this.VertexMap[vertex.Successors[i]];
-            return retVal;
-        }
-
-        public void MarshalVertexMap(TinkarOutput output)
-        {
-            output.WriteInt32(this.VertexMap.Count());
-            foreach (TVertex vertexDTO in this.VertexMap)
-                vertexDTO.Marshal(output);
+            return retVal.ToImmutableList();
         }
 
         Int32 Comparer(ImmutableList<Int32> value1, ImmutableList<Int32> value2)

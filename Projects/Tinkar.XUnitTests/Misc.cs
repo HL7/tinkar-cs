@@ -194,7 +194,7 @@ namespace Tinkar.XUnitTests
 
         public static VertexDTO CreateVertexDTO() => CreateVertexDTOBuilder().Create();
 
-        public static VertexDTO.Builder  CreateVertexDTOBuilder()
+        public static VertexDTO.Builder CreateVertexDTOBuilder()
         {
             VertexDTO.Builder bldr = new VertexDTO.Builder().SetVertexIndex(123);
             SetVertexDTO(bldr);
@@ -300,11 +300,12 @@ namespace Tinkar.XUnitTests
 
 
 
-        public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder().Create();
+        public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder<GraphDTO.Builder, GraphVertexDTO.Builder>(new GraphDTO.Builder()).Create();
 
-        public static GraphDTO.Builder CreateGraphDTOBuilder()
+        public static TBuilder CreateGraphDTOBuilder<TBuilder, TVertexBuilder>(TBuilder bldr)
+            where TBuilder : GraphDTO.Builder<TBuilder, TVertexBuilder>
+            where TVertexBuilder : GraphVertexDTO.Builder<TVertexBuilder>, new()
         {
-            GraphDTO.Builder bldr = new GraphDTO.Builder();
             bldr.AppendVertex(g1, new ConceptDTO(PublicIdG))
                 .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
                 ;
@@ -324,7 +325,46 @@ namespace Tinkar.XUnitTests
         }
 
 
-        public static DiGraphDTO CreateDiGraphDTO()
+
+        public static DiTreeDTO CreateDiTreeDTO() => CreateDiTreeDTOBuilder().Create();
+
+        public static DiTreeDTO.Builder CreateDiTreeDTOBuilder()
+        {
+            DiTreeDTO.Builder bldr = new DiTreeDTO.Builder();
+            bldr.SetVertexId(Misc.g1);
+            bldr.SetMeaning(new ConceptDTO(PublicIdH));
+            bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
+            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
+            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
+            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
+            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
+
+            DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
+            vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+
+            DiTreeVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
+            vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
+            vertex2.SetPredecessor(vertex1);
+
+            var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
+            vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
+            vertex3.SetPredecessor(vertex2);
+
+            var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
+            vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
+            vertex4.SetPredecessor(vertex3);
+
+            vertex1.AppendSuccessors(vertex2);
+            vertex2.AppendSuccessors(vertex3);
+            vertex3.AppendSuccessors(vertex4);
+
+            bldr.SetRoot(vertex1);
+            return bldr;
+        }
+
+        public static DiGraphDTO CreateDiGraphDTO() => CreateDiGraphDTOBuilder().Create();
+
+        public static DiGraphDTO.Builder CreateDiGraphDTOBuilder()
         {
             DiGraphDTO.Builder bldr = new DiGraphDTO.Builder();
             bldr.SetVertexId(Misc.g1);
@@ -354,7 +394,7 @@ namespace Tinkar.XUnitTests
             vertex2.AppendSuccessors(vertex3);
             vertex3.AppendSuccessors(vertex4);
 
-            return bldr.Create();
+            return bldr;
         }
     }
 }

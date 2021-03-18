@@ -27,11 +27,11 @@ namespace Tinkar.Dto
         public abstract new class Builder<TBuilder> : GraphVertexDTO.Builder<TBuilder>
             where TBuilder : Builder<TBuilder>, new()
         {
-            TBuilder predecessor = default(TBuilder);
+            public TBuilder Predecessor { get; protected set; } = default(TBuilder);
 
             public TBuilder SetPredecessor(TBuilder value)
             {
-                this.predecessor = value;
+                this.Predecessor = value;
                 return (TBuilder)this;
             }
 
@@ -40,11 +40,12 @@ namespace Tinkar.Dto
                 ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 propBldr.AddRange(this.properties);
 
+                Int32 predecessor = this.Predecessor == null ? this.VertexIndex : this.Predecessor.VertexIndex;
                 return new DiTreeVertexDTO(this.VertexId,
                     this.VertexIndex,
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
-                    this.predecessor.VertexIndex,
+                    predecessor,
                     this.successors.ToImmutableList());
             }
         }

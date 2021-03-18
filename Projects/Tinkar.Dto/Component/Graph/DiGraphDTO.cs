@@ -11,8 +11,11 @@ namespace Tinkar.Dto
     /// Directed Graph abstract base class.
     /// This class is instantiable.
     /// </summary>
-    public sealed record DiGraphDTO : DiGraphDTO<DiGraphVertexDTO>
+    public sealed record DiGraphDTO : DiGraphDTO<DiGraphVertexDTO>,
+        IJsonMarshalable,
+        IMarshalable
     {
+        #warning are successor and predecessor alawys paired, or can a node havea predecessor thsi it is not a successor of of vice versa.
         /// <summary>
         /// This is builder class for creating DiGraphDTO items.
         /// </summary>
@@ -20,16 +23,51 @@ namespace Tinkar.Dto
         {
             public DiGraphDTO Create()
             {
-                List<DiGraphVertexDTO> roots = this.roots.Select((a) => a.Create()).ToList();
+                List<Int32> roots = this.roots.Select((a) => a.VertexIndex).ToList();
                 List<DiGraphVertexDTO> vertexMap = this.vertexMap.Select((a) => a.Create()).ToList();
                 return new DiGraphDTO(roots.ToImmutableList(), vertexMap.ToImmutableList());
             }
         }
 
-        public DiGraphDTO(ImmutableList<DiGraphVertexDTO> roots,
+        public DiGraphDTO(ImmutableList<Int32> roots,
             ImmutableList<DiGraphVertexDTO> vertexMap) : base(roots, vertexMap)
         {
         }
+
+        public static DiGraphDTO Make(TinkarInput input)
+        {
+            Int32 vertexCount = input.GetInt32();
+            DiGraphVertexDTO[] vertexMap = new DiGraphVertexDTO[vertexCount];
+            for (Int32 i = 0; i < vertexCount; i++)
+                vertexMap[i] = DiGraphVertexDTO.Make(input);
+
+            Int32 rootsCount = input.GetInt32();
+            Int32[] roots = new Int32[rootsCount];
+            for (Int32 i = 0; i < rootsCount; i++)
+                roots[i] = input.GetInt32();
+
+            return new DiGraphDTO(roots.ToImmutableList(), vertexMap.ToImmutableList());
+        }
+
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
+        public void Marshal(TinkarOutput output)
+        {
+            output.WriteInt32(this.VertexMap.Count);
+            for (Int32 i = 0; i < this.VertexMap.Count; i++)
+                this.VertexMap[i].Marshal(output);
+            output.WriteInt32(this.Roots.Count);
+            for (Int32 i = 0; i < this.Roots.Count; i++)
+                output.WriteInt32(this.Roots[i].VertexIndex);
+        }
+
+        /// <summary>
+        /// Marshal all fields to Json output stream.
+        /// </summary>
+        /// <param name="output">Json output stream.</param>
+        public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException("xxyyz");
     }
 
     /// <summary>
@@ -38,9 +76,7 @@ namespace Tinkar.Dto
     /// </summary>
     /// <typeparam name="TVertex">Type of vertex class that child class implements</typeparam>
     public abstract record DiGraphDTO<TVertex> : GraphDTO<TVertex>,
-        IDiGraph<TVertex>,
-        IJsonMarshalable,
-        IMarshalable
+        IDiGraph<TVertex>
         where TVertex : DiGraphVertexDTO
     {
         /// <summary>
@@ -57,7 +93,7 @@ namespace Tinkar.Dto
         {
             protected List<TVertexBuilder> roots { get; } = new List<TVertexBuilder>();
 
-            public TBuilder ClearRoot()
+            public TBuilder ClearRoots()
             {
                 this.roots.Clear();
                 return (TBuilder)this;
@@ -79,12 +115,18 @@ namespace Tinkar.Dto
         /// Gets the roots of this item.
         /// A graph can have multiple roots.
         /// </summary>
-        public ImmutableList<TVertex> Roots { get; init; }
+        public ImmutableList<TVertex> Roots => this.Roots.Select((a) => this.VertexMap[a.VertexIndex]).ToImmutableList();
 
-        public DiGraphDTO(ImmutableList<TVertex> roots,
+        /// <summary>
+        /// Gets the roots of this item.
+        /// A graph can have multiple roots.
+        /// </summary>
+        ImmutableList<Int32> roots;
+
+        public DiGraphDTO(ImmutableList<Int32> roots,
                         ImmutableList<TVertex> vertexMap) : base(vertexMap)
         {
-            this.Roots = roots;
+            this.roots = roots;
         }
 
 
@@ -94,19 +136,12 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="vertex"></param>
         /// <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
-        public ImmutableList<TVertex> Predecessors(TVertex vertex) => 
-            throw new NotImplementedException("XXYYZ");
-
-        /// <summary>
-        /// Marshal class data to binary stream.
-        /// </summary>
-        /// <param name="output">binary output stream.</param>
-        public void Marshal(TinkarOutput output) => throw new NotImplementedException("xxyyz");
-
-        /// <summary>
-        /// Marshal all fields to Json output stream.
-        /// </summary>
-        /// <param name="output">Json output stream.</param>
-        public void Marshal(TinkarJsonOutput output) => throw new NotImplementedException("xxyyz");
+        public ImmutableList<TVertex> Predecessors(TVertex vertex)
+        {
+            TVertex[] retVal = new TVertex[vertex.Predecessors.Count];
+            for (Int32 i = 0; i < vertex.Predecessors.Count; i++)
+                retVal[i] = this.VertexMap[vertex.Predecessors[i]];
+            return retVal.ToImmutableList();
+        }
     }
 }

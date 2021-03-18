@@ -10,13 +10,13 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class DiTreeDTOTests
+    public class DiGraphDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void DiTreeDTOFieldsTest()
+        public void DiGraphDTOFieldsTest()
         {
-            DiTreeDTO dto = Misc.CreateDiTreeDTO();
+            DiGraphDTO dto = Misc.CreateDiGraphDTO();
             Assert.True(dto.VertexMap.Count == 4);
             Assert.True(dto.VertexMap[0] == dto.Vertex(Misc.g1));
             Assert.True(dto.VertexMap[1] == dto.Vertex(Misc.g2));
@@ -29,22 +29,25 @@ namespace Tinkar.XUnitTests
             Assert.True(dto.VertexMap[3] == dto.Vertex(3));
 
             {
-                Assert.True(dto.Predecessor(dto.Vertex(0)) == null);
+                Assert.True(dto.Predecessors(dto.Vertex(0)).Count == 0);
                 Assert.True(dto.Successors(dto.Vertex(0)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(0)).ElementAt(0) == dto.Vertex(1));
             }
             {
-                Assert.True(dto.Predecessor(dto.Vertex(1)) == dto.Vertex(0));
+                Assert.True(dto.Predecessors(dto.Vertex(1)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(1)).ElementAt(0)  == dto.Vertex(0));
                 Assert.True(dto.Successors(dto.Vertex(1)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(1)).ElementAt(0) == dto.Vertex(2));
             }
             {
-                Assert.True(dto.Predecessor(dto.Vertex(2)) == dto.Vertex(1));
+                Assert.True(dto.Predecessors(dto.Vertex(2)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(2)).ElementAt(0) == dto.Vertex(1));
                 Assert.True(dto.Successors(dto.Vertex(2)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(2)).ElementAt(0) == dto.Vertex(3));
             }
             {
-                Assert.True(dto.Predecessor(dto.Vertex(3)) == dto.Vertex(2));
+                Assert.True(dto.Predecessors(dto.Vertex(3)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(3)).ElementAt(0) == dto.Vertex(2));
                 Assert.True(dto.Successors(dto.Vertex(3)).Count() == 0);
             }
         }
@@ -53,31 +56,33 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void DiTreeDTOEqTest()
+        public void DiGraphDTOEqTest()
         {
             {
-                DiTreeDTO a = Misc.CreateDiTreeDTO();
-                DiTreeDTO b = Misc.CreateDiTreeDTO();
+                DiGraphDTO a = Misc.CreateDiGraphDTO();
+                DiGraphDTO b = Misc.CreateDiGraphDTO();
                 Assert.True(a.CompareTo(b) == 0);
-                Assert.True(a.IsEquivalent(b));
             }
+
+
             {
-                DiTreeDTO a = Misc.CreateDiTreeDTO();
-                DiTreeDTO.Builder b = Misc.CreateDiTreeDTOBuilder();
-                b.SetRoot(b.Vertex(Misc.g2));
+                DiGraphDTO a = Misc.CreateDiGraphDTO();
+                DiGraphDTO.Builder b = Misc.CreateDiGraphDTOBuilder();
+                b.ClearRoots().AppendRoots(b.Vertex(Misc.g2));
                 b.Vertex(Misc.g2)
                     .ClearSuccessors()
                     .AppendSuccessors(b.Vertex(Misc.g1));
                 b.Vertex(Misc.g1)
-                    .SetPredecessor(b.Vertex(Misc.g2));
+                    .ClearPredecessors()
+                    .AppendPredecessors(b.Vertex(Misc.g2));
 
                 Assert.False(a.CompareTo(b.Create()) == 0);
                 Assert.False(a.IsEquivalent(b.Create()));
             }
 
             {
-                DiTreeDTO a = Misc.CreateDiTreeDTO();
-                DiTreeDTO.Builder b = Misc.CreateDiTreeDTOBuilder();
+                DiGraphDTO a = Misc.CreateDiGraphDTO();
+                DiGraphDTO.Builder b = Misc.CreateDiGraphDTOBuilder();
                 b.Vertex(Misc.g1).ClearProperties();
 
                 Assert.False(a.CompareTo(b.Create()) == 0);
@@ -89,20 +94,19 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void DiTreeDTOMarshalTest()
+        public void DiGraphDTOMarshalTest()
         {
-            DiTreeDTO dtoStart = Misc.CreateDiTreeDTO();
+            DiGraphDTO dtoStart = Misc.CreateDiGraphDTO();
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
             {
                 dtoStart.Marshal(output);
             }
-
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                DiTreeDTO dtoRead = DiTreeDTO.Make(input);
+                DiGraphDTO dtoRead = DiGraphDTO.Make(input);
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }

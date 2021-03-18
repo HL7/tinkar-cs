@@ -942,6 +942,18 @@
             This is builder class for creating DiGraphDTO items.
             </summary>
         </member>
+        <member name="M:Tinkar.Dto.DiGraphDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal class data to binary stream.
+            </summary>
+            <param name="output">binary output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.DiGraphDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
         <member name="T:Tinkar.Dto.DiGraphDTO`1">
             <summary>
             Directed Graph abstract base class.
@@ -969,6 +981,12 @@
             A graph can have multiple roots.
             </summary>
         </member>
+        <member name="F:Tinkar.Dto.DiGraphDTO`1.roots">
+            <summary>
+            Gets the roots of this item.
+            A graph can have multiple roots.
+            </summary>
+        </member>
         <member name="M:Tinkar.Dto.DiGraphDTO`1.Predecessors(`0)">
             <summary>
             Get predecessors of the indicated vertex.
@@ -976,18 +994,6 @@
             </summary>
             <param name="vertex"></param>
             <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
-        </member>
-        <member name="M:Tinkar.Dto.DiGraphDTO`1.Marshal(Tinkar.Dto.TinkarOutput)">
-            <summary>
-            Marshal class data to binary stream.
-            </summary>
-            <param name="output">binary output stream.</param>
-        </member>
-        <member name="M:Tinkar.Dto.DiGraphDTO`1.Marshal(Tinkar.Dto.TinkarJsonOutput)">
-            <summary>
-            Marshal all fields to Json output stream.
-            </summary>
-            <param name="output">Json output stream.</param>
         </member>
         <member name="T:Tinkar.Dto.DiGraphVertexDTO">
             <summary>
