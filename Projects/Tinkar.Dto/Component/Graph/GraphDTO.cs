@@ -18,11 +18,8 @@ namespace Tinkar.Dto
         /// </summary>
         public sealed class Builder : GraphDTO<GraphVertexDTO>.Builder<Builder, GraphVertexDTO.Builder>
         {
-            public GraphDTO Create()
-            {
-                List<GraphVertexDTO> vertexMap = new List<GraphVertexDTO>();
-                return new GraphDTO(vertexMap.ToImmutableList());
-            }
+            public GraphDTO Create() =>
+                new GraphDTO(this.vertexMap.Select( (a) => a.Create()).ToImmutableList());
         }
 
         public GraphDTO(ImmutableList<GraphVertexDTO> vertexMap) : base(vertexMap)
@@ -51,10 +48,21 @@ namespace Tinkar.Dto
 
             public TVertexBuilder AppendVertex()
             {
-                TVertexBuilder retVal = new TVertexBuilder();
-                retVal.VertexIndex = vertexMap.Count;
+                TVertexBuilder retVal = new TVertexBuilder()
+                    .SetVertexIndex(vertexMap.Count)
+                    ;
                 vertexMap.Add(retVal);
                 return retVal;
+            }
+
+            public TVertexBuilder Vertex(Guid vertexId)
+            {
+                foreach (TVertexBuilder bldr in this.vertexMap)
+                {
+                    if (bldr.VertexId.Uuid == vertexId)
+                        return bldr;
+                }
+                throw new Exception($"Vertex '{vertexId}' not found");
             }
 
             public TVertexBuilder AppendVertex(Guid vertexId, ConceptDTO meaning)

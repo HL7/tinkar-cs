@@ -29,6 +29,12 @@ namespace Tinkar.Dto
         {
             List<Int32> predecessors = new List<int>();
 
+            public TBuilder ClearPredecessors()
+            {
+                this.predecessors.Clear();
+                return (TBuilder)this;
+            }
+
             public TBuilder AppendPredecessors(params TBuilder[] values)
             {
                 this.predecessors.AddRange(values.Select((a) => a.VertexIndex));
@@ -40,12 +46,12 @@ namespace Tinkar.Dto
                 ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 propBldr.AddRange(this.properties);
 
-                return new DiGraphVertexDTO(this.vertexId,
+                return new DiGraphVertexDTO(this.VertexId,
                     this.VertexIndex,
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
                     this.predecessors.ToImmutableList(),
-                    this.successorList.ToImmutableList());
+                    this.successors.ToImmutableList());
             }
         }
 
@@ -65,6 +71,71 @@ namespace Tinkar.Dto
             this.Predecessors = predecessors;
         }
 
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
+        public override void Marshal(TinkarOutput output)
+        {
+            base.Marshal(output);
+            output.WriteInt32(this.Predecessors.Count);
+            foreach (Int32 predecessor in this.Predecessors)
+                output.WriteInt32(predecessor);
+        }
+
+        /// <summary>
+        /// Create Vertex from binary input stream.
+        /// </summary>
+        /// <param name="input">input</param>
+        /// <returns>new Vertex item</returns>
+        public new static DiGraphVertexDTO Make(TinkarInput input)
+        {
+            Int32[] ReadInts()
+            {
+                Int32 count = input.GetInt32();
+                Int32[] values = new int[count];
+                for (Int32 i = 0; i < count; i++)
+                    values[i] = input.GetInt32();
+                return values;
+            }
+
+            Guid vertexUuid = input.GetUuid();
+            int vertexIndex = input.GetInt32();
+            IPublicId meaningId = input.GetPublicId();
+
+            int propertyCount = input.GetInt32();
+            ImmutableDictionary<IConcept, Object>.Builder properties =
+                ImmutableDictionary<IConcept, object>.Empty.ToBuilder();
+
+            for (int i = 0; i < propertyCount; i++)
+            {
+                ConceptDTO conceptKey = new ConceptDTO(input.GetPublicId());
+                Object obj = input.GetField();
+                properties.Add(conceptKey, obj);
+            }
+
+            Int32[] successors = ReadInts();
+            Int32[] predecessors = ReadInts();
+            return new DiGraphVertexDTO(new VertexId(vertexUuid),
+                vertexIndex,
+                new ConceptDTO(meaningId),
+                properties.ToImmutable(),
+                predecessors.ToImmutableList(),
+                successors.ToImmutableList());
+        }
+
+        public override bool IsEquivalent(Object o)
+        {
+            DiGraphVertexDTO other = o as DiGraphVertexDTO;
+            if (other == null)
+                return false;
+            if (base.IsEquivalent(o) == false)
+                return false;
+            if (FieldCompare.CompareSequence(this.Predecessors, other.Predecessors) != 0)
+                return false;
+            return true;
+        }
+
         public override Int32 CompareTo(Object o)
         {
             DiGraphVertexDTO other = o as DiGraphVertexDTO;
@@ -78,19 +149,9 @@ namespace Tinkar.Dto
             cmpVal = FieldCompare.CompareSequence(this.Predecessors, other.Predecessors);
             if (cmpVal != 0)
                 return cmpVal;
+
             return 0;
         }
 
-        /// <summary>
-        /// Marshal class data to binary stream.
-        /// </summary>
-        /// <param name="output">binary output stream.</param>
-        public override void Marshal(TinkarOutput output)
-        {
-            output.WriteInt32(this.Predecessors.Count);
-            foreach (Int32 predecessor in this.Predecessors)
-                output.WriteInt32(predecessor);
-            base.Marshal(output);
-        }
     }
 }

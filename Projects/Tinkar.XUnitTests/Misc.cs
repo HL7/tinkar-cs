@@ -191,9 +191,21 @@ namespace Tinkar.XUnitTests
             );
 
         public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);
-        public static VertexDTO CreateVertexDTO()
+
+        public static VertexDTO CreateVertexDTO() => CreateVertexDTOBuilder().Create();
+
+        public static VertexDTO.Builder  CreateVertexDTOBuilder()
         {
-            VertexDTO.Builder bldr = new VertexDTO.Builder(123)
+            VertexDTO.Builder bldr = new VertexDTO.Builder().SetVertexIndex(123);
+            SetVertexDTO(bldr);
+            return bldr;
+        }
+
+        public static void SetVertexDTO<TBuilder>(TBuilder bldr)
+             where TBuilder : VertexDTO.Builder<TBuilder>
+        {
+            bldr
+                .SetVertexIndex(123)
                 .SetMeaning(new ConceptDTO(PublicIdH))
                 .SetVertexId(Misc.g1)
                 .AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1)
@@ -202,34 +214,95 @@ namespace Tinkar.XUnitTests
                 .AppendProperty(new ConceptDTO(GID(0x4)), true)
                 .AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1))
                 ;
-
-            return bldr.Create();
         }
 
-        //public static IEnumerable<VertexDTO> CreateVertexMap()
-        //{
-        //    ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-        //    pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
 
-        //    ImmutableDictionary<IConcept, Object>.Builder pb2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-        //    pb2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
 
-        //    ImmutableDictionary<IConcept, Object>.Builder pb3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-        //    pb3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
+        public static GraphVertexDTO CreateGraphVertexDTO() => CreateGraphVertexDTOBuilder().Create();
 
-        //    ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-        //    pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
+        public static GraphVertexDTO.Builder CreateGraphVertexDTOBuilder()
+        {
+            GraphVertexDTO.Builder bldr = new GraphVertexDTO.Builder();
+            SetGraphVertexDTO(bldr);
+            return bldr;
+        }
 
-        //    return new VertexDTO[]
-        //    {
-        //        new VertexDTO(g1, 101, new ConceptDTO(PublicIdG),pb1.ToImmutable()),
-        //        new VertexDTO(g2, 102, new ConceptDTO(PublicIdH), pb2.ToImmutable()),
-        //        new VertexDTO(g3, 103, new ConceptDTO(PublicIdI), pb3.ToImmutable()),
-        //        new VertexDTO(g4, 104, new ConceptDTO(PublicIdJ), pb4.ToImmutable())
-        //    };
-        //}
+        public static void SetGraphVertexDTO<TBuilder>(TBuilder bldr)
+             where TBuilder : GraphVertexDTO.Builder<TBuilder>, new()
+        {
+            TBuilder successor1 = new TBuilder()
+                .SetVertexIndex(456)
+                .SetMeaning(new ConceptDTO(PublicIdG))
+                .SetVertexId(Misc.g2)
+                ;
 
-        public static GraphDTO CreateGraphDTO()
+            TBuilder successor2 = new TBuilder()
+                .SetVertexIndex(789)
+                .SetMeaning(new ConceptDTO(PublicIdJ))
+                .SetVertexId(Misc.g3)
+                ;
+
+            SetVertexDTO(bldr);
+            bldr
+                .AppendSuccessors(successor1, successor2)
+                ;
+        }
+
+
+
+        public static DiTreeVertexDTO CreateDiTreeVertexDTO() => CreateDiTreeVertexDTOBuilder().Create();
+
+        public static DiTreeVertexDTO.Builder CreateDiTreeVertexDTOBuilder()
+        {
+            DiTreeVertexDTO.Builder bldr = new DiTreeVertexDTO.Builder();
+            SetDiTreeVertexDTO(bldr);
+            return bldr;
+        }
+
+        public static void SetDiTreeVertexDTO<TBuilder>(TBuilder bldr)
+             where TBuilder : DiTreeVertexDTO.Builder<TBuilder>, new()
+        {
+            TBuilder predecessor = new TBuilder()
+                .SetVertexIndex(135)
+                .SetMeaning(new ConceptDTO(PublicIdH))
+                .SetVertexId(Misc.h2)
+                ;
+
+            SetGraphVertexDTO(bldr);
+            bldr
+                .SetPredecessor(predecessor)
+                ;
+        }
+
+        public static DiGraphVertexDTO CreateDiGraphVertexDTO() => CreateDiGraphVertexDTOBuilder().Create();
+
+        public static DiGraphVertexDTO.Builder CreateDiGraphVertexDTOBuilder()
+        {
+            DiGraphVertexDTO.Builder bldr = new DiGraphVertexDTO.Builder();
+            SetDiGraphVertexDTO(bldr);
+            return bldr;
+        }
+
+        public static void SetDiGraphVertexDTO<TBuilder>(TBuilder bldr)
+             where TBuilder : DiGraphVertexDTO.Builder<TBuilder>, new()
+        {
+            TBuilder predecessor = new TBuilder()
+                .SetVertexIndex(135)
+                .SetMeaning(new ConceptDTO(PublicIdH))
+                .SetVertexId(Misc.h2)
+                ;
+
+            SetGraphVertexDTO(bldr);
+            bldr
+                .AppendPredecessors(predecessor)
+                ;
+        }
+
+
+
+        public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder().Create();
+
+        public static GraphDTO.Builder CreateGraphDTOBuilder()
         {
             GraphDTO.Builder bldr = new GraphDTO.Builder();
             bldr.AppendVertex(g1, new ConceptDTO(PublicIdG))
@@ -245,12 +318,11 @@ namespace Tinkar.XUnitTests
                 .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
                 ;
 
-            return bldr.Create();
-            //ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder smBuilder = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //smBuilder.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-            //smBuilder.Add(102, new Int32[] { 3 }.ToImmutableList());
-            //return new GraphDTO(CreateVertexMap(), smBuilder.ToImmutable());
+            bldr.Vertex(g1).AppendSuccessors(bldr.Vertex(g2), bldr.Vertex(g3));
+
+            return bldr;
         }
+
 
         public static DiGraphDTO CreateDiGraphDTO()
         {
@@ -277,39 +349,6 @@ namespace Tinkar.XUnitTests
             var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
             vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
             vertex4.AppendPredecessors(vertex3);
-
-            vertex1.AppendSuccessors(vertex2);
-            vertex2.AppendSuccessors(vertex3);
-            vertex3.AppendSuccessors(vertex4);
-
-            return bldr.Create();
-        }
-
-        public static DiTreeDTO CreateDiTreeDTO()
-        {
-            DiTreeDTO.Builder bldr = new DiTreeDTO.Builder();
-            bldr.SetVertexId(Misc.g1);
-            bldr.SetMeaning(new ConceptDTO(PublicIdH));
-            bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
-            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
-            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
-            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
-
-            DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
-            vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
-
-            DiTreeVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
-            vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
-            vertex2.SetPredecessor(vertex1);
-
-            var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
-            vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
-            vertex3.SetPredecessor(vertex2);
-
-            var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
-            vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
-            vertex4.SetPredecessor(vertex3);
 
             vertex1.AppendSuccessors(vertex2);
             vertex2.AppendSuccessors(vertex3);

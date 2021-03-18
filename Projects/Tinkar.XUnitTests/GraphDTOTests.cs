@@ -47,169 +47,22 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void GraphDTOIsEquivalentTest()
+        public void GraphDTOIsEqTest()
         {
-            throw new NotImplementedException();
-            //    {
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO();
-            //        Assert.True(a.IsEquivalent(b));
-            //    }
+            {
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO b = Misc.CreateGraphDTO();
+                Assert.True(a.IsEquivalent(b));
+                Assert.True(a.CompareTo(b) == 0);
+            }
 
-            //    {
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
-
-            //        ImmutableList<VertexDTO>.Builder bldr = ImmutableList<VertexDTO>.Empty.ToBuilder();
-            //        bldr.AddRange(
-            //                new VertexDTO(
-            //                    Misc.g1,
-            //                    101,
-            //                    new ConceptDTO(Misc.PublicIdG),
-            //                    pBuilder1.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g2,
-            //                    102,
-            //                    new ConceptDTO(Misc.PublicIdH),
-            //                    pBuilder2.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g3,
-            //                    103,
-            //                    new ConceptDTO(Misc.PublicIdI),
-            //                    pBuilder3.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g4,
-            //                    104,
-            //                    new ConceptDTO(Misc.j1),
-            //                    pBuilder4.ToImmutable()
-            //                )
-            //            );
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            VertexMap = new VertexDTO[]
-            //            {
-            //            }.ToImmutableList()
-            //        };
-            //        Assert.True(a.IsEquivalent(b));
-            //    }
-
-            //    {
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
-
-            //        ImmutableDictionary<IConcept, Object>.Builder pBuilder4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pBuilder4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            VertexMap = new VertexDTO[]
-            //            {
-            //                new VertexDTO(
-            //                    Misc.g1,
-            //                    101,
-            //                    new ConceptDTO(Misc.PublicIdG),
-            //                    pBuilder1.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g2,
-            //                    102,
-            //                    new ConceptDTO(Misc.PublicIdH),
-            //                    pBuilder2.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g3,
-            //                    103,
-            //                    new ConceptDTO(Misc.PublicIdI),
-            //                    pBuilder3.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g4,
-            //                    104,
-            //                    new ConceptDTO(Misc.k1),
-            //                    pBuilder4.ToImmutable()
-            //                )
-            //            }.ToImmutableList()
-            //        };
-            //        Assert.False(a.IsEquivalent(b));
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-            //        items.Add(102, new Int32[] { 3 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.True(a.IsEquivalent(b));
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 3 }.ToImmutableList());
-            //        items.Add(102, new Int32[] { 3 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.False(a.IsEquivalent(b));
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.False(a.IsEquivalent(b));
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-            //        items.Add(103, new Int32[] { 3 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.False(a.IsEquivalent(b));
-            //    }
+            {
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO.Builder b = Misc.CreateGraphDTOBuilder();
+                b.Vertex(Misc.g4).SetMeaning(new ConceptDTO(Misc.k1));
+                Assert.False(a.IsEquivalent(b.Create()));
+                Assert.False(a.CompareTo(b.Create()) == 0);
+            }
         }
 
 
@@ -217,143 +70,91 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void GraphDTOCompareToTest()
         {
-            throw new NotImplementedException();
-            //    {
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO();
-            //        Assert.True(a.CompareTo(b) == 0);
-            //    }
+            {
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO b = Misc.CreateGraphDTO();
+                Assert.True(a.CompareTo(b) == 0);
+            }
 
-            //    {
-            //        ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+            {
+                GraphDTO Local()
+                {
+                    GraphDTO.Builder bldr = new GraphDTO.Builder();
+                    bldr.AppendVertex(Misc.g1, new ConceptDTO(Misc.PublicIdG))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
+                        ;
+                    bldr.AppendVertex(Misc.g2, new ConceptDTO(Misc.PublicIdH))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
+                        ;
+                    bldr.AppendVertex(Misc.g3, new ConceptDTO(Misc.PublicIdI))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
+                        ;
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
+                    bldr.Vertex(Misc.g1).AppendSuccessors(bldr.Vertex(Misc.g2), bldr.Vertex(Misc.g3));
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
+                    return bldr.Create();
+                }
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO b = Local();
 
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            VertexMap = new VertexDTO[]
-            //            {
-            //                new VertexDTO(Misc.g1, 101, new ConceptDTO(Misc.PublicIdG),pb1.ToImmutable()),
-            //                new VertexDTO(Misc.g2, 102, new ConceptDTO(Misc.PublicIdH), pb2.ToImmutable()),
-            //                new VertexDTO(Misc.g3, 103, new ConceptDTO(Misc.PublicIdI), pb3.ToImmutable()),
-            //                new VertexDTO(Misc.g4, 104, new ConceptDTO(Misc.j1), pb4.ToImmutable())
-            //            }.ToImmutableList()
-            //        };
-            //        Assert.True(a.CompareTo(b) != 0);
-            //    }
+                Assert.True(a.CompareTo(b) != 0);
+            }
 
-            //    {
-            //        ImmutableDictionary<IConcept, Object>.Builder pb1 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb1.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+            {
+                GraphDTO Local()
+                {
+                    GraphDTO.Builder bldr = new GraphDTO.Builder();
+                    bldr.AppendVertex(Misc.g1, new ConceptDTO(Misc.PublicIdG))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
+                        ;
+                    bldr.AppendVertex(Misc.g2, new ConceptDTO(Misc.PublicIdH))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
+                        ;
+                    bldr.AppendVertex(Misc.g3, new ConceptDTO(Misc.PublicIdI))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
+                        ;
+                    bldr.AppendVertex(Misc.g4, new ConceptDTO(Misc.PublicIdK))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
+                        ;
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb2 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb2.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)2);
+                    bldr.Vertex(Misc.g1).AppendSuccessors(bldr.Vertex(Misc.g2), bldr.Vertex(Misc.g3));
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb3 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb3.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)3);
+                    return bldr.Create();
+                }
 
-            //        ImmutableDictionary<IConcept, Object>.Builder pb4 = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
-            //        pb4.Add(new ConceptDTO(Misc.GID(0x1)), (Int32)4);
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO b = Local();
+                Assert.True(a.CompareTo(b) != 0);
+            }
 
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            VertexMap = new VertexDTO[]
-            //            {
-            //                new VertexDTO(
-            //                    Misc.g1,
-            //                    101,
-            //                    new ConceptDTO(Misc.PublicIdG),
-            //                    pb1.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g2,
-            //                    102,
-            //                    new ConceptDTO(Misc.PublicIdH),
-            //                    pb2.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g3,
-            //                    103,
-            //                    new ConceptDTO(Misc.PublicIdI),
-            //                    pb3.ToImmutable()
-            //                ),
-            //                new VertexDTO(
-            //                    Misc.g4,
-            //                    104,
-            //                    new ConceptDTO(Misc.k1),
-            //                    pb4.ToImmutable()
-            //                )
-            //            }.ToImmutableList()
-            //        };
-            //        Assert.True(a.CompareTo(b) != 0);
-            //    }
+            {
+                GraphDTO Local()
+                {
+                    GraphDTO.Builder bldr = new GraphDTO.Builder();
+                    bldr.AppendVertex(Misc.g1, new ConceptDTO(Misc.PublicIdG))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
+                        ;
+                    bldr.AppendVertex(Misc.g2, new ConceptDTO(Misc.PublicIdH))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
+                        ;
+                    bldr.AppendVertex(Misc.g3, new ConceptDTO(Misc.PublicIdI))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
+                        ;
+                    bldr.AppendVertex(Misc.g4, new ConceptDTO(Misc.PublicIdK))
+                        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
+                        ;
 
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-            //        items.Add(102, new Int32[] { 3 }.ToImmutableList());
+                    bldr.Vertex(Misc.g1).AppendSuccessors(bldr.Vertex(Misc.g2));
 
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.True(a.CompareTo(b) == 0);
-            //    }
+                    return bldr.Create();
+                }
 
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 3 }.ToImmutableList());
-            //        items.Add(102, new Int32[] { 3 }.ToImmutableList());
 
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.True(a.CompareTo(b) != 0);
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.True(a.CompareTo(b) != 0);
-            //    }
-
-            //    {
-            //        ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder items = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
-            //        items.Add(101, new Int32[] { 1, 2 }.ToImmutableList());
-            //        items.Add(103, new Int32[] { 3 }.ToImmutableList());
-
-            //        GraphDTO a = Misc.CreateGraphDTO();
-            //        GraphDTO b = Misc.CreateGraphDTO()
-            //        with
-            //        {
-            //            SuccessorMap = items.ToImmutable()
-            //        };
-            //        Assert.True(a.CompareTo(b) != 0);
-            //    }
+                GraphDTO a = Misc.CreateGraphDTO();
+                GraphDTO b = Local();
+                Assert.True(a.CompareTo(b) != 0);
+            }
         }
 
         [DoNotParallelize]

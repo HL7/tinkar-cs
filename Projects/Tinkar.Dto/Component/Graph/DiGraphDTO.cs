@@ -57,9 +57,15 @@ namespace Tinkar.Dto
         {
             protected List<TVertexBuilder> roots { get; } = new List<TVertexBuilder>();
 
-            public TBuilder AppendRoot(TVertexBuilder root)
+            public TBuilder ClearRoot()
             {
-                this.roots.Add(root);
+                this.roots.Clear();
+                return (TBuilder)this;
+            }
+
+            public TBuilder AppendRoots(params TVertexBuilder[] roots)
+            {
+                this.roots.AddRange(roots);
                 return (TBuilder)this;
             }
         }

@@ -22,11 +22,11 @@ namespace Tinkar.Dto
                 ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 propBldr.AddRange(this.properties);
 
-                return new GraphVertexDTO(this.vertexId,
+                return new GraphVertexDTO(this.VertexId,
                     this.VertexIndex,
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
-                    this.successorList.ToImmutableList());
+                    this.successors.ToImmutableList());
             }
         }
 
@@ -38,13 +38,19 @@ namespace Tinkar.Dto
         public abstract new class Builder<TBuilder> : VertexDTO.Builder<TBuilder>
             where TBuilder : Builder<TBuilder>
         {
-            protected List<Int32> successorList = new List<int>();
+            protected List<Int32> successors = new List<int>();
 
-            public Int32 SuccessorCount => this.successorList.Count();
+            public Int32 SuccessorCount => this.successors.Count();
+
+            public TBuilder ClearSuccessors()
+            {
+                this.successors.Clear();
+                return (TBuilder)this;
+            }
 
             public TBuilder AppendSuccessors(params VertexDTO.Builder<TBuilder>[] children)
             {
-                successorList.AddRange(children.Select((a) => a.VertexIndex));
+                successors.AddRange(children.Select((a) => a.VertexIndex));
                 return (TBuilder)this;
             }
         }
@@ -63,6 +69,63 @@ namespace Tinkar.Dto
         {
             this.Successors = successors;
         }
+
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
+        public override void Marshal(TinkarOutput output)
+        {
+            base.Marshal(output);
+            output.WriteInt32(this.Successors.Count);
+            for (Int32 i = 0; i < this.Successors.Count; i++)
+                output.WriteInt32(this.Successors[i]);
+        }
+
+        /// <summary>
+        /// Create Vertex from binary input stream.
+        /// </summary>
+        /// <param name="input">input</param>
+        /// <returns>new Vertex item</returns>
+        public new static GraphVertexDTO Make(TinkarInput input)
+        {
+            Guid vertexUuid = input.GetUuid();
+            int vertexIndex = input.GetInt32();
+            IPublicId meaningId = input.GetPublicId();
+
+            int propertyCount = input.GetInt32();
+            ImmutableDictionary<IConcept, Object>.Builder properties =
+                ImmutableDictionary<IConcept, object>.Empty.ToBuilder();
+
+            for (int i = 0; i < propertyCount; i++)
+            {
+                ConceptDTO conceptKey = new ConceptDTO(input.GetPublicId());
+                Object obj = input.GetField();
+                properties.Add(conceptKey, obj);
+            }
+            Int32 successorCount = input.GetInt32();
+            Int32[] successors = new int[successorCount];
+            for (Int32 i = 0; i < successorCount; i++)
+                successors[i] = input.GetInt32();
+            return new GraphVertexDTO(new VertexId(vertexUuid),
+                vertexIndex,
+                new ConceptDTO(meaningId),
+                properties.ToImmutable(),
+                successors.ToImmutableList());
+        }
+
+        public override bool IsEquivalent(Object o)
+        {
+            GraphVertexDTO other = o as GraphVertexDTO;
+            if (other == null)
+                return false;
+            if (base.IsEquivalent(o) == false)
+                return false;
+            if (FieldCompare.CompareSequence(this.Successors, other.Successors) != 0)
+                return false;
+            return true;
+        }
+
 
         public override Int32 CompareTo(Object o)
         {

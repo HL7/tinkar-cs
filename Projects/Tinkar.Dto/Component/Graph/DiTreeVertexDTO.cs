@@ -40,12 +40,12 @@ namespace Tinkar.Dto
                 ImmutableDictionary<IConcept, Object>.Builder propBldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 propBldr.AddRange(this.properties);
 
-                return new DiTreeVertexDTO(this.vertexId,
+                return new DiTreeVertexDTO(this.VertexId,
                     this.VertexIndex,
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
                     this.predecessor.VertexIndex,
-                    this.successorList.ToImmutableList());
+                    this.successors.ToImmutableList());
             }
         }
 
@@ -60,10 +60,66 @@ namespace Tinkar.Dto
             ConceptDTO meaning,
             ImmutableDictionary<IConcept, Object> properties,
             Int32 predecessor,
-            ImmutableList<Int32> successors) : 
+            ImmutableList<Int32> successors) :
             base(vertexId, vertexIndex, meaning, properties, successors)
         {
             this.Predecessor = predecessor;
+        }
+
+        /// <summary>
+        /// Marshal class data to binary stream.
+        /// </summary>
+        /// <param name="output">binary output stream.</param>
+        public override void Marshal(TinkarOutput output)
+        {
+            base.Marshal(output);
+            output.WriteInt32(this.Predecessor);
+        }
+
+        /// <summary>
+        /// Create Vertex from binary input stream.
+        /// </summary>
+        /// <param name="input">input</param>
+        /// <returns>new Vertex item</returns>
+        public new static DiTreeVertexDTO Make(TinkarInput input)
+        {
+            Guid vertexUuid = input.GetUuid();
+            int vertexIndex = input.GetInt32();
+            IPublicId meaningId = input.GetPublicId();
+
+            int propertyCount = input.GetInt32();
+            ImmutableDictionary<IConcept, Object>.Builder properties =
+                ImmutableDictionary<IConcept, object>.Empty.ToBuilder();
+
+            for (int i = 0; i < propertyCount; i++)
+            {
+                ConceptDTO conceptKey = new ConceptDTO(input.GetPublicId());
+                Object obj = input.GetField();
+                properties.Add(conceptKey, obj);
+            }
+            Int32 successorCount = input.GetInt32();
+            Int32[] successors = new int[successorCount];
+            for (Int32 i = 0; i < successorCount; i++)
+                successors[i] = input.GetInt32();
+            Int32 predecessor = input.GetInt32();
+            return new DiTreeVertexDTO(new VertexId(vertexUuid),
+                vertexIndex,
+                new ConceptDTO(meaningId),
+                properties.ToImmutable(),
+                predecessor,
+                successors.ToImmutableList());
+        }
+
+        public override bool IsEquivalent(Object o)
+        {
+            DiTreeVertexDTO other = o as DiTreeVertexDTO;
+            if (other == null)
+                return false;
+            if (base.IsEquivalent(o) == false)
+                return false;
+            if (this.Predecessor != other.Predecessor)
+                return false;
+            return true;
         }
 
         public override Int32 CompareTo(Object o)
@@ -80,16 +136,6 @@ namespace Tinkar.Dto
             if (cmpVal != 0)
                 return cmpVal;
             return 0;
-        }
-
-        /// <summary>
-        /// Marshal class data to binary stream.
-        /// </summary>
-        /// <param name="output">binary output stream.</param>
-        public override void Marshal(TinkarOutput output)
-        {
-            base.Marshal(output);
-            output.WriteInt32(this.Predecessor);
         }
     }
 }

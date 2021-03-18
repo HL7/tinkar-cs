@@ -19,14 +19,13 @@ namespace Tinkar.Dto
         /// </summary>
         public class Builder : Builder<Builder>
         {
-            public Builder(Int32 vertexIndex)
+            public Builder()
             {
-                this.VertexIndex = vertexIndex;
             }
 
             public VertexDTO Create()
             {
-                return new VertexDTO(this.vertexId,
+                return new VertexDTO(this.VertexId,
                                     this.VertexIndex,
                                     this.meaning,
                                     this.properties.ToImmutableDictionary());
@@ -42,13 +41,19 @@ namespace Tinkar.Dto
         where TBuilder : Builder<TBuilder>
         {
             protected List<KeyValuePair<IConcept, Object>> properties = new List<KeyValuePair<IConcept, Object>>();
-            protected VertexId vertexId;
             protected ConceptDTO meaning;
 
             /// <summary>
             /// Vertex Index. This should only be set by class that creates Builder().
             /// </summary>
-            public Int32 VertexIndex { get; set; }
+            public Int32 VertexIndex { get; protected set; }
+            public VertexId VertexId { get; protected set; }
+
+            public TBuilder SetVertexIndex(Int32 value)
+            {
+                this.VertexIndex = value;
+                return (TBuilder)this;
+            }
 
             public TBuilder SetMeaning(ConceptDTO meaning)
             {
@@ -58,13 +63,19 @@ namespace Tinkar.Dto
 
             public TBuilder SetVertexId(long vertexIdMsb, long vertexIdLsb)
             {
-                this.vertexId = new VertexId(vertexIdMsb, vertexIdLsb);
+                this.VertexId = new VertexId(vertexIdMsb, vertexIdLsb);
                 return (TBuilder)this;
             }
 
             public TBuilder SetVertexId(Guid vertexId)
             {
-                this.vertexId = new VertexId(vertexId);
+                this.VertexId = new VertexId(vertexId);
+                return (TBuilder)this;
+            }
+
+            public TBuilder ClearProperties()
+            {
+                this.properties.Clear();
                 return (TBuilder)this;
             }
 
@@ -241,9 +252,7 @@ namespace Tinkar.Dto
             return new VertexDTO(new VertexId(vertexUuid), vertexIndex, new ConceptDTO(meaningId), properties.ToImmutable());
         }
 
-        public bool IsEquivalent(Object other) => this.IsEquivalent(other as IVertex);
-
-        public bool IsEquivalent(IVertex other)
+        public virtual bool IsEquivalent(Object o)
         {
             Int32 Comparer(Object a, Object b)
             {
@@ -251,6 +260,10 @@ namespace Tinkar.Dto
                 IComparable bCmp = (IComparable)b;
                 return aCmp.CompareTo(bCmp);
             }
+
+            VertexDTO other = o as VertexDTO;
+            if (other == null)
+                return this.GetType().FullName.CompareTo(o.GetType().FullName) == 0;
 
             if (this.VertexId.CompareTo(other.VertexId) != 0)
                 return false;

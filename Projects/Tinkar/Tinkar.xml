@@ -1017,6 +1017,13 @@
             </summary>
             <param name="output">binary output stream.</param>
         </member>
+        <member name="M:Tinkar.Dto.DiGraphVertexDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Create Vertex from binary input stream.
+            </summary>
+            <param name="input">input</param>
+            <returns>new Vertex item</returns>
+        </member>
         <member name="T:Tinkar.Dto.DiTreeDTO">
             <summary>
             Instantiable sealed builder class.
@@ -1071,6 +1078,13 @@
             Marshal class data to binary stream.
             </summary>
             <param name="output">binary output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.DiTreeVertexDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Create Vertex from binary input stream.
+            </summary>
+            <param name="input">input</param>
+            <returns>new Vertex item</returns>
         </member>
         <member name="T:Tinkar.Dto.GraphDTO">
             <summary>
@@ -1132,6 +1146,19 @@
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.GraphVertexDTO"/> class.
             </summary>
+        </member>
+        <member name="M:Tinkar.Dto.GraphVertexDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal class data to binary stream.
+            </summary>
+            <param name="output">binary output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.GraphVertexDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Create Vertex from binary input stream.
+            </summary>
+            <param name="input">input</param>
+            <returns>new Vertex item</returns>
         </member>
         <member name="T:Tinkar.Dto.VertexDTO">
             <summary>
