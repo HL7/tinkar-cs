@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -30,8 +31,25 @@ namespace Tinkar.XUnitTests
 
             {
                 ComponentDTO a = new ComponentDTO(Misc.PublicIdG);
-                ComponentDTO b = new ComponentDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4));
+                ComponentDTO b = new ComponentDTO(new PublicId(Misc.other));
                 Assert.False(a.IsEquivalent(b));
+            }
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void ComponentDTOCompareToTest()
+        {
+            {
+                ComponentDTO a = new ComponentDTO(Misc.PublicIdG);
+                ComponentDTO b = new ComponentDTO(Misc.PublicIdG);
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                ComponentDTO a = new ComponentDTO(Misc.PublicIdG);
+                ComponentDTO b = new ComponentDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4));
+                Assert.False(a.CompareTo(b) != 0);
             }
         }
     }

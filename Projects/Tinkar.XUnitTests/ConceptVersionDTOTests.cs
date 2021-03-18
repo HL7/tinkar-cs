@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -20,7 +21,7 @@ namespace Tinkar.XUnitTests
 
             ConceptVersionDTO dtoStart = Misc.CreateConceptVersionDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Assert.True(dtoStart.StampDTO.IsEquivalent(Misc.CreateStampDTO));
+            Assert.True(dtoStart.StampDTO.CompareTo(Misc.CreateStampDTO) == 0);
         }
 
         [DoNotParallelize]
@@ -38,9 +39,30 @@ namespace Tinkar.XUnitTests
                 ConceptVersionDTO a = Misc.CreateConceptVersionDTO;
 
                 ConceptVersionDTO b = new ConceptVersionDTO(
-                    new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4),
+                    new PublicId(Misc.other),
                     Misc.CreateStampDTO);
                 Assert.False(a.IsEquivalent(b));
+            }
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void ConceptVersionDTOCompareToTest()
+        {
+            DateTime time = new DateTime(2020, 12, 31);
+            {
+                ConceptVersionDTO a = Misc.CreateConceptVersionDTO;
+                ConceptVersionDTO b = Misc.CreateConceptVersionDTO;
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                ConceptVersionDTO a = Misc.CreateConceptVersionDTO;
+
+                ConceptVersionDTO b = new ConceptVersionDTO(
+                    new PublicId(Misc.g1, Misc.g3, Misc.g4),
+                    Misc.CreateStampDTO);
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -62,7 +84,7 @@ namespace Tinkar.XUnitTests
             {
                 ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input,
                     new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4 ));
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
 
@@ -83,7 +105,7 @@ namespace Tinkar.XUnitTests
             TinkarJsonInput input = new TinkarJsonInput(ms);
             ConceptVersionDTO dtoRead = ConceptVersionDTO.Make(input.ReadJsonObject(),
                 new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4));
-            Assert.True(dtoStart.IsEquivalent(dtoRead));
+            Assert.True(dtoStart.CompareTo(dtoRead) == 0);
         }
         [DoNotParallelize]
         [Fact]
@@ -103,7 +125,7 @@ namespace Tinkar.XUnitTests
                 ConceptVersionDTO dtoEnd = ConceptVersionDTO.Make(
                     input.ReadJsonObject(),
                     dtoStart.PublicId);
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

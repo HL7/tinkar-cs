@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {

@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace Tinkar
 {
-    public interface IPublicId
+    public interface IPublicId : IComparable, IEquivalent
     {
+        ITinkarId this[Int32 index] { get; }
+
         Guid[] AsUuidArray { get; }
         IEnumerable<Guid> AsUuidList { get; }
-        int UuidCount { get; }
-        Int32 CompareTo(IPublicId publicId);
+        Int32 UuidCount { get; }
+
+        String ToUuidString();
     }
 }

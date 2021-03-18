@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tinkar.Dto;
 using Xunit;
 using Assert = Xunit.Assert;
 
@@ -36,14 +37,14 @@ namespace Tinkar.XUnitTests
         {
             {
                 MemoryStream ms = MSCreate(new byte[] { 1, 2, 3, 4 });
-                Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
+                TinkarInput ti = new TinkarInput(ms);
                 Int32 value = ti.GetInt32();
                 Assert.True(value == this.MakeInt32(1, 2, 3, 4));
             }
 
             {
                 MemoryStream ms = MSCreate(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4 });
-                Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
+                TinkarInput ti = new TinkarInput(ms);
                 Int32 value = ti.GetInt32();
                 Assert.True(value == this.MakeInt32(0xf1, 0xf2, 0xf3, 0xf4));
             }
@@ -55,7 +56,7 @@ namespace Tinkar.XUnitTests
         {
             {
                 MemoryStream ms = MSCreate(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
-                Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
+                TinkarInput ti = new TinkarInput(ms);
                 Int64 value = ti.GetLong();
                 Int64 compare = MakeInt64(1, 2, 3, 4, 5, 6, 7, 8);
                 Assert.True(value == compare);
@@ -63,7 +64,7 @@ namespace Tinkar.XUnitTests
 
             {
                 MemoryStream ms = MSCreate(new byte[] { 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8 });
-                Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
+                TinkarInput ti = new TinkarInput(ms);
                 Int64 value = ti.GetLong();
                 Int64 compare = MakeInt64(0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8);
                 Assert.True(value == compare);
@@ -121,35 +122,6 @@ namespace Tinkar.XUnitTests
             Test(-1);
             Test(100);
             Test((Int32)0x7fe1deab);
-        }
-
-        [DoNotParallelize]
-        [Fact]
-        public void Int64Test()
-        {
-            void Test(Int64 start)
-            {
-                MemoryStream ms = MSCreate();
-                using (TinkarOutput output = new TinkarOutput(ms))
-                {
-                    output.WriteField(start);
-                }
-
-                ms.Position = 0;
-                using (TinkarInput input = new TinkarInput(ms))
-                {
-
-                    Int32 value = (Int32)input.GetField();
-                    Assert.True(start == value);
-                }
-
-            }
-
-            Test(0);
-            Test(-1);
-            Test(Int32.MinValue);
-            Test(Int32.MaxValue);
-            Test(100);
         }
 
         [DoNotParallelize]
@@ -283,7 +255,7 @@ namespace Tinkar.XUnitTests
 
             {
                 MemoryStream ms = MSCreate(lenZero);
-                Tinkar.TinkarInput ti = new Tinkar.TinkarInput(ms);
+                TinkarInput ti = new TinkarInput(ms);
                 Guid[] value = ti.GetUuids();
                 Assert.True(value.Length == 0);
             }

@@ -23,7 +23,7 @@ namespace Tinkar
     /// Tinkar base interface for all identified 'things'.
     /// </summary>
     [JavaAttribute("Component")]
-    public interface IComponent
+    public interface IComponent : IComparable, IEquivalent
     {
         /// <summary>
         /// Gets public id.

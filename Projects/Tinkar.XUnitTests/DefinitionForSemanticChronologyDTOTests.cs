@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -38,7 +39,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                    PublicId = new PublicId(Misc.other)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -48,7 +49,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
                 with
                 {
-                    ChronologySetPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4 )
+                    ChronologySetPublicId = new PublicId(Misc.other)
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -64,12 +65,62 @@ namespace Tinkar.XUnitTests
                         Misc.CreatePatternForSemanticVersionDTO
                         with
                         {
-                            PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.g4)
+                            PublicId = new PublicId(Misc.other)
                         }
                     }
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
+            }
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void PatternForSemanticChronologyDTOCompareToTest()
+        {
+            {
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO;
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                with
+                {
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                with
+                {
+                    ChronologySetPublicId = new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.i4)
+                }
+                ;
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
+                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                with
+                {
+                    Versions = new PatternForSemanticVersionDTO[]
+                    {
+                        Misc.CreatePatternForSemanticVersionDTO
+                        with
+                        {
+                            PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.h4)
+                        }
+                    }
+                }
+                ;
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -89,7 +140,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 PatternForSemanticChronologyDTO dtoRead = (PatternForSemanticChronologyDTO)input.GetField();
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -109,7 +160,7 @@ namespace Tinkar.XUnitTests
             {
                 PatternForSemanticChronologyDTO dtoEnd = PatternForSemanticChronologyDTO.Make(input.ReadJsonObject());
                 Misc.JsonDump(dtoEnd);
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -36,7 +37,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                    PublicId = new PublicId(Misc.other)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -71,6 +72,61 @@ namespace Tinkar.XUnitTests
             }
         }
 
+
+
+        [DoNotParallelize]
+        [Fact]
+        public void SemanticChronologyDTOCompareToTest()
+        {
+            {
+                SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
+                SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO;
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
+                SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
+                with
+                {
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
+                SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
+                with
+                {
+                    DefinitionForSemanticPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
+                SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
+                with
+                {
+                    ReferencedComponentPublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+            {
+                SemanticChronologyDTO a = Misc.CreateSemanticChronologyDTO;
+                SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
+                with
+                {
+                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+        }
+
+
+
+
         [DoNotParallelize]
         [Fact]
         public void SemanticChronologyDTOMarshalTest()
@@ -87,7 +143,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 SemanticChronologyDTO dtoRead = (SemanticChronologyDTO)input.GetField();
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -106,7 +162,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 SemanticChronologyDTO dtoEnd = SemanticChronologyDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

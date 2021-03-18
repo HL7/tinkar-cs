@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -37,11 +38,58 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4),
+                    new PublicId(Misc.other),
                     Misc.PublicIdH,
                     Misc.PublicIdI
                 );
                 Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    Misc.PublicIdG,
+                    new PublicId(Misc.other),
+                    Misc.PublicIdI
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    new PublicId(Misc.other)
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+        }
+
+
+
+        [DoNotParallelize]
+        [Fact]
+        public void SemanticDTOCompareToTest()
+        {
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    Misc.PublicIdI
+                );
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4),
+                    Misc.PublicIdH,
+                    Misc.PublicIdI
+                );
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -51,7 +99,7 @@ namespace Tinkar.XUnitTests
                     new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
                     Misc.PublicIdI
                 );
-                Assert.False(a.IsEquivalent(b));
+                Assert.False(a.CompareTo(b) == 0);
             }
 
             {
@@ -61,9 +109,12 @@ namespace Tinkar.XUnitTests
                     Misc.PublicIdH,
                     new PublicId(Misc.i1, Misc.i2, Misc.i3, Misc.i3)
                 );
-                Assert.False(a.IsEquivalent(b));
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
+
+
+
 
         [DoNotParallelize]
         [Fact]
@@ -81,7 +132,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 SemanticDTO dtoRead = (SemanticDTO)input.GetField();
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -100,7 +151,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 SemanticDTO dtoEnd = SemanticDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }

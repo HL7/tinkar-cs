@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -26,8 +27,20 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 ConceptDTO dtoEnd = ConceptDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void ConceptDTOConstructor()
+        {
+            String uuidString = $"[\"{Misc.g1.ToString()}\" \"{Misc.g2.ToString()}\" \"{Misc.g3.ToString()}\"]";
+            ConceptDTO dto = ConceptDTO.Make(uuidString);
+            Assert.True(dto.PublicId.UuidCount == 3);
+            Assert.True(dto.PublicId.AsUuidArray[0] == Misc.g1);
+            Assert.True(dto.PublicId.AsUuidArray[1] == Misc.g2);
+            Assert.True(dto.PublicId.AsUuidArray[2] == Misc.g3);
         }
 
         [DoNotParallelize]
@@ -50,8 +63,25 @@ namespace Tinkar.XUnitTests
 
             {
                 ConceptDTO a = Misc.CreateConceptDTO;
-                ConceptDTO b = new ConceptDTO(new PublicId(Misc.g2, Misc.g1, Misc.g3, Misc.g4 ));
+                ConceptDTO b = new ConceptDTO(new PublicId(Misc.other));
                 Assert.False(a.IsEquivalent(b));
+            }
+        }
+
+        [DoNotParallelize]
+        [Fact]
+        public void ConceptDTOCompareToTest()
+        {
+            {
+                ConceptDTO a = Misc.CreateConceptDTO;
+                ConceptDTO b = Misc.CreateConceptDTO;
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                ConceptDTO a = Misc.CreateConceptDTO;
+                ConceptDTO b = new ConceptDTO(new PublicId(Misc.g1, Misc.g3, Misc.g4));
+                Assert.False(a.CompareTo(b) == 0);
             }
         }
 
@@ -71,7 +101,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 ConceptDTO dtoRead = (ConceptDTO)input.GetField();
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
     }

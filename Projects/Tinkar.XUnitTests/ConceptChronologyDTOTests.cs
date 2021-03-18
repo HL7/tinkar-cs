@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
 using Assert = Xunit.Assert;
+using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
@@ -39,7 +40,7 @@ namespace Tinkar.XUnitTests
                 ConceptChronologyDTO b = Misc.CreateConceptChronologyDTO
                 with
                 {
-                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                    PublicId = new PublicId(Misc.other)
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -52,7 +53,7 @@ namespace Tinkar.XUnitTests
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     Misc.PublicIdG,
-                    new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
+                    new PublicId(Misc.other),
                     Misc.ConceptVersionsBase(Misc.PublicIdG)
                 );
                 Assert.False(a.IsEquivalent(b));
@@ -76,6 +77,62 @@ namespace Tinkar.XUnitTests
             }
         }
 
+
+
+        [DoNotParallelize]
+        [Fact]
+        public void ConceptChronologyDTOCompareToTest()
+        {
+            {
+                ConceptChronologyDTO a = Misc.CreateConceptChronologyDTO;
+                ConceptChronologyDTO b = Misc.CreateConceptChronologyDTO;
+                Assert.True(a.CompareTo(b) == 0);
+            }
+
+            {
+                ConceptChronologyDTO a = Misc.CreateConceptChronologyDTO;
+                ConceptChronologyDTO b = Misc.CreateConceptChronologyDTO
+                with
+                {
+                    PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
+                };
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                ConceptChronologyDTO a = new ConceptChronologyDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
+                );
+                ConceptChronologyDTO b = new ConceptChronologyDTO(
+                    Misc.PublicIdG,
+                    new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
+                );
+                Assert.False(a.CompareTo(b) == 0);
+            }
+
+            {
+                ConceptChronologyDTO a = new ConceptChronologyDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    Misc.ConceptVersionsBase(Misc.PublicIdG)
+                );
+                ConceptChronologyDTO b = new ConceptChronologyDTO(
+                    Misc.PublicIdG,
+                    Misc.PublicIdH,
+                    new ConceptVersionDTO[]
+                    {
+                        Misc.cv1(Misc.PublicIdG)
+                    }
+                );
+                Assert.False(a.CompareTo(b) == 0);
+            }
+        }
+
+
+
         [DoNotParallelize]
         [Fact]
         public void ConceptChronologyDTOMarshalTest()
@@ -97,7 +154,7 @@ namespace Tinkar.XUnitTests
             using (TinkarInput input = new TinkarInput(ms))
             {
                 ConceptChronologyDTO dtoRead = (ConceptChronologyDTO)input.GetField();
-                Assert.True(dtoStart.IsEquivalent(dtoRead));
+                Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
@@ -116,7 +173,7 @@ namespace Tinkar.XUnitTests
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
                 ConceptChronologyDTO dtoEnd = ConceptChronologyDTO.Make(input.ReadJsonObject());
-                Assert.True(dtoStart.IsEquivalent(dtoEnd));
+                Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
     }
