@@ -29,6 +29,6 @@ namespace Tinkar
         /// <summary>
         /// Gets semantic version fields.
         /// </summary>
-        ImmutableList<Object> Fields { get; }
+        ImmutableArray<Object> Fields { get; }
     }
 }

@@ -46,7 +46,7 @@ namespace Tinkar.Dto
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
                     predecessor,
-                    this.successors.ToImmutableList());
+                    this.successors.ToImmutableArray());
             }
         }
 
@@ -61,7 +61,7 @@ namespace Tinkar.Dto
             ConceptDTO meaning,
             ImmutableDictionary<IConcept, Object> properties,
             Int32 predecessor,
-            ImmutableList<Int32> successors) :
+            ImmutableArray<Int32> successors) :
             base(vertexId, vertexIndex, meaning, properties, successors)
         {
             this.Predecessor = predecessor;
@@ -108,7 +108,7 @@ namespace Tinkar.Dto
                 new ConceptDTO(meaningId),
                 properties.ToImmutable(),
                 predecessor,
-                successors.ToImmutableList());
+                successors.ToImmutableArray());
         }
 
         public override bool IsEquivalent(Object o)

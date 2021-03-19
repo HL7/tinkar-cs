@@ -19,7 +19,7 @@ namespace Tinkar.XUnitTests
             DiGraphVertexDTO dto = Misc.CreateDiGraphVertexDTO();
 
             GraphVertexDTOTests.DoGraphVertexDTOFieldsTest(dto);
-            Assert.True(dto.Predecessors.Count == 1);
+            Assert.True(dto.Predecessors.Length == 1);
             Assert.True(dto.Predecessors[0] == 135);
         }
 

@@ -277,6 +277,26 @@ namespace Tinkar.Dto
         }
 
         /// <summary>
+        /// Compare two Object arrays.
+        /// </summary>
+        /// <param name="a">First item to compare.</param>
+        /// <param name="b">Second item to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static Boolean Equivalent(ImmutableArray<Object> a, ImmutableArray<Object> b)
+        {
+            Int32 cmp = a.Length.CompareTo(b.Length);
+            if (cmp != 0)
+                return false;
+            for (Int32 i = 0; i < a.Count(); i++)
+            {
+                if (Equivalent(a[i], b[i]) == false)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Compares two objects for 'sameness'. Does deep compare.
         /// </summary>
         /// <param name="aObj">First objec to compare.</param>
@@ -295,9 +315,11 @@ namespace Tinkar.Dto
                 case Byte[] a:
                     return CompareByteArray(a, (Byte[])bObj) == 0;
 
-                // DiGraphType = 6,
                 case Object[] aArr:
                     return Equivalent(aArr, (Object[])bObj);
+
+                case ImmutableArray<Object> aArr:
+                    return Equivalent(aArr, (ImmutableArray<Object>)bObj);
 
                 default:
                     throw new NotImplementedException($"Can not handle type {aObj.GetType().Name}");

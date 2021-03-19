@@ -37,6 +37,6 @@ namespace Tinkar
         /// <summary>
         /// Gets versions.
         /// </summary>
-        ImmutableList<TVersion> Versions { get; }
+        ImmutableArray<TVersion> Versions { get; }
     }
 }

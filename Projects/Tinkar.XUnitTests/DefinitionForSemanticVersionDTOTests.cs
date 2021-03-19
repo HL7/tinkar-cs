@@ -29,7 +29,7 @@ namespace Tinkar.XUnitTests
                 Misc.CreateStampDTO,
                 Misc.PublicIdH,
                 Misc.PublicIdI,
-                new FieldDefinitionDTO[] { fdoa, fdob }.ToImmutableList()
+                new FieldDefinitionDTO[] { fdoa, fdob }.ToImmutableArray()
                 );
             Misc.Compare(dtoStart.PublicId, Misc.PublicIdG);
             Assert.True(dtoStart.StampDTO.CompareTo(Misc.CreateStampDTO) == 0);
@@ -95,7 +95,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableList()
+                    FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -153,7 +153,7 @@ namespace Tinkar.XUnitTests
                 PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
                 with
                 {
-                    FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableList()
+                    FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

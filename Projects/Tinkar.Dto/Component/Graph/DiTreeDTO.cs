@@ -35,12 +35,12 @@ namespace Tinkar.Dto
                         throw new Exception($"DiTree contains item '{vmBldr.VertexId}' with no predecessor that is not marked as a root");
                     vertexMap[i] = vmBldr.Create();
                 }
-                return new DiTreeDTO(root.VertexIndex, vertexMap.ToImmutableList());
+                return new DiTreeDTO(root.VertexIndex, vertexMap.ToImmutableArray());
             }
         }
 
         public DiTreeDTO(Int32 rootIndex,
-            ImmutableList<DiTreeVertexDTO> vertexMap) : base(rootIndex, vertexMap)
+            ImmutableArray<DiTreeVertexDTO> vertexMap) : base(rootIndex, vertexMap)
         {
         }
 
@@ -54,13 +54,13 @@ namespace Tinkar.Dto
                 vertexMap[i] = DiTreeVertexDTO.Make(input);
             Int32 rootIndex = input.GetInt32();
 
-            return new DiTreeDTO(rootIndex, vertexMap.ToImmutableList());
+            return new DiTreeDTO(rootIndex, vertexMap.ToImmutableArray());
         }
 
         public void Marshal(TinkarOutput output)
         {
-            output.WriteInt32(this.VertexMap.Count);
-            for (Int32 i = 0; i < this.VertexMap.Count; i++)
+            output.WriteInt32(this.VertexMap.Length);
+            for (Int32 i = 0; i < this.VertexMap.Length; i++)
                 this.VertexMap[i].Marshal(output);
             output.WriteInt32(this.Root.VertexIndex);
         }
@@ -102,7 +102,7 @@ namespace Tinkar.Dto
         Int32 rootIndex = -1;
 
         public DiTreeDTO(Int32 rootIndex,
-                        ImmutableList<TVertex> vertexMap) : base(vertexMap)
+                        ImmutableArray<TVertex> vertexMap) : base(vertexMap)
         {
             this.rootIndex = rootIndex;
         }

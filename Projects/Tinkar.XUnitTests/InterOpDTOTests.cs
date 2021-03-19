@@ -59,7 +59,7 @@ namespace Tinkar.XUnitTests
                     {
                         new ConceptVersionDTO(pid, NextStamp()) ,
                         new ConceptVersionDTO(pid, NextStamp())
-                    }.ToImmutableList()
+                    }.ToImmutableArray()
                 );
                 retVal.Add(dto);
             }
@@ -90,9 +90,9 @@ namespace Tinkar.XUnitTests
                                     NextPublicId(2),
                                     NextPublicId(3)
                                 )
-                            }.ToImmutableList()
+                            }.ToImmutableArray()
                         )
-                    }.ToImmutableList()
+                    }.ToImmutableArray()
                 );
 
                 retVal.Add(dto);
@@ -127,9 +127,9 @@ namespace Tinkar.XUnitTests
                                 new DateTime(2020, 1, 2),
                                 new SpatialPointDTO(1, 2, 3),
                                 new PlanarPointDTO(-1, -2)
-                            }.ToImmutableList()
+                            }.ToImmutableArray()
                         )
-                    }.ToImmutableList()
+                    }.ToImmutableArray()
                 );
 
                 retVal.Add(dto);
@@ -158,7 +158,7 @@ namespace Tinkar.XUnitTests
                             new DateTime(2020, 1, 2),
                             new SpatialPointDTO(1, 2, 3),
                             new PlanarPointDTO(-1, -2)
-                        }.ToImmutableList()
+                        }.ToImmutableArray()
                     );
             }
             return retVal;

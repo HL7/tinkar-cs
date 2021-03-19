@@ -67,7 +67,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableList()
+                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableArray()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -119,7 +119,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableList()
+                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableArray()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

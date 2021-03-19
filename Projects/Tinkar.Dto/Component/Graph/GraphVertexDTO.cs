@@ -26,7 +26,7 @@ namespace Tinkar.Dto
                     this.VertexIndex,
                     this.meaning,
                     propBldr.ToImmutableDictionary(),
-                    this.successors.ToImmutableList());
+                    this.successors.ToImmutableArray());
             }
         }
 
@@ -55,7 +55,7 @@ namespace Tinkar.Dto
             }
         }
 
-        public ImmutableList<Int32> Successors { get; init; }
+        public ImmutableArray<Int32> Successors { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphVertexDTO"/> class.
@@ -64,7 +64,7 @@ namespace Tinkar.Dto
             int vertexIndex,
             ConceptDTO meaning,
             ImmutableDictionary<IConcept, Object> properties,
-            ImmutableList<Int32> successors) :
+            ImmutableArray<Int32> successors) :
             base(vertexId, vertexIndex, meaning, properties)
         {
             this.Successors = successors;
@@ -77,8 +77,8 @@ namespace Tinkar.Dto
         public override void Marshal(TinkarOutput output)
         {
             base.Marshal(output);
-            output.WriteInt32(this.Successors.Count);
-            for (Int32 i = 0; i < this.Successors.Count; i++)
+            output.WriteInt32(this.Successors.Length);
+            for (Int32 i = 0; i < this.Successors.Length; i++)
                 output.WriteInt32(this.Successors[i]);
         }
 
@@ -111,7 +111,7 @@ namespace Tinkar.Dto
                 vertexIndex,
                 new ConceptDTO(meaningId),
                 properties.ToImmutable(),
-                successors.ToImmutableList());
+                successors.ToImmutableArray());
         }
 
         public override bool IsEquivalent(Object o)

@@ -19,10 +19,10 @@ namespace Tinkar.Dto
         public sealed class Builder : GraphDTO<GraphVertexDTO>.Builder<Builder, GraphVertexDTO.Builder>
         {
             public GraphDTO Create() =>
-                new GraphDTO(this.vertexMap.Select( (a) => a.Create()).ToImmutableList());
+                new GraphDTO(this.vertexMap.Select( (a) => a.Create()).ToImmutableArray());
         }
 
-        public GraphDTO(ImmutableList<GraphVertexDTO> vertexMap) : base(vertexMap)
+        public GraphDTO(ImmutableArray<GraphVertexDTO> vertexMap) : base(vertexMap)
         {
         }
     }
@@ -82,9 +82,9 @@ namespace Tinkar.Dto
             }
         }
 
-        public ImmutableList<TVertex> VertexMap { get; init; }
+        public ImmutableArray<TVertex> VertexMap { get; init; }
 
-        public GraphDTO(ImmutableList<TVertex> vertexMap)
+        public GraphDTO(ImmutableArray<TVertex> vertexMap)
         {
             this.VertexMap = vertexMap;
         }
@@ -112,20 +112,20 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="vertex">vertex a vertex to retrieve the successors of</param>
         /// <returns>Successofs of indicated vertex</returns>
-        public ImmutableList<TVertex> Successors(TVertex vertex)
+        public ImmutableArray<TVertex> Successors(TVertex vertex)
         {
-            TVertex[] retVal = new TVertex[vertex.Successors.Count];
-            for (Int32 i = 0; i < vertex.Successors.Count; i++)
+            TVertex[] retVal = new TVertex[vertex.Successors.Length];
+            for (Int32 i = 0; i < vertex.Successors.Length; i++)
                 retVal[i] = this.VertexMap[vertex.Successors[i]];
-            return retVal.ToImmutableList();
+            return retVal.ToImmutableArray();
         }
 
-        Int32 Comparer(ImmutableList<Int32> value1, ImmutableList<Int32> value2)
+        Int32 Comparer(ImmutableArray<Int32> value1, ImmutableArray<Int32> value2)
         {
-            Int32 cmpVal = value1.Count.CompareTo(value2.Count);
+            Int32 cmpVal = value1.Length.CompareTo(value2.Length);
             if (cmpVal != 0)
                 return cmpVal;
-            for (Int32 j = 0; j < value1.Count; j++)
+            for (Int32 j = 0; j < value1.Length; j++)
             {
                 cmpVal = value1[j].CompareTo(value2[j]);
                 if (cmpVal != 0)

@@ -17,7 +17,7 @@ namespace Tinkar.XUnitTests
         public void GraphDTOFieldsTest()
         {
             GraphDTO<GraphVertexDTO> dto = Misc.CreateGraphDTO();
-            Assert.True(dto.VertexMap.Count == 4);
+            Assert.True(dto.VertexMap.Length == 4);
             Assert.True(dto.VertexMap[0] == dto.Vertex(Misc.g1));
             Assert.True(dto.VertexMap[1] == dto.Vertex(Misc.g2));
             Assert.True(dto.VertexMap[2] == dto.Vertex(Misc.g3));

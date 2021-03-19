@@ -63,7 +63,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Fields array.
         /// </summary>
-        public ImmutableList<Object> Fields { get; init; }
+        public ImmutableArray<Object> Fields { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
@@ -78,7 +78,7 @@ namespace Tinkar.Dto
             IPublicId definitionForSemanticUuids,
             IPublicId referencedComponentUuids,
             StampDTO stampDTO,
-            ImmutableList<Object> fields) : base(componentPublicId, stampDTO)
+            ImmutableArray<Object> fields) : base(componentPublicId, stampDTO)
         {
             this.DefinitionForSemanticPublicId = definitionForSemanticUuids;
             this.ReferencedComponentPublicId = referencedComponentUuids;
@@ -186,7 +186,7 @@ namespace Tinkar.Dto
                     semanticVersion.PatternForSemantic.PublicId,
                     semanticVersion.ReferencedComponent.PublicId,
                     StampDTO.Make(semanticVersion.Stamp), 
-                    convertedFields.ToImmutableList());
+                    convertedFields.ToImmutableArray());
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Tinkar.Dto
                 definitionForSemanticUuids,
                 referencedComponentUuids,
                 StampDTO.Make(input),
-                input.GetObjects().ToImmutableList());
+                input.GetObjects().ToImmutableArray());
 
         /// <summary>
         /// Static method to Create DTO item from json .
@@ -226,7 +226,7 @@ namespace Tinkar.Dto
                 definitionForSemanticPublicId,
                 referencedComponentPublicId,
                 StampDTO.Make((JObject)jsonObject[ComponentFieldForJson.STAMP]),
-                jsonObject.AsObjects(ComponentFieldForJson.FIELDS).ToImmutableList());
+                jsonObject.AsObjects(ComponentFieldForJson.FIELDS).ToImmutableArray());
 
         /// <summary>
         /// Marshal DTO item to output stream.

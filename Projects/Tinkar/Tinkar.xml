@@ -416,7 +416,7 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.ConceptVersionDTO})">
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.ConceptVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptChronologyDTO"/> class.
             </summary>
@@ -693,6 +693,14 @@
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         </member>
         <member name="M:Tinkar.Dto.FieldCompare.Equivalent(System.Object[],System.Object[])">
+            <summary>
+            Compare two Object arrays.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Equivalent(System.Collections.Immutable.ImmutableArray{System.Object},System.Collections.Immutable.ImmutableArray{System.Object})">
             <summary>
             Compare two Object arrays.
             </summary>
@@ -1012,7 +1020,7 @@
             </summary>
             <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
-        <member name="M:Tinkar.Dto.DiGraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableList{System.Int32},System.Collections.Immutable.ImmutableList{System.Int32})">
+        <member name="M:Tinkar.Dto.DiGraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableArray{System.Int32},System.Collections.Immutable.ImmutableArray{System.Int32})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.DiGraphVertexDTO"/> class.
             </summary>
@@ -1074,7 +1082,7 @@
             </summary>
             <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
-        <member name="M:Tinkar.Dto.DiTreeVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Int32,System.Collections.Immutable.ImmutableList{System.Int32})">
+        <member name="M:Tinkar.Dto.DiTreeVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Int32,System.Collections.Immutable.ImmutableArray{System.Int32})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.DiTreeVertexDTO"/> class.
             </summary>
@@ -1148,7 +1156,7 @@
             </summary>
             <typeparam name="TBuilder">Derived builder type</typeparam>
         </member>
-        <member name="M:Tinkar.Dto.GraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableList{System.Int32})">
+        <member name="M:Tinkar.Dto.GraphVertexDTO.#ctor(Tinkar.Dto.VertexId,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object},System.Collections.Immutable.ImmutableArray{System.Int32})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.GraphVertexDTO"/> class.
             </summary>
@@ -1292,7 +1300,7 @@
             Gets Versions list.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.PatternForSemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.PatternForSemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.PatternForSemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.PatternForSemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternForSemanticChronologyDTO"/> class.
             </summary>
@@ -1419,7 +1427,7 @@
             Gets FieldDefinitions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.FieldDefinitionDTO})">
+        <member name="M:Tinkar.Dto.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.FieldDefinitionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternForSemanticVersionDTO"/> class.
             </summary>
@@ -1492,7 +1500,7 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.SemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
@@ -1501,7 +1509,7 @@
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
-        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.SemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
@@ -1692,7 +1700,7 @@
             Gets Fields array.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.Dto.StampDTO,System.Collections.Immutable.ImmutableList{System.Object})">
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.Dto.StampDTO,System.Collections.Immutable.ImmutableArray{System.Object})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticVersionDTO"/> class.
             </summary>

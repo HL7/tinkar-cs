@@ -170,7 +170,7 @@ namespace Tinkar.Dto
         /// Gets keys for the populated properties
         /// </summary>
         /// <returns>keys</returns>
-        public ImmutableList<IConcept> PropertyKeys => this.Properties.Keys.ToImmutableList();
+        public ImmutableArray<IConcept> PropertyKeys => this.Properties.Keys.ToImmutableArray();
 
         public virtual Int32 CompareTo(Object o)
         {

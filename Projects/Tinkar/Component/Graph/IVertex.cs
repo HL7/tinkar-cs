@@ -50,7 +50,7 @@ namespace Tinkar
         /// Gets keys for the populated properties
         /// </summary>
         /// <returns>keys</returns>
-        ImmutableList<IConcept> PropertyKeys { get; }
+        ImmutableArray<IConcept> PropertyKeys { get; }
 
 
         ImmutableDictionary<IConcept, Object> Properties { get;}

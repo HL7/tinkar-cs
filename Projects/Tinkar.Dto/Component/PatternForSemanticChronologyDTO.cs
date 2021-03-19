@@ -50,7 +50,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Versions list.
         /// </summary>
-        public ImmutableList<PatternForSemanticVersionDTO> Versions { get; init; }
+        public ImmutableArray<PatternForSemanticVersionDTO> Versions { get; init; }
 
         public IConcept ChronologySet => new ConceptDTO(ChronologySetPublicId);
 
@@ -63,7 +63,7 @@ namespace Tinkar.Dto
         public PatternForSemanticChronologyDTO(
             IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            ImmutableList<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
+            ImmutableArray<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
         {
             this.ChronologySetPublicId = chronologySetPublicId;
             this.Versions = definitionVersions;
@@ -132,7 +132,7 @@ namespace Tinkar.Dto
             return new PatternForSemanticChronologyDTO(
                 componentPublicId,
                 chronologySetPublicId,
-                input.GetPatternForSemanticVersionList(componentPublicId).ToImmutableList());
+                input.GetPatternForSemanticVersionList(componentPublicId).ToImmutableArray());
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Tinkar.Dto
             PublicId chronologySetPublicId = jObj.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
             return new PatternForSemanticChronologyDTO(componentPublicId, 
                 chronologySetPublicId, 
-                jObj.ReadPatternForSemanticVersionList(componentPublicId).ToImmutableList());
+                jObj.ReadPatternForSemanticVersionList(componentPublicId).ToImmutableArray());
         }
 
 

@@ -16,7 +16,7 @@ namespace Tinkar
         /// Gets the roots of this item.
         /// A graph can have multiple roots.
         /// </summary>
-        ImmutableList<V> Roots { get; }
+        ImmutableArray<V> Roots { get; }
 
         /// <summary>
         /// Get predecessors of the indicated vertex.
@@ -24,6 +24,6 @@ namespace Tinkar
         /// </summary>
         /// <param name="vertex"></param>
         /// <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
-        ImmutableList<V> Predecessors(V vertex);
+        ImmutableArray<V> Predecessors(V vertex);
     }
 }

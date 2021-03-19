@@ -17,7 +17,7 @@ namespace Tinkar.XUnitTests
         public void DiGraphDTOFieldsTest()
         {
             DiGraphDTO dto = Misc.CreateDiGraphDTO();
-            Assert.True(dto.VertexMap.Count == 4);
+            Assert.True(dto.VertexMap.Length == 4);
             Assert.True(dto.VertexMap[0] == dto.Vertex(Misc.g1));
             Assert.True(dto.VertexMap[1] == dto.Vertex(Misc.g2));
             Assert.True(dto.VertexMap[2] == dto.Vertex(Misc.g3));
@@ -29,24 +29,24 @@ namespace Tinkar.XUnitTests
             Assert.True(dto.VertexMap[3] == dto.Vertex(3));
 
             {
-                Assert.True(dto.Predecessors(dto.Vertex(0)).Count == 0);
+                Assert.True(dto.Predecessors(dto.Vertex(0)).Length == 0);
                 Assert.True(dto.Successors(dto.Vertex(0)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(0)).ElementAt(0) == dto.Vertex(1));
             }
             {
-                Assert.True(dto.Predecessors(dto.Vertex(1)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(1)).Length == 1);
                 Assert.True(dto.Predecessors(dto.Vertex(1)).ElementAt(0)  == dto.Vertex(0));
                 Assert.True(dto.Successors(dto.Vertex(1)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(1)).ElementAt(0) == dto.Vertex(2));
             }
             {
-                Assert.True(dto.Predecessors(dto.Vertex(2)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(2)).Length == 1);
                 Assert.True(dto.Predecessors(dto.Vertex(2)).ElementAt(0) == dto.Vertex(1));
                 Assert.True(dto.Successors(dto.Vertex(2)).Count() == 1);
                 Assert.True(dto.Successors(dto.Vertex(2)).ElementAt(0) == dto.Vertex(3));
             }
             {
-                Assert.True(dto.Predecessors(dto.Vertex(3)).Count == 1);
+                Assert.True(dto.Predecessors(dto.Vertex(3)).Length == 1);
                 Assert.True(dto.Predecessors(dto.Vertex(3)).ElementAt(0) == dto.Vertex(2));
                 Assert.True(dto.Successors(dto.Vertex(3)).Count() == 0);
             }

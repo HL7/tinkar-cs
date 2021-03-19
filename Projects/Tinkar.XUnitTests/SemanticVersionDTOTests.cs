@@ -80,7 +80,7 @@ namespace Tinkar.XUnitTests
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO
                 with
                 {
-                    Fields = new Object[] { 1, "abcdef" }.ToImmutableList()
+                    Fields = new Object[] { 1, "abcdef" }.ToImmutableArray()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -142,7 +142,7 @@ namespace Tinkar.XUnitTests
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO
                 with
                 {
-                    Fields = new Object[] { 1, "abcdef" }.ToImmutableList()
+                    Fields = new Object[] { 1, "abcdef" }.ToImmutableArray()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

@@ -15,6 +15,6 @@ namespace Tinkar
         /// Gets the successors for the provided vertex
         /// </summary>
         /// <returns>Successors of vertex</returns>
-        ImmutableList<Int32> Successors { get; }
+        ImmutableArray<Int32> Successors { get; }
     }
 }

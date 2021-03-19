@@ -76,7 +76,7 @@ namespace Tinkar.XUnitTests
         public static ConceptChronologyDTO CreateConceptChronologyDTO => new ConceptChronologyDTO(
             PublicIdG,
             PublicIdH,
-            Misc.ConceptVersionsBase(PublicIdG).ToImmutableList());
+            Misc.ConceptVersionsBase(PublicIdG).ToImmutableArray());
 
         public static ConceptDTO CreateConceptDTO => new ConceptDTO(PublicIdG);
 
@@ -95,7 +95,7 @@ namespace Tinkar.XUnitTests
                 PublicIdG,
                 PublicIdH,
                 PublicIdI,
-                new SemanticVersionDTO[] { CreateSemanticVersionDTO }.ToImmutableList()
+                new SemanticVersionDTO[] { CreateSemanticVersionDTO }.ToImmutableArray()
             );
 
         public static SemanticDTO CreateSemanticDTO => new SemanticDTO(
@@ -118,7 +118,7 @@ namespace Tinkar.XUnitTests
                     -1, 0, 1,
                     "abcdef",
                     new DateTime(2020, 1, 2)
-                }.ToImmutableList()
+                }.ToImmutableArray()
             );
 
 
@@ -175,7 +175,7 @@ namespace Tinkar.XUnitTests
             new PatternForSemanticChronologyDTO(
                 PublicIdG,
                 new PublicId(Misc.h1, Misc.h2, Misc.h3),
-                new PatternForSemanticVersionDTO[] { Misc.CreatePatternForSemanticVersionDTO }.ToImmutableList()
+                new PatternForSemanticVersionDTO[] { Misc.CreatePatternForSemanticVersionDTO }.ToImmutableArray()
             );
 
 
@@ -187,7 +187,7 @@ namespace Tinkar.XUnitTests
                 PublicIdH,
                 new FieldDefinitionDTO[] {
                     Misc.CreateFieldDefinition
-                }.ToImmutableList()
+                }.ToImmutableArray()
             );
 
         public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);

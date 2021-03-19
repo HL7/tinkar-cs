@@ -31,7 +31,7 @@ namespace Tinkar
         /// <summary>
         /// Gets the SemanticVersion field definitions.
         /// </summary>
-        ImmutableList<TFieldDefinition> FieldDefinitions { get; }
+        ImmutableArray<TFieldDefinition> FieldDefinitions { get; }
 
         /// <summary>
         /// Gets the purpose of referenced component.

@@ -68,7 +68,7 @@ namespace Tinkar.XUnitTests
                         {
                             PublicId = new PublicId(Misc.other)
                         }
-                    }.ToImmutableList()
+                    }.ToImmutableArray()
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -118,7 +118,7 @@ namespace Tinkar.XUnitTests
                         {
                             PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.h4)
                         }
-                    }.ToImmutableList()
+                    }.ToImmutableArray()
                 }
                 ;
                 Assert.False(a.CompareTo(b) == 0);

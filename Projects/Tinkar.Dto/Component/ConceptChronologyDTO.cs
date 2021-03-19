@@ -49,7 +49,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        ImmutableList<ConceptVersionDTO> conceptVersions { get; init; }
+        ImmutableArray<ConceptVersionDTO> conceptVersions { get; init; }
 
         /// <summary>
         /// Gets ChronologySet.
@@ -59,7 +59,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public ImmutableList<ConceptVersionDTO> Versions => conceptVersions;
+        public ImmutableArray<ConceptVersionDTO> Versions => conceptVersions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
@@ -70,7 +70,7 @@ namespace Tinkar.Dto
         public ConceptChronologyDTO(
             IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            ImmutableList<ConceptVersionDTO> conceptVersions) : base(componentPublicId)
+            ImmutableArray<ConceptVersionDTO> conceptVersions) : base(componentPublicId)
         {
             this.ChronologySetPublicId = chronologySetPublicId;
             this.conceptVersions = conceptVersions;
@@ -134,7 +134,7 @@ namespace Tinkar.Dto
             return new ConceptChronologyDTO(
                 publicId,
                 input.GetPublicId(),
-                input.GetConceptVersionList(publicId).ToImmutableList());
+                input.GetConceptVersionList(publicId).ToImmutableArray());
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Tinkar.Dto
             PublicId publicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             return new ConceptChronologyDTO(publicId,
                             jsonObject.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID),
-                            jsonObject.AsConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, publicId).ToImmutableList());
+                            jsonObject.AsConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, publicId).ToImmutableArray());
         }
 
 

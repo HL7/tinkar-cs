@@ -45,12 +45,12 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets SemanticVersion.
         /// </summary>
-        public ImmutableList<SemanticVersionDTO> SemanticVersions { get; init; }
+        public ImmutableArray<SemanticVersionDTO> SemanticVersions { get; init; }
 
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public ImmutableList<SemanticVersionDTO> Versions => this.SemanticVersions;
+        public ImmutableArray<SemanticVersionDTO> Versions => this.SemanticVersions;
 
         public PatternForSemanticDTO ChronologySet => new PatternForSemanticDTO(DefinitionForSemanticPublicId);
 
@@ -65,7 +65,7 @@ namespace Tinkar.Dto
             IPublicId componentPublicId,
             IPublicId definitionForSemanticPublicId,
             IPublicId referencedComponentPublicId,
-            ImmutableList<SemanticVersionDTO> semanticVersions) : base(componentPublicId, definitionForSemanticPublicId, referencedComponentPublicId)
+            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, definitionForSemanticPublicId, referencedComponentPublicId)
         {
             this.SemanticVersions = semanticVersions;
         }
@@ -81,7 +81,7 @@ namespace Tinkar.Dto
             IPublicId componentPublicId,
             IPatternForSemantic patternForSemantic,
             IPublicId referencedComponentPublicId,
-            ImmutableList<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
+            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
         {
             this.SemanticVersions = semanticVersions;
         }
@@ -138,7 +138,7 @@ namespace Tinkar.Dto
             new SemanticChronologyDTO(semanticChronology.PublicId,
                     semanticChronology.PatternForSemantic,
                     semanticChronology.ReferencedComponentPublicId,
-                    semanticChronology.SemanticVersions.ToImmutableList());
+                    semanticChronology.SemanticVersions.ToImmutableArray());
 
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Tinkar.Dto
                 componentPublicId,
                 patternForSemanticPublicId,
                 referencedComponentPublicId,
-                input.ReadSemanticVersionList(componentPublicId, patternForSemanticPublicId, referencedComponentPublicId).ToImmutableList()
+                input.ReadSemanticVersionList(componentPublicId, patternForSemanticPublicId, referencedComponentPublicId).ToImmutableArray()
                 );
         }
 
@@ -176,7 +176,7 @@ namespace Tinkar.Dto
                     jsonObject.ReadSemanticVersionList(ComponentFieldForJson.VERSIONS,
                             componentPublicId,
                             definitionForSemanticPublicId,
-                            referencedComponentPublicId).ToImmutableList()
+                            referencedComponentPublicId).ToImmutableArray()
                     );
         }
 
