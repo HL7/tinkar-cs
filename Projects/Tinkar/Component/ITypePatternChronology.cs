@@ -18,16 +18,16 @@ using System;
 namespace Tinkar
 {
     /// <summary>
-    /// PatternForSemanticChronology interace.
+    /// TypePatternChronology interace.
     /// </summary>
-    /// <typeparam name="TPatternForSemanticVersion">Generic type pattern  for semantic version. </typeparam>
+    /// <typeparam name="TTypePatternVersion">Generic type pattern  for semantic version. </typeparam>
     /// <typeparam name="TFieldDefinition">Generic type for Field definition. </typeparam>
     /// <typeparam name="TComponent">Generic type for component definition. </typeparam>
-    [JavaAttribute("PatternForSemanticChronology")]
-    public interface IPatternForSemanticChronology<TPatternForSemanticVersion, TFieldDefinition, TComponent> :
-        IChronology<TPatternForSemanticVersion, TComponent>,
-        IPatternForSemantic
-        where TPatternForSemanticVersion : IPatternForSemanticVersion<TFieldDefinition>
+    [JavaAttribute("TypePatternChronology")]
+    public interface ITypePatternChronology<TTypePatternVersion, TFieldDefinition, TComponent> :
+        IChronology<TTypePatternVersion, TComponent>,
+        ITypePattern
+        where TTypePatternVersion : ITypePatternVersion<TFieldDefinition>
         where TFieldDefinition : IFieldDefinition
         where TComponent : IComponent
     {

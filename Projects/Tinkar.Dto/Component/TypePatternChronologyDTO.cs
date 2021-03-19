@@ -24,9 +24,9 @@ namespace Tinkar.Dto
     /// <summary>
     /// Tinkar PatternForSemanticChronology record.
     /// </summary>
-    public record PatternForSemanticChronologyDTO :
-        PatternForSemanticDTO,
-        IPatternForSemanticChronology<PatternForSemanticVersionDTO, FieldDefinitionDTO, IConcept>,
+    public record TypePatternChronologyDTO :
+        TypePatternDTO,
+        ITypePatternChronology<TypePatternVersionDTO, FieldDefinitionDTO, IConcept>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -40,7 +40,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
-        public override FieldDataType FieldDataType => FieldDataType.PatternForSemanticChronologyType;
+        public override FieldDataType FieldDataType => FieldDataType.TypePatternChronologyType;
 
         /// <summary>
         /// Gets public id.
@@ -50,20 +50,20 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Versions list.
         /// </summary>
-        public ImmutableArray<PatternForSemanticVersionDTO> Versions { get; init; }
+        public ImmutableArray<TypePatternVersionDTO> Versions { get; init; }
 
         public IConcept ChronologySet => new ConceptDTO(ChronologySetPublicId);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticChronologyDTO"/> class.
+        /// Initializes a new instance of the <see cref="TypePatternChronologyDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
         /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
         /// <param name="definitionVersions">DefinitionVersions.</param>
-        public PatternForSemanticChronologyDTO(
+        public TypePatternChronologyDTO(
             IPublicId componentPublicId,
             IPublicId chronologySetPublicId,
-            ImmutableArray<PatternForSemanticVersionDTO> definitionVersions) : base(componentPublicId)
+            ImmutableArray<TypePatternVersionDTO> definitionVersions) : base(componentPublicId)
         {
             this.ChronologySetPublicId = chronologySetPublicId;
             this.Versions = definitionVersions;
@@ -80,7 +80,7 @@ namespace Tinkar.Dto
             if (base.IsEquivalent(otherObject) == false)
                 return false;
 
-            PatternForSemanticChronologyDTO other = otherObject as PatternForSemanticChronologyDTO;
+            TypePatternChronologyDTO other = otherObject as TypePatternChronologyDTO;
             if (other == null)
                 return false;
 
@@ -102,7 +102,7 @@ namespace Tinkar.Dto
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(Object otherObject)
         {
-            PatternForSemanticChronologyDTO other = otherObject as PatternForSemanticChronologyDTO;
+            TypePatternChronologyDTO other = otherObject as TypePatternChronologyDTO;
             if (other == null)
                 return -1;
 
@@ -125,14 +125,14 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static new PatternForSemanticChronologyDTO Make(TinkarInput input)
+        public static new TypePatternChronologyDTO Make(TinkarInput input)
         {
             IPublicId componentPublicId = input.GetPublicId();
             IPublicId chronologySetPublicId = input.GetPublicId();
-            return new PatternForSemanticChronologyDTO(
+            return new TypePatternChronologyDTO(
                 componentPublicId,
                 chronologySetPublicId,
-                input.GetPatternForSemanticVersionList(componentPublicId).ToImmutableArray());
+                input.GetTypePatternVersionList(componentPublicId).ToImmutableArray());
         }
 
         /// <summary>
@@ -140,13 +140,13 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="jObj">JSON parent container.</param>
         /// <returns>new DTO item.</returns>
-        public static new PatternForSemanticChronologyDTO Make(JObject jObj)
+        public static new TypePatternChronologyDTO Make(JObject jObj)
         {
             PublicId componentPublicId = jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             PublicId chronologySetPublicId = jObj.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
-            return new PatternForSemanticChronologyDTO(componentPublicId, 
+            return new TypePatternChronologyDTO(componentPublicId, 
                 chronologySetPublicId, 
-                jObj.ReadPatternForSemanticVersionList(componentPublicId).ToImmutableArray());
+                jObj.ReadTypePatternVersionList(componentPublicId).ToImmutableArray());
         }
 
 

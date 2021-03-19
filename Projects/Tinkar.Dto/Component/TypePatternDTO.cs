@@ -7,9 +7,9 @@ namespace Tinkar.Dto
     /// <summary>
     /// PatternForSemantic record.
     /// </summary>
-    public record PatternForSemanticDTO :
+    public record TypePatternDTO :
         ComponentDTO,
-        IPatternForSemantic,
+        ITypePattern,
         IJsonMarshalable,
         IMarshalable
     {
@@ -22,13 +22,13 @@ namespace Tinkar.Dto
         /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
-        public virtual FieldDataType FieldDataType => FieldDataType.PatternForSemanticType;
+        public virtual FieldDataType FieldDataType => FieldDataType.TypePatternType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternForSemanticDTO"/> class.
+        /// Initializes a new instance of the <see cref="TypePatternDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        public PatternForSemanticDTO(IPublicId componentPublicId) : base(componentPublicId)
+        public TypePatternDTO(IPublicId componentPublicId) : base(componentPublicId)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Tinkar.Dto
             if (base.IsEquivalent(otherObject) == false)
                 return false;
 
-            PatternForSemanticDTO other = otherObject as PatternForSemanticDTO;
+            TypePatternDTO other = otherObject as TypePatternDTO;
             if (other == null)
                 return false;
 
@@ -60,7 +60,7 @@ namespace Tinkar.Dto
         /// <returns>-1, 0, or 1.</returns>
         public override Int32 CompareTo(Object otherObject)
         {
-            PatternForSemanticDTO other = otherObject as PatternForSemanticDTO;
+            TypePatternDTO other = otherObject as TypePatternDTO;
             if (other == null)
                 return -1;
 
@@ -72,16 +72,16 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="input">input data stream.</param>
         /// <returns>new DTO item.</returns>
-        public static PatternForSemanticDTO Make(TinkarInput input) =>
-            new PatternForSemanticDTO(input.GetPublicId());
+        public static TypePatternDTO Make(TinkarInput input) =>
+            new TypePatternDTO(input.GetPublicId());
 
         /// <summary>
         /// Static method to Create DTO item from json .
         /// </summary>
         /// <param name="jsonObject">JSON parent container to read from.</param>
         /// <returns>Deserialized PatternForSemanticDTO record.</returns>
-        public static PatternForSemanticDTO Make(JObject jsonObject) =>
-            new PatternForSemanticDTO(jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
+        public static TypePatternDTO Make(JObject jsonObject) =>
+            new TypePatternDTO(jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID));
 
         /// <summary>
         /// Marshal DTO item to output stream.

@@ -10,34 +10,34 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class PatternForSemanticChronologyDTOTests
+    public class TypePatternChronologyDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOFieldsTest()
+        public void TypePatternChronologyDTOFieldsTest()
         {
-            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
+            TypePatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3);
             Misc.Compare(dtoStart.Versions,
-                new PatternForSemanticVersionDTO[]
-                    { Misc.CreatePatternForSemanticVersionDTO }
+                new TypePatternVersionDTO[]
+                    { Misc.CreateTypePatternVersionDTO }
                 );
         }
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOIsEquivalentTest()
+        public void TypePatternChronologyDTOIsEquivalentTest()
         {
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO;
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
                     PublicId = new PublicId(Misc.other)
@@ -46,8 +46,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
                     ChronologySetPublicId = new PublicId(Misc.other)
@@ -57,13 +57,13 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
-                    Versions = new PatternForSemanticVersionDTO[]
+                    Versions = new TypePatternVersionDTO[]
                     {
-                        Misc.CreatePatternForSemanticVersionDTO
+                        Misc.CreateTypePatternVersionDTO
                         with
                         {
                             PublicId = new PublicId(Misc.other)
@@ -77,17 +77,17 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOCompareToTest()
+        public void TypePatternChronologyDTOCompareToTest()
         {
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO;
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO;
                 Assert.True(a.CompareTo(b) == 0);
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3)
@@ -96,8 +96,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
                     ChronologySetPublicId = new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.i4)
@@ -107,13 +107,13 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticChronologyDTO a = Misc.CreatePatternForSemanticChronologyDTO;
-                PatternForSemanticChronologyDTO b = Misc.CreatePatternForSemanticChronologyDTO
+                TypePatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
+                TypePatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
                 with
                 {
-                    Versions = new PatternForSemanticVersionDTO[]
+                    Versions = new TypePatternVersionDTO[]
                     {
-                        Misc.CreatePatternForSemanticVersionDTO
+                        Misc.CreateTypePatternVersionDTO
                         with
                         {
                             PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.h4)
@@ -127,9 +127,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOMarshalTest()
+        public void TypePatternChronologyDTOMarshalTest()
         {
-            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
+            TypePatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -140,15 +140,15 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                PatternForSemanticChronologyDTO dtoRead = (PatternForSemanticChronologyDTO)input.GetField();
+                TypePatternChronologyDTO dtoRead = (TypePatternChronologyDTO)input.GetField();
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticChronologyDTOJsonMarshal()
+        public void TypePatternChronologyDTOJsonMarshal()
         {
-            PatternForSemanticChronologyDTO dtoStart = Misc.CreatePatternForSemanticChronologyDTO;
+            TypePatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -159,7 +159,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                PatternForSemanticChronologyDTO dtoEnd = PatternForSemanticChronologyDTO.Make(input.ReadJsonObject());
+                TypePatternChronologyDTO dtoEnd = TypePatternChronologyDTO.Make(input.ReadJsonObject());
                 Misc.JsonDump(dtoEnd);
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }

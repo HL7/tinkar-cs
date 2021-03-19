@@ -26,7 +26,7 @@ namespace Tinkar.Dto
     /// </summary>
     public record SemanticChronologyDTO :
         SemanticDTO,
-        ISemanticChronology<SemanticVersionDTO, PatternForSemanticDTO>,
+        ISemanticChronology<SemanticVersionDTO, TypePatternDTO>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -52,7 +52,7 @@ namespace Tinkar.Dto
         /// </summary>
         public ImmutableArray<SemanticVersionDTO> Versions => this.SemanticVersions;
 
-        public PatternForSemanticDTO ChronologySet => new PatternForSemanticDTO(DefinitionForSemanticPublicId);
+        public TypePatternDTO ChronologySet => new TypePatternDTO(DefinitionForSemanticPublicId);
 
         /// <summary>
                  /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
@@ -79,7 +79,7 @@ namespace Tinkar.Dto
         /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
             IPublicId componentPublicId,
-            IPatternForSemantic patternForSemantic,
+            ITypePattern patternForSemantic,
             IPublicId referencedComponentPublicId,
             ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
         {
@@ -136,7 +136,7 @@ namespace Tinkar.Dto
         /// <returns>new DTO item.</returns>
         public static SemanticChronologyDTO Make(SemanticChronologyDTO semanticChronology) =>
             new SemanticChronologyDTO(semanticChronology.PublicId,
-                    semanticChronology.PatternForSemantic,
+                    semanticChronology.TypePattern,
                     semanticChronology.ReferencedComponentPublicId,
                     semanticChronology.SemanticVersions.ToImmutableArray());
 
@@ -168,7 +168,7 @@ namespace Tinkar.Dto
         public static new SemanticChronologyDTO Make(JObject jsonObject)
         {
             PublicId componentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            PublicId definitionForSemanticPublicId = jsonObject.AsPublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID);
+            PublicId definitionForSemanticPublicId = jsonObject.AsPublicId(ComponentFieldForJson.TYPE_PATTERN_PUBLIC_ID);
             PublicId referencedComponentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID);
             return new SemanticChronologyDTO(componentPublicId,
                     definitionForSemanticPublicId,
@@ -189,7 +189,7 @@ namespace Tinkar.Dto
             output.WriteStartObject();
             output.WriteClass(JSONCLASSNAME);
             output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
-            output.Put(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID, this.DefinitionForSemanticPublicId);
+            output.Put(ComponentFieldForJson.TYPE_PATTERN_PUBLIC_ID, this.DefinitionForSemanticPublicId);
             output.Put(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID, this.ReferencedComponentPublicId);
             output.WriteMarshalableList(
                 ComponentFieldForJson.VERSIONS,

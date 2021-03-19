@@ -232,11 +232,11 @@ namespace Tinkar.XUnitTests
                     }));
             }
             {
-                Assert.True(FieldCompare.Same(Misc.CreatePatternForSemanticChronologyDTO,
-                    Misc.CreatePatternForSemanticChronologyDTO));
+                Assert.True(FieldCompare.Same(Misc.CreateTypePatternChronologyDTO,
+                    Misc.CreateTypePatternChronologyDTO));
                 Assert.False(FieldCompare.Same(
-                    Misc.CreatePatternForSemanticChronologyDTO,
-                    Misc.CreatePatternForSemanticChronologyDTO
+                    Misc.CreateTypePatternChronologyDTO,
+                    Misc.CreateTypePatternChronologyDTO
                 with
                     {
                         PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
@@ -244,11 +244,11 @@ namespace Tinkar.XUnitTests
             }
             {
                 Assert.True(FieldCompare.Same(
-                    Misc.CreatePatternForSemanticDTO,
-                    Misc.CreatePatternForSemanticDTO));
+                    Misc.CreateTypePatternDTO,
+                    Misc.CreateTypePatternDTO));
                 Assert.False(FieldCompare.Same(
-                    Misc.CreatePatternForSemanticDTO,
-                    Misc.CreatePatternForSemanticDTO
+                    Misc.CreateTypePatternDTO,
+                    Misc.CreateTypePatternDTO
                 with
                     {
                         PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)

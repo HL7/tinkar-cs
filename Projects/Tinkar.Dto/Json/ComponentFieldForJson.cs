@@ -58,9 +58,9 @@ namespace Tinkar.Dto
         public const String DATATYPE_PUBLIC_ID = "dataTypePublicId";
 
         /// <summary>
-        /// Name of JSON property that stores definition for semantic public id.
+        /// Name of JSON property that stores type pattern public id.
         /// </summary>
-        public const String PATTERN_FOR_SEMANTIC_PUBLIC_ID = "definitionForSemanticPublicId";
+        public const String TYPE_PATTERN_PUBLIC_ID = "typePatternPublicId";
 
         /// <summary>
         /// Name of JSON property that stores definition version records.

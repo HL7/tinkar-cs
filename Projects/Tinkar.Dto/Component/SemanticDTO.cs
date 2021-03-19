@@ -41,7 +41,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public IPatternForSemantic PatternForSemantic => new PatternForSemanticDTO(this.DefinitionForSemanticPublicId);
+        public ITypePattern TypePattern => new TypePatternDTO(this.DefinitionForSemanticPublicId);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticDTO"/> class.
@@ -66,7 +66,7 @@ namespace Tinkar.Dto
         /// <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
         public SemanticDTO(
             IPublicId componentPublicId,
-            IPatternForSemantic patternForSemantic,
+            ITypePattern patternForSemantic,
             IComponent referencedComponentPublicId) : 
                 this(componentPublicId, 
                     patternForSemantic.PublicId, 
@@ -139,7 +139,7 @@ namespace Tinkar.Dto
         /// <returns>Deserialized Semantic record.</returns>
         public static SemanticDTO Make(JObject jObj) => 
             new SemanticDTO(jObj.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID),
-                jObj.AsPublicId(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID),
+                jObj.AsPublicId(ComponentFieldForJson.TYPE_PATTERN_PUBLIC_ID),
                 jObj.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID));
 
 
@@ -163,7 +163,7 @@ namespace Tinkar.Dto
             output.WriteStartObject();
             output.WriteClass(JSONCLASSNAME);
             output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
-            output.Put(ComponentFieldForJson.PATTERN_FOR_SEMANTIC_PUBLIC_ID, this.DefinitionForSemanticPublicId);
+            output.Put(ComponentFieldForJson.TYPE_PATTERN_PUBLIC_ID, this.DefinitionForSemanticPublicId);
             output.Put(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID, this.ReferencedComponentPublicId);
             output.WriteEndObject();
         }

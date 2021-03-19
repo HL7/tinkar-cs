@@ -11,11 +11,11 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class PatternForSemanticVersionDTOTests
+    public class TypePatternVersionDTOTests
     {
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticVersionDTOFieldsTest()
+        public void TypePatternVersionDTOFieldsTest()
         {
             FieldDefinitionDTO fdoa = Misc.CreateFieldDefinition;
             FieldDefinitionDTO fdob = Misc.CreateFieldDefinition with
@@ -24,7 +24,7 @@ namespace Tinkar.XUnitTests
             }
             ;
 
-            PatternForSemanticVersionDTO dtoStart = new PatternForSemanticVersionDTO(
+            TypePatternVersionDTO dtoStart = new TypePatternVersionDTO(
                 Misc.PublicIdG,
                 Misc.CreateStampDTO,
                 Misc.PublicIdH,
@@ -47,17 +47,17 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticVersionDTOIsEquivalentTest()
+        public void TypePatternVersionDTOIsEquivalentTest()
         {
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO;
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     PublicId = new PublicId(Misc.other)
@@ -66,8 +66,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2 ) }
@@ -76,8 +76,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     ReferencedComponentPurposePublicId = new PublicId(Misc.other)
@@ -91,8 +91,8 @@ namespace Tinkar.XUnitTests
                     DataTypePublicId = new PublicId(Misc.other)
                 };
 
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
@@ -105,17 +105,17 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticVersionDTOCompareToTest()
+        public void TypePatternVersionDTOCompareToTest()
         {
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO;
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
                 Assert.True(a.CompareTo(b) == 0);
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
@@ -124,8 +124,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2) }
@@ -134,8 +134,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     ReferencedComponentPurposePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
@@ -149,8 +149,8 @@ namespace Tinkar.XUnitTests
                     DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
 
-                PatternForSemanticVersionDTO a = Misc.CreatePatternForSemanticVersionDTO;
-                PatternForSemanticVersionDTO b = Misc.CreatePatternForSemanticVersionDTO
+                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
@@ -163,9 +163,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticVersionDTOMarshalTest()
+        public void TypePatternVersionDTOMarshalTest()
         {
-            PatternForSemanticVersionDTO dtoStart = Misc.CreatePatternForSemanticVersionDTO;
+            TypePatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -176,16 +176,16 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                PatternForSemanticVersionDTO dtoRead =
-                    PatternForSemanticVersionDTO.Make(input, dtoStart.PublicId);
+                TypePatternVersionDTO dtoRead =
+                    TypePatternVersionDTO.Make(input, dtoStart.PublicId);
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
         [DoNotParallelize]
         [Fact]
-        public void PatternForSemanticVersionDTOJsonMarshal()
+        public void TypePatternVersionDTOJsonMarshal()
         {
-            PatternForSemanticVersionDTO dtoStart = Misc.CreatePatternForSemanticVersionDTO;
+            TypePatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -196,7 +196,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                PatternForSemanticVersionDTO dtoEnd = PatternForSemanticVersionDTO.Make(input.ReadJsonObject(),
+                TypePatternVersionDTO dtoEnd = TypePatternVersionDTO.Make(input.ReadJsonObject(),
                     dtoStart.PublicId);
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }

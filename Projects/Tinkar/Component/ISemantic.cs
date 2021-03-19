@@ -30,8 +30,8 @@ namespace Tinkar
         IComponent ReferencedComponent { get; }
 
         /// <summary>
-        /// Gets PatternForSemantic.
+        /// Gets TypePattern.
         /// </summary>
-        IPatternForSemantic PatternForSemantic { get; }
+        ITypePattern TypePattern { get; }
     }
 }

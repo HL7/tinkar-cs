@@ -21,11 +21,11 @@ namespace Tinkar
 {
     /// <summary>
     /// Defines the fields and purpose of a Semantic Version.
-    /// SemanticVersion instances all reference a IPatternForSemanticVersion
+    /// SemanticVersion instances all reference a ITypePatternVersion
     /// to define the expected fields of that Semantic Version.
     /// </summary>
-    [JavaAttribute("PatternForSemanticVersion")]
-    public interface IPatternForSemanticVersion<TFieldDefinition> : IVersion, IPatternForSemantic
+    [JavaAttribute("TypePatternVersion")]
+    public interface ITypePatternVersion<TFieldDefinition> : IVersion, ITypePattern
         where TFieldDefinition : IFieldDefinition
     {
         /// <summary>
