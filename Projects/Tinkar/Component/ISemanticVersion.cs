@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Tinkar
 {
@@ -28,6 +29,6 @@ namespace Tinkar
         /// <summary>
         /// Gets semantic version fields.
         /// </summary>
-        IEnumerable<Object> Fields { get; }
+        ImmutableList<Object> Fields { get; }
     }
 }

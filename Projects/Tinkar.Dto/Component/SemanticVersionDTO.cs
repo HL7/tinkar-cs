@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -62,7 +63,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Fields array.
         /// </summary>
-        public IEnumerable<Object> Fields { get; init; }
+        public ImmutableList<Object> Fields { get; init; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
@@ -77,7 +78,7 @@ namespace Tinkar.Dto
             IPublicId definitionForSemanticUuids,
             IPublicId referencedComponentUuids,
             StampDTO stampDTO,
-            IEnumerable<Object> fields) : base(componentPublicId, stampDTO)
+            ImmutableList<Object> fields) : base(componentPublicId, stampDTO)
         {
             this.DefinitionForSemanticPublicId = definitionForSemanticUuids;
             this.ReferencedComponentPublicId = referencedComponentUuids;
@@ -185,7 +186,7 @@ namespace Tinkar.Dto
                     semanticVersion.PatternForSemantic.PublicId,
                     semanticVersion.ReferencedComponent.PublicId,
                     StampDTO.Make(semanticVersion.Stamp), 
-                    convertedFields);
+                    convertedFields.ToImmutableList());
         }
 
         /// <summary>
@@ -206,7 +207,7 @@ namespace Tinkar.Dto
                 definitionForSemanticUuids,
                 referencedComponentUuids,
                 StampDTO.Make(input),
-                input.GetObjects());
+                input.GetObjects().ToImmutableList());
 
         /// <summary>
         /// Static method to Create DTO item from json .
@@ -225,7 +226,7 @@ namespace Tinkar.Dto
                 definitionForSemanticPublicId,
                 referencedComponentPublicId,
                 StampDTO.Make((JObject)jsonObject[ComponentFieldForJson.STAMP]),
-                jsonObject.AsObjects(ComponentFieldForJson.FIELDS));
+                jsonObject.AsObjects(ComponentFieldForJson.FIELDS).ToImmutableList());
 
         /// <summary>
         /// Marshal DTO item to output stream.

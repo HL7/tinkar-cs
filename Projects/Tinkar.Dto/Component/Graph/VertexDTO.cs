@@ -106,33 +106,6 @@ namespace Tinkar.Dto
 
         public ImmutableDictionary<IConcept, Object> Properties { get; init; }
 
-#if Never
-        /// <summary>
-        /// Gets tindex of this vertex within its graph. The index is locally
-        /// unique within a graph, but not across graphs, or different versions of the same graph.
-        /// Vertex index is not used in equality or hash calculations.
-        /// </summary>
-        public int VertexIndex { get; init; }
-
-        /// <summary>
-        /// Concept that represents the meaning of this vertex.
-        /// </summary>
-        public IConcept Meaning { get; init; }
-
-    public static ImmutableMap<ConceptDTO, Object> abstractProperties(ImmutableMap<ConceptDTO, Object> incoming) {
-        MutableMap<ConceptDTO, Object> outgoing = Maps.mutable.ofInitialCapacity(incoming.size());
-        incoming.forEachKeyValue((key, value) -> {
-            outgoing.put(abstractObject(key), abstractObject(value));
-        });
-        return outgoing.toImmutable();
-    }
-
-    @Override
-    public RichIterable<ConceptDTO> propertyKeys() {
-        return this.properties.keysView();
-    }
-#endif
-
         /// <summary>
         /// Gets universally unique identifier for this vertex
         /// 
@@ -197,7 +170,7 @@ namespace Tinkar.Dto
         /// Gets keys for the populated properties
         /// </summary>
         /// <returns>keys</returns>
-        public IEnumerable<IConcept> PropertyKeys => this.Properties.Keys;
+        public ImmutableList<IConcept> PropertyKeys => this.Properties.Keys.ToImmutableList();
 
         public virtual Int32 CompareTo(Object o)
         {

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Xunit;
 using Assert = Xunit.Assert;
 using Tinkar.Dto;
+using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
@@ -66,7 +67,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }
+                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableList()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -118,7 +119,7 @@ namespace Tinkar.XUnitTests
                 SemanticChronologyDTO b = Misc.CreateSemanticChronologyDTO
                 with
                 {
-                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }
+                    SemanticVersions = new SemanticVersionDTO[] { Misc.CreateSemanticVersionDTO, Misc.CreateSemanticVersionDTO }.ToImmutableList()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

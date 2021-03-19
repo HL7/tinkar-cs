@@ -6,6 +6,7 @@ using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
 using Tinkar.Dto;
+using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
@@ -79,7 +80,7 @@ namespace Tinkar.XUnitTests
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO
                 with
                 {
-                    Fields = new Object[] { 1, "abcdef" }
+                    Fields = new Object[] { 1, "abcdef" }.ToImmutableList()
                 };
                 Assert.False(a.IsEquivalent(b));
             }
@@ -141,7 +142,7 @@ namespace Tinkar.XUnitTests
                 SemanticVersionDTO b = Misc.CreateSemanticVersionDTO
                 with
                 {
-                    Fields = new Object[] { 1, "abcdef" }
+                    Fields = new Object[] { 1, "abcdef" }.ToImmutableList()
                 };
                 Assert.False(a.CompareTo(b) == 0);
             }

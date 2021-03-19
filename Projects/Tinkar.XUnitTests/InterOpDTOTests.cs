@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Tinkar.Dto;
@@ -58,7 +59,7 @@ namespace Tinkar.XUnitTests
                     {
                         new ConceptVersionDTO(pid, NextStamp()) ,
                         new ConceptVersionDTO(pid, NextStamp())
-                    }
+                    }.ToImmutableList()
                 );
                 retVal.Add(dto);
             }
@@ -89,9 +90,9 @@ namespace Tinkar.XUnitTests
                                     NextPublicId(2),
                                     NextPublicId(3)
                                 )
-                            }
+                            }.ToImmutableList()
                         )
-                    }
+                    }.ToImmutableList()
                 );
 
                 retVal.Add(dto);
@@ -126,9 +127,9 @@ namespace Tinkar.XUnitTests
                                 new DateTime(2020, 1, 2),
                                 new SpatialPointDTO(1, 2, 3),
                                 new PlanarPointDTO(-1, -2)
-                            }
+                            }.ToImmutableList()
                         )
-                    }
+                    }.ToImmutableList()
                 );
 
                 retVal.Add(dto);
@@ -157,7 +158,7 @@ namespace Tinkar.XUnitTests
                             new DateTime(2020, 1, 2),
                             new SpatialPointDTO(1, 2, 3),
                             new PlanarPointDTO(-1, -2)
-                        }
+                        }.ToImmutableList()
                     );
             }
             return retVal;

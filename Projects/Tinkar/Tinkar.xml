@@ -416,7 +416,7 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.Dto.ConceptVersionDTO})">
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.ConceptVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptChronologyDTO"/> class.
             </summary>
@@ -1292,7 +1292,7 @@
             Gets Versions list.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.PatternForSemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.Dto.PatternForSemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.PatternForSemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.PatternForSemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternForSemanticChronologyDTO"/> class.
             </summary>
@@ -1419,7 +1419,7 @@
             Gets FieldDefinitions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.Dto.FieldDefinitionDTO})">
+        <member name="M:Tinkar.Dto.PatternForSemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.FieldDefinitionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternForSemanticVersionDTO"/> class.
             </summary>
@@ -1492,7 +1492,7 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.Dto.SemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
@@ -1501,7 +1501,7 @@
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
-        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId,System.Collections.Generic.IEnumerable{Tinkar.Dto.SemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPatternForSemantic,Tinkar.IPublicId,System.Collections.Immutable.ImmutableList{Tinkar.Dto.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
@@ -1692,7 +1692,7 @@
             Gets Fields array.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.Dto.StampDTO,System.Collections.Generic.IEnumerable{System.Object})">
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.Dto.StampDTO,System.Collections.Immutable.ImmutableList{System.Object})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticVersionDTO"/> class.
             </summary>

@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Tinkar
 {
@@ -36,6 +37,6 @@ namespace Tinkar
         /// <summary>
         /// Gets versions.
         /// </summary>
-        IEnumerable<TVersion> Versions { get; }
+        ImmutableList<TVersion> Versions { get; }
     }
 }

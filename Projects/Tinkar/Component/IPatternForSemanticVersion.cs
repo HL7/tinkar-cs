@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Tinkar
 {
@@ -30,7 +31,7 @@ namespace Tinkar
         /// <summary>
         /// Gets the SemanticVersion field definitions.
         /// </summary>
-        IEnumerable<TFieldDefinition> FieldDefinitions { get; }
+        ImmutableList<TFieldDefinition> FieldDefinitions { get; }
 
         /// <summary>
         /// Gets the purpose of referenced component.

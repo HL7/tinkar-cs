@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -43,7 +44,7 @@ namespace Tinkar.Dto
 
         public IPublicId ReferencedComponentPurposePublicId { get; init; }
         public IPublicId ReferencedComponentMeaningPublicId { get; init; }
-        public IEnumerable<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
+        public ImmutableList<FieldDefinitionDTO> FieldDefinitionDTOs { get; init; }
 
         public IConcept ReferencedComponentPurpose =>
                 new ConceptDTO(this.ReferencedComponentPurposePublicId);
@@ -54,7 +55,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets FieldDefinitions.
         /// </summary>
-        public IEnumerable<FieldDefinitionDTO> FieldDefinitions => this.FieldDefinitionDTOs;
+        public ImmutableList<FieldDefinitionDTO> FieldDefinitions => this.FieldDefinitionDTOs;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternForSemanticVersionDTO"/> class.
@@ -69,7 +70,7 @@ namespace Tinkar.Dto
             StampDTO stamp,
             IPublicId referencedComponentPurposePublicId,
             IPublicId referencedComponentMeaningPublicId,
-            IEnumerable<FieldDefinitionDTO> fieldDefinitionDTOs) : base(componentPublicId, stamp)
+            ImmutableList<FieldDefinitionDTO> fieldDefinitionDTOs) : base(componentPublicId, stamp)
         {
             this.ReferencedComponentPurposePublicId = referencedComponentPurposePublicId;
             this.ReferencedComponentMeaningPublicId = referencedComponentMeaningPublicId;
@@ -141,7 +142,7 @@ namespace Tinkar.Dto
                     StampDTO.Make(definitionForSemanticVersion.Stamp),
                     definitionForSemanticVersion.ReferencedComponentPurpose.PublicId,
                     definitionForSemanticVersion.ReferencedComponentMeaning.PublicId,
-                    fields);
+                    fields.ToImmutableList());
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace Tinkar.Dto
                 StampDTO.Make(input),
                 input.GetPublicId(),
                 input.GetPublicId(),
-                input.GetFieldDefinitionList());
+                input.GetFieldDefinitionList().ToImmutableList());
 
         /// <summary>
         /// Static method to Create DTO item from json .
@@ -171,7 +172,7 @@ namespace Tinkar.Dto
                     StampDTO.Make((JObject)jsonObject[ComponentFieldForJson.STAMP]),
                     jsonObject.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_PUBLIC_ID),
                     jsonObject.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_MEANING_PUBLIC_ID),
-                    jsonObject.AsFieldDefinitionList(ComponentFieldForJson.FIELD_DEFINITIONS));
+                    jsonObject.AsFieldDefinitionList(ComponentFieldForJson.FIELD_DEFINITIONS).ToImmutableList());
 
         /// <summary>
         /// Marshal all fields to Json output stream.

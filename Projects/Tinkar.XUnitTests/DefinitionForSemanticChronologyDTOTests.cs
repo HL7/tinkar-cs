@@ -6,6 +6,7 @@ using System.Linq;
 using Xunit;
 using Assert = Xunit.Assert;
 using Tinkar.Dto;
+using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
@@ -67,7 +68,7 @@ namespace Tinkar.XUnitTests
                         {
                             PublicId = new PublicId(Misc.other)
                         }
-                    }
+                    }.ToImmutableList()
                 }
                 ;
                 Assert.False(a.IsEquivalent(b));
@@ -117,7 +118,7 @@ namespace Tinkar.XUnitTests
                         {
                             PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.h4)
                         }
-                    }
+                    }.ToImmutableList()
                 }
                 ;
                 Assert.False(a.CompareTo(b) == 0);
