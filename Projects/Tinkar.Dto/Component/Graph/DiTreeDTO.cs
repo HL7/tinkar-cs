@@ -20,7 +20,7 @@ namespace Tinkar.Dto
 
         public DiTreeDTO(VertexDTO root,
                         ImmutableDictionary<Int32, Int32> predecessorMap,
-                        IEnumerable<VertexDTO> vertexMap,
+                        ImmutableList<VertexDTO> vertexMap,
                         ImmutableDictionary<Int32, ImmutableList<Int32>> successorMap) : base(vertexMap, successorMap)
         {
             this.Root = root;

@@ -13,10 +13,10 @@ namespace Tinkar.Dto
 
         public ImmutableDictionary<Int32, ImmutableList<Int32>> SuccessorMap { get; init; }
 
-        public GraphDTO(IEnumerable<VertexDTO> vertexMap,
+        public GraphDTO(ImmutableList<VertexDTO> vertexMap,
                         ImmutableDictionary<Int32, ImmutableList<Int32>> successorMap)
         {
-            this.VertexMap = vertexMap.ToImmutableList();
+            this.VertexMap = vertexMap;
             this.SuccessorMap = successorMap;
         }
 

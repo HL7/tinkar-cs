@@ -300,29 +300,37 @@ namespace Tinkar.XUnitTests
 
 
 
-        //$public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder<GraphDTO.Builder, GraphVertexDTO.Builder>(new GraphDTO.Builder()).Create();
+        public static GraphDTO CreateGraphDTO()
+        {
+            ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
 
-        //$public static TBuilder CreateGraphDTOBuilder<TBuilder, TVertexBuilder>(TBuilder bldr)
-        //    where TBuilder : GraphDTO.Builder<TBuilder, TVertexBuilder>
-        //    where TVertexBuilder : GraphVertexDTO.Builder<TVertexBuilder>, new()
-        //{
-        //    bldr.AppendVertex(g1, new ConceptDTO(PublicIdG))
-        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
-        //        ;
-        //    bldr.AppendVertex(g2, new ConceptDTO(PublicIdH))
-        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
-        //        ;
-        //    bldr.AppendVertex(g3, new ConceptDTO(PublicIdI))
-        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
-        //        ;
-        //    bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ))
-        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
-        //        ;
+            void AppendVertex(Guid vertexId, IPublicId propertyId, Int32 propertyKey, Int32 propertyValue)
+            {
+                ImmutableDictionary<IConcept, Object>.Builder properties = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                properties.Add(new ConceptDTO(Misc.GID(propertyKey)), propertyValue);
+                VertexDTO vertex = new VertexDTO(vertexId, 
+                    vertexMap.Count, 
+                    new ConceptDTO(propertyId), 
+                    properties.ToImmutable());
+                vertexMap.Add(vertex);
+            }
 
-        //    bldr.Vertex(g1).AppendSuccessors(bldr.Vertex(g2), bldr.Vertex(g3));
+            AppendVertex(g1, PublicIdG, 0x1, 0x1);
+            AppendVertex(g2, PublicIdH, 0x1, 0x2);
+            AppendVertex(g3, PublicIdI, 0x1, 0x3);
+            AppendVertex(g4, PublicIdJ, 0x1, 0x4);
 
-        //    return bldr;
-        //}
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successors = ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
+            {
+                Int32[] successorList = new Int32[] { 1, 2 };
+                successors.Add(0, successorList.ToImmutableList());
+            }
+            {
+                Int32[] successorList = new Int32[] { 3 };
+                successors.Add(1, successorList.ToImmutableList());
+            }
+            return new GraphDTO(vertexMap.ToImmutable(), successors.ToImmutable());
+        }
 
 
 
