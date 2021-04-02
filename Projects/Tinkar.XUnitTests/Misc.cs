@@ -192,209 +192,209 @@ namespace Tinkar.XUnitTests
 
         public static Guid GID(Int32 i) => new Guid(i, 0, 0, zero);
 
-        public static VertexDTO CreateVertexDTO() => CreateVertexDTOBuilder().Create();
+        //$public static VertexDTO CreateVertexDTO() => CreateVertexDTOBuilder().Create();
 
-        public static VertexDTO.Builder CreateVertexDTOBuilder()
-        {
-            VertexDTO.Builder bldr = new VertexDTO.Builder().SetVertexIndex(123);
-            SetVertexDTO(bldr);
-            return bldr;
-        }
+        //$public static VertexDTO.Builder CreateVertexDTOBuilder()
+        //{
+        //    VertexDTO.Builder bldr = new VertexDTO.Builder().SetVertexIndex(123);
+        //    SetVertexDTO(bldr);
+        //    return bldr;
+        //}
 
-        public static void SetVertexDTO<TBuilder>(TBuilder bldr)
-             where TBuilder : VertexDTO.Builder<TBuilder>
-        {
-            bldr
-                .SetVertexIndex(123)
-                .SetMeaning(new ConceptDTO(PublicIdH))
-                .SetVertexId(Misc.g1)
-                .AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1)
-                .AppendProperty(new ConceptDTO(GID(0x2)), (Single)3)
-                .AppendProperty(new ConceptDTO(GID(0x3)), "abcdef")
-                .AppendProperty(new ConceptDTO(GID(0x4)), true)
-                .AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1))
-                ;
-        }
-
-
-
-        public static GraphVertexDTO CreateGraphVertexDTO() => CreateGraphVertexDTOBuilder().Create();
-
-        public static GraphVertexDTO.Builder CreateGraphVertexDTOBuilder()
-        {
-            GraphVertexDTO.Builder bldr = new GraphVertexDTO.Builder();
-            SetGraphVertexDTO(bldr);
-            return bldr;
-        }
-
-        public static void SetGraphVertexDTO<TBuilder>(TBuilder bldr)
-             where TBuilder : GraphVertexDTO.Builder<TBuilder>, new()
-        {
-            TBuilder successor1 = new TBuilder()
-                .SetVertexIndex(456)
-                .SetMeaning(new ConceptDTO(PublicIdG))
-                .SetVertexId(Misc.g2)
-                ;
-
-            TBuilder successor2 = new TBuilder()
-                .SetVertexIndex(789)
-                .SetMeaning(new ConceptDTO(PublicIdJ))
-                .SetVertexId(Misc.g3)
-                ;
-
-            SetVertexDTO(bldr);
-            bldr
-                .AppendSuccessors(successor1, successor2)
-                ;
-        }
+        //$public static void SetVertexDTO<TBuilder>(TBuilder bldr)
+        //     where TBuilder : VertexDTO.Builder<TBuilder>
+        //{
+        //    bldr
+        //        .SetVertexIndex(123)
+        //        .SetMeaning(new ConceptDTO(PublicIdH))
+        //        .SetVertexId(Misc.g1)
+        //        .AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1)
+        //        .AppendProperty(new ConceptDTO(GID(0x2)), (Single)3)
+        //        .AppendProperty(new ConceptDTO(GID(0x3)), "abcdef")
+        //        .AppendProperty(new ConceptDTO(GID(0x4)), true)
+        //        .AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1))
+        //        ;
+        //}
 
 
 
-        public static DiTreeVertexDTO CreateDiTreeVertexDTO() => CreateDiTreeVertexDTOBuilder().Create();
+        //$public static GraphVertexDTO CreateGraphVertexDTO() => CreateGraphVertexDTOBuilder().Create();
 
-        public static DiTreeVertexDTO.Builder CreateDiTreeVertexDTOBuilder()
-        {
-            DiTreeVertexDTO.Builder bldr = new DiTreeVertexDTO.Builder();
-            SetDiTreeVertexDTO(bldr);
-            return bldr;
-        }
+        //$public static GraphVertexDTO.Builder CreateGraphVertexDTOBuilder()
+        //{
+        //    GraphVertexDTO.Builder bldr = new GraphVertexDTO.Builder();
+        //    SetGraphVertexDTO(bldr);
+        //    return bldr;
+        //}
 
-        public static void SetDiTreeVertexDTO<TBuilder>(TBuilder bldr)
-             where TBuilder : DiTreeVertexDTO.Builder<TBuilder>, new()
-        {
-            TBuilder predecessor = new TBuilder()
-                .SetVertexIndex(135)
-                .SetMeaning(new ConceptDTO(PublicIdH))
-                .SetVertexId(Misc.h2)
-                ;
+        //$public static void SetGraphVertexDTO<TBuilder>(TBuilder bldr)
+        //     where TBuilder : GraphVertexDTO.Builder<TBuilder>, new()
+        //{
+        //    TBuilder successor1 = new TBuilder()
+        //        .SetVertexIndex(456)
+        //        .SetMeaning(new ConceptDTO(PublicIdG))
+        //        .SetVertexId(Misc.g2)
+        //        ;
 
-            SetGraphVertexDTO(bldr);
-            bldr
-                .SetPredecessor(predecessor)
-                ;
-        }
+        //    TBuilder successor2 = new TBuilder()
+        //        .SetVertexIndex(789)
+        //        .SetMeaning(new ConceptDTO(PublicIdJ))
+        //        .SetVertexId(Misc.g3)
+        //        ;
 
-        public static DiGraphVertexDTO CreateDiGraphVertexDTO() => CreateDiGraphVertexDTOBuilder().Create();
-
-        public static DiGraphVertexDTO.Builder CreateDiGraphVertexDTOBuilder()
-        {
-            DiGraphVertexDTO.Builder bldr = new DiGraphVertexDTO.Builder();
-            SetDiGraphVertexDTO(bldr);
-            return bldr;
-        }
-
-        public static void SetDiGraphVertexDTO<TBuilder>(TBuilder bldr)
-             where TBuilder : DiGraphVertexDTO.Builder<TBuilder>, new()
-        {
-            TBuilder predecessor = new TBuilder()
-                .SetVertexIndex(135)
-                .SetMeaning(new ConceptDTO(PublicIdH))
-                .SetVertexId(Misc.h2)
-                ;
-
-            SetGraphVertexDTO(bldr);
-            bldr
-                .AppendPredecessors(predecessor)
-                ;
-        }
+        //    SetVertexDTO(bldr);
+        //    bldr
+        //        .AppendSuccessors(successor1, successor2)
+        //        ;
+        //}
 
 
 
-        public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder<GraphDTO.Builder, GraphVertexDTO.Builder>(new GraphDTO.Builder()).Create();
+        //$public static DiTreeVertexDTO CreateDiTreeVertexDTO() => CreateDiTreeVertexDTOBuilder().Create();
 
-        public static TBuilder CreateGraphDTOBuilder<TBuilder, TVertexBuilder>(TBuilder bldr)
-            where TBuilder : GraphDTO.Builder<TBuilder, TVertexBuilder>
-            where TVertexBuilder : GraphVertexDTO.Builder<TVertexBuilder>, new()
-        {
-            bldr.AppendVertex(g1, new ConceptDTO(PublicIdG))
-                .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
-                ;
-            bldr.AppendVertex(g2, new ConceptDTO(PublicIdH))
-                .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
-                ;
-            bldr.AppendVertex(g3, new ConceptDTO(PublicIdI))
-                .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
-                ;
-            bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ))
-                .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
-                ;
+        //$public static DiTreeVertexDTO.Builder CreateDiTreeVertexDTOBuilder()
+        //{
+        //    DiTreeVertexDTO.Builder bldr = new DiTreeVertexDTO.Builder();
+        //    SetDiTreeVertexDTO(bldr);
+        //    return bldr;
+        //}
 
-            bldr.Vertex(g1).AppendSuccessors(bldr.Vertex(g2), bldr.Vertex(g3));
+        //$public static void SetDiTreeVertexDTO<TBuilder>(TBuilder bldr)
+        //     where TBuilder : DiTreeVertexDTO.Builder<TBuilder>, new()
+        //{
+        //    TBuilder predecessor = new TBuilder()
+        //        .SetVertexIndex(135)
+        //        .SetMeaning(new ConceptDTO(PublicIdH))
+        //        .SetVertexId(Misc.h2)
+        //        ;
 
-            return bldr;
-        }
+        //    SetGraphVertexDTO(bldr);
+        //    bldr
+        //        .SetPredecessor(predecessor)
+        //        ;
+        //}
+
+        //$public static DiGraphVertexDTO CreateDiGraphVertexDTO() => CreateDiGraphVertexDTOBuilder().Create();
+
+        //$public static DiGraphVertexDTO.Builder CreateDiGraphVertexDTOBuilder()
+        //{
+        //    DiGraphVertexDTO.Builder bldr = new DiGraphVertexDTO.Builder();
+        //    SetDiGraphVertexDTO(bldr);
+        //    return bldr;
+        //}
+
+        //$public static void SetDiGraphVertexDTO<TBuilder>(TBuilder bldr)
+        //     where TBuilder : DiGraphVertexDTO.Builder<TBuilder>, new()
+        //{
+        //    TBuilder predecessor = new TBuilder()
+        //        .SetVertexIndex(135)
+        //        .SetMeaning(new ConceptDTO(PublicIdH))
+        //        .SetVertexId(Misc.h2)
+        //        ;
+
+        //    SetGraphVertexDTO(bldr);
+        //    bldr
+        //        .AppendPredecessors(predecessor)
+        //        ;
+        //}
 
 
 
-        public static DiTreeDTO CreateDiTreeDTO() => CreateDiTreeDTOBuilder().Create();
+        //$public static GraphDTO CreateGraphDTO() => CreateGraphDTOBuilder<GraphDTO.Builder, GraphVertexDTO.Builder>(new GraphDTO.Builder()).Create();
 
-        public static DiTreeDTO.Builder CreateDiTreeDTOBuilder()
-        {
-            DiTreeDTO.Builder bldr = new DiTreeDTO.Builder();
-            bldr.SetVertexId(Misc.g1);
-            bldr.SetMeaning(new ConceptDTO(PublicIdH));
-            bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
-            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
-            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
-            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
+        //$public static TBuilder CreateGraphDTOBuilder<TBuilder, TVertexBuilder>(TBuilder bldr)
+        //    where TBuilder : GraphDTO.Builder<TBuilder, TVertexBuilder>
+        //    where TVertexBuilder : GraphVertexDTO.Builder<TVertexBuilder>, new()
+        //{
+        //    bldr.AppendVertex(g1, new ConceptDTO(PublicIdG))
+        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1)
+        //        ;
+        //    bldr.AppendVertex(g2, new ConceptDTO(PublicIdH))
+        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)2)
+        //        ;
+        //    bldr.AppendVertex(g3, new ConceptDTO(PublicIdI))
+        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)3)
+        //        ;
+        //    bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ))
+        //        .AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)4)
+        //        ;
 
-            DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
-            vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+        //    bldr.Vertex(g1).AppendSuccessors(bldr.Vertex(g2), bldr.Vertex(g3));
 
-            DiTreeVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
-            vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
-            vertex2.SetPredecessor(vertex1);
+        //    return bldr;
+        //}
 
-            var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
-            vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
-            vertex3.SetPredecessor(vertex2);
 
-            var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
-            vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
-            vertex4.SetPredecessor(vertex3);
 
-            vertex1.AppendSuccessors(vertex2);
-            vertex2.AppendSuccessors(vertex3);
-            vertex3.AppendSuccessors(vertex4);
+        //$public static DiTreeDTO CreateDiTreeDTO() => CreateDiTreeDTOBuilder().Create();
 
-            bldr.SetRoot(vertex1);
-            return bldr;
-        }
+        //$public static DiTreeDTO.Builder CreateDiTreeDTOBuilder()
+        //{
+        //    DiTreeDTO.Builder bldr = new DiTreeDTO.Builder();
+        //    bldr.SetVertexId(Misc.g1);
+        //    bldr.SetMeaning(new ConceptDTO(PublicIdH));
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
 
-        public static DiGraphDTO CreateDiGraphDTO() => CreateDiGraphDTOBuilder().Create();
+        //    DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
+        //    vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
 
-        public static DiGraphDTO.Builder CreateDiGraphDTOBuilder()
-        {
-            DiGraphDTO.Builder bldr = new DiGraphDTO.Builder();
-            bldr.SetVertexId(Misc.g1);
-            bldr.SetMeaning(new ConceptDTO(PublicIdH));
-            bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-            bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
-            bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
-            bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
-            bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
+        //    DiTreeVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
+        //    vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
+        //    vertex2.SetPredecessor(vertex1);
 
-            DiGraphVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
-            vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+        //    var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
+        //    vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
+        //    vertex3.SetPredecessor(vertex2);
 
-            DiGraphVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
-            vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
-            vertex2.AppendPredecessors(vertex1);
+        //    var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
+        //    vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
+        //    vertex4.SetPredecessor(vertex3);
 
-            var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
-            vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
-            vertex3.AppendPredecessors(vertex2);
+        //    vertex1.AppendSuccessors(vertex2);
+        //    vertex2.AppendSuccessors(vertex3);
+        //    vertex3.AppendSuccessors(vertex4);
 
-            var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
-            vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
-            vertex4.AppendPredecessors(vertex3);
+        //    bldr.SetRoot(vertex1);
+        //    return bldr;
+        //}
 
-            vertex1.AppendSuccessors(vertex2);
-            vertex2.AppendSuccessors(vertex3);
-            vertex3.AppendSuccessors(vertex4);
+        //$public static DiGraphDTO CreateDiGraphDTO() => CreateDiGraphDTOBuilder().Create();
 
-            return bldr;
-        }
+        //$public static DiGraphDTO.Builder CreateDiGraphDTOBuilder()
+        //{
+        //    DiGraphDTO.Builder bldr = new DiGraphDTO.Builder();
+        //    bldr.SetVertexId(Misc.g1);
+        //    bldr.SetMeaning(new ConceptDTO(PublicIdH));
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
+        //    bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
+
+        //    DiGraphVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
+        //    vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+
+        //    DiGraphVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
+        //    vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
+        //    vertex2.AppendPredecessors(vertex1);
+
+        //    var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
+        //    vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
+        //    vertex3.AppendPredecessors(vertex2);
+
+        //    var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
+        //    vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
+        //    vertex4.AppendPredecessors(vertex3);
+
+        //    vertex1.AppendSuccessors(vertex2);
+        //    vertex2.AppendSuccessors(vertex3);
+        //    vertex3.AppendSuccessors(vertex4);
+
+        //    return bldr;
+        //}
     }
 }
