@@ -333,8 +333,7 @@ namespace Tinkar.XUnitTests
         }
 
 
-#if X
-        public static DiTreeDTO CreateDiTreeDTO()
+        public static DiGraphDTO CreateDiGraphDTO()
         {
             ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
 
@@ -355,6 +354,9 @@ namespace Tinkar.XUnitTests
             AppendVertex(g3, PublicIdI, 0x1, 0x3);
             AppendVertex(g4, PublicIdJ, 0x1, 0x4);
 
+            ImmutableList<Int32>.Builder roots = ImmutableList<Int32>.Empty.ToBuilder();
+            roots.Add(root.VertexIndex);
+
             ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successors = ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
             {
                 Int32[] successorList = new Int32[] { 1, 2 };
@@ -366,28 +368,26 @@ namespace Tinkar.XUnitTests
                 successors.Add(2, successorList.ToImmutableList());
             }
 
-            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder predecessors= ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder predecessors = ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
             {
-                Int32[] predecessorList = new Int32[] { 2 };
+                Int32[] predecessorList = new Int32[] { 0 };
                 predecessors.Add(1, predecessorList.ToImmutableList());
                 predecessors.Add(2, predecessorList.ToImmutableList());
             }
             {
-                Int32[] predecessorList = new Int32[] { 1,2 };
+                Int32[] predecessorList = new Int32[] { 1, 2 };
                 predecessors.Add(3, predecessorList.ToImmutableList());
             }
 
 
-
-
-
-            DiTreeDTO bldr = new DiTreeDTO(
-                root,
+            return new DiGraphDTO(
+                roots.ToImmutable(),
                 predecessors.ToImmutable(),
                 vertexMap.ToImmutable(),
                 successors.ToImmutable()
                 );
-#endif
+        }
+
         public static DiTreeDTO CreateDiTreeDTO()
         {
             ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
@@ -435,37 +435,5 @@ namespace Tinkar.XUnitTests
             return bldr;
         }
 
-        //$public static DiGraphDTO.Builder CreateDiGraphDTOBuilder()
-        //{
-        //    DiGraphDTO.Builder bldr = new DiGraphDTO.Builder();
-        //    bldr.SetVertexId(Misc.g1);
-        //    bldr.SetMeaning(new ConceptDTO(PublicIdH));
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
-
-        //    DiGraphVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
-        //    vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
-
-        //    DiGraphVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
-        //    vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
-        //    vertex2.AppendPredecessors(vertex1);
-
-        //    var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
-        //    vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
-        //    vertex3.AppendPredecessors(vertex2);
-
-        //    var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
-        //    vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
-        //    vertex4.AppendPredecessors(vertex3);
-
-        //    vertex1.AppendSuccessors(vertex2);
-        //    vertex2.AppendSuccessors(vertex3);
-        //    vertex3.AppendSuccessors(vertex4);
-
-        //    return bldr;
-        //}
     }
 }

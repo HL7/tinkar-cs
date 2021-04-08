@@ -74,10 +74,10 @@ namespace Tinkar.Dto
             return vertexMap.ToImmutableList();
         }
 
-        protected void MarshalSuccessorMap(TinkarOutput output)
+        protected void MarshalMap(TinkarOutput output, ImmutableDictionary<Int32, ImmutableList<Int32>> map)
         {
-            output.WriteInt32(this.SuccessorMap.Count());
-            foreach (KeyValuePair<Int32, ImmutableList<Int32>> keyValue in this.SuccessorMap)
+            output.WriteInt32(map.Count());
+            foreach (KeyValuePair<Int32, ImmutableList<Int32>> keyValue in map)
             {
                 output.WriteInt32(keyValue.Key);
                 Int32[] successors = keyValue.Value.ToArray();
@@ -87,8 +87,7 @@ namespace Tinkar.Dto
             }
         }
 
-        protected static ImmutableDictionary<Int32, ImmutableList<Int32>> UnmarshalSuccessorMap(TinkarInput input,
-            ImmutableList<VertexDTO> vertexMap)
+        protected static ImmutableDictionary<Int32, ImmutableList<Int32>> UnmarshalMap(TinkarInput input)
         {
             int mapSize = input.GetInt32();
             ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successorMap =

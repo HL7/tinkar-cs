@@ -16,7 +16,7 @@ namespace Tinkar
         /// Gets the roots of this item.
         /// A graph can have multiple roots.
         /// </summary>
-        IEnumerable<V> Roots { get; }
+        ImmutableList<V> Roots { get; }
 
         /// <summary>
         /// Get predecessors of the indicated vertex.

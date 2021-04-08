@@ -76,7 +76,7 @@ namespace Tinkar.Dto
         public static DiTreeDTO Make(TinkarInput input)
         {
             ImmutableList<VertexDTO> vertexMap = GraphDTO.UnmarshalVertexMap(input);
-            var successorMap = GraphDTO.UnmarshalSuccessorMap(input, vertexMap);
+            var successorMap = GraphDTO.UnmarshalMap(input);
             VertexDTO root = vertexMap[input.GetInt32()];
             int predecessorMapSize = input.GetInt32();
             ImmutableDictionary<Int32, Int32>.Builder predecessorMap = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
@@ -88,7 +88,7 @@ namespace Tinkar.Dto
         public void Marshal(TinkarOutput output)
         {
             this.MarshalVertexMap(output);
-            this.MarshalSuccessorMap(output);
+            this.MarshalMap(output, this.SuccessorMap);
 
             output.WriteInt32(this.Root.VertexIndex);
             output.WriteInt32(this.PredecessorMap.Count);
