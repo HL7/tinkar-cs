@@ -308,9 +308,9 @@ namespace Tinkar.XUnitTests
             {
                 ImmutableDictionary<IConcept, Object>.Builder properties = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
                 properties.Add(new ConceptDTO(Misc.GID(propertyKey)), propertyValue);
-                VertexDTO vertex = new VertexDTO(vertexId, 
-                    vertexMap.Count, 
-                    new ConceptDTO(propertyId), 
+                VertexDTO vertex = new VertexDTO(vertexId,
+                    vertexMap.Count,
+                    new ConceptDTO(propertyId),
                     properties.ToImmutable());
                 vertexMap.Add(vertex);
             }
@@ -333,44 +333,107 @@ namespace Tinkar.XUnitTests
         }
 
 
+#if X
+        public static DiTreeDTO CreateDiTreeDTO()
+        {
+            ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
 
-        //$public static DiTreeDTO CreateDiTreeDTO() => CreateDiTreeDTOBuilder().Create();
+            VertexDTO AppendVertex(Guid vertexId, IPublicId propertyId, Int32 propertyKey, Int32 propertyValue)
+            {
+                ImmutableDictionary<IConcept, Object>.Builder properties = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                properties.Add(new ConceptDTO(Misc.GID(propertyKey)), propertyValue);
+                VertexDTO vertex = new VertexDTO(vertexId,
+                    vertexMap.Count,
+                    new ConceptDTO(propertyId),
+                    properties.ToImmutable());
+                vertexMap.Add(vertex);
+                return vertex;
+            }
 
-        //$public static DiTreeDTO.Builder CreateDiTreeDTOBuilder()
-        //{
-        //    DiTreeDTO.Builder bldr = new DiTreeDTO.Builder();
-        //    bldr.SetVertexId(Misc.g1);
-        //    bldr.SetMeaning(new ConceptDTO(PublicIdH));
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x1)), (Int32)1);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x2)), (Single)3);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x3)), "abcdef");
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x4)), true);
-        //    bldr.AppendProperty(new ConceptDTO(GID(0x5)), new DateTime(2000, 1, 1));
+            VertexDTO root = AppendVertex(g1, PublicIdG, 0x1, 0x1);
+            AppendVertex(g2, PublicIdH, 0x1, 0x2);
+            AppendVertex(g3, PublicIdI, 0x1, 0x3);
+            AppendVertex(g4, PublicIdJ, 0x1, 0x4);
 
-        //    DiTreeVertexDTO.Builder vertex1 = bldr.AppendVertex(g1, new ConceptDTO(PublicIdG));
-        //    vertex1.AppendProperty(new ConceptDTO(Misc.GID(0x1)), (Int32)1);
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successors = ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
+            {
+                Int32[] successorList = new Int32[] { 1, 2 };
+                successors.Add(0, successorList.ToImmutableList());
+            }
+            {
+                Int32[] successorList = new Int32[] { 3 };
+                successors.Add(1, successorList.ToImmutableList());
+                successors.Add(2, successorList.ToImmutableList());
+            }
 
-        //    DiTreeVertexDTO.Builder vertex2 = bldr.AppendVertex(g2, new ConceptDTO(PublicIdH));
-        //    vertex2.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)2);
-        //    vertex2.SetPredecessor(vertex1);
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder predecessors= ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
+            {
+                Int32[] predecessorList = new Int32[] { 2 };
+                predecessors.Add(1, predecessorList.ToImmutableList());
+                predecessors.Add(2, predecessorList.ToImmutableList());
+            }
+            {
+                Int32[] predecessorList = new Int32[] { 1,2 };
+                predecessors.Add(3, predecessorList.ToImmutableList());
+            }
 
-        //    var vertex3 = bldr.AppendVertex(g3, new ConceptDTO(PublicIdI));
-        //    vertex3.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)3);
-        //    vertex3.SetPredecessor(vertex2);
 
-        //    var vertex4 = bldr.AppendVertex(g4, new ConceptDTO(PublicIdJ));
-        //    vertex4.AppendProperty(new ConceptDTO(Misc.GID(0x2)), (Int32)4);
-        //    vertex4.SetPredecessor(vertex3);
 
-        //    vertex1.AppendSuccessors(vertex2);
-        //    vertex2.AppendSuccessors(vertex3);
-        //    vertex3.AppendSuccessors(vertex4);
 
-        //    bldr.SetRoot(vertex1);
-        //    return bldr;
-        //}
 
-        //$public static DiGraphDTO CreateDiGraphDTO() => CreateDiGraphDTOBuilder().Create();
+            DiTreeDTO bldr = new DiTreeDTO(
+                root,
+                predecessors.ToImmutable(),
+                vertexMap.ToImmutable(),
+                successors.ToImmutable()
+                );
+#endif
+        public static DiTreeDTO CreateDiTreeDTO()
+        {
+            ImmutableList<VertexDTO>.Builder vertexMap = ImmutableList<VertexDTO>.Empty.ToBuilder();
+
+            VertexDTO AppendVertex(Guid vertexId, IPublicId propertyId, Int32 propertyKey, Int32 propertyValue)
+            {
+                ImmutableDictionary<IConcept, Object>.Builder properties = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+                properties.Add(new ConceptDTO(Misc.GID(propertyKey)), propertyValue);
+                VertexDTO vertex = new VertexDTO(vertexId,
+                    vertexMap.Count,
+                    new ConceptDTO(propertyId),
+                    properties.ToImmutable());
+                vertexMap.Add(vertex);
+                return vertex;
+            }
+
+            VertexDTO root = AppendVertex(g1, PublicIdG, 0x1, 0x1);
+            AppendVertex(g2, PublicIdH, 0x1, 0x2);
+            AppendVertex(g3, PublicIdI, 0x1, 0x3);
+            AppendVertex(g4, PublicIdJ, 0x1, 0x4);
+
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder successors = ImmutableDictionary<int, ImmutableList<int>>.Empty.ToBuilder();
+            {
+                Int32[] successorList = new Int32[] { 1, 2 };
+                successors.Add(0, successorList.ToImmutableList());
+            }
+            {
+                Int32[] successorList = new Int32[] { 3 };
+                successors.Add(1, successorList.ToImmutableList());
+            }
+
+            ImmutableDictionary<Int32, Int32>.Builder predecessors = ImmutableDictionary<int, int>.Empty.ToBuilder();
+            predecessors.Add(1, 0);
+            predecessors.Add(2, 0);
+            predecessors.Add(3, 1);
+
+
+            DiTreeDTO bldr = new DiTreeDTO(
+                root,
+                predecessors.ToImmutable(),
+                vertexMap.ToImmutable(),
+                successors.ToImmutable()
+                );
+
+            return bldr;
+        }
 
         //$public static DiGraphDTO.Builder CreateDiGraphDTOBuilder()
         //{
