@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBTinkarId.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBPublicId {
+  repeated PBTinkarId Id = 1 ;
+}

@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Tinkar.Protobuf.CS</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Proto\Common\PBField.proto" />
+    <None Remove="Proto\Common\PBTinkarId.proto" />
+    <None Remove="Proto\Component\Graph\PBDiGraph.proto" />
+    <None Remove="Proto\Component\Graph\PBDTree.proto" />
+    <None Remove="Proto\Component\Graph\PBGraph.proto" />
+    <None Remove="Proto\Component\Graph\PBVertex.proto" />
+    <None Remove="Proto\Component\PBConcept.proto" />
+    <None Remove="Proto\Component\PBConceptChronology.proto" />
+    <None Remove="Proto\Component\PBConceptVersion.proto" />
+    <None Remove="Proto\Component\PBFieldDefinition.proto" />
+    <None Remove="Proto\Component\PBPattern.proto" />
+    <None Remove="Proto\Component\PBPatternChronology.proto" />
+    <None Remove="Proto\Component\PBPatternVersion.proto" />
+    <None Remove="Proto\Component\PBSemantic.proto" />
+    <None Remove="Proto\Component\PBSemanticChronology.proto" />
+    <None Remove="Proto\Component\PBSemanticVersion.proto" />
+    <None Remove="Proto\Component\PBStamp.proto" />
+    <None Remove="Proto\Location\PBPlanarPoint.proto" />
+    <None Remove="Proto\Location\PBSpatialPoint.proto" />
+    <None Remove="Proto\PBPublicId.proto" />
+    <None Remove="Proto\PBTinkarId.proto" />
+    <None Remove="Proto\PBVertexId.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.16.0-rc1" />
+    <PackageReference Include="Grpc" Version="2.37.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.37.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Proto\Common\PBField.proto" />
+    <Protobuf Include="Proto\Common\PBTinkarId.proto" />
+    <Protobuf Include="Proto\Common\PBVertexId.proto" />
+    <Protobuf Include="Proto\Common\PBPublicId.proto" />
+    <Protobuf Include="Proto\Component\Graph\PBDTree.proto" />
+    <Protobuf Include="Proto\Component\Graph\PBDiGraph.proto" />
+    <Protobuf Include="Proto\Component\Graph\PBGraph.proto" />
+    <Protobuf Include="Proto\Component\Graph\PBVertex.proto" />
+    <Protobuf Include="Proto\Component\PBPatternChronology.proto" />
+    <Protobuf Include="Proto\Component\PBPatternVersion.proto" />
+    <Protobuf Include="Proto\Component\PBFieldDefinition.proto" />
+    <Protobuf Include="Proto\Component\PBPattern.proto" />
+    <Protobuf Include="Proto\Component\PBSemanticChronology.proto" />
+    <Protobuf Include="Proto\Component\PBSemanticVersion.proto" />
+    <Protobuf Include="Proto\Component\PBSemantic.proto" />
+    <Protobuf Include="Proto\Component\PBStamp.proto" />
+    <Protobuf Include="Proto\Component\PBConceptVersion.proto" />
+    <Protobuf Include="Proto\Component\PBConceptChronology.proto" />
+    <Protobuf Include="Proto\Component\PBConcept.proto" />
+    <Protobuf Include="Proto\Location\PBSpatialPoint.proto" />
+    <Protobuf Include="Proto\Location\PBPlanarPoint.proto" />
+  </ItemGroup>
+
+</Project>

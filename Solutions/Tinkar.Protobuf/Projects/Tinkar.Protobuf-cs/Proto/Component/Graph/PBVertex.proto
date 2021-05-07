@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBPublicId.proto";
+import "Proto/Common/PBVertexId.proto";
+import "Proto/Common/PBField.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBVertex {
+  message Property {
+    PBPublicId ConceptPublicId = 1;
+    PBField Value = 2;
+  }
+  PBVertexId VertexId = 1;
+  int32 VertexIndex = 2;
+  PBPublicId MeaningPublicId = 3;
+  repeated Property Properties = 4;
+}

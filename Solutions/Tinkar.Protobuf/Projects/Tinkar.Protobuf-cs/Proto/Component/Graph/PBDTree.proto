@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Component/Graph/PBVertex.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBDiTree {
+  message Predecesors {
+    int32 VertexIndex = 1;
+    repeated int32 PredecessorIndices = 2;
+  }
+
+  repeated PBVertex VertexMap = 1;
+  repeated int32 Root = 2;
+  repeated Predecesors PredecesorMap = 3;
+}

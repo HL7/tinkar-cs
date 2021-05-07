@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBPublicId.proto";
+import "Proto/Component/PBStamp.proto";
+import "Proto/Component/PBFieldDefinition.proto";
+package Tinkar.ProtoBuf;
+
+message PBPatternVersion {
+  PBPublicId PublicId = 1;
+  PBStamp Stamp = 2;
+  PBPublicId ReferencedComponentPurposePublicId = 3;
+  PBPublicId ReferencedComponentMeaningPublicId = 4;
+  repeated PBFieldDefinition FieldDefinitions = 5;
+}

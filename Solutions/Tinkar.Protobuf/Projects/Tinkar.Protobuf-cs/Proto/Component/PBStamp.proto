@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBPublicId.proto";
+import "google/protobuf/timestamp.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBStamp {
+  PBPublicId StatusPublicId = 1;
+  PBPublicId AuthorPublicId = 2;
+  PBPublicId ModulePublicId = 3;
+  PBPublicId PathPublicId = 4;
+  google.protobuf.Timestamp Time = 5;
+}

@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBPublicId.proto";
+import "Proto/Component/PBPatternVersion.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBPatternChronology {
+  PBPublicId ChronologySetPublicId = 1;
+  repeated PBPatternVersion Versions = 2;
+}

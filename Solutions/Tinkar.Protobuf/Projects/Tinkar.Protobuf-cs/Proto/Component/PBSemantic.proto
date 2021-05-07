@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "Proto/Common/PBPublicId.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBSemantic {
+  PBPublicId PublicId = 1;
+  PBPublicId ReferencedComponentPublicId = 2;
+  PBPublicId DefinitionForSemanticPublicId = 3;
+}
