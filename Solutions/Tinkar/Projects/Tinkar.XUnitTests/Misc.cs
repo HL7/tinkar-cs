@@ -75,7 +75,6 @@ namespace Tinkar.XUnitTests
 
         public static ConceptChronologyDTO CreateConceptChronologyDTO => new ConceptChronologyDTO(
             PublicIdG,
-            PublicIdH,
             Misc.ConceptVersionsBase(PublicIdG).ToImmutableArray());
 
         public static ConceptDTO CreateConceptDTO => new ConceptDTO(PublicIdG);
@@ -174,7 +173,6 @@ namespace Tinkar.XUnitTests
         public static PatternChronologyDTO CreatePatternChronologyDTO =>
             new PatternChronologyDTO(
                 PublicIdG,
-                new PublicId(Misc.h1, Misc.h2, Misc.h3),
                 new PatternVersionDTO[] { Misc.CreatePatternVersionDTO }.ToImmutableArray()
             );
 

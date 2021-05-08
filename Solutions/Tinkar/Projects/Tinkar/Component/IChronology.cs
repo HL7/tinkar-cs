@@ -30,11 +30,6 @@ namespace Tinkar
         where TComponent : IComponent
     {
         /// <summary>
-        /// Gets ChronologySet.
-        /// </summary>
-        TComponent ChronologySet { get; }
-
-        /// <summary>
         /// Gets versions.
         /// </summary>
         ImmutableArray<TVersion> Versions { get; }

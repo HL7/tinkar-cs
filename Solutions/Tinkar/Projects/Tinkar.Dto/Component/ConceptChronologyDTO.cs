@@ -42,19 +42,9 @@ namespace Tinkar.Dto
         public virtual FieldDataType FieldDataType => FieldDataType.ConceptChronologyType;
 
         /// <summary>
-        /// Gets ChronologySet PublicId.
-        /// </summary>
-        public IPublicId ChronologySetPublicId { get; init; }
-
-        /// <summary>
         /// Gets Versions.
         /// </summary>
         ImmutableArray<ConceptVersionDTO> conceptVersions { get; init; }
-
-        /// <summary>
-        /// Gets ChronologySet.
-        /// </summary>
-        public IConcept ChronologySet => new ConceptDTO(this.ChronologySetPublicId);
 
         /// <summary>
         /// Gets Versions.
@@ -65,14 +55,11 @@ namespace Tinkar.Dto
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        /// <param name="chronologySetPublicId">ChronologySetPublicId.</param>
         /// <param name="conceptVersions">ConceptVersions.</param>
         public ConceptChronologyDTO(
             IPublicId componentPublicId,
-            IPublicId chronologySetPublicId,
             ImmutableArray<ConceptVersionDTO> conceptVersions) : base(componentPublicId)
         {
-            this.ChronologySetPublicId = chronologySetPublicId;
             this.conceptVersions = conceptVersions;
         }
 
@@ -94,8 +81,6 @@ namespace Tinkar.Dto
             if (this == other)
                 return true;
 
-            if (this.ChronologySetPublicId.IsEquivalent(other.ChronologySetPublicId) == false)
-                return false;
             if (FieldCompare.IsEquivalentSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions) == false)
                 return false;
             return true;
@@ -115,9 +100,7 @@ namespace Tinkar.Dto
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = FieldCompare.ComparePublicIds(this.ChronologySetPublicId, other.ChronologySetPublicId);
-            if (cmp != 0)
-                return cmp;
+
             cmp = FieldCompare.CompareSequence<ConceptVersionDTO>(this.conceptVersions, other.conceptVersions);
             if (cmp != 0)
                 return cmp;
@@ -133,7 +116,6 @@ namespace Tinkar.Dto
             IPublicId publicId = input.GetPublicId();
             return new ConceptChronologyDTO(
                 publicId,
-                input.GetPublicId(),
                 input.GetConceptVersionList(publicId).ToImmutableArray());
         }
 
@@ -146,7 +128,6 @@ namespace Tinkar.Dto
         {
             PublicId publicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
             return new ConceptChronologyDTO(publicId,
-                            jsonObject.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID),
                             jsonObject.AsConceptVersionList(ComponentFieldForJson.CONCEPT_VERSIONS, publicId).ToImmutableArray());
         }
 
@@ -158,7 +139,6 @@ namespace Tinkar.Dto
         public virtual void Marshal(TinkarOutput output)
         {
             output.PutPublicId(this.PublicId);
-            output.PutPublicId(this.ChronologySetPublicId);
 
             // Note that the componentIds are not written redundantly
             // in writeConceptVersionList...
@@ -176,7 +156,6 @@ namespace Tinkar.Dto
             output.WriteStartObject();
             output.WriteClass(JSONCLASSNAME);
             output.Put(ComponentFieldForJson.COMPONENT_PUBLIC_ID, this.PublicId);
-            output.Put(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID, this.ChronologySetPublicId);
             output.WriteMarshalableList(ComponentFieldForJson.CONCEPT_VERSIONS, this.conceptVersions);
             output.WriteEndObject();
         }

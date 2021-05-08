@@ -21,7 +21,6 @@ namespace Tinkar.XUnitTests
         {
             ConceptChronologyDTO dtoStart = Misc.CreateConceptChronologyDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
             Misc.Compare(dtoStart.Versions,
                 Misc.ConceptVersionsBase(Misc.PublicIdG));
         }
@@ -49,26 +48,10 @@ namespace Tinkar.XUnitTests
             {
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     Misc.PublicIdG,
-                    Misc.PublicIdH,
                     Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     Misc.PublicIdG,
-                    new PublicId(Misc.other),
-                    Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
-                );
-                Assert.False(a.IsEquivalent(b));
-            }
-
-            {
-                ConceptChronologyDTO a = new ConceptChronologyDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
-                    Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
-                );
-                ConceptChronologyDTO b = new ConceptChronologyDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
                     new ConceptVersionDTO[]
                     {
                         Misc.cv1(Misc.PublicIdG)
@@ -103,26 +86,10 @@ namespace Tinkar.XUnitTests
             {
                 ConceptChronologyDTO a = new ConceptChronologyDTO(
                     Misc.PublicIdG,
-                    Misc.PublicIdH,
                     Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
                 );
                 ConceptChronologyDTO b = new ConceptChronologyDTO(
                     Misc.PublicIdG,
-                    new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
-                    Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
-                );
-                Assert.False(a.CompareTo(b) == 0);
-            }
-
-            {
-                ConceptChronologyDTO a = new ConceptChronologyDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
-                    Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
-                );
-                ConceptChronologyDTO b = new ConceptChronologyDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
                     new ConceptVersionDTO[]
                     {
                         Misc.cv1(Misc.PublicIdG)
@@ -140,7 +107,6 @@ namespace Tinkar.XUnitTests
         {
             ConceptChronologyDTO dtoStart = new ConceptChronologyDTO(
                 Misc.PublicIdG,
-                Misc.PublicIdH,
                 Misc.ConceptVersionsBase(Misc.PublicIdG).ToImmutableArray()
             );
 

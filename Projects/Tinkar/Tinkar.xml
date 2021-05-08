@@ -272,6 +272,12 @@
             </summary>
             <param name="value">value to write.</param>
         </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteInt16(System.Int16)">
+            <summary>
+            Write little endian Int16 to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
         <member name="M:Tinkar.Dto.TinkarOutput.WriteInt32(System.Int32)">
             <summary>
             Write little endian Int32 to output stream.
@@ -402,19 +408,9 @@
             Unique ID for binary marshal of this item.
             </summary>
         </member>
-        <member name="P:Tinkar.Dto.ConceptChronologyDTO.ChronologySetPublicId">
-            <summary>
-            Gets ChronologySet PublicId.
-            </summary>
-        </member>
         <member name="P:Tinkar.Dto.ConceptChronologyDTO.conceptVersions">
             <summary>
             Gets Versions.
-            </summary>
-        </member>
-        <member name="P:Tinkar.Dto.ConceptChronologyDTO.ChronologySet">
-            <summary>
-            Gets ChronologySet.
             </summary>
         </member>
         <member name="P:Tinkar.Dto.ConceptChronologyDTO.Versions">
@@ -422,12 +418,11 @@
             Gets Versions.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.ConceptVersionDTO})">
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.ConceptVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptChronologyDTO"/> class.
             </summary>
             <param name = "componentPublicId" > Public id(component ids).</param>
-            <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="conceptVersions">ConceptVersions.</param>
         </member>
         <member name="M:Tinkar.Dto.ConceptChronologyDTO.IsEquivalent(System.Object)">
@@ -1063,22 +1058,16 @@
             Unique ID for binary marshal of this item.
             </summary>
         </member>
-        <member name="P:Tinkar.Dto.PatternChronologyDTO.ChronologySetPublicId">
-            <summary>
-            Gets public id.
-            </summary>
-        </member>
         <member name="P:Tinkar.Dto.PatternChronologyDTO.Versions">
             <summary>
             Gets Versions list.
             </summary>
         </member>
-        <member name="M:Tinkar.Dto.PatternChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.PatternVersionDTO})">
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.#ctor(Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.PatternVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternChronologyDTO"/> class.
             </summary>
             <param name = "componentPublicId" > Public id(component ids).</param>
-            <param name="chronologySetPublicId">ChronologySetPublicId.</param>
             <param name="definitionVersions">DefinitionVersions.</param>
         </member>
         <member name="M:Tinkar.Dto.PatternChronologyDTO.IsEquivalent(System.Object)">
@@ -1278,7 +1267,7 @@
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
             <param name = "componentPublicId" > Public id(component ids).</param>
-            <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
+            <param name="patternPublicId">patternPublicId.</param>
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
@@ -1287,7 +1276,7 @@
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
             <param name = "componentPublicId" > Public id(component ids).</param>
-            <param name="patternForSemantic">Pattern for semantic.</param>
+            <param name="patternPublicId">Pattern for semantic.</param>
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
@@ -1707,11 +1696,6 @@
         <member name="F:Tinkar.Dto.ComponentFieldForJson.AUTHOR_PUBLIC_ID">
             <summary>
             Name of JSON property that stores author PublicId.
-            </summary>
-        </member>
-        <member name="F:Tinkar.Dto.ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID">
-            <summary>
-            Name of JSON property that stores chronology set public id.
             </summary>
         </member>
         <member name="F:Tinkar.Dto.ComponentFieldForJson.CLASS">

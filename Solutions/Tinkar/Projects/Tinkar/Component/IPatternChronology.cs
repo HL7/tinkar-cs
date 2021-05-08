@@ -26,7 +26,7 @@ namespace Tinkar
     [JavaAttribute("TypePatternChronology")]
     public interface IPatternChronology<TTypePatternVersion, TFieldDefinition, TComponent> :
         IChronology<TTypePatternVersion, TComponent>,
-        IPattern
+        IComponent
         where TTypePatternVersion : IPatternVersion<TFieldDefinition>
         where TFieldDefinition : IFieldDefinition
         where TComponent : IComponent

@@ -80,6 +80,13 @@ namespace Tinkar.Dto
         }
 
         /// <summary>
+        /// Write little endian Int16 to output stream.
+        /// </summary>
+        /// <param name="value">value to write.</param>
+        public void WriteInt16(Int16 value) =>
+            this.writer.Write(IPAddress.HostToNetworkOrder(value));
+
+        /// <summary>
         /// Write little endian Int32 to output stream.
         /// </summary>
         /// <param name="value">value to write.</param>
@@ -99,7 +106,7 @@ namespace Tinkar.Dto
         /// <param name="value">value to write.</param>
         public void WriteInstant(DateTime value)
         {
-            this.WriteInt64(value.EpochSecond());
+            this.WriteInt64(value.EpochSecond() * 1000 + value.Millisecond);
             //this.WriteInt32(value.Nano());
         }
 
@@ -168,7 +175,11 @@ namespace Tinkar.Dto
         /// Note: BinaryWriter.WriteString is supposed to be identical to java WriteUTF().
         /// </summary>
         /// <param name="s">String to write.</param>
-        public void WriteUTF(String s) => this.writer.Write(s);
+        public void WriteUTF(String s)
+        {
+            this.WriteInt16((Int16) s.Length);
+            this.writer.Write(s.ToArray());
+        }
 
         /// <summary>
         /// Write a stream of Uuids (guids) to output stream.

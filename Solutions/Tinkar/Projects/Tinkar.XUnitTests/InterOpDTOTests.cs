@@ -54,7 +54,6 @@ namespace Tinkar.XUnitTests
                 // Write ConceptChronologyDTO.
                 ConceptChronologyDTO dto = new ConceptChronologyDTO(
                     pid,
-                    NextPublicId(2),
                     new ConceptVersionDTO[]
                     {
                         new ConceptVersionDTO(pid, NextStamp()) ,
@@ -71,7 +70,6 @@ namespace Tinkar.XUnitTests
                 IPublicId pid = NextPublicId(1);
                 PatternChronologyDTO dto = new PatternChronologyDTO(
                     pid,
-                    NextPublicId(2),
                     new PatternVersionDTO[]
                     {
                         new PatternVersionDTO(

@@ -28,11 +28,6 @@ namespace Tinkar.Dto
         public const String AUTHOR_PUBLIC_ID = "authorPublicId";
 
         /// <summary>
-        /// Name of JSON property that stores chronology set public id.
-        /// </summary>
-        public const String CHRONOLOGY_SET_PUBLIC_ID = "chronologySetPublicID";
-
-        /// <summary>
         /// Name of JSON property that stores class name.
         /// </summary>
         public const String CLASS = "class";

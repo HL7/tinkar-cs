@@ -55,17 +55,17 @@ namespace Tinkar.Dto
         public PatternDTO ChronologySet => new PatternDTO(DefinitionForSemanticPublicId);
 
         /// <summary>
-                 /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
-                 /// </summary>
-                 /// <param name = "componentPublicId" > Public id(component ids).</param>
-                 /// <param name="definitionForSemanticPublicId">definitionForSemanticPublicId.</param>
-                 /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
-                 /// <param name="semanticVersions">SemanticVersions.</param>
+        /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
+        /// </summary>
+        /// <param name = "componentPublicId" > Public id(component ids).</param>
+        /// <param name="patternPublicId">patternPublicId.</param>
+        /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
+        /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
             IPublicId componentPublicId,
-            IPublicId definitionForSemanticPublicId,
+            IPublicId patternPublicId,
             IPublicId referencedComponentPublicId,
-            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, definitionForSemanticPublicId, referencedComponentPublicId)
+            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternPublicId, referencedComponentPublicId)
         {
             this.SemanticVersions = semanticVersions;
         }
@@ -74,14 +74,14 @@ namespace Tinkar.Dto
         /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        /// <param name="patternForSemantic">Pattern for semantic.</param>
+        /// <param name="patternPublicId">Pattern for semantic.</param>
         /// <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
         /// <param name="semanticVersions">SemanticVersions.</param>
         public SemanticChronologyDTO(
             IPublicId componentPublicId,
-            IPattern patternForSemantic,
+            IPattern patternPublicId,
             IPublicId referencedComponentPublicId,
-            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternForSemantic.PublicId, referencedComponentPublicId)
+            ImmutableArray<SemanticVersionDTO> semanticVersions) : base(componentPublicId, patternPublicId.PublicId, referencedComponentPublicId)
         {
             this.SemanticVersions = semanticVersions;
         }
@@ -168,14 +168,14 @@ namespace Tinkar.Dto
         public static new SemanticChronologyDTO Make(JObject jsonObject)
         {
             PublicId componentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.COMPONENT_PUBLIC_ID);
-            PublicId definitionForSemanticPublicId = jsonObject.AsPublicId(ComponentFieldForJson.PATTERN_PUBLIC_ID);
+            PublicId patternPublicId = jsonObject.AsPublicId(ComponentFieldForJson.PATTERN_PUBLIC_ID);
             PublicId referencedComponentPublicId = jsonObject.AsPublicId(ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID);
             return new SemanticChronologyDTO(componentPublicId,
-                    definitionForSemanticPublicId,
+                    patternPublicId,
                     referencedComponentPublicId,
                     jsonObject.ReadSemanticVersionList(ComponentFieldForJson.VERSIONS,
                             componentPublicId,
-                            definitionForSemanticPublicId,
+                            patternPublicId,
                             referencedComponentPublicId).ToImmutableArray()
                     );
         }

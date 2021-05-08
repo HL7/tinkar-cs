@@ -18,7 +18,6 @@ namespace Tinkar.XUnitTests
         {
             PatternChronologyDTO dtoStart = Misc.CreatePatternChronologyDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3);
             Misc.Compare(dtoStart.Versions,
                 new PatternVersionDTO[]
                     { Misc.CreatePatternVersionDTO }
@@ -42,17 +41,6 @@ namespace Tinkar.XUnitTests
                 {
                     PublicId = new PublicId(Misc.other)
                 };
-                Assert.False(a.IsEquivalent(b));
-            }
-
-            {
-                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
-                with
-                {
-                    ChronologySetPublicId = new PublicId(Misc.other)
-                }
-                ;
                 Assert.False(a.IsEquivalent(b));
             }
 
@@ -92,17 +80,6 @@ namespace Tinkar.XUnitTests
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3)
                 };
-                Assert.False(a.CompareTo(b) == 0);
-            }
-
-            {
-                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
-                with
-                {
-                    ChronologySetPublicId = new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.i4)
-                }
-                ;
                 Assert.False(a.CompareTo(b) == 0);
             }
 
