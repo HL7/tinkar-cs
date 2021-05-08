@@ -9,7 +9,7 @@ using Tinkar.Dto;
 
 namespace Tinkar.XUnitTests
 {
-    public class TypePatternDTOTests
+    public class PatternDTOTests
     {
         [DoNotParallelize]
         [Fact]

@@ -11,7 +11,7 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class TypePatternVersionDTOTests
+    public class PatternVersionDTOTests
     {
         [DoNotParallelize]
         [Fact]

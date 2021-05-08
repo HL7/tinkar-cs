@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 
 namespace Tinkar.XUnitTests
 {
-    public class TypePatternChronologyDTOTests
+    public class PatternChronologyDTOTests
     {
         [DoNotParallelize]
         [Fact]
