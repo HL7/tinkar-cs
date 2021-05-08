@@ -14,30 +14,30 @@ namespace Tinkar.XUnitTests
     {
         [DoNotParallelize]
         [Fact]
-        public void TypePatternChronologyDTOFieldsTest()
+        public void PatternChronologyDTOFieldsTest()
         {
-            PatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
+            PatternChronologyDTO dtoStart = Misc.CreatePatternChronologyDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
             Misc.Compare(dtoStart.ChronologySetPublicId, Misc.h1, Misc.h2, Misc.h3);
             Misc.Compare(dtoStart.Versions,
                 new PatternVersionDTO[]
-                    { Misc.CreateTypePatternVersionDTO }
+                    { Misc.CreatePatternVersionDTO }
                 );
         }
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternChronologyDTOIsEquivalentTest()
+        public void PatternChronologyDTOIsEquivalentTest()
         {
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO;
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     PublicId = new PublicId(Misc.other)
@@ -46,8 +46,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     ChronologySetPublicId = new PublicId(Misc.other)
@@ -57,13 +57,13 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     Versions = new PatternVersionDTO[]
                     {
-                        Misc.CreateTypePatternVersionDTO
+                        Misc.CreatePatternVersionDTO
                         with
                         {
                             PublicId = new PublicId(Misc.other)
@@ -77,17 +77,17 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternChronologyDTOCompareToTest()
+        public void PatternChronologyDTOCompareToTest()
         {
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO;
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO;
                 Assert.True(a.CompareTo(b) == 0);
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3)
@@ -96,8 +96,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     ChronologySetPublicId = new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.i4)
@@ -107,13 +107,13 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                PatternChronologyDTO a = Misc.CreateTypePatternChronologyDTO;
-                PatternChronologyDTO b = Misc.CreateTypePatternChronologyDTO
+                PatternChronologyDTO a = Misc.CreatePatternChronologyDTO;
+                PatternChronologyDTO b = Misc.CreatePatternChronologyDTO
                 with
                 {
                     Versions = new PatternVersionDTO[]
                     {
-                        Misc.CreateTypePatternVersionDTO
+                        Misc.CreatePatternVersionDTO
                         with
                         {
                             PublicId = new PublicId(Misc.g3, Misc.g2, Misc.g1, Misc.h4)
@@ -127,9 +127,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternChronologyDTOMarshalTest()
+        public void PatternChronologyDTOMarshalTest()
         {
-            PatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
+            PatternChronologyDTO dtoStart = Misc.CreatePatternChronologyDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -146,9 +146,9 @@ namespace Tinkar.XUnitTests
         }
         [DoNotParallelize]
         [Fact]
-        public void TypePatternChronologyDTOJsonMarshal()
+        public void PatternChronologyDTOJsonMarshal()
         {
-            PatternChronologyDTO dtoStart = Misc.CreateTypePatternChronologyDTO;
+            PatternChronologyDTO dtoStart = Misc.CreatePatternChronologyDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {

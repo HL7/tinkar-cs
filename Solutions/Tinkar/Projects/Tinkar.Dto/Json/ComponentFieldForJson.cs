@@ -60,7 +60,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Name of JSON property that stores type pattern public id.
         /// </summary>
-        public const String TYPE_PATTERN_PUBLIC_ID = "typePatternPublicId";
+        public const String PATTERN_PUBLIC_ID = "typePatternPublicId";
 
         /// <summary>
         /// Name of JSON property that stores definition version records.

@@ -195,7 +195,7 @@
             <param name="publicId">Public id (component ids).</param>
             <returns>ConceptVersionDTO[].</returns>
         </member>
-        <member name="M:Tinkar.Dto.TinkarInput.GetTypePatternVersionList(Tinkar.IPublicId)">
+        <member name="M:Tinkar.Dto.TinkarInput.GetPatternVersionList(Tinkar.IPublicId)">
             <summary>
             Read an array or TypePatternVersionDTO items.
             </summary>
@@ -733,7 +733,7 @@
             ConceptChronology Type.
             </summary>
         </member>
-        <member name="F:Tinkar.Dto.FieldDataType.TypePatternChronologyType">
+        <member name="F:Tinkar.Dto.FieldDataType.PatternChronologyType">
             <summary>
             PatternForConceptChronology Type.
             </summary>
@@ -748,7 +748,7 @@
             ConceptVersionType.
             </summary>
         </member>
-        <member name="F:Tinkar.Dto.FieldDataType.TypePatternVersionType">
+        <member name="F:Tinkar.Dto.FieldDataType.PatternVersionType">
             <summary>
             PatternForSemanticVersion Type.
             </summary>
@@ -808,7 +808,7 @@
             Concept Type.
             </summary>
         </member>
-        <member name="F:Tinkar.Dto.FieldDataType.TypePatternType">
+        <member name="F:Tinkar.Dto.FieldDataType.PatternType">
             <summary>
             PatternForSemantic Type.
             </summary>
@@ -1282,7 +1282,7 @@
             <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
             <param name="semanticVersions">SemanticVersions.</param>
         </member>
-        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.ITypePattern,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPattern,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
             </summary>
@@ -1370,7 +1370,7 @@
             Gets ReferencedComponent.
             </summary>
         </member>
-        <member name="P:Tinkar.Dto.SemanticDTO.TypePattern">
+        <member name="P:Tinkar.Dto.SemanticDTO.Pattern">
             <summary>
             Gets PatternForSemantic.
             </summary>
@@ -1383,7 +1383,7 @@
             <param name="definitionForSemanticPublicId">Definition ForSemantic PublicId.</param>
             <param name="referencedComponentPublicId">Referenced Component PublicId.</param>
         </member>
-        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.ITypePattern,Tinkar.IComponent)">
+        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPattern,Tinkar.IComponent)">
             <summary>
             Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticDTO"/> class.
             </summary>
@@ -1463,7 +1463,7 @@
             Gets ReferencedComponent.
             </summary>
         </member>
-        <member name="P:Tinkar.Dto.SemanticVersionDTO.TypePattern">
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.Pattern">
             <summary>
             Gets PatternForSemantic.
             </summary>
@@ -1739,7 +1739,7 @@
             Name of JSON property that stores data type public id.
             </summary>
         </member>
-        <member name="F:Tinkar.Dto.ComponentFieldForJson.TYPE_PATTERN_PUBLIC_ID">
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.PATTERN_PUBLIC_ID">
             <summary>
             Name of JSON property that stores type pattern public id.
             </summary>
@@ -1915,7 +1915,7 @@
             <param name="propertyName">child property name.</param>
             <returns>Object values.</returns>
         </member>
-        <member name="M:Tinkar.Dto.JObjectExtensions.ReadTypePatternVersionList(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadPatternVersionList(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
             <summary>
             Read PatternForSemanticVersionDTO values from the named child property.
             </summary>

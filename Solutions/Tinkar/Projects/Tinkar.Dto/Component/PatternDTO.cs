@@ -9,7 +9,7 @@ namespace Tinkar.Dto
     /// </summary>
     public record PatternDTO :
         ComponentDTO,
-        ITypePattern,
+        IPattern,
         IJsonMarshalable,
         IMarshalable
     {
@@ -22,7 +22,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
-        public virtual FieldDataType FieldDataType => FieldDataType.TypePatternType;
+        public virtual FieldDataType FieldDataType => FieldDataType.PatternType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternDTO"/> class.

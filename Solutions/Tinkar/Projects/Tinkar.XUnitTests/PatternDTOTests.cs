@@ -13,7 +13,7 @@ namespace Tinkar.XUnitTests
     {
         [DoNotParallelize]
         [Fact]
-        public void TypePatternDTOFieldsTest()
+        public void PatternDTOFieldsTest()
         {
             PatternDTO dtoStart = new PatternDTO(new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4 ));
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
@@ -21,16 +21,16 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternDTOIsEquivalentTest()
+        public void PatternDTOIsEquivalentTest()
         {
             {
-                PatternDTO a = Misc.CreateTypePatternDTO;
-                PatternDTO b = Misc.CreateTypePatternDTO;
+                PatternDTO a = Misc.CreatePatternDTO;
+                PatternDTO b = Misc.CreatePatternDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                PatternDTO a = Misc.CreateTypePatternDTO;
+                PatternDTO a = Misc.CreatePatternDTO;
                 PatternDTO b = new PatternDTO(new PublicId(Misc.other));
                 Assert.False(a.IsEquivalent(b));
             }
@@ -38,16 +38,16 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternDTOCompareToTest()
+        public void PatternDTOCompareToTest()
         {
             {
-                PatternDTO a = Misc.CreateTypePatternDTO;
-                PatternDTO b = Misc.CreateTypePatternDTO;
+                PatternDTO a = Misc.CreatePatternDTO;
+                PatternDTO b = Misc.CreatePatternDTO;
                 Assert.True(a.CompareTo(b) == 0);
             }
 
             {
-                PatternDTO a = Misc.CreateTypePatternDTO;
+                PatternDTO a = Misc.CreatePatternDTO;
                 PatternDTO b = new PatternDTO(new PublicId(Misc.h2, Misc.g1, Misc.g3, Misc.g4));
                 Assert.False(a.CompareTo(b) == 0);
             }
@@ -55,9 +55,9 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void TypePatternDTOMarshalTest()
+        public void PatternDTOMarshalTest()
         {
-            PatternDTO dtoStart = Misc.CreateTypePatternDTO;
+            PatternDTO dtoStart = Misc.CreatePatternDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -74,9 +74,9 @@ namespace Tinkar.XUnitTests
         }
         [DoNotParallelize]
         [Fact]
-        public void TypePatternDTOJsonMarshal()
+        public void PatternDTOJsonMarshal()
         {
-            PatternDTO dtoStart = Misc.CreateTypePatternDTO;
+            PatternDTO dtoStart = Misc.CreatePatternDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {

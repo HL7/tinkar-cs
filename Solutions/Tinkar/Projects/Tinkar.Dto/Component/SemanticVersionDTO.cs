@@ -58,7 +58,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public ITypePattern TypePattern => new PatternDTO(this.DefinitionForSemanticPublicId);
+        public IPattern Pattern => new PatternDTO(this.DefinitionForSemanticPublicId);
 
         /// <summary>
         /// Gets Fields array.
@@ -151,13 +151,13 @@ namespace Tinkar.Dto
                         convertedFields.Add(new ConceptDTO(item.PublicId));
                         break;
 
-                    case ITypePattern item:
+                    case IPattern item:
                         convertedFields.Add(new PatternDTO(item.PublicId));
                         break;
 
                     case ISemantic item:
                         convertedFields.Add(new SemanticDTO(item.PublicId,
-                            item.TypePattern,
+                            item.Pattern,
                             item.ReferencedComponent));
                         break;
 
@@ -183,7 +183,7 @@ namespace Tinkar.Dto
             } 
 
             return new SemanticVersionDTO(semanticVersion.PublicId,
-                    semanticVersion.TypePattern.PublicId,
+                    semanticVersion.Pattern.PublicId,
                     semanticVersion.ReferencedComponent.PublicId,
                     StampDTO.Make(semanticVersion.Stamp), 
                     convertedFields.ToImmutableArray());

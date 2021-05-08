@@ -26,7 +26,7 @@ namespace Tinkar.Dto
     /// </summary>
     public record PatternChronologyDTO :
         PatternDTO,
-        ITypePatternChronology<PatternVersionDTO, FieldDefinitionDTO, IConcept>,
+        IPatternChronology<PatternVersionDTO, FieldDefinitionDTO, IConcept>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -40,7 +40,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
-        public override FieldDataType FieldDataType => FieldDataType.TypePatternChronologyType;
+        public override FieldDataType FieldDataType => FieldDataType.PatternChronologyType;
 
         /// <summary>
         /// Gets public id.
@@ -132,7 +132,7 @@ namespace Tinkar.Dto
             return new PatternChronologyDTO(
                 componentPublicId,
                 chronologySetPublicId,
-                input.GetTypePatternVersionList(componentPublicId).ToImmutableArray());
+                input.GetPatternVersionList(componentPublicId).ToImmutableArray());
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Tinkar.Dto
             PublicId chronologySetPublicId = jObj.AsPublicId(ComponentFieldForJson.CHRONOLOGY_SET_PUBLIC_ID);
             return new PatternChronologyDTO(componentPublicId, 
                 chronologySetPublicId, 
-                jObj.ReadTypePatternVersionList(componentPublicId).ToImmutableArray());
+                jObj.ReadPatternVersionList(componentPublicId).ToImmutableArray());
         }
 
 

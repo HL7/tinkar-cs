@@ -143,7 +143,7 @@ namespace Tinkar.Dto
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
         /// <returns>Definition for semantic version values.</returns>
-        public static IEnumerable<PatternVersionDTO> ReadTypePatternVersionList(
+        public static IEnumerable<PatternVersionDTO> ReadPatternVersionList(
             this JObject jObj,
             IPublicId publicId)
         {

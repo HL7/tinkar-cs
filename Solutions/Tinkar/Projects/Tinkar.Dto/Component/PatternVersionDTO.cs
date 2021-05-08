@@ -27,7 +27,7 @@ namespace Tinkar.Dto
     /// </summary>
     public record PatternVersionDTO :
         VersionDTO,
-        ITypePatternVersion<FieldDefinitionDTO>,
+        IPatternVersion<FieldDefinitionDTO>,
         IJsonMarshalable,
         IMarshalable
     {
@@ -40,7 +40,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Unique ID for binary marshal of this item.
         /// </summary>
-        public FieldDataType FieldDataType => FieldDataType.TypePatternVersionType;
+        public FieldDataType FieldDataType => FieldDataType.PatternVersionType;
 
         public IPublicId ReferencedComponentPurposePublicId { get; init; }
         public IPublicId ReferencedComponentMeaningPublicId { get; init; }
@@ -130,7 +130,7 @@ namespace Tinkar.Dto
             return 0;
         }
 
-        public static PatternVersionDTO Make(ITypePatternVersion<FieldDefinitionDTO> definitionForSemanticVersion)
+        public static PatternVersionDTO Make(IPatternVersion<FieldDefinitionDTO> definitionForSemanticVersion)
         {
 
             List<FieldDefinitionDTO> fields = new List<FieldDefinitionDTO>();

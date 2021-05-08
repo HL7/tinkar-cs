@@ -27,7 +27,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// PatternForConceptChronology Type.
         /// </summary>
-        TypePatternChronologyType = 2,
+        PatternChronologyType = 2,
 
         /// <summary>
         /// SemanticChronology Type.
@@ -42,7 +42,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// PatternForSemanticVersion Type.
         /// </summary>
-        TypePatternVersionType = 5,
+        PatternVersionType = 5,
 
         /// <summary>
         /// SemanticVersion Type.
@@ -102,7 +102,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// PatternForSemantic Type.
         /// </summary>
-        TypePatternType = 17,
+        PatternType = 17,
 
         /// <summary>
         /// Semantic Type.

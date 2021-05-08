@@ -22,7 +22,7 @@ namespace Tinkar
     /// Definition for Semantic interface.
     /// </summary>
     [JavaAttribute("TypePattern")]
-    public interface ITypePattern : IComponent
+    public interface IPattern : IComponent
     {
     }
 }

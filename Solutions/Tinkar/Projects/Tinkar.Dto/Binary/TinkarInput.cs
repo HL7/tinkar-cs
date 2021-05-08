@@ -176,7 +176,7 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>TypePatternVersionDTO[].</returns>
-        public PatternVersionDTO[] GetTypePatternVersionList(IPublicId publicId)
+        public PatternVersionDTO[] GetPatternVersionList(IPublicId publicId)
         {
             Int32 length = this.GetInt32();
             PatternVersionDTO[] retVal = new PatternVersionDTO[length];
@@ -248,13 +248,13 @@ namespace Tinkar.Dto
             {
                 case FieldDataType.ConceptChronologyType:
                     return ConceptChronologyDTO.Make(this);
-                case FieldDataType.TypePatternChronologyType:
+                case FieldDataType.PatternChronologyType:
                     return PatternChronologyDTO.Make(this);
                 case FieldDataType.SemanticChronologyType:
                     return SemanticChronologyDTO.Make(this);
                 case FieldDataType.ConceptVersionType:
                     throw new NotImplementedException();
-                case FieldDataType.TypePatternVersionType:
+                case FieldDataType.PatternVersionType:
                     throw new NotImplementedException();
                 case FieldDataType.SemanticVersionType:
                     throw new NotImplementedException();
@@ -263,7 +263,7 @@ namespace Tinkar.Dto
 
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
-                case FieldDataType.TypePatternType:
+                case FieldDataType.PatternType:
                     return PatternDTO.Make(this);
                 case FieldDataType.SemanticType:
                     return SemanticDTO.Make(this);

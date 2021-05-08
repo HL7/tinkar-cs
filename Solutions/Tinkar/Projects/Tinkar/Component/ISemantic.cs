@@ -32,6 +32,6 @@ namespace Tinkar
         /// <summary>
         /// Gets TypePattern.
         /// </summary>
-        ITypePattern TypePattern { get; }
+        IPattern Pattern { get; }
     }
 }

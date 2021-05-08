@@ -24,10 +24,10 @@ namespace Tinkar
     /// <typeparam name="TFieldDefinition">Generic type for Field definition. </typeparam>
     /// <typeparam name="TComponent">Generic type for component definition. </typeparam>
     [JavaAttribute("TypePatternChronology")]
-    public interface ITypePatternChronology<TTypePatternVersion, TFieldDefinition, TComponent> :
+    public interface IPatternChronology<TTypePatternVersion, TFieldDefinition, TComponent> :
         IChronology<TTypePatternVersion, TComponent>,
-        ITypePattern
-        where TTypePatternVersion : ITypePatternVersion<TFieldDefinition>
+        IPattern
+        where TTypePatternVersion : IPatternVersion<TFieldDefinition>
         where TFieldDefinition : IFieldDefinition
         where TComponent : IComponent
     {

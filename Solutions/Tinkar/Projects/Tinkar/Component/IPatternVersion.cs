@@ -25,7 +25,7 @@ namespace Tinkar
     /// to define the expected fields of that Semantic Version.
     /// </summary>
     [JavaAttribute("TypePatternVersion")]
-    public interface ITypePatternVersion<TFieldDefinition> : IVersion, ITypePattern
+    public interface IPatternVersion<TFieldDefinition> : IVersion, IPattern
         where TFieldDefinition : IFieldDefinition
     {
         /// <summary>
