@@ -100,7 +100,7 @@ namespace Tinkar.Dto
         public void WriteInstant(DateTime value)
         {
             this.WriteInt64(value.EpochSecond());
-            this.WriteInt32(value.Nano());
+            //this.WriteInt32(value.Nano());
         }
 
         /// <summary>

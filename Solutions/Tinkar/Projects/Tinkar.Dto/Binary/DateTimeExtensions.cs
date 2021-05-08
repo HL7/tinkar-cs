@@ -62,9 +62,9 @@ namespace Tinkar.Dto
         /// <returns>read DateTime value.</returns>
         public static DateTime FromInstant(
             Int64 epoch,
-            Int32 nanoSeconds)
+            Int32 milliSeconds)
         {
-            TimeSpan ts = new TimeSpan((epoch * TimeSpan.TicksPerSecond) + (nanoSeconds / 100));
+            TimeSpan ts = new TimeSpan((epoch * TimeSpan.TicksPerSecond) + (milliSeconds * 10000));
             return DateTimeExtensions.epochStart + ts;
         }
     }

@@ -31,6 +31,11 @@ namespace Tinkar.XUnitTests
                 DateTime dt = DateTimeExtensions.FromInstant(0, 0);
                 Assert.True(dt == new DateTime(1970, 1, 1));
             }
+
+            {
+                DateTime dt = DateTimeExtensions.FromInstant(10, 100);
+                Assert.True(dt == new DateTime(1970, 1, 1, 0, 0, 10, 100));
+            }
         }
     }
 }

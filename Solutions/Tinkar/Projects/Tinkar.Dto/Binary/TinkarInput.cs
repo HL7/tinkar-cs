@@ -55,7 +55,22 @@ namespace Tinkar.Dto
         /// Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
         /// </summary>
         /// <returns>String.</returns>
-        public String GetUTF() => this.reader.ReadString();
+        public String GetUTF()
+        {
+            Int16 len = this.GetInt16();
+            Char[] c = new char[len];
+            Byte[] bytes = this.reader.ReadBytes(len);
+            for (Int32 i = 0; i < len; i++)
+                c[i] = (Char)bytes[i];
+            return new string(c);
+        }
+
+        /// <summary>
+        /// Read network ordered Int15 from input stream.
+        /// </summary>
+        /// <returns>Int32.</returns>
+        public Int16 GetInt16() =>
+            IPAddress.NetworkToHostOrder(this.reader.ReadInt16());
 
         /// <summary>
         /// Read network ordered  Int32 from input stream.
@@ -122,9 +137,13 @@ namespace Tinkar.Dto
         /// Read data tome from input stream.
         /// </summary>
         /// <returns>DateTime.</returns>
-        public DateTime GetInstant() =>
-            DateTimeExtensions.FromInstant(this.GetLong(), this.GetInt32());
-
+        public DateTime GetInstant()
+        {
+            Int64 epoch = this.GetLong();
+            Int64 seconds = epoch / 1000;
+            Int64 ms = epoch - (seconds * 1000);
+            return DateTimeExtensions.FromInstant(seconds, (Int32) ms);
+        }
         /// <summary>
         /// Read an array or FieldDefinitionDTO items.
         /// </summary>
