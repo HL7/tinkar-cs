@@ -50,8 +50,8 @@ namespace Tinkar.Dto
                     case ConceptChronologyDTO.JSONCLASSNAME:
                         yield return ConceptChronologyDTO.Make(item);
                         break;
-                    case TypePatternChronologyDTO.JSONCLASSNAME:
-                        yield return TypePatternChronologyDTO.Make(item);
+                    case PatternChronologyDTO.JSONCLASSNAME:
+                        yield return PatternChronologyDTO.Make(item);
                         break;
                     case SemanticChronologyDTO.JSONCLASSNAME:
                         yield return SemanticChronologyDTO.Make(item);
@@ -61,8 +61,8 @@ namespace Tinkar.Dto
                         yield return ConceptDTO.Make(item);
                         break;
 
-                    case TypePatternDTO.JSONCLASSNAME:
-                        yield return TypePatternDTO.Make(item);
+                    case PatternDTO.JSONCLASSNAME:
+                        yield return PatternDTO.Make(item);
                         break;
 
                     case SemanticDTO.JSONCLASSNAME:

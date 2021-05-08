@@ -58,7 +58,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public ITypePattern TypePattern => new TypePatternDTO(this.DefinitionForSemanticPublicId);
+        public ITypePattern TypePattern => new PatternDTO(this.DefinitionForSemanticPublicId);
 
         /// <summary>
         /// Gets Fields array.
@@ -152,7 +152,7 @@ namespace Tinkar.Dto
                         break;
 
                     case ITypePattern item:
-                        convertedFields.Add(new TypePatternDTO(item.PublicId));
+                        convertedFields.Add(new PatternDTO(item.PublicId));
                         break;
 
                     case ISemantic item:

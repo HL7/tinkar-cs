@@ -176,15 +176,15 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
         /// <returns>TypePatternVersionDTO[].</returns>
-        public TypePatternVersionDTO[] GetTypePatternVersionList(IPublicId publicId)
+        public PatternVersionDTO[] GetTypePatternVersionList(IPublicId publicId)
         {
             Int32 length = this.GetInt32();
-            TypePatternVersionDTO[] retVal = new TypePatternVersionDTO[length];
+            PatternVersionDTO[] retVal = new PatternVersionDTO[length];
 
             // Generate array to avoid multiple enumerations of componentUuids.
             Guid[] componentUuidArr = publicId.AsUuidArray;
             for (Int32 i = 0; i < length; i++)
-                retVal[i] = TypePatternVersionDTO.Make(this, publicId);
+                retVal[i] = PatternVersionDTO.Make(this, publicId);
             return retVal;
         }
 
@@ -249,7 +249,7 @@ namespace Tinkar.Dto
                 case FieldDataType.ConceptChronologyType:
                     return ConceptChronologyDTO.Make(this);
                 case FieldDataType.TypePatternChronologyType:
-                    return TypePatternChronologyDTO.Make(this);
+                    return PatternChronologyDTO.Make(this);
                 case FieldDataType.SemanticChronologyType:
                     return SemanticChronologyDTO.Make(this);
                 case FieldDataType.ConceptVersionType:
@@ -264,7 +264,7 @@ namespace Tinkar.Dto
                 case FieldDataType.ConceptType:
                     return ConceptDTO.Make(this);
                 case FieldDataType.TypePatternType:
-                    return TypePatternDTO.Make(this);
+                    return PatternDTO.Make(this);
                 case FieldDataType.SemanticType:
                     return SemanticDTO.Make(this);
                 case FieldDataType.DiTreeType:

@@ -87,8 +87,8 @@ namespace Tinkar.XUnitTests
                 PublicIdI
             );
 
-        public static TypePatternDTO CreateTypePatternDTO =>
-            new TypePatternDTO(PublicIdG);
+        public static PatternDTO CreateTypePatternDTO =>
+            new PatternDTO(PublicIdG);
 
         public static SemanticChronologyDTO CreateSemanticChronologyDTO =>
             new SemanticChronologyDTO(
@@ -171,16 +171,16 @@ namespace Tinkar.XUnitTests
                 Assert.True(inArr[i].CompareTo(cmpArr[i]) == 0);
         }
 
-        public static TypePatternChronologyDTO CreateTypePatternChronologyDTO =>
-            new TypePatternChronologyDTO(
+        public static PatternChronologyDTO CreateTypePatternChronologyDTO =>
+            new PatternChronologyDTO(
                 PublicIdG,
                 new PublicId(Misc.h1, Misc.h2, Misc.h3),
-                new TypePatternVersionDTO[] { Misc.CreateTypePatternVersionDTO }.ToImmutableArray()
+                new PatternVersionDTO[] { Misc.CreateTypePatternVersionDTO }.ToImmutableArray()
             );
 
 
-        public static TypePatternVersionDTO CreateTypePatternVersionDTO =>
-            new TypePatternVersionDTO(
+        public static PatternVersionDTO CreateTypePatternVersionDTO =>
+            new PatternVersionDTO(
                 PublicIdG,
                 Misc.CreateStampDTO,
                 PublicIdG,

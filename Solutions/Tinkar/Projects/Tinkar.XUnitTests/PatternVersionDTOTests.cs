@@ -24,7 +24,7 @@ namespace Tinkar.XUnitTests
             }
             ;
 
-            TypePatternVersionDTO dtoStart = new TypePatternVersionDTO(
+            PatternVersionDTO dtoStart = new PatternVersionDTO(
                 Misc.PublicIdG,
                 Misc.CreateStampDTO,
                 Misc.PublicIdH,
@@ -50,14 +50,14 @@ namespace Tinkar.XUnitTests
         public void TypePatternVersionDTOIsEquivalentTest()
         {
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
                 Assert.True(a.IsEquivalent(b));
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     PublicId = new PublicId(Misc.other)
@@ -66,8 +66,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2 ) }
@@ -76,8 +76,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     ReferencedComponentPurposePublicId = new PublicId(Misc.other)
@@ -91,8 +91,8 @@ namespace Tinkar.XUnitTests
                     DataTypePublicId = new PublicId(Misc.other)
                 };
 
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
@@ -108,14 +108,14 @@ namespace Tinkar.XUnitTests
         public void TypePatternVersionDTOCompareToTest()
         {
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO;
                 Assert.True(a.CompareTo(b) == 0);
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     PublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
@@ -124,8 +124,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     StampDTO = Misc.CreateStampDTO with { StatusPublicId = new PublicId(Misc.g2) }
@@ -134,8 +134,8 @@ namespace Tinkar.XUnitTests
             }
 
             {
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     ReferencedComponentPurposePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
@@ -149,8 +149,8 @@ namespace Tinkar.XUnitTests
                     DataTypePublicId = new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 };
 
-                TypePatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
-                TypePatternVersionDTO b = Misc.CreateTypePatternVersionDTO
+                PatternVersionDTO a = Misc.CreateTypePatternVersionDTO;
+                PatternVersionDTO b = Misc.CreateTypePatternVersionDTO
                 with
                 {
                     FieldDefinitionDTOs = new FieldDefinitionDTO[] { fdoa }.ToImmutableArray()
@@ -165,7 +165,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void TypePatternVersionDTOMarshalTest()
         {
-            TypePatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
+            PatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
 
             MemoryStream ms = new MemoryStream();
             using (TinkarOutput output = new TinkarOutput(ms))
@@ -176,8 +176,8 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarInput input = new TinkarInput(ms))
             {
-                TypePatternVersionDTO dtoRead =
-                    TypePatternVersionDTO.Make(input, dtoStart.PublicId);
+                PatternVersionDTO dtoRead =
+                    PatternVersionDTO.Make(input, dtoStart.PublicId);
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
@@ -185,7 +185,7 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void TypePatternVersionDTOJsonMarshal()
         {
-            TypePatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
+            PatternVersionDTO dtoStart = Misc.CreateTypePatternVersionDTO;
             MemoryStream ms = new MemoryStream();
             using (TinkarJsonOutput output = new TinkarJsonOutput(ms, true))
             {
@@ -196,7 +196,7 @@ namespace Tinkar.XUnitTests
             ms.Position = 0;
             using (TinkarJsonInput input = new TinkarJsonInput(ms))
             {
-                TypePatternVersionDTO dtoEnd = TypePatternVersionDTO.Make(input.ReadJsonObject(),
+                PatternVersionDTO dtoEnd = PatternVersionDTO.Make(input.ReadJsonObject(),
                     dtoStart.PublicId);
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }

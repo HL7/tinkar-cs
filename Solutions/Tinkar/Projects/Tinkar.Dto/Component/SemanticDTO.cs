@@ -41,7 +41,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public ITypePattern TypePattern => new TypePatternDTO(this.DefinitionForSemanticPublicId);
+        public ITypePattern TypePattern => new PatternDTO(this.DefinitionForSemanticPublicId);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticDTO"/> class.

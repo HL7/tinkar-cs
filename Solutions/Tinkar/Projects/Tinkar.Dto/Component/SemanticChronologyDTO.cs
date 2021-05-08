@@ -26,7 +26,7 @@ namespace Tinkar.Dto
     /// </summary>
     public record SemanticChronologyDTO :
         SemanticDTO,
-        ISemanticChronology<SemanticVersionDTO, TypePatternDTO>,
+        ISemanticChronology<SemanticVersionDTO, PatternDTO>,
         IDTO,
         IJsonMarshalable,
         IMarshalable
@@ -52,7 +52,7 @@ namespace Tinkar.Dto
         /// </summary>
         public ImmutableArray<SemanticVersionDTO> Versions => this.SemanticVersions;
 
-        public TypePatternDTO ChronologySet => new TypePatternDTO(DefinitionForSemanticPublicId);
+        public PatternDTO ChronologySet => new PatternDTO(DefinitionForSemanticPublicId);
 
         /// <summary>
                  /// Initializes a new instance of the <see cref="SemanticChronologyDTO"/> class.

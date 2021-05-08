@@ -143,14 +143,14 @@ namespace Tinkar.Dto
         /// <param name="jObj">JSON parent container.</param>
         /// <param name = "publicId" > Public id(component ids).</param>
         /// <returns>Definition for semantic version values.</returns>
-        public static IEnumerable<TypePatternVersionDTO> ReadTypePatternVersionList(
+        public static IEnumerable<PatternVersionDTO> ReadTypePatternVersionList(
             this JObject jObj,
             IPublicId publicId)
         {
-            List<TypePatternVersionDTO> retVal = new List<TypePatternVersionDTO>();
+            List<PatternVersionDTO> retVal = new List<PatternVersionDTO>();
             JArray items = jObj.ReadToken<JArray>(ComponentFieldForJson.DEFINITION_VERSIONS);
             foreach (JObject item in items.Values<JObject>())
-                retVal.Add(TypePatternVersionDTO.Make(item, publicId));
+                retVal.Add(PatternVersionDTO.Make(item, publicId));
             return retVal;
         }
 
@@ -236,10 +236,10 @@ namespace Tinkar.Dto
                     return ConceptChronologyDTO.Make(jObj);
                 case ConceptDTO.JSONCLASSNAME:
                     return ConceptDTO.Make(jObj);
-                case TypePatternChronologyDTO.JSONCLASSNAME:
-                    return TypePatternChronologyDTO.Make(jObj);
-                case TypePatternDTO.JSONCLASSNAME:
-                    return TypePatternDTO.Make(jObj);
+                case PatternChronologyDTO.JSONCLASSNAME:
+                    return PatternChronologyDTO.Make(jObj);
+                case PatternDTO.JSONCLASSNAME:
+                    return PatternDTO.Make(jObj);
                 case SemanticChronologyDTO.JSONCLASSNAME:
                     return SemanticChronologyDTO.Make(jObj);
                 case SemanticDTO.JSONCLASSNAME:

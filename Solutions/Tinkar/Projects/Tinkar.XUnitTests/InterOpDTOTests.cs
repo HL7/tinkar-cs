@@ -69,12 +69,12 @@ namespace Tinkar.XUnitTests
             }
             {
                 IPublicId pid = NextPublicId(1);
-                TypePatternChronologyDTO dto = new TypePatternChronologyDTO(
+                PatternChronologyDTO dto = new PatternChronologyDTO(
                     pid,
                     NextPublicId(2),
-                    new TypePatternVersionDTO[]
+                    new PatternVersionDTO[]
                     {
-                        new TypePatternVersionDTO(
+                        new PatternVersionDTO(
                             pid,
                             NextStamp(),
                             NextPublicId(4),
@@ -98,7 +98,7 @@ namespace Tinkar.XUnitTests
                 retVal.Add(dto);
             }
             {
-                TypePatternDTO dto = new TypePatternDTO(NextPublicId(2));
+                PatternDTO dto = new PatternDTO(NextPublicId(2));
                 retVal.Add(dto);
             }
             {
