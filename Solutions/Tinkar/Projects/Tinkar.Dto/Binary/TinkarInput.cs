@@ -50,6 +50,20 @@ namespace Tinkar.Dto
         {
         }
 
+        List<IPublicId> GetPublicIdList() => new List<IPublicId>(GetPublicIds());
+        HashSet<IPublicId> GetPublicIdSet() => new HashSet<IPublicId>(GetPublicIds());
+
+        /// <summary>
+        /// Read PublicIds from input stream.
+        /// </summary>
+        /// <returns>PublicId.</returns>
+        public IEnumerable<IPublicId> GetPublicIds()
+        {
+            Int32 length = this.GetInt32();
+            for (Int32 i = 0; i < length; i++)
+                yield return this.GetPublicId();
+        }
+
         /// <summary>
         /// Read string.
         /// Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
@@ -142,7 +156,7 @@ namespace Tinkar.Dto
             Int64 epoch = this.GetLong();
             Int64 seconds = epoch / 1000;
             Int64 ms = epoch - (seconds * 1000);
-            return DateTimeExtensions.FromInstant(seconds, (Int32) ms);
+            return DateTimeExtensions.FromInstant(seconds, (Int32)ms);
         }
         /// <summary>
         /// Read an array or FieldDefinitionDTO items.
@@ -268,11 +282,15 @@ namespace Tinkar.Dto
                 case FieldDataType.SemanticType:
                     return SemanticDTO.Make(this);
                 case FieldDataType.DiTreeType:
-                    throw new NotImplementedException();
+                    return DiTreeDTO.Make(this);
+                case FieldDataType.DiGraphType:
+                    return DiGraphDTO.Make(this);
                 case FieldDataType.VertexType:
                     throw new NotImplementedException();
                 case FieldDataType.ComponentIdList:
-                    throw new NotImplementedException();
+                    return this.GetPublicIdList();
+                case FieldDataType.ComponentIdSet:
+                    return this.GetPublicIdSet();
                 case FieldDataType.PlanarPoint:
                     return new PlanarPointDTO(this.GetInt32(), this.GetInt32());
                 case FieldDataType.SpatialPoint:
@@ -290,8 +308,6 @@ namespace Tinkar.Dto
                     return this.GetByteArray();
                 case FieldDataType.ObjectArrayType:
                     return this.GetObjects().ToArray();
-                case FieldDataType.DiGraphType:
-                    throw new NotImplementedException();
                 case FieldDataType.InstantType:
                     return this.GetInstant();
                 default:

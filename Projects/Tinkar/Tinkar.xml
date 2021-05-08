@@ -115,6 +115,12 @@
             Dispose function.
             </summary>
         </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetPublicIds">
+            <summary>
+            Read PublicIds from input stream.
+            </summary>
+            <returns>PublicId.</returns>
+        </member>
         <member name="M:Tinkar.Dto.TinkarInput.GetUTF">
             <summary>
             Read string.
