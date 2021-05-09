@@ -6,6 +6,22 @@ option java_outer_classname = "PBTinkar";
 
 option csharp_namespace = "Tinkar.ProtoBuf.CS";
 
+import "Proto/Common/PBPublicId.proto";
+import "Proto/Common/PBVertexId.proto";
+
+import "Proto/Component/PBStamp.proto";
+import "Proto/Component/PBConcept.proto";
+//import "Proto/Component/PBConceptChronology.proto";
+//import "Proto/Component/PBConceptVersion.proto";
+import "Proto/Component/PBSemantic.proto";
+//import "Proto/Component/PBSemanticChronology.proto";
+//import "Proto/Component/PBSemanticVersion.proto";
+
+import "Proto/Component/Graph/PBDiGraph.proto";
+import "Proto/Component/Graph/PBDiTree.proto";
+import "Proto/Component/Graph/PBGraph.proto";
+import "Proto/Component/Graph/PBVertex.proto";
+
 import "google/protobuf/timestamp.proto";
 
 package Tinkar.ProtoBuf;
@@ -18,5 +34,26 @@ message PBField {
     float FloatValue = 4;
     bytes BytesValue = 5;
     google.protobuf.Timestamp TimeValue = 6;
+
+    PBStamp StampValue = 20;
+    PBStamp PublicIdValue = 21;
+    PBStamp VertexIdValue = 22;
+
+    PBDiGraph DiGraphValue = 30;
+    PBDiTree DiTreeValue = 31;
+    PBGraph GraphValue = 32;
+    PBVertex VertexValue = 33;
+    
+    PBConcept ConceptValue = 40;
+    //PBConceptChronology ConceptChronologyValue = 41;
+    //PBConceptVersion ConceptVersionValue = 42;
+
+    PBSemantic SemanticValue = 43;
+    //PBSemanticChronology SemanticChronologyValue = 44;
+    //PBSemanticVersion SemanticVersionValue = 45;
+
+    //PBPattern PatternValue = 46;
+    //PBPatternChronology PatternChronologyValue = 47;
+    //PBPatternVersion PatternVersionValue = 48;
   };
 }

@@ -202,7 +202,7 @@ namespace Tinkar.Dto
         /// Write a stream of Uuids (guids) to output stream.
         /// </summary>
         /// <param name="publicId">publicId to write.</param>
-        public void PutPublicId(IPublicId publicId) => WriteUuids(publicId.AsUuidArray);
+        public void PutPublicId(IPublicId publicId) => this.WriteUuids(publicId.AsUuidArray);
 
         /// <summary>
         /// Write out a stream ob simple objects.

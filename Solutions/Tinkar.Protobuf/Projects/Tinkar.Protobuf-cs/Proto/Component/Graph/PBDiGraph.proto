@@ -6,11 +6,11 @@ option java_outer_classname = "PBTinkar";
 
 option csharp_namespace = "Tinkar.ProtoBuf.CS";
 
-import "Proto/Component/Graph/PBVertex.proto";
+import "Proto/Common/PBVertexId.proto";
 
 package Tinkar.ProtoBuf;
 
-message PBDiGraph{
+message PBDiGraph {
   message Successors {
     int32 VertexIndex = 1;
     repeated int32 SuccessorIndices = 2;

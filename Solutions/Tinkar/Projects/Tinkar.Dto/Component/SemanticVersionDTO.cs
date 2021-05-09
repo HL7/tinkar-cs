@@ -43,7 +43,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic UUID's.
         /// </summary>
-        public IPublicId DefinitionForSemanticPublicId { get; init; }
+        public IPublicId PatternForSemantic { get; init; }
 
         /// <summary>
         /// Gets ReferencedComponent Uuids.
@@ -58,7 +58,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets PatternForSemantic.
         /// </summary>
-        public IPattern Pattern => new PatternDTO(this.DefinitionForSemanticPublicId);
+        public IPattern Pattern => new PatternDTO(this.PatternForSemantic);
 
         /// <summary>
         /// Gets Fields array.
@@ -69,18 +69,18 @@ namespace Tinkar.Dto
         /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        /// <param name="definitionForSemanticUuids">PatternForSemanticUuids.</param>
+        /// <param name="patternForSemantic">PatternForSemanticUuids.</param>
         /// <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
         /// <param name="stampDTO">StampDTO.</param>
         /// <param name="fields">Fields.</param>
         public SemanticVersionDTO(
             IPublicId componentPublicId,
-            IPublicId definitionForSemanticUuids,
+            IPublicId patternForSemantic,
             IPublicId referencedComponentUuids,
             StampDTO stampDTO,
             ImmutableArray<Object> fields) : base(componentPublicId, stampDTO)
         {
-            this.DefinitionForSemanticPublicId = definitionForSemanticUuids;
+            this.PatternForSemantic = patternForSemantic;
             this.ReferencedComponentPublicId = referencedComponentUuids;
             this.Fields = fields;
         }
@@ -103,7 +103,7 @@ namespace Tinkar.Dto
             if (this == other)
                 return true;
 
-            if (this.DefinitionForSemanticPublicId.IsEquivalent(other.DefinitionForSemanticPublicId) == false)
+            if (this.PatternForSemantic.IsEquivalent(other.PatternForSemantic) == false)
                 return false;
             if (this.ReferencedComponentPublicId.IsEquivalent(other.ReferencedComponentPublicId) == false)
                 return false;
@@ -126,14 +126,13 @@ namespace Tinkar.Dto
             Int32 cmp = base.CompareTo(other);
             if (cmp != 0)
                 return cmp;
-            cmp = this.DefinitionForSemanticPublicId.CompareTo(other.DefinitionForSemanticPublicId);
+            cmp = this.PatternForSemantic.CompareTo(other.PatternForSemantic);
             if (cmp != 0)
                 return cmp;
             cmp = this.ReferencedComponentPublicId.CompareTo(other.ReferencedComponentPublicId);
             if (cmp != 0)
                 return cmp;
-
-            cmp = this.Fields.Count().CompareTo(other.Fields.Count());
+            cmp = FieldCompare.CompareSequence(this.Fields, other.Fields);
             if (cmp != 0)
                 return cmp;
 

@@ -39,7 +39,7 @@ namespace Tinkar.Dto
         /// <returns>Object[].</returns>
         public IEnumerable<ComponentDTO> GetComponents()
         {
-            JObject jObject = ReadJsonObject();
+            JObject jObject = this.ReadJsonObject();
             JArray items = (JArray) jObject["root"];
 
             foreach (JObject item in items)

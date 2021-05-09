@@ -50,8 +50,8 @@ namespace Tinkar.Dto
         {
         }
 
-        List<IPublicId> GetPublicIdList() => new List<IPublicId>(GetPublicIds());
-        HashSet<IPublicId> GetPublicIdSet() => new HashSet<IPublicId>(GetPublicIds());
+        List<IPublicId> GetPublicIdList() => new List<IPublicId>(this.GetPublicIds());
+        HashSet<IPublicId> GetPublicIdSet() => new HashSet<IPublicId>(this.GetPublicIds());
 
         /// <summary>
         /// Read PublicIds from input stream.
@@ -131,7 +131,7 @@ namespace Tinkar.Dto
             Int32 length = this.GetInt32();
             Guid[] array = new Guid[length];
             for (Int32 i = 0; i < length; i++)
-                array[i] = GetUuid();
+                array[i] = this.GetUuid();
             return array;
         }
 
@@ -145,7 +145,7 @@ namespace Tinkar.Dto
         /// Read PublicId from input stream.
         /// </summary>
         /// <returns>PublicId.</returns>
-        public IPublicId GetPublicId() => new PublicId(GetUuids());
+        public IPublicId GetPublicId() => new PublicId(this.GetUuids());
 
         /// <summary>
         /// Read data tome from input stream.
@@ -248,7 +248,7 @@ namespace Tinkar.Dto
         public IEnumerable<ComponentDTO> GetComponents()
         {
             while (this.reader.BaseStream.Position < this.reader.BaseStream.Length)
-                yield return (ComponentDTO)GetField();
+                yield return (ComponentDTO)this.GetField();
         }
 
         /// <summary>
@@ -257,7 +257,16 @@ namespace Tinkar.Dto
         /// <returns>Object[].</returns>
         public Object GetField()
         {
-            FieldDataType token = (FieldDataType)this.reader.ReadByte();
+            FieldDataType token;
+            try
+            {
+                token = (FieldDataType)this.reader.ReadByte();
+            }
+            catch
+            {
+                return null;
+            }
+
             switch (token)
             {
                 case FieldDataType.ConceptChronologyType:

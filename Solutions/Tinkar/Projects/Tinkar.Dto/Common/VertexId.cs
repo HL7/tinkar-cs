@@ -10,18 +10,23 @@ namespace Tinkar.Dto
     {
         TinkarId tinkarId;
 
-        public Guid Uuid => tinkarId.uuid;
+        public Guid Uuid => this.tinkarId.uuid;
 
-        public Int64 MostSignificantBits => tinkarId.MostSignificantBits;
+        public Int64 MostSignificantBits => this.tinkarId.MostSignificantBits;
 
-        public Int64 LeastSignificantBits => tinkarId.LeastSignificantBits;
+        public Int64 LeastSignificantBits => this.tinkarId.LeastSignificantBits;
+
+        public Int32 Id1 => this.tinkarId.id1;
+        public Int32 Id2 => this.tinkarId.id2;
+        public Int32 Id3 => this.tinkarId.id3;
+        public Int32 Id4 => this.tinkarId.id4;
 
 
-        public VertexId(Guid uuid) => 
-            tinkarId = new TinkarId(uuid);
+        public VertexId(Guid uuid) =>
+            this.tinkarId = new TinkarId(uuid);
 
         public VertexId(Int64 mostSignificantBits, Int64 leastSignificantBits) =>
-            tinkarId = new TinkarId(mostSignificantBits, leastSignificantBits);
+            this.tinkarId = new TinkarId(mostSignificantBits, leastSignificantBits);
 
         public Int32 CompareTo(Object other) 
             => this.tinkarId.CompareTo(other);

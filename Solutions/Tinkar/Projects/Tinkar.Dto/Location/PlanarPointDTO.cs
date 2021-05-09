@@ -22,7 +22,7 @@ namespace Tinkar.Dto
             this.Y = y;
         }
 
-        public Int32 CompareTo(Object other) => CompareTo(other as PlanarPointDTO);
+        public Int32 CompareTo(Object other) => this.CompareTo(other as PlanarPointDTO);
 
         public Int32 CompareTo(IPlanarPoint other)
         {

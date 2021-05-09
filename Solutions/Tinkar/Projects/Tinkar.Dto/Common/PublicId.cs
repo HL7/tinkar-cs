@@ -28,7 +28,7 @@ namespace Tinkar.Dto
         {
             get
             {
-                if (MultipleId == null)
+                if (this.MultipleId == null)
                 {
                     if (index != 0)
                         throw new Exception("Invalid access indice");
@@ -41,13 +41,13 @@ namespace Tinkar.Dto
             }
         }
 
-        public Guid[] AsUuidArray => AsUuidList.ToArray();
+        public Guid[] AsUuidArray => this.AsUuidList.ToArray();
 
         public IEnumerable<Guid> AsUuidList
         {
             get
             {
-                if (MultipleId == null)
+                if (this.MultipleId == null)
                     yield return this.SingleId.Uuid;
                 else
                     for (Int32 i = 0; i < this.MultipleId.Length; i++)
@@ -55,7 +55,7 @@ namespace Tinkar.Dto
             }
         }
 
-        public Int32 UuidCount => (MultipleId == null) ? 1 : MultipleId.Length;
+        public Int32 UuidCount => (this.MultipleId == null) ? 1 : this.MultipleId.Length;
 
         public PublicId(params Guid[] guids)
         {

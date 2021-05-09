@@ -129,7 +129,7 @@ namespace Tinkar.Dto
             Int32 cmpVal = FieldCompare.CompareSequence(this.VertexMap, other.VertexMap);
             if (cmpVal != 0)
                 return cmpVal;
-            cmpVal = FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, Comparer);
+            cmpVal = FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, this.Comparer);
             if (cmpVal != 0)
                 return cmpVal;
             return 0;
@@ -143,7 +143,7 @@ namespace Tinkar.Dto
 
             if (FieldCompare.IsEquivalentSequence(this.VertexMap, other.VertexMap) == false)
                 return false;
-            if (FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, Comparer) != 0)
+            if (FieldCompare.CompareMap(this.SuccessorMap, other.SuccessorMap, this.Comparer) != 0)
                 return false;
 
             return true;

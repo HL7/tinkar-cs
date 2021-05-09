@@ -49,7 +49,7 @@ namespace Tinkar.Dto
         /// <summary>
         /// Gets Versions.
         /// </summary>
-        public ImmutableArray<ConceptVersionDTO> Versions => conceptVersions;
+        public ImmutableArray<ConceptVersionDTO> Versions => this.conceptVersions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConceptChronologyDTO"/> class.

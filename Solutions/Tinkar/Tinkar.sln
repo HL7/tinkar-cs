@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar.XUnitTests", "Projec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar.Dto", "Projects\Tinkar.Dto\Tinkar.Dto.csproj", "{02030BD0-C83D-434A-841B-CC6D73A024A3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinkar.Protobuf-cs", "..\Tinkar.Protobuf\Projects\Tinkar.Protobuf-cs\Tinkar.Protobuf-cs.csproj", "{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,14 @@ Global
 		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|x64.ActiveCfg = Release|x64
 		{02030BD0-C83D-434A-841B-CC6D73A024A3}.Release|x64.Build.0 = Release|x64
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCBEADE2-6228-4ADA-AD59-C59DC1141FA6}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

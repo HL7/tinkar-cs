@@ -149,6 +149,40 @@ namespace Tinkar.Dto
             return 0;
         }
 
+        /// <summary>
+        /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+        /// items that are equal.
+        /// </summary>
+        /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
+        /// <param name="a">First item to compare.</param>
+        /// <param name="b">Second item to compare.</param>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static Int32 CompareSequence(IEnumerable<Object> a, IEnumerable<Object> b)
+        {
+            if ((a == null) && (b == null))
+                return 0;
+            if (a == null)
+                return -1;
+            if (b == null)
+                return 1;
+            Int32 cmp = a.Count().CompareTo(b.Count());
+            if (cmp != 0)
+                return cmp;
+            IEnumerator<Object> aIterator = a.GetEnumerator();
+            IEnumerator<Object> bIterator = b.GetEnumerator();
+            for (Int32 i = 0; i < a.Count(); i++)
+            {
+                aIterator.MoveNext();
+                bIterator.MoveNext();
+                Object aItem = aIterator.Current;
+                Object bItem = bIterator.Current;
+                cmp = FieldCompare.Compare(aItem, bItem);
+                if (cmp != 0)
+                    return cmp;
+            }
+
+            return 0;
+        }
 
         public static Int32 CompareMap<TKey, TValue>(
             ImmutableDictionary<TKey, TValue> a,

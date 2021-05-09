@@ -14,15 +14,30 @@ namespace Tinkar
     public struct TinkarId : ITinkarId
     {
         [FieldOffset(0)] public Guid uuid;
+
         [FieldOffset(0)] public Int64 mostSignificantBits;
         [FieldOffset(8)] public Int64 leastSignificantBits;
+
+        [FieldOffset(0)] public Int32 id1;
+        [FieldOffset(4)] public Int32 id2;
+        [FieldOffset(8)] public Int32 id3;
+        [FieldOffset(12)] public Int32 id4;
 
         public Guid Uuid => this.uuid;
         public Int64 MostSignificantBits => this.mostSignificantBits;
         public Int64 LeastSignificantBits => this.leastSignificantBits;
 
+        public Int32 Id1 => this.id1;
+        public Int32 Id2 => this.id2;
+        public Int32 Id3 => this.id3;
+        public Int32 Id4 => this.id4;
+
         public TinkarId(Guid uuid)
         {
+            this.id1 = 0;
+            this.id2 = 0;
+            this.id3 = 0;
+            this.id4 = 0;
             this.mostSignificantBits = 0;
             this.leastSignificantBits = 0;
             this.uuid = uuid;
@@ -30,6 +45,10 @@ namespace Tinkar
 
         public TinkarId(Int64 mostSignificantBits, Int64 leastSignificantBits)
         {
+            this.id1 = 0;
+            this.id2 = 0;
+            this.id3 = 0;
+            this.id4 = 0;
             this.uuid = Guid.Empty;
             this.mostSignificantBits = mostSignificantBits;
             this.leastSignificantBits = leastSignificantBits;

@@ -12,7 +12,7 @@ namespace Tinkar.Dto
         IJsonMarshalable,
         IMarshalable
     {
-        public ImmutableList<VertexDTO> Roots => RootSequence.Select((a) => this.VertexMap[a]).ToImmutableList();
+        public ImmutableList<VertexDTO> Roots => this.RootSequence.Select((a) => this.VertexMap[a]).ToImmutableList();
         public ImmutableList<Int32> RootSequence { get; init; }
 
         public ImmutableDictionary<Int32, ImmutableList<Int32>> PredecessorMap { get; init; }

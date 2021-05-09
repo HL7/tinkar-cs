@@ -24,7 +24,7 @@ namespace Tinkar.Dto
             this.Z = z;
         }
 
-        public Int32 CompareTo(Object other) => CompareTo(other as SpatialPointDTO);
+        public Int32 CompareTo(Object other) => this.CompareTo(other as SpatialPointDTO);
 
         public Int32 CompareTo(ISpatialPoint other)
         {

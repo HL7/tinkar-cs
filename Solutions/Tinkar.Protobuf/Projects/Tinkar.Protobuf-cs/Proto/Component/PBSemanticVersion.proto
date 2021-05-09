@@ -15,7 +15,7 @@ package Tinkar.ProtoBuf;
 message PBSemanticVersion {
   PBPublicId PublicId = 1;
   PBStamp Stamp = 2;
-  PBPublicId ReferencedComponentPublicId = 3;
-  PBPublicId DefinitionForSemanticPublicId = 4;
+  PBPublicId ReferencedComponent = 3;
+  PBPublicId PatternForSemantic = 4;
   repeated PBField FieldValues = 5;
 }

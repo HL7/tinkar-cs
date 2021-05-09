@@ -12,6 +12,6 @@ import "Proto/Component/PBConceptVersion.proto";
 package Tinkar.ProtoBuf;
 
 message PBConceptChronology {
-  PBPublicId ChronologySetPublicId = 1;
+  PBPublicId PublicId = 1;
   repeated PBConceptVersion ConceptVersions = 2;
 }

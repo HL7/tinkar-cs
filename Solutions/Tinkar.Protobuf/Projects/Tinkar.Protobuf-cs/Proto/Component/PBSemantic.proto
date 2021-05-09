@@ -12,6 +12,6 @@ package Tinkar.ProtoBuf;
 
 message PBSemantic {
   PBPublicId PublicId = 1;
-  PBPublicId ReferencedComponentPublicId = 2;
-  PBPublicId DefinitionForSemanticPublicId = 3;
+  PBPublicId ReferencedComponent = 2;
+  PBPublicId PatternForSemantic = 3;
 }

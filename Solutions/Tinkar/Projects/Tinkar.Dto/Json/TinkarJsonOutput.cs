@@ -143,7 +143,7 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="propertyName">Name of json property to write.</param>
         /// <param name="publicId">PublicId to write.</param>
-        public void Put(String propertyName, IPublicId publicId) => WriteUuids(propertyName, publicId.AsUuidArray);
+        public void Put(String propertyName, IPublicId publicId) => this.WriteUuids(propertyName, publicId.AsUuidArray);
 
         /// <summary>
         /// Write property that is array of guids.

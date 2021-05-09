@@ -9,7 +9,7 @@
     <None Remove="Proto\Common\PBField.proto" />
     <None Remove="Proto\Common\PBTinkarId.proto" />
     <None Remove="Proto\Component\Graph\PBDiGraph.proto" />
-    <None Remove="Proto\Component\Graph\PBDTree.proto" />
+    <None Remove="Proto\Component\Graph\PBDiTree.proto" />
     <None Remove="Proto\Component\Graph\PBGraph.proto" />
     <None Remove="Proto\Component\Graph\PBVertex.proto" />
     <None Remove="Proto\Component\PBConcept.proto" />
@@ -44,7 +44,7 @@
     <Protobuf Include="Proto\Common\PBTinkarId.proto" />
     <Protobuf Include="Proto\Common\PBVertexId.proto" />
     <Protobuf Include="Proto\Common\PBPublicId.proto" />
-    <Protobuf Include="Proto\Component\Graph\PBDTree.proto" />
+    <Protobuf Include="Proto\Component\Graph\PBDiTree.proto" />
     <Protobuf Include="Proto\Component\Graph\PBDiGraph.proto" />
     <Protobuf Include="Proto\Component\Graph\PBGraph.proto" />
     <Protobuf Include="Proto\Component\Graph\PBVertex.proto" />
