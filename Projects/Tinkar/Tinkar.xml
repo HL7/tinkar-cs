@@ -1,0 +1,310 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tinkar</name>
+    </assembly>
+    <members>
+        <member name="T:Tinkar.ITinkarId">
+            <summary>
+            Base Tinkar Id.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IDiGraph`1.Roots">
+            <summary>
+            Gets the roots of this item.
+            A graph can have multiple roots.
+            </summary>
+        </member>
+        <member name="M:Tinkar.IDiGraph`1.Predecessors(`0)">
+            <summary>
+            Get predecessors of the indicated vertex.
+            A directed graph can have multiple predecessors.
+            </summary>
+            <param name="vertex"></param>
+            <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
+        </member>
+        <member name="P:Tinkar.IDiTree`1.Root">
+            <summary>
+            Get root of tree. Tree can only have one root.
+            </summary>
+        </member>
+        <member name="M:Tinkar.IDiTree`1.Predecessor(`0)">
+            <summary>
+            Get predecessor of vertex.
+            </summary>
+            <param name="vertex">Get predecessor of this vertex</param>
+            <returns>Predecessor, or null if root</returns>
+        </member>
+        <member name="P:Tinkar.IDiTree`1.PredecessorMap">
+            <summary>
+            Get dictionary of all predecessors
+            </summary>
+        </member>
+        <member name="M:Tinkar.IGraph`1.Vertex(System.Guid)">
+            <summary>
+            Gets the vertex associated with the identifier
+            </summary>
+            <param name="vertexId">a universally unique identifier for a vertex</param>
+            <returns>Vertex associated with the identifier</returns>
+        </member>
+        <member name="M:Tinkar.IGraph`1.Successors(`0)">
+            <summary>
+            Gets the successors for the provided vertex
+            </summary>
+            <param name="vertex">vertex a vertex to retrieve the successors of</param>
+            <returns>Successofs of indicated vertex</returns>
+        </member>
+        <member name="P:Tinkar.IVertex.VertexId">
+            <summary>
+            Gets universally unique identifier for this vertex
+            
+            </summary>
+        </member>
+        <member name="P:Tinkar.IVertex.VertexIndex">
+            <summary>
+            Gets tindex of this vertex within its graph. The index is locally
+            unique within a graph, but not across graphs, or different versions of the same graph.
+            Vertex index is not used in equality or hash calculations.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IVertex.Meaning">
+            <summary>
+            Concept that represents the meaning of this vertex.
+            </summary>
+        </member>
+        <member name="M:Tinkar.IVertex.Property``1(Tinkar.IConcept)">
+            <summary>
+            Gets optional object that is associated with the properly concept.
+            </summary>
+            <typeparam name="T">Type of the property object</typeparam>
+            <param name="propertyConcept">Property Concept</param>
+            <returns>Property associated with concept</returns>
+        </member>
+        <member name="M:Tinkar.IVertex.PropertyFast``1(Tinkar.IConcept)">
+            <summary>
+            Gets optional object that is associated with the properly concept.
+            </summary>
+            <typeparam name="T">Type of the property object</typeparam>
+            <param name="propertyConcept">Property Concept</param>
+            <returns>Property associated with concept</returns>
+        </member>
+        <member name="P:Tinkar.IVertex.PropertyKeys">
+            <summary>
+            Gets keys for the populated properties
+            </summary>
+            <returns>keys</returns>
+        </member>
+        <member name="T:Tinkar.IChronology`2">
+            <summary>
+            Chronology interaface.
+            </summary>
+            <typeparam name="TVersion">Version type.</typeparam>
+            <typeparam name="TComponent">Component type.</typeparam>
+        </member>
+        <member name="P:Tinkar.IChronology`2.Versions">
+            <summary>
+            Gets versions.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IComponent">
+            <summary>
+            Tinkar base interface for all identified 'things'.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IComponent.PublicId">
+            <summary>
+            Gets public id.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IConcept">
+            <summary>
+            Identified thing interface. This is a base interface for most of the
+            other Tinkar record intefaces.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IConceptChronology`2">
+            <summary>
+            ConceptChronology interface.
+            </summary>
+            <typeparam name="TConceptVersion">Version type.</typeparam>
+            <typeparam name="TComponent">Component type.</typeparam>
+        </member>
+        <member name="T:Tinkar.IConceptVersion">
+            <summary>
+            Tinkar Concept Version interface.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IDTO">
+            <summary>
+            ???.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IEquivalent">
+            <summary>
+            IEquivalent.
+            Tests if two items are the 'same'. This looks at actual values,
+            not references, to determine equivalency.
+            </summary>
+        </member>
+        <member name="M:Tinkar.IEquivalent.IsEquivalent(System.Object)">
+            <summary>
+            Returns true if 'this' item is equivalent to 'other'
+            item.
+            </summary>
+            <param name="other">other item to compare equivalence to.</param>
+            <returns>true if two items are equivalent.</returns>
+        </member>
+        <member name="T:Tinkar.IFieldDefinition">
+            <summary>
+            Tinkar interface for Field Definition.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IFieldDefinition.DataType">
+            <summary>
+             Gets underlying object type such as String or Integer.
+             @return Concept designating the data type of the defined field.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IFieldDefinition.Purpose">
+            <summary>
+            Gets what the object represents: a String might be a URI,
+            a component identifier might represent a mapping, or an
+            integer might represent a coordinate.
+            @return Concept designating the purpose of the defined field.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IFieldDefinition.Meaning">
+            <summary>
+            Gets the context in which this specific field is used. Maybe it is the
+            "SNOMED code" in a mapping, or the location of an image if a URI.
+            @return Concept designating the use of the defined field.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IPattern">
+            <summary>
+            Definition for Semantic interface.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IPatternChronology`3">
+            <summary>
+            TypePatternChronology interace.
+            </summary>
+            <typeparam name="TTypePatternVersion">Generic type pattern  for semantic version. </typeparam>
+            <typeparam name="TFieldDefinition">Generic type for Field definition. </typeparam>
+            <typeparam name="TComponent">Generic type for component definition. </typeparam>
+        </member>
+        <member name="T:Tinkar.IPatternVersion`1">
+            <summary>
+            Defines the fields and purpose of a Semantic Version.
+            SemanticVersion instances all reference a ITypePatternVersion
+            to define the expected fields of that Semantic Version.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IPatternVersion`1.FieldDefinitions">
+            <summary>
+            Gets the SemanticVersion field definitions.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IPatternVersion`1.ReferencedComponentPurpose">
+            <summary>
+            Gets the purpose of referenced component.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IPatternVersion`1.ReferencedComponentMeaning">
+            <summary>
+            Gets the meaning of referenced component.
+            </summary>
+        </member>
+        <member name="T:Tinkar.ISemantic">
+            <summary>
+            Tinkar Semantic interface.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ISemantic.ReferencedComponent">
+            <summary>
+            Gets component that this semantic references.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ISemantic.Pattern">
+            <summary>
+            Gets TypePattern.
+            </summary>
+        </member>
+        <member name="T:Tinkar.ISemanticChronology`2">
+            <summary>
+            Tinkar Semantic Chronology interface.
+            </summary>
+            <typeparam name="TSemanticVersion">Generic param for IChnronology interface.</typeparam>
+            <typeparam name="TComponent">Generic param for IChnronology interface.</typeparam>
+        </member>
+        <member name="T:Tinkar.ISemanticVersion">
+            <summary>
+            Tinkar Semantic Version Interface.
+            </summary>
+        </member>
+        <member name="P:Tinkar.ISemanticVersion.Fields">
+            <summary>
+            Gets semantic version fields.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IStamp">
+            <summary>
+            Tinkar Stamp interface.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IStamp.Status">
+            <summary>
+            Gets stamp status.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IStamp.Time">
+            <summary>
+            Gets stamp time.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IStamp.Author">
+            <summary>
+            Gets stamp author.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IStamp.Module">
+            <summary>
+            Gets stamp module.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IStamp.Path">
+            <summary>
+            Gets stamp path.
+            </summary>
+        </member>
+        <member name="T:Tinkar.IVersion">
+            <summary>
+            Tinkar Version Interface. This is the base interface
+            for many specialized Tinkar Version interfaces.
+            </summary>
+        </member>
+        <member name="P:Tinkar.IVersion.Stamp">
+            <summary>
+            Gets stamp for version.
+            </summary>
+        </member>
+        <member name="T:Tinkar.JavaAttribute">
+            <summary>
+            Marks a class, method, or property as being a mirror of a
+            java item of the indicated name.
+            This is used to do automatic code normalization using roslyn tools.
+            </summary>
+        </member>
+        <member name="P:Tinkar.JavaAttribute.JavaName">
+            <summary>
+            Gets or sets name of java item that this is a mirror of.
+            </summary>
+        </member>
+        <member name="M:Tinkar.JavaAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.JavaAttribute"/> class.
+            </summary>
+            <param name="javaName">Name of java item that this is a mirror of.</param>
+        </member>
+    </members>
+</doc>

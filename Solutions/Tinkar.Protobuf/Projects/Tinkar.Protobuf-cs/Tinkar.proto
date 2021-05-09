@@ -1,0 +1,194 @@
+﻿syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Tinkar.ProtoBuf";
+option java_outer_classname = "PBTinkar";
+
+option csharp_namespace = "Tinkar.ProtoBuf.CS";
+
+import "google/protobuf/timestamp.proto";
+
+package Tinkar.ProtoBuf;
+
+message PBTinkarId {
+  fixed32 Id1 = 1;
+  fixed32 Id2 = 2;
+  fixed32 Id3 = 3;
+  fixed32 Id4 = 4;
+}
+
+message PBVertexId {
+  PBTinkarId Id = 1;
+}
+
+message PBPublicId {
+  repeated PBTinkarId Id = 1 ;
+}
+
+message PBField {
+  oneof Value {
+    string StringValue = 1;
+    bool BoolValue = 2;
+    int32 IntValue = 3;
+    float FloatValue = 4;
+    bytes BytesValue = 5;
+    google.protobuf.Timestamp TimeValue = 6;
+
+    PBStamp StampValue = 20;
+    PBStamp PublicIdValue = 21;
+    PBStamp VertexIdValue = 22;
+
+    PBDiGraph DiGraphValue = 30;
+    PBDiTree DiTreeValue = 31;
+    PBGraph GraphValue = 32;
+    PBVertex VertexValue = 33;
+    
+    PBConcept ConceptValue = 40;
+    PBConceptChronology ConceptChronologyValue = 41;
+    PBConceptVersion ConceptVersionValue = 42;
+
+    PBSemantic SemanticValue = 43;
+    PBSemanticChronology SemanticChronologyValue = 44;
+    PBSemanticVersion SemanticVersionValue = 45;
+
+    PBPattern PatternValue = 46;
+    PBPatternChronology PatternChronologyValue = 47;
+    PBPatternVersion PatternVersionValue = 48;
+  };
+}
+
+
+message PBPlanarPoint {
+  int32 X = 1;
+  int32 Y = 2;
+}
+
+message PBSpatialPoint {
+  int32 X = 1;
+  int32 Y = 2;
+  int32 Z = 3;
+}
+
+
+message PBDiGraph {
+  message Successors {
+    int32 VertexIndex = 1;
+    repeated int32 SuccessorIndices = 2;
+  }
+
+  message Predecesors {
+    int32 VertexIndex = 1;
+    repeated int32 PredecessorIndices = 2;
+  }
+
+  repeated PBVertex VertexMap = 1;
+  repeated int32 RootSequence = 2;
+  repeated Successors SuccessorMap = 3;
+  repeated Predecesors PredecesorMap = 4;
+}
+
+message PBDiTree {
+  message Predecesors {
+    int32 VertexIndex = 1;
+    repeated int32 PredecessorIndices = 2;
+  }
+
+  repeated PBVertex VertexMap = 1;
+  repeated int32 Root = 2;
+  repeated Predecesors PredecesorMap = 3;
+}
+
+message PBGraph{
+  message Successors {
+    int32 VertexIndex = 1;
+    repeated int32 SuccessorIndices = 2;
+  }
+
+  repeated PBVertex VertexMap = 1;
+  repeated Successors SuccessorMap = 2;
+}
+
+message PBVertex {
+  message Property {
+    PBPublicId ConceptPublicId = 1;
+    PBField Value = 2;
+  }
+  PBVertexId VertexId = 1;
+  int32 VertexIndex = 2;
+  PBPublicId MeaningPublicId = 3;
+  repeated Property Properties = 4;
+}
+
+message PBStamp {
+  PBPublicId PublicId = 1;
+  PBConcept Status = 2;
+  PBConcept Author = 3;
+  PBConcept Module = 4;
+  PBConcept Path = 5;
+  google.protobuf.Timestamp Time = 6;
+}
+
+
+message PBConcept {
+  PBPublicId PublicId = 1;
+}
+
+
+message PBConceptChronology {
+  PBPublicId PublicId = 1;
+  repeated PBConceptVersion ConceptVersions = 2;
+}
+
+message PBConceptVersion {
+  PBPublicId PublicId = 1;
+  PBStamp Stamp = 2;
+}
+
+
+message PBFieldDefinition {
+  PBConcept Meaning = 1;
+  PBPublicId DataTypePublicId = 2;
+  PBPublicId PurposePublicId = 3;
+  PBPublicId MeaningPublicId = 4;
+}
+
+message PBPattern {
+  PBPublicId PublicId = 1;
+}
+
+message PBPatternChronology {
+  PBPublicId ChronologySetPublicId = 1;
+  repeated PBPatternVersion Versions = 2;
+}
+
+
+message PBPatternVersion {
+  PBPublicId PublicId = 1;
+  PBStamp Stamp = 2;
+  PBPublicId ReferencedComponentPurpose = 3;
+  PBPublicId ReferencedComponentMeaning = 4;
+  repeated PBFieldDefinition FieldDefinitions = 5;
+}
+
+
+message PBSemantic {
+  PBPublicId PublicId = 1;
+  PBPublicId ReferencedComponent = 2;
+  PBPublicId PatternForSemantic = 3;
+}
+
+message PBSemanticChronology {
+  PBPublicId PublicId = 1;
+  PBPublicId ReferencedComponent = 2;
+  PBPublicId PatternForSemantic = 3;
+  repeated PBSemanticVersion Versions = 4;
+}
+
+message PBSemanticVersion {
+  PBPublicId PublicId = 1;
+  PBStamp Stamp = 2;
+  PBPublicId ReferencedComponent = 3;
+  PBPublicId PatternForSemantic = 4;
+  repeated PBField FieldValues = 5;
+}
+
