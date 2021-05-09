@@ -5,12 +5,6 @@
     <RootNamespace>Tinkar.Protobuf.CS</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Proto\PBPublicId.proto" />
-    <None Remove="Proto\PBTinkarId.proto" />
-    <None Remove="Proto\PBVertexId.proto" />
-    <None Remove="Tinkar.proto" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.16.0-rc1" />

@@ -1,78 +1,1023 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Tinkar</name>
+        <name>Tinkar.Dto</name>
     </assembly>
     <members>
-        <member name="T:Tinkar.ITinkarId">
+        <member name="T:Tinkar.Dto.DateTimeExtensions">
             <summary>
-            Base Tinkar Id.
+            DateTime extension methods.
             </summary>
         </member>
-        <member name="P:Tinkar.IDiGraph`1.Roots">
+        <member name="F:Tinkar.Dto.DateTimeExtensions.epochStart">
             <summary>
-            Gets the roots of this item.
-            A graph can have multiple roots.
+            Java Instant starts at jan 1, 1970.
             </summary>
         </member>
-        <member name="M:Tinkar.IDiGraph`1.Predecessors(`0)">
+        <member name="M:Tinkar.Dto.DateTimeExtensions.EpochSecond(System.DateTime)">
             <summary>
-            Get predecessors of the indicated vertex.
-            A directed graph can have multiple predecessors.
+            Create a java value 'seconds since epochStart' from c# DateTime.
             </summary>
-            <param name="vertex"></param>
-            <returns>predecessors of the provided vertex.Empty list if a root node.</returns>
+            <param name="dt">DateTime value.</param>
+            <returns>Java integer seconds since 1970.</returns>
         </member>
-        <member name="P:Tinkar.IDiTree`1.Root">
+        <member name="M:Tinkar.Dto.DateTimeExtensions.Nano(System.DateTime)">
             <summary>
-            Get root of tree. Tree can only have one root.
+            Create nano seconds from data time milliseconds.
             </summary>
+            <param name="dt">Date time value.</param>
+            <returns>nanoseconds part of date time.</returns>
         </member>
-        <member name="M:Tinkar.IDiTree`1.Predecessor(`0)">
+        <member name="M:Tinkar.Dto.DateTimeExtensions.FromInstant(System.Int64,System.Int32)">
             <summary>
-            Get predecessor of vertex.
+            Create C# date time from jave serialized instant fields.
             </summary>
-            <param name="vertex">Get predecessor of this vertex</param>
-            <returns>Predecessor, or null if root</returns>
+            <param name="epoch">Seconds since (or before) 1970.</param>
+            <param name="nanoSeconds">nanoseconds part of instant.</param>
+            <returns>read DateTime value.</returns>
         </member>
-        <member name="P:Tinkar.IDiTree`1.PredecessorMap">
+        <member name="T:Tinkar.Dto.IMarshalable">
             <summary>
-            Get dictionary of all predecessors
+            Interface for classes that implement marshaling to a binary stream.
             </summary>
         </member>
-        <member name="M:Tinkar.IGraph`1.Vertex(System.Guid)">
+        <member name="P:Tinkar.Dto.IMarshalable.FieldDataType">
+            <summary>
+            Unique id for this data field.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.IMarshalable.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal class data to binary stream.
+            </summary>
+            <param name="output">binary output stream.</param>
+        </member>
+        <member name="F:Tinkar.Dto.MarshalVersion.LocalMarshalVersion">
+            <summary>
+            Version of marshalling code.
+            If code is modified in a way that renders old serialized data
+            non-conformant, then this number should be incremented.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.TinkarByteArrayOutput">
+            <summary>
+            Tinkar binary output stream that writes to a byte arrray.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.TinkarByteArrayOutput.byteArrayOutputStream">
+            <summary>
+            Store output in this memory stream.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarByteArrayOutput.#ctor(System.IO.MemoryStream,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.TinkarByteArrayOutput"/> class.
+            </summary>
+            <param name="byteArrayOutputStream">Underlying memory stream.</param>
+            <param name="marshalVersion">Version of marshal'ing code.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarByteArrayOutput.Make(System.Int32)">
+            <summary>
+            Create a TinkarByteArrayOutput item.
+            </summary>
+            <param name="marshalVersion">Version of marshal'ing code.</param>
+            <returns>TinkarByteArrayOutput item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarByteArrayOutput.GetBytes">
+            <summary>
+            Get output stream bytes.
+            </summary>
+            <returns>array or read bytes.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarByteArrayOutput.ToInput">
+            <summary>
+            Convert output stream to an input stream
+            containing output streams bytes.
+            </summary>
+            <returns>Tinkar input stream.</returns>
+        </member>
+        <member name="T:Tinkar.Dto.TinkarInput">
+            <summary>
+            Read data from input stream into Tinkar objects.
+            The serialization format read must be compatible the Java Tinkar
+            serializer.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.TinkarInput"/> class.
+            </summary>
+            <param name="inStream">Binary input stream.</param>
+            <param name="marshalVersion">Marshal version number.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.Dispose">
+            <summary>
+            Dispose function.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetPublicIds">
+            <summary>
+            Read PublicIds from input stream.
+            </summary>
+            <returns>PublicId.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetUTF">
+            <summary>
+            Read string.
+            Note: BinaryReader.ReadString is supposed to be identical to java ReadUTF().
+            </summary>
+            <returns>String.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetInt16">
+            <summary>
+            Read network ordered Int15 from input stream.
+            </summary>
+            <returns>Int32.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetInt32">
+            <summary>
+            Read network ordered  Int32 from input stream.
+            </summary>
+            <returns>Int32.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetSingle">
+            <summary>
+            Read network ordered float from input stream.
+            </summary>
+            <returns>read single value.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetBoolean">
+            <summary>
+            Read network ordered boolean from input stream.
+            </summary>
+            <returns>read boolean value.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetLong">
+            <summary>
+            Read network ordered Int64 from input stream.
+            </summary>
+            <returns>Int64.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetByteArray">
+            <summary>
+            Read a byte array from input stream.
+            </summary>
+            <returns>byte[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetUuids">
+            <summary>
+            Read array of guids from input stream.
+            </summary>
+            <returns>Guid[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetUuid">
+            <summary>
+            Read array of guids from input stream.
+            </summary>
+            <returns>Guid[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetPublicId">
+            <summary>
+            Read PublicId from input stream.
+            </summary>
+            <returns>PublicId.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetInstant">
+            <summary>
+            Read data tome from input stream.
+            </summary>
+            <returns>DateTime.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetFieldDefinitionList">
+            <summary>
+            Read an array or FieldDefinitionDTO items.
+            </summary>
+            <returns>FieldDefinitionDTO[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetConceptVersionList(Tinkar.IPublicId)">
+            <summary>
+            Read an array or ConceptVersionDTO items.
+            </summary>
+            <param name="publicId">Public id (component ids).</param>
+            <returns>ConceptVersionDTO[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetPatternVersionList(Tinkar.IPublicId)">
+            <summary>
+            Read an array or TypePatternVersionDTO items.
+            </summary>
+            <param name="publicId">Public id (component ids).</param>
+            <returns>TypePatternVersionDTO[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.ReadSemanticVersionList(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Read an array or SemanticVersionDTO items.
+            </summary>
+            <param name="publicId">Public id (component ids).</param>
+            <param name="patternForSemanticPublicId">TypePattern UUIDs.</param>
+            <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
+            <returns>SemanticVersionDTO[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetObjects">
+            <summary>
+            Read an array or Object items.
+            </summary>
+            <returns>Object[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetComponents">
+            <summary>
+            Read Tinkar items from file.
+            </summary>
+            <returns>Object[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarInput.GetField">
+            <summary>
+            Read an array or Object fields.
+            </summary>
+            <returns>Object[].</returns>
+        </member>
+        <member name="T:Tinkar.Dto.TinkarOutput">
+            <summary>
+            Tinkar binary output stream. Writes Tinkar objects to serialized
+            binary byte stream.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.TinkarOutput.writer">
+            <summary>
+            Binary writer that gets written to.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.TinkarOutput"/> class.
+            </summary>
+            <param name="outStream">Output stream.</param>
+            <param name="marshalVersion">Marshal version number.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.Dispose">
+            <summary>
+            Dispose. This flushes streams and releases underlying output stream.
+            If dispose is not called, cached data is not flushed to output stream,
+            rendering the underlying output stream truncated.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteBoolean(System.Boolean)">
+            <summary>
+            Write boolean to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteByteArray(System.Byte[])">
+            <summary>
+            Write byte array to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteSingle(System.Single)">
+            <summary>
+            Write float to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteInt16(System.Int16)">
+            <summary>
+            Write little endian Int16 to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteInt32(System.Int32)">
+            <summary>
+            Write little endian Int32 to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteInt64(System.Int64)">
+            <summary>
+            Write little endian Int64 to output stream.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteInstant(System.DateTime)">
+            <summary>
+            Write out date time.
+            </summary>
+            <param name="value">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteMarshalableList(System.Collections.Generic.IEnumerable{Tinkar.Dto.IMarshalable})">
+            <summary>
+            Write out a series of IMarshalable items.
+            </summary>
+            <param name="items">Items to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteField(System.Object)">
+            <summary>
+            Write sinple object field to output stream.
+            </summary>
+            <param name="field">Value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteUTF(System.String)">
+            <summary>
+            Write string.
+            Note: BinaryWriter.WriteString is supposed to be identical to java WriteUTF().
+            </summary>
+            <param name="s">String to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteUuids(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Write a stream of Uuids (guids) to output stream.
+            </summary>
+            <param name="uuids">values to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteUuid(System.Guid)">
+            <summary>
+            Write a stream of Uuids (guids) to output stream.
+            </summary>
+            <param name="uuid">values to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.PutPublicId(Tinkar.IPublicId)">
+            <summary>
+            Write a stream of Uuids (guids) to output stream.
+            </summary>
+            <param name="publicId">publicId to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteObjects(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Write out a stream ob simple objects.
+            </summary>
+            <param name="fields">Values to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarOutput.WriteFieldType(Tinkar.Dto.FieldDataType)">
+            <summary>
+            Write field type to output stream.
+            </summary>
+            <param name="fieldType">value to write.</param>
+        </member>
+        <member name="T:Tinkar.Dto.PublicId">
+            <summary>
+            Public Id.
+            This is one or more Guids that serve as a unique id's.
+            Notes:
+            a) if there are more than one id, that means that each id identifies this
+            object. Any other PublicId that contains any of these ID's is considered equivelant.
+            b) there are several modifications made to this class to minimize memory allocations. in
+            particular to minimize memory references. That is why we have SingleIdLsb and SingleIdMsb, which 
+            are set if there is only a single id to this. If there are multiple id's, then IdArray is 
+            set to an array of items.
+            It is expected that the bulk of PublicId's created will be a single id.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.ComponentDTO">
+            <summary>
+            Base class for all Tinkar DTO classes.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ComponentDTO.PublicId">
+            <summary>
+            Gets public id.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.ComponentDTO.#ctor(Tinkar.IPublicId)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="componentPublicId">Public id for this item</param>
+        </member>
+        <member name="M:Tinkar.Dto.ComponentDTO.IsEquivalent(System.Object)">
+            <summary>
+            Implementation of IEquivalent.IsEquivalent
+            We manually create this rather than using the default
+            record implementation because we want to compare to
+            do a deep comparison, not just compare reference equality.
+            </summary>
+            <param name="otherObject">Item to compare to for equivalence.</param>
+            <returns>true if equal.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ComponentDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="T:Tinkar.Dto.ConceptChronologyDTO">
+            <summary>
+            Tinkar ConceptChronology record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ConceptChronologyDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ConceptChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ConceptChronologyDTO.conceptVersions">
+            <summary>
+            Gets Versions.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ConceptChronologyDTO.Versions">
+            <summary>
+            Gets Versions.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.#ctor(Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.ConceptVersionDTO})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptChronologyDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="conceptVersions">ConceptVersions.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json stream.
+            </summary>
+            <param name="jsonObject">JSON parent container.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptChronologyDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.ConceptDTO">
+            <summary>
+            Concept record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ConceptDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ConceptDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.#ctor(System.Guid[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptDTO"/> class.
+            </summary>
+            <param name = "uuids" > Component Public id(component ids).</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.#ctor(Tinkar.IPublicId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Component Public id(component ids).</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jObj">JSON parent container to read from.</param>
+            <returns>ConceptDTO record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.Make(System.String)">
+            <summary>
+            Mkae concept from a string of uuid's
+            </summary>
+            <param name="uuidListString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal all fields to output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.ConceptVersionDTO">
+            <summary>
+            ConceptVersion record.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.ConceptVersionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptVersionDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="stampDTO">Stamp.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.#ctor(Tinkar.IConceptVersion)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.ConceptVersionDTO"/> class.
+            </summary>
+            <param name = "conceptVersion" > Concept Version DTO.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.Make(Tinkar.Dto.TinkarInput,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <param name="publicId">Public id (component ids).</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="jsonObject">JSON parent container.</param>
+            <param name="publicId">Public id (component ids).</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal all fields to binary output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.ConceptVersionDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.FieldCompare">
+            <summary>
+            Class that implements static methods to support field comparison.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareItem``1(``0,``0)">
+            <summary>
+            Compare two IComparable instances.
+            </summary>
+            <typeparam name="TItem">Items types to compare.</typeparam>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareByteArray(System.Byte[],System.Byte[])">
+            <summary>
+            Compare two IEnumerable&lt;Guid&gt; instances and return true if each has the same
+            Guid values.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareGuids(System.Collections.Generic.IEnumerable{System.Guid},System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Compare two IEnumerable&lt;Guid&gt; instances and return true if each has the same
+            Guid values.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.ComparePublicIds(Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Compare two PublicId instances and return true if each has the same
+            Guid values.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.IsEquivalentSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+            items that are equal.
+            </summary>
+            <typeparam name="TSeq">Sequence type to compare.</typeparam>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareSequence``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+            items that are equal.
+            </summary>
+            <typeparam name="TSeq">Sequence type to compare.</typeparam>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareSequence(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
+            items that are equal.
+            </summary>
+            <typeparam name="TSeq">Sequence type to compare.</typeparam>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Compare(System.Object[],System.Object[])">
+            <summary>
+            Compare two Object arrays.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Same(System.Object,System.Object)">
+            <summary>
+            Returns true if two bojects are equivalent, or the same with
+            a deep comparison.
+            </summary>
+            <param name="aObj">First item to compare.</param>
+            <param name="bObj">Second item to compare.</param>
+            <returns>true if equivalent.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Compare(System.Object,System.Object)">
+            <summary>
+            Compares two objects for 'sameness'. Does deep compare.
+            </summary>
+            <param name="aObj">First objec to compare.</param>
+            <param name="bObj">Second object to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Equivalent(System.Object[],System.Object[])">
+            <summary>
+            Compare two Object arrays.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Equivalent(System.Collections.Immutable.ImmutableArray{System.Object},System.Collections.Immutable.ImmutableArray{System.Object})">
+            <summary>
+            Compare two Object arrays.
+            </summary>
+            <param name="a">First item to compare.</param>
+            <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.Equivalent(System.Object,System.Object)">
+            <summary>
+            Compares two objects for 'sameness'. Does deep compare.
+            </summary>
+            <param name="aObj">First objec to compare.</param>
+            <param name="bObj">Second object to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="T:Tinkar.Dto.FieldDataType">
+            <summary>
+            Field data type enumeration. Unique value for each
+            data type that can be serializzed.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ConceptChronologyType">
+            <summary>
+            ConceptChronology Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.PatternChronologyType">
+            <summary>
+            PatternForConceptChronology Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.SemanticChronologyType">
+            <summary>
+            SemanticChronology Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ConceptVersionType">
+            <summary>
+            ConceptVersionType.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.PatternVersionType">
+            <summary>
+            PatternForSemanticVersion Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.SemanticVersionType">
+            <summary>
+            SemanticVersion Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.StampType">
+            <summary>
+            Stamp Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.StringType">
+            <summary>
+            String type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.IntegerType">
+            <summary>
+            Integer Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.FloatType">
+            <summary>
+            Float Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.BooleanType">
+            <summary>
+            Boolean Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ByteArrayType">
+            <summary>
+            ByteArray Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ObjectArrayType">
+            <summary>
+            ObjectArray Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.DiGraphType">
+            <summary>
+            DiGraph Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.InstantType">
+            <summary>
+            Instant Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ConceptType">
+            <summary>
+            Concept Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.PatternType">
+            <summary>
+            PatternForSemantic Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.SemanticType">
+            <summary>
+            Semantic Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.DiTreeType">
+            <summary>
+            DiTree Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.VertexType">
+            <summary>
+            Vertex Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ComponentIdList">
+            <summary>
+            ComponentIdListType.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ComponentIdSet">
+            <summary>
+            ComponentIdSetType.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.PlanarPoint">
+            <summary>
+            PlanarPoint Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.SpatialPoint">
+            <summary>
+            SpatialPoint Type.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDataType.ComponentType">
+            <summary>
+            Component Type.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.FieldDefinitionDTO">
+            <summary>
+            FieldDefinition record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.FieldDefinitionDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.DataType">
+            <summary>
+            Gets DataType record.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.Purpose">
+            <summary>
+            Gets Purpose concept.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.Meaning">
+            <summary>
+            Gets Meaning concept.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.DataTypePublicId">
+            <summary>
+            Gets DataType uuids.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.PurposePublicId">
+            <summary>
+            Gets Purpose UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.FieldDefinitionDTO.MeaningPublicId">
+            <summary>
+            Gets Meaning public id.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.FieldDefinitionDTO"/> class.
+            </summary>
+            <param name="dataTypePublicId">dataTypePublicId.</param>
+            <param name="purposePublicId">purposePublicId.</param>
+            <param name="meaningPublicId">meaningPublicId.</param>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Implementation of IEquivalent.IsEquivalent
+            We manually create this rather than using the default
+            record implementation because we want to compare to
+            do a deep comparison, not just compare reference equality.
+            </summary>
+            <param name="otherObject">Item to compare to for equivalence.</param>
+            <returns>true if equal.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.CompareTo(System.Object)">
+            <summary>
+            Compare this with another item of same type.
+            </summary>
+            <param name="otherObject">Item to compare to for equality.</param>
+            <returns> -1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.Make(Tinkar.IFieldDefinition)">
+            <summary>
+            Make a FieldDefinitionDTP instance from a IFieldDefinition instance.
+            </summary>
+            <param name="fieldDefinition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldDefinitionDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from input json stream.
+            </summary>
+            <param name="jsonObject">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.GraphDTO.Vertex(System.Guid)">
             <summary>
             Gets the vertex associated with the identifier
             </summary>
             <param name="vertexId">a universally unique identifier for a vertex</param>
             <returns>Vertex associated with the identifier</returns>
         </member>
-        <member name="M:Tinkar.IGraph`1.Successors(`0)">
+        <member name="M:Tinkar.Dto.GraphDTO.Successors(Tinkar.Dto.VertexDTO)">
             <summary>
             Gets the successors for the provided vertex
             </summary>
             <param name="vertex">vertex a vertex to retrieve the successors of</param>
             <returns>Successofs of indicated vertex</returns>
         </member>
-        <member name="P:Tinkar.IVertex.VertexId">
+        <member name="F:Tinkar.Dto.VertexDTO.JSONCLASSNAME">
+            <summary>
+            Name of serialized json field for this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.VertexDTO.FieldDataType">
+            <summary>
+            Unique id for this data field.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.VertexDTO.VertexId">
             <summary>
             Gets universally unique identifier for this vertex
             
             </summary>
         </member>
-        <member name="P:Tinkar.IVertex.VertexIndex">
+        <member name="P:Tinkar.Dto.VertexDTO.VertexIndex">
             <summary>
             Gets tindex of this vertex within its graph. The index is locally
             unique within a graph, but not across graphs, or different versions of the same graph.
             Vertex index is not used in equality or hash calculations.
             </summary>
         </member>
-        <member name="P:Tinkar.IVertex.Meaning">
+        <member name="P:Tinkar.Dto.VertexDTO.Meaning">
             <summary>
             Concept that represents the meaning of this vertex.
             </summary>
         </member>
-        <member name="M:Tinkar.IVertex.Property``1(Tinkar.IConcept)">
+        <member name="M:Tinkar.Dto.VertexDTO.#ctor(System.Int64,System.Int64,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.VertexDTO"/> class.
+            </summary>
+            <param name="vertexIdMsb"></param>
+            <param name="vertexIdLsb"></param>
+            <param name="vertexIndex"></param>
+            <param name="meaning"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="M:Tinkar.Dto.VertexDTO.#ctor(System.Guid,System.Int32,Tinkar.Dto.ConceptDTO,System.Collections.Immutable.ImmutableDictionary{Tinkar.IConcept,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.VertexDTO"/> class.
+            </summary>
+            <param name="vertexId"></param>
+            <param name="vertexIndex"></param>
+            <param name="meaning"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="M:Tinkar.Dto.VertexDTO.Property``1(Tinkar.IConcept)">
             <summary>
             Gets optional object that is associated with the properly concept.
             </summary>
@@ -80,7 +1025,7 @@
             <param name="propertyConcept">Property Concept</param>
             <returns>Property associated with concept</returns>
         </member>
-        <member name="M:Tinkar.IVertex.PropertyFast``1(Tinkar.IConcept)">
+        <member name="M:Tinkar.Dto.VertexDTO.PropertyFast``1(Tinkar.IConcept)">
             <summary>
             Gets optional object that is associated with the properly concept.
             </summary>
@@ -88,223 +1033,1129 @@
             <param name="propertyConcept">Property Concept</param>
             <returns>Property associated with concept</returns>
         </member>
-        <member name="P:Tinkar.IVertex.PropertyKeys">
+        <member name="P:Tinkar.Dto.VertexDTO.PropertyKeys">
             <summary>
             Gets keys for the populated properties
             </summary>
             <returns>keys</returns>
         </member>
-        <member name="T:Tinkar.IChronology`2">
+        <member name="M:Tinkar.Dto.VertexDTO.Make(Tinkar.Dto.TinkarInput)">
             <summary>
-            Chronology interaface.
+            Create Vertex from binary input stream.
             </summary>
-            <typeparam name="TVersion">Version type.</typeparam>
-            <typeparam name="TComponent">Component type.</typeparam>
+            <param name="input">input</param>
+            <returns>new Vertex item</returns>
         </member>
-        <member name="P:Tinkar.IChronology`2.Versions">
+        <member name="M:Tinkar.Dto.VertexDTO.Marshal(Tinkar.Dto.TinkarOutput)">
             <summary>
-            Gets versions.
+            Marshal class data to binary stream.
             </summary>
+            <param name="output">binary output stream.</param>
         </member>
-        <member name="T:Tinkar.IComponent">
+        <member name="M:Tinkar.Dto.VertexDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
             <summary>
-            Tinkar base interface for all identified 'things'.
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.PatternChronologyDTO">
+            <summary>
+            Tinkar PatternForSemanticChronology record.
             </summary>
         </member>
-        <member name="P:Tinkar.IComponent.PublicId">
+        <member name="F:Tinkar.Dto.PatternChronologyDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.PatternChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.PatternChronologyDTO.Versions">
+            <summary>
+            Gets Versions list.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.#ctor(Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.PatternVersionDTO})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternChronologyDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="definitionVersions">DefinitionVersions.</param>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.PatternChronologyDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.PatternDTO">
+            <summary>
+            PatternForSemantic record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.PatternDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.PatternDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.#ctor(Tinkar.IPublicId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jsonObject">JSON parent container to read from.</param>
+            <returns>Deserialized PatternForSemanticDTO record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.PatternDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.PatternVersionDTO">
+            <summary>
+            Tinkar PatternForSemanticVersion record.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.PatternVersionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.PatternVersionDTO.FieldDefinitions">
+            <summary>
+            Gets FieldDefinitions.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.Dto.StampDTO,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.FieldDefinitionDTO})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.PatternVersionDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="stamp">StampDTO.</param>
+            <param name="referencedComponentPurposePublicId">Referenced Component Purpose PublicIc.</param>
+            <param name="referencedComponentMeaningPublicId">Referenced Component Meaning PublicIc.</param>
+            <param name="fieldDefinitionDTOs">FieldDefinitions.</param>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.Make(Tinkar.Dto.TinkarInput,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jsonObject">JSON parent container to read from.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
+            <returns>Deserialized PatternForSemanticVersion record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.PatternVersionDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.SemanticChronologyDTO">
+            <summary>
+            Tinkar Semantic Chronology record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.SemanticChronologyDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.ReferencedComponentPublicId">
+            <summary>
+            Gets ReferencedComponent UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.PatternForSemantic">
+            <summary>
+            Gets PatternForSemantic UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.ReferencedComponent">
+            <summary>
+            Gets ReferencedComponent.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.Pattern">
+            <summary>
+            Gets PatternForSemantic.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.SemanticVersions">
+            <summary>
+            Gets SemanticVersion.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticChronologyDTO.Versions">
+            <summary>
+            Gets Versions.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternPublicId">patternPublicId.</param>
+            <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
+            <param name="semanticVersions">SemanticVersions.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.#ctor(Tinkar.IPublicId,Tinkar.IPattern,Tinkar.IPublicId,System.Collections.Immutable.ImmutableArray{Tinkar.Dto.SemanticVersionDTO})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticChronologyDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternPublicId">Pattern for semantic.</param>
+            <param name="referencedComponentPublicId">ReferencedComponentPublicId.</param>
+            <param name="semanticVersions">SemanticVersions.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.Make(Tinkar.Dto.SemanticChronologyDTO)">
+            <summary>
+            Static method to Create DTO item from  another SemanticChronology.
+            </summary>
+            <param name="semanticChronology">Semantic Chronology DTO.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json stream.
+            </summary>
+            <param name="jsonObject">JSON parent container to read from.</param>
+            <returns>Deserialized SemanticChronology record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticChronologyDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.SemanticDTO">
+            <summary>
+            Semantic record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.SemanticDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticDTO.ReferencedComponentPublicId">
+            <summary>
+            Gets ReferencedComponent UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticDTO.PatternForSemantic">
+            <summary>
+            Gets PatternForSemantic UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticDTO.ReferencedComponent">
+            <summary>
+            Gets ReferencedComponent.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticDTO.Pattern">
+            <summary>
+            Gets PatternForSemantic.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternForSemantic">Definition ForSemantic PublicId.</param>
+            <param name="referencedComponentPublicId">Referenced Component PublicId.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.#ctor(Tinkar.IPublicId,Tinkar.IPattern,Tinkar.IComponent)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternForSemantic">PatternForSemanticUuids.</param>
+            <param name="referencedComponentPublicId">ReferencedComponentUuids.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.CompareTo(System.Object)">
+            <summary>
+            Compares this to another item.
+            </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jObj">JSON parent container to read from.</param>
+            <returns>Deserialized Semantic record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.SemanticVersionDTO">
+            <summary>
+            Tinkar SemanticVersion record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.SemanticVersionDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.PatternForSemantic">
+            <summary>
+            Gets PatternForSemantic UUID's.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.ReferencedComponentPublicId">
+            <summary>
+            Gets ReferencedComponent Uuids.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.ReferencedComponent">
+            <summary>
+            Gets ReferencedComponent.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.Pattern">
+            <summary>
+            Gets PatternForSemantic.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.SemanticVersionDTO.Fields">
+            <summary>
+            Gets Fields array.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.Dto.StampDTO,System.Collections.Immutable.ImmutableArray{System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.SemanticVersionDTO"/> class.
+            </summary>
+            <param name = "componentPublicId" > Public id(component ids).</param>
+            <param name="patternForSemantic">PatternForSemanticUuids.</param>
+            <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
+            <param name="stampDTO">StampDTO.</param>
+            <param name="fields">Fields.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.CompareTo(System.Object)">
+            <summary>
+            Compare this with another item of same type.
+            </summary>
+            <param name="otherObject">Item to compare to for equality.</param>
+            <returns> -1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.Make(Tinkar.Dto.TinkarInput,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
+            <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
+            <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.Make(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Static method to Create DTO item from json .
+            </summary>
+            <param name="jsonObject">JSON parent container.</param>
+            <param name="componentPublicId">Public id (component ids).</param>
+            <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
+            <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
+            <returns>Deserialized SemanticVersion record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.Marshal(Tinkar.Dto.TinkarOutput)">
+            <summary>
+            Marshal DTO item to output stream.
+            </summary>
+            <param name="output">output data stream.</param>
+        </member>
+        <member name="M:Tinkar.Dto.SemanticVersionDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.StampDTO">
+            <summary>
+            Stamp record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.StampDTO.JSONCLASSNAME">
+            <summary>
+            Name of this class in JSON serialization.
+            This must be consistent with Java implementation.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.FieldDataType">
+            <summary>
+            Unique ID for binary marshal of this item.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.StatusPublicId">
+            <summary>
+            Gets Status UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.AuthorPublicId">
+            <summary>
+            Gets Author UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.ModulePublicId">
+            <summary>
+            Gets Module UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.PathPublicId">
+            <summary>
+            Gets Path UUIDs.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.Time">
+            <summary>
+            Gets Time.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.Status">
+            <summary>
+            Gets Status.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.Author">
+            <summary>
+            Gets Author.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.Module">
+            <summary>
+            Gets Module.
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.StampDTO.Path">
+            <summary>
+            Gets Path.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.#ctor(Tinkar.IPublicId,Tinkar.IPublicId,System.DateTime,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.StampDTO"/> class.
+            </summary>
+            <param name = "publicId" > Public id(component ids).</param>
+            <param name="statusPublicId">StatusPublicId.</param>
+            <param name="time">Time.</param>
+            <param name="authorPublicId">AuthorPublicId.</param>
+            <param name="modulePublicId">ModulePublicId.</param>
+            <param name="pathPublicId">PathPublicId.</param>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.IsEquivalent(System.Object)">
+            <summary>
+            Returns zero of the two items are equivalent. This is not necessarily the
+            same is same.
+            </summary>
+            <param name="otherObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.CompareTo(System.Object)">
+            <summary>
+            Compare this with another item of same type.
+            </summary>
+            <param name="otherObject">Item to compare to for equality.</param>
+            <returns> -1, 0, or 1.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.Make(Tinkar.IStamp)">
+            <summary>
+            Static method to Create Stamp DTO item from another IStamp instance.
+            </summary>
+            <param name="stamp">Input stamp.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.Make(Tinkar.Dto.TinkarInput)">
+            <summary>
+            Static method to Create DTO item from input stream.
+            </summary>
+            <param name="input">input data stream.</param>
+            <returns>new DTO item.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.Make(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Static method to Create DTO item from json stream.
+            </summary>
+            <param name="jObj">JSON parent container to read from.</param>
+            <returns>Deserialized Stamp record.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.StampDTO.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.VersionDTO">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Tinkar.Dto.VersionDTO.PublicId">
             <summary>
             Gets public id.
             </summary>
         </member>
-        <member name="T:Tinkar.IConcept">
+        <member name="P:Tinkar.Dto.VersionDTO.StampDTO">
             <summary>
-            Identified thing interface. This is a base interface for most of the
-            other Tinkar record intefaces.
+            Gets the Stamp DTO.
             </summary>
         </member>
-        <member name="T:Tinkar.IConceptChronology`2">
+        <member name="P:Tinkar.Dto.VersionDTO.Stamp">
             <summary>
-            ConceptChronology interface.
-            </summary>
-            <typeparam name="TConceptVersion">Version type.</typeparam>
-            <typeparam name="TComponent">Component type.</typeparam>
-        </member>
-        <member name="T:Tinkar.IConceptVersion">
-            <summary>
-            Tinkar Concept Version interface.
+            Gets the Stamp.
             </summary>
         </member>
-        <member name="T:Tinkar.IDTO">
+        <member name="M:Tinkar.Dto.VersionDTO.IsEquivalent(System.Object)">
             <summary>
-            ???.
+            Implementation of IEquivalent.IsEquivalent
+            We manually create this rather than using the default
+            record implementation because we want to compare to
+            do a deep comparison, not just compare reference equality.
             </summary>
+            <param name="otherObject">Item to compare to for equivalence.</param>
+            <returns>true if equal.</returns>
         </member>
-        <member name="T:Tinkar.IEquivalent">
+        <member name="M:Tinkar.Dto.VersionDTO.CompareTo(System.Object)">
             <summary>
-            IEquivalent.
-            Tests if two items are the 'same'. This looks at actual values,
-            not references, to determine equivalency.
+            Compares this to another item.
             </summary>
+            <param name="otherObject">Item to compare to.</param>
+            <returns>-1, 0, or 1.</returns>
         </member>
-        <member name="M:Tinkar.IEquivalent.IsEquivalent(System.Object)">
-            <summary>
-            Returns true if 'this' item is equivalent to 'other'
-            item.
-            </summary>
-            <param name="other">other item to compare equivalence to.</param>
-            <returns>true if two items are equivalent.</returns>
-        </member>
-        <member name="T:Tinkar.IFieldDefinition">
-            <summary>
-            Tinkar interface for Field Definition.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IFieldDefinition.DataType">
-            <summary>
-             Gets underlying object type such as String or Integer.
-             @return Concept designating the data type of the defined field.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IFieldDefinition.Purpose">
-            <summary>
-            Gets what the object represents: a String might be a URI,
-            a component identifier might represent a mapping, or an
-            integer might represent a coordinate.
-            @return Concept designating the purpose of the defined field.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IFieldDefinition.Meaning">
-            <summary>
-            Gets the context in which this specific field is used. Maybe it is the
-            "SNOMED code" in a mapping, or the location of an image if a URI.
-            @return Concept designating the use of the defined field.
-            </summary>
-        </member>
-        <member name="T:Tinkar.IPattern">
-            <summary>
-            Definition for Semantic interface.
-            </summary>
-        </member>
-        <member name="T:Tinkar.IPatternChronology`3">
-            <summary>
-            TypePatternChronology interace.
-            </summary>
-            <typeparam name="TTypePatternVersion">Generic type pattern  for semantic version. </typeparam>
-            <typeparam name="TFieldDefinition">Generic type for Field definition. </typeparam>
-            <typeparam name="TComponent">Generic type for component definition. </typeparam>
-        </member>
-        <member name="T:Tinkar.IPatternVersion`1">
-            <summary>
-            Defines the fields and purpose of a Semantic Version.
-            SemanticVersion instances all reference a ITypePatternVersion
-            to define the expected fields of that Semantic Version.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IPatternVersion`1.FieldDefinitions">
-            <summary>
-            Gets the SemanticVersion field definitions.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IPatternVersion`1.ReferencedComponentPurpose">
-            <summary>
-            Gets the purpose of referenced component.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IPatternVersion`1.ReferencedComponentMeaning">
-            <summary>
-            Gets the meaning of referenced component.
-            </summary>
-        </member>
-        <member name="T:Tinkar.ISemantic">
-            <summary>
-            Tinkar Semantic interface.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ISemantic.ReferencedComponent">
-            <summary>
-            Gets component that this semantic references.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ISemantic.Pattern">
-            <summary>
-            Gets TypePattern.
-            </summary>
-        </member>
-        <member name="T:Tinkar.ISemanticChronology`2">
-            <summary>
-            Tinkar Semantic Chronology interface.
-            </summary>
-            <typeparam name="TSemanticVersion">Generic param for IChnronology interface.</typeparam>
-            <typeparam name="TComponent">Generic param for IChnronology interface.</typeparam>
-        </member>
-        <member name="T:Tinkar.ISemanticVersion">
-            <summary>
-            Tinkar Semantic Version Interface.
-            </summary>
-        </member>
-        <member name="P:Tinkar.ISemanticVersion.Fields">
-            <summary>
-            Gets semantic version fields.
-            </summary>
-        </member>
-        <member name="T:Tinkar.IStamp">
-            <summary>
-            Tinkar Stamp interface.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IStamp.Status">
-            <summary>
-            Gets stamp status.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IStamp.Time">
-            <summary>
-            Gets stamp time.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IStamp.Author">
-            <summary>
-            Gets stamp author.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IStamp.Module">
-            <summary>
-            Gets stamp module.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IStamp.Path">
-            <summary>
-            Gets stamp path.
-            </summary>
-        </member>
-        <member name="T:Tinkar.IVersion">
-            <summary>
-            Tinkar Version Interface. This is the base interface
-            for many specialized Tinkar Version interfaces.
-            </summary>
-        </member>
-        <member name="P:Tinkar.IVersion.Stamp">
-            <summary>
-            Gets stamp for version.
-            </summary>
-        </member>
-        <member name="T:Tinkar.JavaAttribute">
+        <member name="T:Tinkar.Dto.JavaAttribute">
             <summary>
             Marks a class, method, or property as being a mirror of a
             java item of the indicated name.
             This is used to do automatic code normalization using roslyn tools.
             </summary>
         </member>
-        <member name="P:Tinkar.JavaAttribute.JavaName">
+        <member name="P:Tinkar.Dto.JavaAttribute.JavaName">
             <summary>
             Gets or sets name of java item that this is a mirror of.
             </summary>
         </member>
-        <member name="M:Tinkar.JavaAttribute.#ctor(System.String)">
+        <member name="M:Tinkar.Dto.JavaAttribute.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Tinkar.JavaAttribute"/> class.
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.JavaAttribute"/> class.
             </summary>
             <param name="javaName">Name of java item that this is a mirror of.</param>
+        </member>
+        <member name="T:Tinkar.Dto.ComponentFieldForJson">
+            <summary>
+            Definitions used in JSON serialization.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.AUTHOR_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores author PublicId.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.CLASS">
+            <summary>
+            Name of JSON property that stores class name.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.COMMENT">
+            <summary>
+            Name of JSON property that stores comment string.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.COMPONENT_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores component public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.CONCEPT_VERSIONS">
+            <summary>
+            Name of JSON property that stores concept versions.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.DATATYPE_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores data type public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.PATTERN_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores type pattern public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.DEFINITION_VERSIONS">
+            <summary>
+            Name of JSON property that stores definition version records.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.FIELDS">
+            <summary>
+            Name of JSON property that stores fiekds array.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.FIELD_DEFINITIONS">
+            <summary>
+            Name of JSON property that stores field definition records UUIDs.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.MEANING_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores meaning public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.MODULE_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores module public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.PATH_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores path public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.PURPOSE_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores purpose UUIDs.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.REFERENCED_COMPONENT_MEANING_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores referenced component meaning public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.REFERENCED_COMPONENT_PURPOSE_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores referenced component purpose public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.REFERENCED_COMPONENT_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores referenced component public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.STAMP">
+            <summary>
+            Name of JSON property that stores stamp record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.STATUS_PUBLIC_ID">
+            <summary>
+            Name of JSON property that stores status public id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.TIME">
+            <summary>
+            Name of JSON property that stores time field.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.VERSIONS">
+            <summary>
+            Name of JSON property that stores versions record.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.VERTEX_ID">
+            <summary>
+            Name of JSON property that stores vertex id.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.VERTEX_MEANING">
+            <summary>
+            Name of JSON property that stores vertex meaning.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.VERTEX_INDEX">
+            <summary>
+            Name of JSON property that stores vertex index.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.ComponentFieldForJson.VERTEX_PROPERTIES">
+            <summary>
+            Name of JSON property that stores vertex properties.
+            </summary>
+        </member>
+        <member name="T:Tinkar.Dto.IJsonMarshalable">
+            <summary>
+            Interface for all classes that marshal to and from JSON streams.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.IJsonMarshalable.Marshal(Tinkar.Dto.TinkarJsonOutput)">
+            <summary>
+            Marshal all fields to Json output stream.
+            </summary>
+            <param name="output">Json output stream.</param>
+        </member>
+        <member name="T:Tinkar.Dto.JObjectExtensions">
+            <summary>
+            Json extension methods.
+            </summary>
+        </member>
+        <member name="F:Tinkar.Dto.JObjectExtensions.TErr">
+            <summary>
+            Common error message header.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.GetClass(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Get class name as defined by child string property 'class'.
+            Throw exception if class name does not match expected value.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="expectedClassName">expected class name.</param>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadToken``1(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Get child token of expected type and name.
+            If child property does not exist an exception is thrown.
+            If child item exists and
+            is of incorrect type an exception is thrown.
+            </summary>
+            <typeparam name="T">Expectfed type of json token.</typeparam>
+            <param name="jObj">JSON parent container.</param>
+            <param name="tokenName">child property name.</param>
+            <returns>JSON token.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadInstant(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read DateTime value from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="propertyName">child property name.</param>
+            <returns>Date time value.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadString(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read String value from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="propertyName">child property name.</param>
+            <returns>String value.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.AsUuids(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read Guid values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="propertyName">child property name.</param>
+            <returns>Guid values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.AsPublicId(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read PublicId from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="propertyName">child property name.</param>
+            <returns>Guid values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.AsObjects(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read Object values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="propertyName">child property name.</param>
+            <returns>Object values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadPatternVersionList(Newtonsoft.Json.Linq.JObject,Tinkar.IPublicId)">
+            <summary>
+            Read PatternForSemanticVersionDTO values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name = "publicId" > Public id(component ids).</param>
+            <returns>Definition for semantic version values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.AsFieldDefinitionList(Newtonsoft.Json.Linq.JObject,System.String)">
+            <summary>
+            Read FieldDefinitionDTO values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name="fieldName">JSON child field name.</param>
+            <returns>Field definition values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.AsConceptVersionList(Newtonsoft.Json.Linq.JObject,System.String,Tinkar.IPublicId)">
+            <summary>
+            Read ConceptVersionDTO values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name = "fieldName" > JSON child field name</param>
+            <param name = "publicId" > Public id(component ids).</param>
+            <returns>Concept version values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadSemanticVersionList(Newtonsoft.Json.Linq.JObject,System.String,Tinkar.IPublicId,Tinkar.IPublicId,Tinkar.IPublicId)">
+            <summary>
+            Read SemanticVersionDTO values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <param name = "publicId" > Public id(component ids).</param>
+            <param name = "fieldName" > Json child field name.</param>
+            <param name="definitionForSemanticPublicId">Externally defined definition for semantic uuids.</param>
+            <param name="referencedComponentPublicId">Externally defined referenced component uuids.</param>
+            <returns>Semantic version values.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.JObjectExtensions.ReadJsonMarshable(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Read IJsonMarshalable values from the named child property.
+            </summary>
+            <param name="jObj">JSON parent container.</param>
+            <returns>IJsonMarshalable values.</returns>
+        </member>
+        <member name="T:Tinkar.Dto.TinkarJsonInput">
+            <summary>
+            Parses JSON into Tinkar records.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonInput.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.TinkarJsonInput"/> class.
+            </summary>
+            <param name="inStream">Stream of json data.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonInput.Dispose">
+            <summary>
+            Dispose method. Releases reference to stream.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonInput.GetComponents">
+            <summary>
+            Read Tinkar items from file.
+            </summary>
+            <returns>Object[].</returns>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonInput.ReadJsonObject">
+            <summary>
+            Read a JSON JObject from stream and return it.
+            </summary>
+            <returns>Read JObject.</returns>
+        </member>
+        <member name="T:Tinkar.Dto.TinkarJsonOutput">
+            <summary>
+            Serializes Tinkar records into JSON objects.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tinkar.Dto.TinkarJsonOutput"/> class.
+            </summary>
+            <param name="outStream">output stream.</param>
+            <param name="formatted">if true, json is formatted to be easily readable.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteStartObject">
+            <summary>
+            Write JSON start object tag.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteEndObject">
+            <summary>
+            Write JSON end object tag.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteClass(System.String)">
+            <summary>
+            Write JSON start object tag.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WritePropertyName(System.String)">
+            <summary>
+            Created JSON child property with the indicated name.
+            This does not assign a value to that property.
+            </summary>
+            <param name="propertyName">Name of property to create.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.Put(System.String,System.Object)">
+            <summary>
+            Write array of objects.
+            </summary>
+            <param name="propertyName">child property name.</param>
+            <param name="field">values to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.Put(System.String,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Write array of objects.
+            </summary>
+            <param name="propertyName">child property name.</param>
+            <param name="fields">values to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteField(System.Object)">
+            <summary>
+            Write field to output stream.
+            </summary>
+            <param name="field">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteMarshalableList(System.String,System.Collections.Generic.IEnumerable{Tinkar.Dto.IJsonMarshalable})">
+            <summary>
+            Write series of IMarshable records to json.
+            </summary>
+            <param name="propertyName">Name of property containing serialized records.</param>
+            <param name="items">item to serialize.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.Put(System.String,Tinkar.IPublicId)">
+            <summary>
+            Write property that is array of guids.
+            </summary>
+            <param name="propertyName">Name of json property to write.</param>
+            <param name="publicId">PublicId to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteUuid(System.String,System.Guid)">
+            <summary>
+            Write property that is array of guids.
+            </summary>
+            <param name="propertyName">Name of json property to write.</param>
+            <param name="guid">Guid to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteUuids(System.String,System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Write property that is array of guids.
+            </summary>
+            <param name="propertyName">Name of json property to write.</param>
+            <param name="guids">Guids to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteInstant(System.String,System.DateTime)">
+            <summary>
+            Write property that is a date time.
+            </summary>
+            <param name="propertyName">Name of json property to write.</param>
+            <param name="instant">value to write.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteUTF(System.String,System.String)">
+            <summary>
+            Write property that is a string.
+            </summary>
+            <param name="propertyName">JSON property name that value will be written to.</param>
+            <param name="value">Value.</param>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.Dispose">
+            <summary>
+            Dispose method. Flushes output stream and sets stream to null.
+            If dispose is not called, then cached output may not be properly
+            flushed to output stream.
+            </summary>
+        </member>
+        <member name="M:Tinkar.Dto.TinkarJsonOutput.WriteObjects(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Write array of objects.
+            </summary>
+            <param name="fields">Fields to write.</param>
+        </member>
+        <member name="T:Tinkar.TinkarId">
+            <summary>
+            Defines a Union that can access a guid or 2 Int64's.
+            </summary>
+        </member>
+        <member name="M:Tinkar.TinkarId.CompareTo(System.Object)">
+            <summary>
+            Implementation if IComparable
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tinkar.TinkarId.CompareTo(Tinkar.ITinkarId)">
+            <summary>
+            Implementation if IComparable
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="T:InstantUtil">
+            <summary>
+            Instant (DateTime) utilities.
+            </summary>
+        </member>
+        <member name="M:InstantUtil.Format(System.DateTime)">
+            <summary>
+            Create string representation of DateTime.
+            This format must be compatible
+            with Tinkar-java instant format.
+            </summary>
+            <param name="dateTime">value to make string from.</param>
+            <returns>Strign represetnation of instant.</returns>
+        </member>
+        <member name="M:InstantUtil.Parse(System.String)">
+            <summary>
+            Parse string representation of DateTime into date time.
+            This date time format must be compatible
+            with Tinkar-java instant format.
+            </summary>
+            <param name="possibleInstant">instant string.</param>
+            <returns>DateTime instance.</returns>
         </member>
     </members>
 </doc>
