@@ -19,8 +19,4 @@
     <Protobuf Include="Tinkar.proto" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Proto\" />
-  </ItemGroup>
-
 </Project>

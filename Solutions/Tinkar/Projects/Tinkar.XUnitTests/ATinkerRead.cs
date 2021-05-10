@@ -38,16 +38,13 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void ConvertAllConcepts()
         {
+            // start posi is for debugging. Can restart at problem point for faster turnaround.
+            // should always be 0 for full test of all elements.
+            Int64 startPos = 895401585;
+
             DateTime start = DateTime.Now;
-            Int32 counter = 0;
-            foreach (IComponent component in this.ReadConcepts())
+            foreach (IComponent component in this.ReadConcepts(startPos))
             {
-                counter += 1;
-                if ((counter % 10000) == 0)
-                {
-                    Trace.WriteLine($"{counter}");
-                    GC.Collect(2, GCCollectionMode.Forced);
-                }
                 var pb = PBConvert.Convert(component);
                 if (pb != null)
                 {
@@ -60,13 +57,28 @@ namespace Tinkar.XUnitTests
         }
 
 
-        IEnumerable<IComponent> ReadConcepts()
+        IEnumerable<IComponent> ReadConcepts(Int64 position = 0)
         {
-            using Stream s = File.OpenRead(@"C:\Development\Tinkar\tinkar-solor-us-export.zip");
-            using ZipArchive archive = new ZipArchive(s);
-            ZipArchiveEntry entry = archive.GetEntry("export.tink");
-            Stream tinkarStream = entry.Open();
+            const String ExportPath = @"C:\Development\Tinkar\export.tink";
+
+            if (File.Exists(ExportPath) == false)
+            {
+                using Stream zipFile = File.OpenRead(@"C:\Development\Tinkar\tinkar-solor-us-export.zip");
+                using ZipArchive archive = new ZipArchive(zipFile);
+                ZipArchiveEntry entry = archive.GetEntry("export.tink");
+                Stream zipStream = entry.Open();
+                using Stream outFile = File.OpenWrite(ExportPath);
+                zipStream.CopyTo(outFile);
+                outFile.Close();
+            }
+
+            using FileStream tinkarStream = File.OpenRead(ExportPath);
             using TinkarInput input = new TinkarInput(tinkarStream);
+
+            if (position > 0)
+                tinkarStream.Seek(position, SeekOrigin.Begin);
+
+            Int32 counter = 0;
             bool done = false;
             while (done == false)
             {
@@ -74,7 +86,15 @@ namespace Tinkar.XUnitTests
                 if (c == null)
                     done = true;
                 else
+                {
                     yield return c;
+                    counter += 1;
+                    if ((counter % 10000) == 0)
+                    {
+                        Trace.WriteLine($"{counter} {tinkarStream.Position}");
+                        GC.Collect(2, GCCollectionMode.Forced);
+                    }
+                }
             }
         }
 

@@ -282,6 +282,25 @@ namespace Tinkar.Dto
                 case Object[] aArr:
                     return Compare(aArr, (Object[])bObj);
 
+                case HashSet<IPublicId> aSet:
+                    {
+                        HashSet<IPublicId> bSet = (HashSet<IPublicId>)bObj;
+                        cmp = aSet.Count.CompareTo(bSet.Count);
+                        if (cmp != 0)
+                            return cmp;
+                        List<IPublicId> aList = aSet.ToList();
+                        aList.Sort();
+
+                        List<IPublicId> bList = bSet.ToList();
+                        bList.Sort();
+                        for (Int32 i = 0; i < aList.Count; i++)
+                        {
+                            cmp = aList[i].CompareTo(bList[i]);
+                            if (cmp != 0)
+                                return cmp;
+                        }
+                        return 0;
+                    }
                 default:
                     throw new NotImplementedException($"Can not handle type {aObj.GetType().Name}");
             }

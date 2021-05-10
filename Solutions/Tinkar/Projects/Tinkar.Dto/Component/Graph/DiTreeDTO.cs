@@ -16,7 +16,7 @@ namespace Tinkar.Dto
 
         public ImmutableDictionary<Int32, Int32> PredecessorMap { get; init; }
 
-        public FieldDataType FieldDataType => FieldDataType.DiGraphType;
+        public FieldDataType FieldDataType => FieldDataType.DiTreeType;
 
         public DiTreeDTO(VertexDTO root,
                         ImmutableDictionary<Int32, Int32> predecessorMap,

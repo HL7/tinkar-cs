@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.Collections;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,7 +13,7 @@ namespace Tinkar.XUnitTests
 {
     public static class DTOConvert
     {
-        public static TinkarId Convert(PBTinkarId id)
+        public static TinkarId ToTinkarId(this PBTinkarId id)
         {
             //# Tested
             return new TinkarId
@@ -24,38 +25,88 @@ namespace Tinkar.XUnitTests
             };
         }
 
-        public static PublicId Convert(PBPublicId publicId)
+        public static PublicId ToPublicId(this PBPublicId publicId)
         {
             //# Tested
             Guid[] tids = new Guid[publicId.Id.Count];
             for (Int32 i = 0; i < publicId.Id.Count; i++)
-                tids[i] = Convert(publicId.Id[i]).uuid;
+                tids[i] = publicId.Id[i].ToTinkarId().uuid;
             return new PublicId(tids);
         }
 
-        public static StampDTO Convert(PBStamp c)
+        public static StampDTO ToStamp(this PBStamp c)
         {
             //# Tested
             return new StampDTO(
-                Convert(c.PublicId),
-                Convert(c.Status).PublicId,
+                c.PublicId.ToPublicId(),
+                c.Status.ToConcept().PublicId,
                 c.Time.ToDateTime(),
-                Convert(c.Author).PublicId,
-                Convert(c.Module).PublicId,
-                Convert(c.Path).PublicId);
+                c.Author.ToConcept().PublicId,
+                c.Module.ToConcept().PublicId,
+                c.Path.ToConcept().PublicId);
         }
 
         #region Semantic
-        public static SemanticDTO Convert(PBSemantic c)
+        public static SemanticDTO ToSemantic(this PBSemantic c)
         {
             //# Not Tested
             return new SemanticDTO(
-                Convert(c.PublicId),
-                Convert(c.PatternForSemantic),
-                Convert(c.ReferencedComponent));
+                c.PublicId.ToPublicId(),
+                c.PatternForSemantic.ToPublicId(),
+                c.ReferencedComponent.ToPublicId());
         }
 
-        public static IEnumerable<Object> Convert(IEnumerable<PBField> c)
+        static List<PublicId> ToPublicIdList(this PBPublicIdList value)
+        {
+            List<PublicId> retVal = new List<PublicId>(value.PublicIds.Count);
+            foreach (PBPublicId pbPublicId in value.PublicIds)
+                retVal.Add(pbPublicId.ToPublicId());
+            return retVal;
+        }
+
+        static HashSet<IPublicId> ToPublicIdHash(this PBPublicIdList value)
+        {
+            HashSet<IPublicId> retVal = new HashSet<IPublicId>(value.PublicIds.Count);
+            foreach (PBPublicId pbPublicId in value.PublicIds)
+                retVal.Add(pbPublicId.ToPublicId());
+            return retVal;
+        }
+
+        static ImmutableList<VertexDTO> ToVertexMap(this RepeatedField<PBVertex> value)
+        {
+            ImmutableList<VertexDTO>.Builder bldr = ImmutableList<VertexDTO>.Empty.ToBuilder();
+            foreach (PBVertex item in value)
+                bldr.Add(item.ToVertex());
+            return bldr.ToImmutableList();
+        }
+
+        static DiTreeDTO ToDiTree(this PBDiTree value)
+        {
+            //return new DiTreeDTO(
+            //    value.Root.ToVertex(),
+            //    value.PredecesorMap.ToImmutableDictionary(),
+            //    value.VertexMap.ToVertexMap(),
+            //    value.Succ
+            //);
+            throw new NotImplementedException();
+        }
+
+        static DiGraphDTO ToDiGraph(this PBDiGraph value)
+        {
+            throw new NotImplementedException();
+        }
+
+        static GraphDTO ToGraph(this PBGraph value)
+        {
+            throw new NotImplementedException();
+        }
+
+        static VertexDTO ToVertex(this PBVertex value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<Object> ToObjects(this IEnumerable<PBField> c)
         {
             //# Tested
             foreach (PBField f in c)
@@ -80,60 +131,86 @@ namespace Tinkar.XUnitTests
                     case PBField.ValueOneofCase.TimeValue:
                         yield return f.TimeValue.ToDateTime();
                         break;
+                    case PBField.ValueOneofCase.ConceptValue:
+                        yield return f.ConceptValue.ToConcept();
+                        break;
+                    case PBField.ValueOneofCase.PublicIdListValue:
+                        yield return f.PublicIdListValue.ToPublicIdList();
+                        break;
+                    case PBField.ValueOneofCase.PublicIdHashValue:
+                        yield return f.PublicIdHashValue.ToPublicIdHash();
+                        break;
+
+                    case PBField.ValueOneofCase.DiTreeValue:
+                        yield return f.DiTreeValue.ToDiTree();
+                        break;
+
+                    case PBField.ValueOneofCase.DiGraphValue:
+                        yield return f.DiGraphValue.ToDiGraph();
+                        break;
+
+                    case PBField.ValueOneofCase.VertexValue:
+                        yield return f.VertexValue.ToVertex();
+                        break;
+
+                    case PBField.ValueOneofCase.GraphValue:
+                        //$yield return f.VertexValue.ToGraph();
+                        break;
+
                     default:
                         throw new NotImplementedException();
                 }
             }
         }
 
-        public static SemanticVersionDTO Convert(PBSemanticVersion c)
+        public static SemanticVersionDTO ToSemanticVersion(this PBSemanticVersion c)
         {
             //# Tested
             return new SemanticVersionDTO(
-                Convert(c.PublicId),
-                Convert(c.PatternForSemantic),
-                Convert(c.ReferencedComponent),
-                Convert(c.Stamp),
-                Convert(c.FieldValues).ToImmutableArray()
+                c.PublicId.ToPublicId(),
+                c.PatternForSemantic.ToPublicId(),
+                c.ReferencedComponent.ToPublicId(),
+                c.Stamp.ToStamp(),
+                c.FieldValues.ToObjects().ToImmutableArray()
                 );
         }
 
-        public static SemanticChronologyDTO Convert(PBSemanticChronology c)
+        public static SemanticChronologyDTO ToSemanticChronology(this PBSemanticChronology c)
         {
             //# Tested
             SemanticVersionDTO[] versions = new SemanticVersionDTO[c.Versions.Count];
             for (Int32 i = 0; i < c.Versions.Count; i++)
-                versions[i] = Convert(c.Versions[i]);
+                versions[i] = c.Versions[i].ToSemanticVersion();
 
             SemanticChronologyDTO retVal = new SemanticChronologyDTO(
-                Convert(c.PublicId),
-                Convert(c.PatternForSemantic),
-                Convert(c.ReferencedComponent),
+                c.PublicId.ToPublicId(),
+                c.PatternForSemantic.ToPublicId(),
+                c.ReferencedComponent.ToPublicId(),
                 versions.ToImmutableArray());
             return retVal;
         }
         #endregion
 
         #region Concept
-        public static ConceptDTO Convert(PBConcept c)
+        public static ConceptDTO ToConcept(this PBConcept c)
         {
             //# Tested
-            return new ConceptDTO(Convert(c.PublicId));
+            return new ConceptDTO(c.PublicId.ToPublicId());
         }
 
-        public static ConceptVersionDTO Convert(PBConceptVersion c)
+        public static ConceptVersionDTO ToConceptVersion(this PBConceptVersion c)
         {
             //# Not Tested
-            return new ConceptVersionDTO(Convert(c.PublicId), Convert(c.Stamp));
+            return new ConceptVersionDTO(c.PublicId.ToPublicId(), c.Stamp.ToStamp());
         }
 
-        public static ConceptChronologyDTO Convert(PBConceptChronology c)
+        public static ConceptChronologyDTO ToConceptChronology(this PBConceptChronology c)
         {
             //# Not Tested
             ConceptVersionDTO[] versions = new ConceptVersionDTO[c.ConceptVersions.Count];
             for (Int32 i = 0; i < c.ConceptVersions.Count; i++)
-                versions[i] = Convert(c.ConceptVersions[i]);
-            return new ConceptChronologyDTO(Convert(c.PublicId), versions.ToImmutableArray());
+                versions[i] = c.ConceptVersions[i].ToConceptVersion();
+            return new ConceptChronologyDTO(c.PublicId.ToPublicId(), versions.ToImmutableArray());
         }
         #endregion
 
@@ -142,18 +219,18 @@ namespace Tinkar.XUnitTests
             switch (c)
             {
                 case PBConcept item:
-                    return Convert(item);
+                    return item.ToConcept();
                 case PBConceptVersion item:
-                    return Convert(item);
+                    return item.ToConceptVersion();
                 case PBConceptChronology item:
-                    return Convert(item);
+                    return item.ToConceptChronology();
 
                 case PBSemantic item:
-                    return Convert(item);
+                    return item.ToSemantic();
                 case PBSemanticVersion item:
-                    return Convert(item);
+                    return item.ToSemanticVersion();
                 case PBSemanticChronology item:
-                    return Convert(item);
+                    return item.ToSemanticChronology();
 
                 default:
                     throw new NotImplementedException();

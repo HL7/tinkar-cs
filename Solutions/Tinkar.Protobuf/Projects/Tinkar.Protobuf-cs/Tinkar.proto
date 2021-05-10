@@ -25,6 +25,10 @@ message PBPublicId {
   repeated PBTinkarId Id = 1 ;
 }
 
+message PBPublicIdList {
+  repeated PBPublicId PublicIds = 1 ;
+}
+
 message PBField {
   oneof Value {
     string StringValue = 1;
@@ -35,8 +39,10 @@ message PBField {
     google.protobuf.Timestamp TimeValue = 6;
 
     PBStamp StampValue = 20;
-    PBStamp PublicIdValue = 21;
-    PBStamp VertexIdValue = 22;
+    PBPublicId PublicIdValue = 21;
+    PBVertexId VertexIdValue = 22;
+    PBPublicIdList PublicIdListValue = 23;
+    PBPublicIdList PublicIdHashValue = 24;
 
     PBDiGraph DiGraphValue = 30;
     PBDiTree DiTreeValue = 31;
@@ -44,16 +50,16 @@ message PBField {
     PBVertex VertexValue = 33;
     
     PBConcept ConceptValue = 40;
-    PBConceptChronology ConceptChronologyValue = 41;
-    PBConceptVersion ConceptVersionValue = 42;
+    //PBConceptChronology ConceptChronologyValue = 41;
+    //PBConceptVersion ConceptVersionValue = 42;
 
-    PBSemantic SemanticValue = 43;
-    PBSemanticChronology SemanticChronologyValue = 44;
-    PBSemanticVersion SemanticVersionValue = 45;
+    //PBSemantic SemanticValue = 43;
+    //PBSemanticChronology SemanticChronologyValue = 44;
+    //PBSemanticVersion SemanticVersionValue = 45;
 
-    PBPattern PatternValue = 46;
-    PBPatternChronology PatternChronologyValue = 47;
-    PBPatternVersion PatternVersionValue = 48;
+    //PBPattern PatternValue = 46;
+    //PBPatternChronology PatternChronologyValue = 47;
+    //PBPatternVersion PatternVersionValue = 48;
   };
 }
 
@@ -69,16 +75,26 @@ message PBSpatialPoint {
   int32 Z = 3;
 }
 
+message PBIntToIntMap {
+  int32 Source = 1;
+  int32 Target = 2;
+}
+
+message PBDiTree {
+  repeated PBVertex VertexMap = 1;
+  PBVertex Root = 2;
+  repeated PBIntToIntMap PredecesorMap = 3;
+}
 
 message PBDiGraph {
-  message Successors {
-    int32 VertexIndex = 1;
-    repeated int32 SuccessorIndices = 2;
-  }
-
   message Predecesors {
     int32 VertexIndex = 1;
     repeated int32 PredecessorIndices = 2;
+  }
+
+  message Successors {
+    int32 VertexIndex = 1;
+    repeated int32 SuccessorIndices = 2;
   }
 
   repeated PBVertex VertexMap = 1;
@@ -87,16 +103,6 @@ message PBDiGraph {
   repeated Predecesors PredecesorMap = 4;
 }
 
-message PBDiTree {
-  message Predecesors {
-    int32 VertexIndex = 1;
-    repeated int32 PredecessorIndices = 2;
-  }
-
-  repeated PBVertex VertexMap = 1;
-  repeated int32 Root = 2;
-  repeated Predecesors PredecesorMap = 3;
-}
 
 message PBGraph{
   message Successors {
