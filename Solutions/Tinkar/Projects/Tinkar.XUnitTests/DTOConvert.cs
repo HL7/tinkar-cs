@@ -18,12 +18,15 @@ namespace Tinkar.XUnitTests
             //# Tested
             return new TinkarId
             {
-                id1 = (Int32)id.Id1,
-                id2 = (Int32)id.Id2,
-                id3 = (Int32)id.Id3,
-                id4 = (Int32)id.Id4
+                id1 = id.Id1,
+                id2 = id.Id2,
+                id3 = id.Id3,
+                id4 = id.Id4
             };
         }
+
+        public static ConceptDTO ToConcept(this PBPublicId publicId) =>
+            new ConceptDTO(publicId.ToPublicId());
 
         public static PublicId ToPublicId(this PBPublicId publicId)
         {
@@ -118,9 +121,24 @@ namespace Tinkar.XUnitTests
             );
         }
 
+        static ImmutableDictionary<IConcept, Object> ToImmutableDictionary(this RepeatedField<PBVertex.Types.Property> value)
+        {
+            ImmutableDictionary<IConcept, Object>.Builder bldr = ImmutableDictionary<IConcept, Object>.Empty.ToBuilder();
+            foreach (PBVertex.Types.Property item in value)
+                bldr.Add(item.Concept.ToConcept(), item.Value);
+            return bldr.ToImmutableDictionary();
+        }
+
         static VertexDTO ToVertex(this PBVertex value)
         {
-            return new VertexDTO()
+            TinkarId tid = new TinkarId(value.VertexId.Id.Id1,
+                value.VertexId.Id.Id2,
+                value.VertexId.Id.Id3,
+                value.VertexId.Id.Id4);
+            return new VertexDTO(tid.Uuid,
+                value.VertexIndex,
+                value.Meaning.ToConcept(),
+                value.Properties.ToImmutableDictionary());
             throw new NotImplementedException();
         }
 
@@ -128,56 +146,47 @@ namespace Tinkar.XUnitTests
         {
             //# Tested
             foreach (PBField f in c)
+                yield return f.ToObject();
+        }
+
+        public static Object ToObject(this PBField f)
+        {
+            //# Tested
+            switch (f.ValueCase)
             {
-                switch (f.ValueCase)
-                {
-                    case PBField.ValueOneofCase.StringValue:
-                        yield return f.StringValue;
-                        break;
-                    case PBField.ValueOneofCase.BoolValue:
-                        yield return f.BoolValue;
-                        break;
-                    case PBField.ValueOneofCase.IntValue:
-                        yield return f.IntValue;
-                        break;
-                    case PBField.ValueOneofCase.FloatValue:
-                        yield return f.FloatValue;
-                        break;
-                    case PBField.ValueOneofCase.BytesValue:
-                        yield return f.BytesValue;
-                        break;
-                    case PBField.ValueOneofCase.TimeValue:
-                        yield return f.TimeValue.ToDateTime();
-                        break;
-                    case PBField.ValueOneofCase.ConceptValue:
-                        yield return f.ConceptValue.ToConcept();
-                        break;
-                    case PBField.ValueOneofCase.PublicIdListValue:
-                        yield return f.PublicIdListValue.ToPublicIdList();
-                        break;
-                    case PBField.ValueOneofCase.PublicIdHashValue:
-                        yield return f.PublicIdHashValue.ToPublicIdHash();
-                        break;
+                case PBField.ValueOneofCase.StringValue:
+                    return f.StringValue;
+                case PBField.ValueOneofCase.BoolValue:
+                    return f.BoolValue;
+                case PBField.ValueOneofCase.IntValue:
+                    return f.IntValue;
+                case PBField.ValueOneofCase.FloatValue:
+                    return f.FloatValue;
+                case PBField.ValueOneofCase.BytesValue:
+                    return f.BytesValue;
+                case PBField.ValueOneofCase.TimeValue:
+                    return f.TimeValue.ToDateTime();
+                case PBField.ValueOneofCase.ConceptValue:
+                    return f.ConceptValue.ToConcept();
+                case PBField.ValueOneofCase.PublicIdListValue:
+                    return f.PublicIdListValue.ToPublicIdList();
+                case PBField.ValueOneofCase.PublicIdHashValue:
+                    return f.PublicIdHashValue.ToPublicIdHash();
 
-                    case PBField.ValueOneofCase.DiTreeValue:
-                        yield return f.DiTreeValue.ToDiTree();
-                        break;
+                case PBField.ValueOneofCase.DiTreeValue:
+                    return f.DiTreeValue.ToDiTree();
 
-                    case PBField.ValueOneofCase.DiGraphValue:
-                        yield return f.DiGraphValue.ToDiGraph();
-                        break;
+                case PBField.ValueOneofCase.DiGraphValue:
+                    return f.DiGraphValue.ToDiGraph();
 
-                    case PBField.ValueOneofCase.VertexValue:
-                        yield return f.VertexValue.ToVertex();
-                        break;
+                case PBField.ValueOneofCase.VertexValue:
+                    return f.VertexValue.ToVertex();
 
-                    case PBField.ValueOneofCase.GraphValue:
-                        yield return f.GraphValue.ToGraph();
-                        break;
+                case PBField.ValueOneofCase.GraphValue:
+                    return f.GraphValue.ToGraph();
 
-                    default:
-                        throw new NotImplementedException();
-                }
+                default:
+                    throw new NotImplementedException();
             }
         }
 
@@ -227,7 +236,7 @@ namespace Tinkar.XUnitTests
             return retVal;
         }
         #endregion
-        
+
         #region Semantic
         public static SemanticDTO ToSemantic(this PBSemantic c)
         {

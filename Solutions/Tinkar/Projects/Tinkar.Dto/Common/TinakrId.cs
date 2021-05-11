@@ -18,19 +18,19 @@ namespace Tinkar
         [FieldOffset(0)] public Int64 mostSignificantBits;
         [FieldOffset(8)] public Int64 leastSignificantBits;
 
-        [FieldOffset(0)] public Int32 id1;
-        [FieldOffset(4)] public Int32 id2;
-        [FieldOffset(8)] public Int32 id3;
-        [FieldOffset(12)] public Int32 id4;
+        [FieldOffset(0)] public UInt32 id1;
+        [FieldOffset(4)] public UInt32 id2;
+        [FieldOffset(8)] public UInt32 id3;
+        [FieldOffset(12)] public UInt32 id4;
 
         public Guid Uuid => this.uuid;
         public Int64 MostSignificantBits => this.mostSignificantBits;
         public Int64 LeastSignificantBits => this.leastSignificantBits;
 
-        public Int32 Id1 => this.id1;
-        public Int32 Id2 => this.id2;
-        public Int32 Id3 => this.id3;
-        public Int32 Id4 => this.id4;
+        public UInt32 Id1 => this.id1;
+        public UInt32 Id2 => this.id2;
+        public UInt32 Id3 => this.id3;
+        public UInt32 Id4 => this.id4;
 
         public TinkarId(Guid uuid)
         {
@@ -41,6 +41,17 @@ namespace Tinkar
             this.mostSignificantBits = 0;
             this.leastSignificantBits = 0;
             this.uuid = uuid;
+        }
+
+        public TinkarId(UInt32 id1, UInt32 id2, UInt32 id3, UInt32 id4)
+        {
+            this.uuid = Guid.Empty;
+            this.mostSignificantBits = 0;
+            this.leastSignificantBits = 0;
+            this.id1 = id1;
+            this.id2 = id2;
+            this.id3 = id3;
+            this.id4 = id4;
         }
 
         public TinkarId(Int64 mostSignificantBits, Int64 leastSignificantBits)

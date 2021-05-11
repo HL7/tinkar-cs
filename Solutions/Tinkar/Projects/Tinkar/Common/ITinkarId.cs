@@ -15,9 +15,9 @@ namespace Tinkar
         Guid Uuid { get; }
         Int64 MostSignificantBits { get; }
         Int64 LeastSignificantBits { get; }
-        Int32 Id1 { get; }
-        Int32 Id2 { get; }
-        Int32 Id3 { get; }
-        Int32 Id4 { get; }
+        UInt32 Id1 { get; }
+        UInt32 Id2 { get; }
+        UInt32 Id3 { get; }
+        UInt32 Id4 { get; }
     }
 }

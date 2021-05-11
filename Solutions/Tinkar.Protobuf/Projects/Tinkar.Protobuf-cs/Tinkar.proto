@@ -107,12 +107,12 @@ message PBGraph{
 
 message PBVertex {
   message Property {
-    PBPublicId Concept = 1;
+    PBConcept Concept = 1;
     PBField Value = 2;
   }
   PBVertexId VertexId = 1;
   int32 VertexIndex = 2;
-  PBPublicId Meaning = 3;
+  PBConcept Meaning = 3;
   repeated Property Properties = 4;
 }
 

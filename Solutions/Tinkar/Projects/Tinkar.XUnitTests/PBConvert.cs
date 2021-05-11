@@ -62,71 +62,74 @@ namespace Tinkar.XUnitTests
         static IEnumerable<PBField> ToPBFields(this IEnumerable<Object> items)
         {
             foreach (Object item in items)
-            {
-                PBField f = new PBField();
-                switch (item)
-                {
-                    case String value:
-                        f.StringValue = value;
-                        break;
-                    case Boolean value:
-                        f.BoolValue = value;
-                        break;
-                    case Int32 value:
-                        f.IntValue = value;
-                        break;
-                    case Single value:
-                        f.FloatValue = value;
-                        break;
-                    case Byte[] value:
-                        f.BytesValue = ByteString.CopyFrom(value);
-                        break;
-                    case ConceptDTO value:
-                        f.ConceptValue = value.ToPBConcept();
-                        break;
-                    case DateTime value:
-                        f.TimeValue = Timestamp.FromDateTime(value);
-                        break;
-
-                    case List<IPublicId> value:
-                        {
-                            PBPublicIdList l = new PBPublicIdList();
-                            l.PublicIds.AddRange(value.ToPBPublicIds());
-                            f.PublicIdListValue = l;
-                        }
-                        break;
-
-                    case HashSet<IPublicId> value:
-                        {
-                            PBPublicIdList l = new PBPublicIdList();
-                            l.PublicIds.AddRange(value.ToPBPublicIds());
-                            f.PublicIdHashValue = l;
-                        }
-                        break;
-
-                    case DiTreeDTO value:
-                        f.DiTreeValue = value.ToPBDiTree();
-                        break;
-
-                    case DiGraphDTO value:
-                        f.DiGraphValue = value.ToPBDiGraph();
-                        break;
-
-                    case GraphDTO value:
-                        f.GraphValue = value.ToPBGraph();
-                        break;
-
-                    case VertexDTO value:
-                        f.VertexValue = value.ToPBVertex();
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-                yield return f;
-            }
+                yield return item.ToPBField();
         }
 
+
+        static PBField ToPBField(this Object item)
+        {
+            PBField f = new PBField();
+            switch (item)
+            {
+                case String value:
+                    f.StringValue = value;
+                    break;
+                case Boolean value:
+                    f.BoolValue = value;
+                    break;
+                case Int32 value:
+                    f.IntValue = value;
+                    break;
+                case Single value:
+                    f.FloatValue = value;
+                    break;
+                case Byte[] value:
+                    f.BytesValue = ByteString.CopyFrom(value);
+                    break;
+                case ConceptDTO value:
+                    f.ConceptValue = value.ToPBConcept();
+                    break;
+                case DateTime value:
+                    f.TimeValue = Timestamp.FromDateTime(value);
+                    break;
+
+                case List<IPublicId> value:
+                    {
+                        PBPublicIdList l = new PBPublicIdList();
+                        l.PublicIds.AddRange(value.ToPBPublicIds());
+                        f.PublicIdListValue = l;
+                    }
+                    break;
+
+                case HashSet<IPublicId> value:
+                    {
+                        PBPublicIdList l = new PBPublicIdList();
+                        l.PublicIds.AddRange(value.ToPBPublicIds());
+                        f.PublicIdHashValue = l;
+                    }
+                    break;
+
+                case DiTreeDTO value:
+                    f.DiTreeValue = value.ToPBDiTree();
+                    break;
+
+                case DiGraphDTO value:
+                    f.DiGraphValue = value.ToPBDiGraph();
+                    break;
+
+                case GraphDTO value:
+                    f.GraphValue = value.ToPBGraph();
+                    break;
+
+                case VertexDTO value:
+                    f.VertexValue = value.ToPBVertex();
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+            return f;
+        }
 
         static IEnumerable<PBFieldDefinition> ToPBFieldDefinitions(this IEnumerable<FieldDefinitionDTO> items)
         {
@@ -201,12 +204,28 @@ namespace Tinkar.XUnitTests
             return retVal;
         }
 
+        public static IEnumerable<PBVertex.Types.Property> ToPBProperties(
+            this ImmutableDictionary<IConcept, Object> value)
+        {
+            foreach (KeyValuePair<IConcept, Object> item in value)
+            {
+                yield return new PBVertex.Types.Property
+                {
+                    Concept = item.Key.ToPBConcept(),
+                    Value = item.Value.ToPBField()
+                };
+            }
+        }
+
         public static PBVertex ToPBVertex(this VertexDTO value)
         {
             PBVertex retVal = new PBVertex
             {
-                VertexId = value.VertexId.ToPBVertexId()
+                VertexId = value.VertexId.ToPBVertexId(),
+                VertexIndex = value.VertexIndex,
+                Meaning = value.Meaning.ToPBConcept()
             };
+            value.Properties.ToPBProperties();
             return retVal;
         }
 

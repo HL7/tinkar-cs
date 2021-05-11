@@ -40,7 +40,7 @@ namespace Tinkar.XUnitTests
         {
             // start posi is for debugging. Can restart at problem point for faster turnaround.
             // should always be 0 for full test of all elements.
-            Int64 startPos = 0;
+            Int64 startPos = 897211737;
 
             DateTime start = DateTime.Now;
             foreach (IComponent component in this.ReadConcepts(startPos))
@@ -56,6 +56,7 @@ namespace Tinkar.XUnitTests
             Trace.WriteLine($"Read time {elapsed}");
         }
 
+        Int64 tinkarPosition = 0;
 
         IEnumerable<IComponent> ReadConcepts(Int64 position = 0)
         {
@@ -82,6 +83,7 @@ namespace Tinkar.XUnitTests
             bool done = false;
             while (done == false)
             {
+                tinkarPosition = tinkarStream.Position;
                 IComponent c = (IComponent)input.GetField();
                 if (c == null)
                     done = true;
