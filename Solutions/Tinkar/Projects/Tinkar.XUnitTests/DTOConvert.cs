@@ -46,16 +46,6 @@ namespace Tinkar.XUnitTests
                 c.Path.ToConcept().PublicId);
         }
 
-        #region Semantic
-        public static SemanticDTO ToSemantic(this PBSemantic c)
-        {
-            //# Not Tested
-            return new SemanticDTO(
-                c.PublicId.ToPublicId(),
-                c.PatternForSemantic.ToPublicId(),
-                c.ReferencedComponent.ToPublicId());
-        }
-
         static List<PublicId> ToPublicIdList(this PBPublicIdList value)
         {
             List<PublicId> retVal = new List<PublicId>(value.PublicIds.Count);
@@ -80,29 +70,57 @@ namespace Tinkar.XUnitTests
             return bldr.ToImmutableList();
         }
 
+        static ImmutableDictionary<Int32, Int32> ToImmutableDictionary(this RepeatedField<PBIntToIntMap> value)
+        {
+            ImmutableDictionary<Int32, Int32>.Builder bldr = ImmutableDictionary<Int32, Int32>.Empty.ToBuilder();
+            foreach (PBIntToIntMap item in value)
+                bldr.Add(item.Source, item.Target);
+            return bldr.ToImmutableDictionary();
+        }
+
+        static ImmutableDictionary<Int32, ImmutableList<Int32>> ToImmutableDictionary(this RepeatedField<PBIntToMultipleIntMap> value)
+        {
+            ImmutableDictionary<Int32, ImmutableList<Int32>>.Builder bldr = ImmutableDictionary<Int32, ImmutableList<Int32>>.Empty.ToBuilder();
+            foreach (PBIntToMultipleIntMap item in value)
+            {
+                ImmutableList<Int32>.Builder l = ImmutableList<int>.Empty.ToBuilder();
+                l.AddRange(item.Target);
+                bldr.Add(item.Source, l.ToImmutableList());
+            }
+            return bldr.ToImmutableDictionary();
+        }
+
         static DiTreeDTO ToDiTree(this PBDiTree value)
         {
-            //return new DiTreeDTO(
-            //    value.Root.ToVertex(),
-            //    value.PredecesorMap.ToImmutableDictionary(),
-            //    value.VertexMap.ToVertexMap(),
-            //    value.Succ
-            //);
-            throw new NotImplementedException();
+            return new DiTreeDTO(
+                value.Root.ToVertex(),
+                value.PredecesorMap.ToImmutableDictionary(),
+                value.VertexMap.ToVertexMap(),
+                value.SuccessorMap.ToImmutableDictionary()
+            );
         }
 
         static DiGraphDTO ToDiGraph(this PBDiGraph value)
         {
-            throw new NotImplementedException();
+            return new DiGraphDTO(
+                value.RootSequence.ToImmutableList(),
+                value.PredecesorMap.ToImmutableDictionary(),
+                value.VertexMap.ToVertexMap(),
+                value.SuccessorMap.ToImmutableDictionary()
+            );
         }
 
         static GraphDTO ToGraph(this PBGraph value)
         {
-            throw new NotImplementedException();
+            return new GraphDTO(
+                value.VertexMap.ToVertexMap(),
+                value.SuccessorMap.ToImmutableDictionary()
+            );
         }
 
         static VertexDTO ToVertex(this PBVertex value)
         {
+            return new VertexDTO()
             throw new NotImplementedException();
         }
 
@@ -154,13 +172,70 @@ namespace Tinkar.XUnitTests
                         break;
 
                     case PBField.ValueOneofCase.GraphValue:
-                        //$yield return f.VertexValue.ToGraph();
+                        yield return f.GraphValue.ToGraph();
                         break;
 
                     default:
                         throw new NotImplementedException();
                 }
             }
+        }
+
+        #region Pattern
+        public static PatternDTO ToPattern(this PBPattern c)
+        {
+            //# Not Tested
+            return new PatternDTO(c.PublicId.ToPublicId());
+        }
+
+        static FieldDefinitionDTO ToFieldDefinition(this PBFieldDefinition field)
+        {
+            return new FieldDefinitionDTO(
+                field.DataType.ToPublicId(),
+                field.Purpose.ToPublicId(),
+                field.Meaning.ToPublicId()
+            );
+        }
+
+        static IEnumerable<FieldDefinitionDTO> ToFieldDefinitions(this RepeatedField<PBFieldDefinition> fields)
+        {
+            foreach (PBFieldDefinition field in fields)
+                yield return field.ToFieldDefinition();
+        }
+
+        public static PatternVersionDTO ToPatternVersion(this PBPatternVersion c)
+        {
+            //# Tested
+            return new PatternVersionDTO(
+                c.PublicId.ToPublicId(),
+                c.Stamp.ToStamp(),
+                c.ReferencedComponentPurpose.ToPublicId(),
+                c.ReferencedComponentMeaning.ToPublicId(),
+                c.FieldDefinitions.ToFieldDefinitions().ToImmutableArray());
+        }
+
+        public static PatternChronologyDTO ToPatternChronology(this PBPatternChronology c)
+        {
+            //# Tested
+            PatternVersionDTO[] versions = new PatternVersionDTO[c.Versions.Count];
+            for (Int32 i = 0; i < c.Versions.Count; i++)
+                versions[i] = c.Versions[i].ToPatternVersion();
+
+            PatternChronologyDTO retVal = new PatternChronologyDTO(
+                c.PublicId.ToPublicId(),
+                versions.ToImmutableArray());
+            return retVal;
+        }
+        #endregion
+        
+        #region Semantic
+        public static SemanticDTO ToSemantic(this PBSemantic c)
+        {
+            //# Not Tested
+            return new SemanticDTO(
+                c.PublicId.ToPublicId(),
+                c.PatternForSemantic.ToPublicId(),
+                c.ReferencedComponent.ToPublicId());
         }
 
         public static SemanticVersionDTO ToSemanticVersion(this PBSemanticVersion c)
@@ -224,6 +299,13 @@ namespace Tinkar.XUnitTests
                     return item.ToConceptVersion();
                 case PBConceptChronology item:
                     return item.ToConceptChronology();
+
+                case PBPattern item:
+                    return item.ToPattern();
+                case PBPatternVersion item:
+                    return item.ToPatternVersion();
+                case PBPatternChronology item:
+                    return item.ToPatternChronology();
 
                 case PBSemantic item:
                     return item.ToSemantic();

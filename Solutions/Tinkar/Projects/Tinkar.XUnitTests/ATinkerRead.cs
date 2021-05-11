@@ -40,7 +40,7 @@ namespace Tinkar.XUnitTests
         {
             // start posi is for debugging. Can restart at problem point for faster turnaround.
             // should always be 0 for full test of all elements.
-            Int64 startPos = 895401585;
+            Int64 startPos = 0;
 
             DateTime start = DateTime.Now;
             foreach (IComponent component in this.ReadConcepts(startPos))

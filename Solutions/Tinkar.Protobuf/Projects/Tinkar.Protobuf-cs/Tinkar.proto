@@ -80,48 +80,39 @@ message PBIntToIntMap {
   int32 Target = 2;
 }
 
+message PBIntToMultipleIntMap {
+  int32 Source = 1;
+  repeated int32 Target = 2;
+}
+
 message PBDiTree {
   repeated PBVertex VertexMap = 1;
   PBVertex Root = 2;
   repeated PBIntToIntMap PredecesorMap = 3;
+  repeated PBIntToMultipleIntMap SuccessorMap = 4;
 }
 
 message PBDiGraph {
-  message Predecesors {
-    int32 VertexIndex = 1;
-    repeated int32 PredecessorIndices = 2;
-  }
-
-  message Successors {
-    int32 VertexIndex = 1;
-    repeated int32 SuccessorIndices = 2;
-  }
-
   repeated PBVertex VertexMap = 1;
   repeated int32 RootSequence = 2;
-  repeated Successors SuccessorMap = 3;
-  repeated Predecesors PredecesorMap = 4;
+  repeated PBIntToMultipleIntMap SuccessorMap = 3;
+  repeated PBIntToMultipleIntMap PredecesorMap = 4;
 }
 
 
 message PBGraph{
-  message Successors {
-    int32 VertexIndex = 1;
-    repeated int32 SuccessorIndices = 2;
-  }
-
   repeated PBVertex VertexMap = 1;
-  repeated Successors SuccessorMap = 2;
+  repeated PBIntToMultipleIntMap SuccessorMap = 2;
 }
 
 message PBVertex {
   message Property {
-    PBPublicId ConceptPublicId = 1;
+    PBPublicId Concept = 1;
     PBField Value = 2;
   }
   PBVertexId VertexId = 1;
   int32 VertexIndex = 2;
-  PBPublicId MeaningPublicId = 3;
+  PBPublicId Meaning = 3;
   repeated Property Properties = 4;
 }
 
@@ -152,10 +143,9 @@ message PBConceptVersion {
 
 
 message PBFieldDefinition {
-  PBConcept Meaning = 1;
-  PBPublicId DataTypePublicId = 2;
-  PBPublicId PurposePublicId = 3;
-  PBPublicId MeaningPublicId = 4;
+  PBPublicId Meaning = 1;
+  PBPublicId DataType = 2;
+  PBPublicId Purpose = 3;
 }
 
 message PBPattern {
@@ -163,7 +153,7 @@ message PBPattern {
 }
 
 message PBPatternChronology {
-  PBPublicId ChronologySetPublicId = 1;
+  PBPublicId PublicId = 1;
   repeated PBPatternVersion Versions = 2;
 }
 

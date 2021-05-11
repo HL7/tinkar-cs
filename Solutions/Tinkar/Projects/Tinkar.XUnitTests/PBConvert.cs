@@ -59,120 +59,6 @@ namespace Tinkar.XUnitTests
             };
         }
 
-        #region Semantic
-        public static PBSemantic ToPBSemantic(this SemanticDTO c)
-        {
-            //# Not Tested
-            return new PBSemantic
-            {
-                PublicId = c.PublicId.ToPBPublicId(),
-                ReferencedComponent = c.ReferencedComponentPublicId.ToPBPublicId(),
-                PatternForSemantic = c.PatternForSemantic.ToPBPublicId()
-            };
-        }
-
-        static IEnumerable<PBPublicId> ToPBPublicIds(this IEnumerable<IPublicId> ids)
-        {
-            foreach (IPublicId id in ids)
-                yield return id.ToPBPublicId();
-        }
-
-        static IEnumerable<PBIntToIntMap> ToPBIntToIntMap(this ImmutableDictionary<Int32, Int32> map)
-        {
-            foreach (KeyValuePair<Int32, Int32> item in map)
-            {
-                yield return new PBIntToIntMap
-                {
-                    Source = item.Key,
-                    Target = item.Value
-                };
-            }
-        }
-
-        public static PBDiTree ToPBDiTree(this DiTreeDTO value)
-        {
-            PBDiTree retVal = new PBDiTree();
-            retVal.Root = value.Root.ToPBVertex();
-            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
-            retVal.PredecesorMap.AddRange(value.PredecessorMap.ToPBIntToIntMap());
-            return retVal;
-        }
-
-        static IEnumerable<PBDiGraph.Types.Predecesors> ToDiGraphPredecesors(this ImmutableDictionary<Int32, ImmutableList<Int32>> map)
-        {
-            foreach (KeyValuePair<Int32, ImmutableList<Int32>> item in map)
-            {
-                PBDiGraph.Types.Predecesors retVal = new PBDiGraph.Types.Predecesors
-                {
-                    VertexIndex = item.Key,
-                };
-                retVal.PredecessorIndices.AddRange(item.Value);
-                yield return retVal;
-            }
-        }
-
-        static IEnumerable<PBDiGraph.Types.Successors> ToDiGraphSuccessors(this ImmutableDictionary<Int32, ImmutableList<Int32>> map)
-        {
-            foreach (KeyValuePair<Int32, ImmutableList<Int32>> item in map)
-            {
-                PBDiGraph.Types.Successors retVal = new PBDiGraph.Types.Successors
-                {
-                    VertexIndex = item.Key,
-                };
-                retVal.SuccessorIndices.AddRange(item.Value);
-                yield return retVal;
-            }
-        }
-
-        public static PBDiGraph ToPBDiGraph(this DiGraphDTO value)
-        {
-            PBDiGraph retVal = new PBDiGraph();
-            retVal.RootSequence.Add(value.RootSequence.ToArray());
-            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
-            retVal.PredecesorMap.AddRange(value.PredecessorMap.ToDiGraphPredecesors());
-            retVal.SuccessorMap.AddRange(value.SuccessorMap.ToDiGraphSuccessors());
-            return retVal;
-        }
-
-        static IEnumerable<PBGraph.Types.Successors> ToGraphSuccessors(this ImmutableDictionary<Int32, ImmutableList<Int32>> map)
-        {
-            foreach (KeyValuePair<Int32, ImmutableList<Int32>> item in map)
-            {
-                PBGraph.Types.Successors retVal = new PBGraph.Types.Successors
-                {
-                    VertexIndex = item.Key,
-                };
-                retVal.SuccessorIndices.AddRange(item.Value);
-                yield return retVal;
-            }
-        }
-
-        public static PBGraph ToPBGraph(this GraphDTO value)
-        {
-            PBGraph retVal = new PBGraph();
-            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
-            retVal.SuccessorMap.AddRange(value.SuccessorMap.ToGraphSuccessors());
-            return retVal;
-        }
-
-
-
-
-        public static PBVertex ToPBVertex(this VertexDTO value)
-        {
-            PBVertex retVal = new PBVertex
-            {
-                VertexId = value.VertexId.ToPBVertexId()
-            };
-            return retVal;
-        }
-
-        public static IEnumerable<PBVertex> ToPBVertices(this IEnumerable<VertexDTO> value)
-        {
-            foreach (VertexDTO v in value)
-                yield return v.ToPBVertex();
-        }
-
         static IEnumerable<PBField> ToPBFields(this IEnumerable<Object> items)
         {
             foreach (Object item in items)
@@ -240,6 +126,149 @@ namespace Tinkar.XUnitTests
                 yield return f;
             }
         }
+
+
+        static IEnumerable<PBFieldDefinition> ToPBFieldDefinitions(this IEnumerable<FieldDefinitionDTO> items)
+        {
+            foreach (FieldDefinitionDTO item in items)
+            {
+                PBFieldDefinition f = new PBFieldDefinition
+                {
+                    Meaning = item.MeaningPublicId.ToPBPublicId(),
+                    DataType = item.DataTypePublicId.ToPBPublicId(),
+                    Purpose = item.PurposePublicId.ToPBPublicId(),
+                };
+                yield return f;
+            }
+        }
+
+        static IEnumerable<PBPublicId> ToPBPublicIds(this IEnumerable<IPublicId> ids)
+        {
+            foreach (IPublicId id in ids)
+                yield return id.ToPBPublicId();
+        }
+
+        static IEnumerable<PBIntToIntMap> ToPBIntToIntMap(this ImmutableDictionary<Int32, Int32> map)
+        {
+            foreach (KeyValuePair<Int32, Int32> item in map)
+            {
+                yield return new PBIntToIntMap
+                {
+                    Source = item.Key,
+                    Target = item.Value
+                };
+            }
+        }
+
+        static IEnumerable<PBIntToMultipleIntMap> ToPBIntToMultipleIntMap(this ImmutableDictionary<Int32, ImmutableList<Int32>> map)
+        {
+            foreach (KeyValuePair<Int32, ImmutableList<Int32>> item in map)
+            {
+                PBIntToMultipleIntMap retVal = new PBIntToMultipleIntMap
+                {
+                    Source = item.Key,
+                };
+                retVal.Target.AddRange(item.Value);
+                yield return retVal;
+            }
+        }
+
+        public static PBDiTree ToPBDiTree(this DiTreeDTO value)
+        {
+            PBDiTree retVal = new PBDiTree();
+            retVal.Root = value.Root.ToPBVertex();
+            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
+            retVal.PredecesorMap.AddRange(value.PredecessorMap.ToPBIntToIntMap());
+            retVal.SuccessorMap.AddRange(value.SuccessorMap.ToPBIntToMultipleIntMap());
+            return retVal;
+        }
+
+        public static PBDiGraph ToPBDiGraph(this DiGraphDTO value)
+        {
+            PBDiGraph retVal = new PBDiGraph();
+            retVal.RootSequence.Add(value.RootSequence.ToArray());
+            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
+            retVal.PredecesorMap.AddRange(value.PredecessorMap.ToPBIntToMultipleIntMap());
+            retVal.SuccessorMap.AddRange(value.SuccessorMap.ToPBIntToMultipleIntMap());
+            return retVal;
+        }
+
+        public static PBGraph ToPBGraph(this GraphDTO value)
+        {
+            PBGraph retVal = new PBGraph();
+            retVal.VertexMap.AddRange(value.VertexMap.ToPBVertices());
+            retVal.SuccessorMap.AddRange(value.SuccessorMap.ToPBIntToMultipleIntMap());
+            return retVal;
+        }
+
+        public static PBVertex ToPBVertex(this VertexDTO value)
+        {
+            PBVertex retVal = new PBVertex
+            {
+                VertexId = value.VertexId.ToPBVertexId()
+            };
+            return retVal;
+        }
+
+        public static IEnumerable<PBVertex> ToPBVertices(this IEnumerable<VertexDTO> value)
+        {
+            foreach (VertexDTO v in value)
+                yield return v.ToPBVertex();
+        }
+
+        #region Pattern
+        public static PBPattern ToPBPattern(this PatternDTO c)
+        {
+            //# Not Tested
+            return new PBPattern
+            {
+                PublicId = c.PublicId.ToPBPublicId()
+            };
+        }
+
+        public static PBPatternVersion ToPBPatternVersion(this PatternVersionDTO c)
+        {
+            //# Tested
+            PBPatternVersion retVal = new PBPatternVersion
+            {
+                PublicId = c.PublicId.ToPBPublicId(),
+                Stamp = c.Stamp.ToPBStamp(),
+                ReferencedComponentPurpose = c.ReferencedComponentPurposePublicId.ToPBPublicId(),
+                ReferencedComponentMeaning = c.ReferencedComponentMeaningPublicId.ToPBPublicId(),
+            };
+            retVal.FieldDefinitions.AddRange(c.FieldDefinitions.ToPBFieldDefinitions());
+            return retVal;
+        }
+
+        public static PBPatternChronology ToPBPatternChronology(this PatternChronologyDTO c)
+        {
+            //# Tested
+            PBPatternChronology retVal = new PBPatternChronology
+            {
+                PublicId = c.PublicId.ToPBPublicId()
+            };
+
+            PBPatternVersion[] versions = new PBPatternVersion[c.Versions.Length];
+            for (Int32 i = 0; i < c.Versions.Length; i++)
+                versions[i] = c.Versions[i].ToPBPatternVersion();
+            retVal.Versions.AddRange(versions);
+
+            return retVal;
+        }
+        #endregion
+
+        #region Semantic
+        public static PBSemantic ToPBSemantic(this SemanticDTO c)
+        {
+            //# Not Tested
+            return new PBSemantic
+            {
+                PublicId = c.PublicId.ToPBPublicId(),
+                ReferencedComponent = c.ReferencedComponentPublicId.ToPBPublicId(),
+                PatternForSemantic = c.PatternForSemantic.ToPBPublicId()
+            };
+        }
+
         public static PBSemanticVersion ToPBSemanticVersion(this SemanticVersionDTO c)
         {
             //# Tested
@@ -317,13 +346,16 @@ namespace Tinkar.XUnitTests
                 case ConceptVersionDTO item: return item.ToPBConceptVersion();
                 case ConceptChronologyDTO item: return item.ToPBConceptChronology();
 
+                case PatternDTO item: return item.ToPBPattern();
+                case PatternVersionDTO item: return item.ToPBPatternVersion();
+                case PatternChronologyDTO item: return item.ToPBPatternChronology();
+
                 case SemanticDTO item: return item.ToPBSemantic();
                 case SemanticVersionDTO item: return item.ToPBSemanticVersion();
                 case SemanticChronologyDTO item: return item.ToPBSemanticChronology();
 
                 default:
-                    //throw new NotImplementedException();
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }
