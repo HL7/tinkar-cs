@@ -23,21 +23,6 @@ namespace Tinkar.Dto
 
         public ImmutableDictionary<IConcept, Object> Properties { get; init; }
 
-#if Never
-    public static ImmutableMap<ConceptDTO, Object> abstractProperties(ImmutableMap<ConceptDTO, Object> incoming) {
-        MutableMap<ConceptDTO, Object> outgoing = Maps.mutable.ofInitialCapacity(incoming.size());
-        incoming.forEachKeyValue((key, value) -> {
-            outgoing.put(abstractObject(key), abstractObject(value));
-        });
-        return outgoing.toImmutable();
-    }
-
-    @Override
-    public RichIterable<ConceptDTO> propertyKeys() {
-        return this.properties.keysView();
-    }
-#endif
-
         /// <summary>
         /// Gets universally unique identifier for this vertex
         /// 
@@ -129,13 +114,6 @@ namespace Tinkar.Dto
 
         public Int32 CompareTo(Object o)
         {
-            Int32 Comparer(Object a, Object b)
-            {
-                IComparable aCmp = (IComparable)a;
-                IComparable bCmp = (IComparable)b;
-                return aCmp.CompareTo(bCmp);
-            }
-
             VertexDTO other = o as VertexDTO;
             if (other == null)
                 return this.GetType().FullName.CompareTo(o.GetType().FullName);
@@ -149,7 +127,7 @@ namespace Tinkar.Dto
             cmpVal = this.Meaning.CompareTo(other.Meaning);
             if (cmpVal != 0)
                 return cmpVal;
-            cmpVal = FieldCompare.CompareMap(this.Properties, other.Properties, Comparer);
+            cmpVal = FieldCompare.CompareMap(this.Properties, other.Properties, FieldCompare.Compare);
             if (cmpVal != 0)
                 return cmpVal;
             return 0;

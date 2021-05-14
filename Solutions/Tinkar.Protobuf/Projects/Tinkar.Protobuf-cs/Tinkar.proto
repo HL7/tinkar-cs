@@ -63,6 +63,27 @@ message PBField {
   };
 }
 
+message PBTinkarMsg {
+  oneof Value {
+    //PBDiGraph DiGraphValue = 1;
+    //PBDiTree DiTreeValue = 2;
+    //PBGraph GraphValue = 3;
+    //PBVertex VertexValue = 4;
+    
+    PBConcept ConceptValue = 10;
+    PBConceptChronology ConceptChronologyValue = 11;
+    PBConceptVersion ConceptVersionValue = 12;
+
+    PBSemantic SemanticValue = 20;
+    PBSemanticChronology SemanticChronologyValue = 21;
+    PBSemanticVersion SemanticVersionValue = 22;
+
+    PBPattern PatternValue = 23;
+    PBPatternChronology PatternChronologyValue = 24;
+    PBPatternVersion PatternVersionValue = 25;
+  };
+}
+
 
 message PBPlanarPoint {
   int32 X = 1;

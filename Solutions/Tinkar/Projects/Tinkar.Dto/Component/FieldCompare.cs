@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -231,12 +232,31 @@ namespace Tinkar.Dto
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
-        public static Int32 Compare(Object[] a, Object[] b)
+        public static Int32 CompareObjArray(Object[] a, Object[] b)
         {
             Int32 cmp = a.Length.CompareTo(b.Length);
             if (cmp != 0)
                 return cmp;
             for (Int32 i = 0; i < a.Count(); i++)
+            {
+                cmp = Compare(a[i], b[i]);
+                if (cmp != 0)
+                    return cmp;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Compare two Object Lists.
+        /// </summary>
+        /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        public static Int32 CompareObjList(IList a, IList b)
+        {
+            Int32 cmp = a.Count.CompareTo(b.Count);
+            if (cmp != 0)
+                return cmp;
+            for (Int32 i = 0; i < a.Count; i++)
             {
                 cmp = Compare(a[i], b[i]);
                 if (cmp != 0)
@@ -278,9 +298,11 @@ namespace Tinkar.Dto
                 case Byte[] a:
                     return CompareByteArray(a, (Byte[])bObj);
 
-                // DiGraphType = 6,
                 case Object[] aArr:
-                    return Compare(aArr, (Object[])bObj);
+                    return CompareObjArray(aArr, (Object[])bObj);
+
+                case IList aList:
+                    return CompareObjList(aList, (IList)bObj);
 
                 case HashSet<IPublicId> aSet:
                     {

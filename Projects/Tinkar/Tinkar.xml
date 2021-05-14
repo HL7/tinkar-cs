@@ -684,12 +684,18 @@
             <param name="b">Second item to compare.</param>
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         </member>
-        <member name="M:Tinkar.Dto.FieldCompare.Compare(System.Object[],System.Object[])">
+        <member name="M:Tinkar.Dto.FieldCompare.CompareObjArray(System.Object[],System.Object[])">
             <summary>
             Compare two Object arrays.
             </summary>
             <param name="a">First item to compare.</param>
             <param name="b">Second item to compare.</param>
+            <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
+        </member>
+        <member name="M:Tinkar.Dto.FieldCompare.CompareObjList(System.Collections.IList,System.Collections.IList)">
+            <summary>
+            Compare two Object Lists.
+            </summary>
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         </member>
         <member name="M:Tinkar.Dto.FieldCompare.Same(System.Object,System.Object)">

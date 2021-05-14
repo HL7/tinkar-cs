@@ -11,7 +11,7 @@ using Tinkar.ProtoBuf.CS;
 
 namespace Tinkar.XUnitTests
 {
-    public static class PBConvert
+    public static class ConvertDTOToPB
     {
         public static PBTinkarId ToPBTinkarId(this ITinkarId id)
         {
@@ -225,7 +225,7 @@ namespace Tinkar.XUnitTests
                 VertexIndex = value.VertexIndex,
                 Meaning = value.Meaning.ToPBConcept()
             };
-            value.Properties.ToPBProperties();
+            retVal.Properties.AddRange(value.Properties.ToPBProperties());
             return retVal;
         }
 
@@ -238,7 +238,7 @@ namespace Tinkar.XUnitTests
         #region Pattern
         public static PBPattern ToPBPattern(this PatternDTO c)
         {
-            //# Not Tested
+            //# Tested
             return new PBPattern
             {
                 PublicId = c.PublicId.ToPBPublicId()
@@ -279,7 +279,7 @@ namespace Tinkar.XUnitTests
         #region Semantic
         public static PBSemantic ToPBSemantic(this SemanticDTO c)
         {
-            //# Not Tested
+            //# Tested
             return new PBSemantic
             {
                 PublicId = c.PublicId.ToPBPublicId(),
@@ -333,7 +333,7 @@ namespace Tinkar.XUnitTests
 
         public static PBConceptVersion ToPBConceptVersion(this ConceptVersionDTO c)
         {
-            //# Not Tested
+            //# Tested
             return new PBConceptVersion
             {
                 PublicId = c.PublicId.ToPBPublicId(),
@@ -343,7 +343,7 @@ namespace Tinkar.XUnitTests
 
         public static PBConceptChronology ToPBConceptChronology(this ConceptChronologyDTO c)
         {
-            //# Not Tested
+            //# Tested
             PBConceptChronology retVal = new PBConceptChronology
             {
                 PublicId = c.PublicId.ToPBPublicId()
@@ -357,21 +357,21 @@ namespace Tinkar.XUnitTests
         }
         #endregion
 
-        public static object Convert(IComponent c)
+        public static PBTinkarMsg Convert(IComponent c)
         {
             switch (c)
             {
-                case ConceptDTO item: return item.ToPBConcept();
-                case ConceptVersionDTO item: return item.ToPBConceptVersion();
-                case ConceptChronologyDTO item: return item.ToPBConceptChronology();
+                case ConceptDTO item: return new PBTinkarMsg { ConceptValue = item.ToPBConcept() };
+                case ConceptVersionDTO item: return new PBTinkarMsg { ConceptVersionValue = item.ToPBConceptVersion() };
+                case ConceptChronologyDTO item: return new PBTinkarMsg { ConceptChronologyValue = item.ToPBConceptChronology() };
 
-                case PatternDTO item: return item.ToPBPattern();
-                case PatternVersionDTO item: return item.ToPBPatternVersion();
-                case PatternChronologyDTO item: return item.ToPBPatternChronology();
+                case PatternDTO item: return new PBTinkarMsg { PatternValue = item.ToPBPattern() };
+                case PatternVersionDTO item: return new PBTinkarMsg { PatternVersionValue = item.ToPBPatternVersion() };
+                case PatternChronologyDTO item: return new PBTinkarMsg { PatternChronologyValue = item.ToPBPatternChronology() };
 
-                case SemanticDTO item: return item.ToPBSemantic();
-                case SemanticVersionDTO item: return item.ToPBSemanticVersion();
-                case SemanticChronologyDTO item: return item.ToPBSemanticChronology();
+                case SemanticDTO item: return new PBTinkarMsg { SemanticValue = item.ToPBSemantic() };
+                case SemanticVersionDTO item: return new PBTinkarMsg { SemanticVersionValue = item.ToPBSemanticVersion() };
+                case SemanticChronologyDTO item: return new PBTinkarMsg { SemanticChronologyValue = item.ToPBSemanticChronology() };
 
                 default:
                     throw new NotImplementedException();
