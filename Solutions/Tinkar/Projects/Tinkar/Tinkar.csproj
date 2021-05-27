@@ -14,12 +14,7 @@
     <Description>FhirKhit tools for Fhir Release 4</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;FHIR_R4</DefineConstants>
-    <DocumentationFile>C:\Development\Tinkar\tinkar-cs\Projects\Tinkar\Tinkar.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
+ <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Various Fhir development tools, used internally at Eir Solutions.</PackageReleaseNotes>
