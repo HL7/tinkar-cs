@@ -13,16 +13,10 @@ namespace Tinkar.XUnitTests
 {
     public static class ConvertDTOToPB
     {
-        public static PBTinkarId ToPBTinkarId(this ITinkarId id)
+        public static ByteString ToByteString(this ITinkarId id)
         {
             //# Tested
-            return new PBTinkarId
-            {
-                Id1 = (UInt32)id.Id1,
-                Id2 = (UInt32)id.Id2,
-                Id3 = (UInt32)id.Id3,
-                Id4 = (UInt32)id.Id4
-            };
+            return ByteString.CopyFrom(id.Uuid.ToByteArray());
         }
 
         public static PBVertexId ToPBVertexId(this IVertexId id)
@@ -30,7 +24,7 @@ namespace Tinkar.XUnitTests
             //# Tested
             return new PBVertexId
             {
-                Id = id.ToPBTinkarId()
+                Id = id.ToByteString()
             };
         }
 
@@ -38,9 +32,9 @@ namespace Tinkar.XUnitTests
         {
             //# Tested
             PBPublicId retval = new PBPublicId();
-            PBTinkarId[] tids = new PBTinkarId[publicId.UuidCount];
+            ByteString[] tids = new ByteString[publicId.UuidCount];
             for (Int32 i = 0; i < publicId.UuidCount; i++)
-                tids[i] = publicId[i].ToPBTinkarId();
+                tids[i] = publicId[i].ToByteString();
             retval.Id.AddRange(tids);
             return retval;
         }

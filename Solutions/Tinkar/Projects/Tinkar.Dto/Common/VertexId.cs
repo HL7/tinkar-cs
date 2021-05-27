@@ -16,12 +16,6 @@ namespace Tinkar.Dto
 
         public Int64 LeastSignificantBits => this.tinkarId.LeastSignificantBits;
 
-        public UInt32 Id1 => this.tinkarId.id1;
-        public UInt32 Id2 => this.tinkarId.id2;
-        public UInt32 Id3 => this.tinkarId.id3;
-        public UInt32 Id4 => this.tinkarId.id4;
-
-
         public VertexId(Guid uuid) =>
             this.tinkarId = new TinkarId(uuid);
 

@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Collections;
+﻿using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,12 @@ namespace Tinkar.XUnitTests
 {
     public static class ConvertPBToDTO
     {
-        public static TinkarId ToTinkarId(this PBTinkarId id)
+        public static TinkarId ToTinkarId(this ByteString id)
         {
             //# Tested
             return new TinkarId
             {
-                id1 = id.Id1,
-                id2 = id.Id2,
-                id3 = id.Id3,
-                id4 = id.Id4
+                uuid = new Guid(id.ToByteArray())
             };
         }
 
@@ -141,10 +139,7 @@ namespace Tinkar.XUnitTests
         public static VertexDTO ToVertex(this PBVertex value)
         {
             //# Tested
-            TinkarId tid = new TinkarId(value.VertexId.Id.Id1,
-                value.VertexId.Id.Id2,
-                value.VertexId.Id.Id3,
-                value.VertexId.Id.Id4);
+            TinkarId tid = new TinkarId(new Guid(value.VertexId.Id.ToByteArray()));
             return new VertexDTO(tid.Uuid,
                 value.VertexIndex,
                 value.Meaning.ToConcept(),
