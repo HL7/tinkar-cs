@@ -1,14 +1,8 @@
-PBVertex
-a)	VertexIndex. This value is the index of this vertex in some vertex map.
-	Why do we have a value in vertex to describe its position? When does this
-	vertex need to know its own position. What do we do if the VertexIndex does not match its position?
-	Should we remove the VertexIndex field?
-	
-	
 PBDiTree
 a)	Why is Root a seperate item. 
 	Should root be stored in VertexMap like all other vertices?
 	Maybe as VertexMap[0]? Or make root an integer storing the root index similar to DiGraph?
+-- change root to integer.
 b)	We list both successors and predecessors.
 	Is it true that if node 1 is a predecessor of node 2, then node 2 will be be a successor of node 1?
 	If so, then the predecessor and successor list each encodes the same (redundent) information.
@@ -16,6 +10,7 @@ b)	We list both successors and predecessors.
 		Delete one or the other?
 		Predecessors could be a simple array. Each item in the array would contain that vertices predecessor
 		index. Get rid of map and make simple array, root would point to itself.
+-- leave as it for now for performance reasons.
 	
 PBDiGraph
 a)	See PBDiTree node on successor and predecessor.
@@ -24,18 +19,22 @@ PBGraph
 a)	Where is the root defined? Can general DiGraph work instead?
 b)	Should this be Tree or Graph?
 c)	Is this intended to be an abstract class?
+-- can remove from PB.
 
 PBVertex
 a)	Should we have some sort of pattern that defines the allowable properties in a vertex?
 b)	VertexIndex. Should this be stored in vertex, or defined implicitely by its location.
+-- Add vertex pattern??
+Add new class, or use existing pattern class.
+Use concept constraints instead?
+
 
 Concept Chronology
 a)	Should the order of ConceptVersions be defined? i.e. Chronologically?
-
-b)	Does the XXX Chronology always contail all the versions? Or are there cases where it will contain only a sub set?
+b)	Does the XXX Chronology always contain all the versions? Or are there cases where it will contain only a sub set?
 
 FieldDefinition
-a)	Should DataType ever be plural to allow different data types. i.e. Int or Float?
+a)	Should DataType ever be plural to allow multiple possible data types. i.e. Int or Float?
 b)	Cardinality? Required, allowed empty, possible multiple, fixed multiple?
 c) 	Create concepts for all allowable field types, and create parent concept for all with isa relationship.
 
