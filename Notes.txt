@@ -1,0 +1,66 @@
+PBVertex
+a)	VertexIndex. This value is the index of this vertex in some vertex map.
+	Why do we have a value in vertex to describe its position? When does this
+	vertex need to know its own position. What do we do if the VertexIndex does not match its position?
+	Should we remove the VertexIndex field?
+	
+	
+PBDiTree
+a)	Why is Root a seperate item. 
+	Should root be stored in VertexMap like all other vertices?
+	Maybe as VertexMap[0]? Or make root an integer storing the root index similar to DiGraph?
+b)	We list both successors and predecessors.
+	Is it true that if node 1 is a predecessor of node 2, then node 2 will be be a successor of node 1?
+	If so, then the predecessor and successor list each encodes the same (redundent) information.
+	If true,
+		Delete one or the other?
+		Predecessors could be a simple array. Each item in the array would contain that vertices predecessor
+		index. Get rid of map and make simple array, root would point to itself.
+	
+PBDiGraph
+a)	See PBDiTree node on successor and predecessor.
+	
+PBGraph
+a)	Where is the root defined? Can general DiGraph work instead?
+b)	Should this be Tree or Graph?
+c)	Is this intended to be an abstract class?
+
+PBVertex
+a)	Should we have some sort of pattern that defines the allowable properties in a vertex?
+b)	VertexIndex. Should this be stored in vertex, or defined implicitely by its location.
+
+Concept Chronology
+a)	Should the order of ConceptVersions be defined? i.e. Chronologically?
+
+b)	Does the XXX Chronology always contail all the versions? Or are there cases where it will contain only a sub set?
+
+FieldDefinition
+a)	Should DataType ever be plural to allow different data types. i.e. Int or Float?
+b)	Cardinality? Required, allowed empty, possible multiple, fixed multiple?
+c) 	Create concepts for all allowable field types, and create parent concept for all with isa relationship.
+
+SemanticVersion
+a)	Can ReferencedComponent change from version to version. (Probably no...)
+b)	Can PatternForSemantic change from version to version. (almost certainly yes..)
+	IsPattern for Semantic to a PatternVersion? (Not Pattern and Not PatternChronology?)
+c)	SemanticVersion and SemanticChronology both have a ReferencedComponent field. Should this be removed from the
+	SemanticChronology?
+
+TinkarMsg
+a)	Will we ever serialize a Concept, Semantic, or Pattern? (i.e. we will serialize conceptVersions and Concept Chrnololgies, but a Concept?)
+	For serialization DTO's, remove these classes? Want to keep them for inheritance in run time classes, but for DTO messages?
+
+
+General
+
+a)	Currently the following are only contained items, that is each one is defined and stored inside of another message.
+	Would we ever see a case where we want to share the same DiGraph in multiple places? If so, we need to copy it. Should these
+	be stand alone items with their own PublicId?
+		PBDiGraph
+		PBDiTree
+		PBGraph
+		PBVertex
+
+b) 	If I get a list of tinkar items, how do I iterate over all the items (concepts and semantics).
+	i.e. in snomed, you can walk the tree of al concepts from the root and find any contained item.
+	How do we do this in Tinkar?
