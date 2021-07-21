@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "hKICTJuuWTKKPdtgcf3+I4YIuYWCzAdBIujG81hifmWxAirm0CJ6wOXD06NCT3w0Uu+R06sXeKlbDB1fFiefkA==",
+  "success": true,
+  "projectFilePath": "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\Tinkar.Protobuf-cs.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kurt\\.nuget\\packages\\google.protobuf\\3.16.0-rc1\\google.protobuf.3.16.0-rc1.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\grpc\\2.37.0\\grpc.2.37.0.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\grpc.core\\2.37.0\\grpc.core.2.37.0.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\grpc.core.api\\2.37.0\\grpc.core.api.2.37.0.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\grpc.tools\\2.37.0\\grpc.tools.2.37.0.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\Kurt\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512"
+  ],
+  "logs": []
+}

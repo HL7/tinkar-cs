@@ -1,0 +1,84 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\Tinkar.Protobuf-cs.csproj": {}
+  },
+  "projects": {
+    "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\Tinkar.Protobuf-cs.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\Tinkar.Protobuf-cs.csproj",
+        "projectName": "Tinkar.Protobuf-cs",
+        "projectPath": "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\Tinkar.Protobuf-cs.csproj",
+        "packagesPath": "C:\\Users\\Kurt\\.nuget\\packages\\",
+        "outputPath": "C:\\Development\\Tinkar\\tinkar-cs\\Solutions\\Tinkar.Protobuf\\Projects\\Tinkar.Protobuf-cs\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Kurt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.16.0-rc1, )"
+            },
+            "Grpc": {
+              "target": "Package",
+              "version": "[2.37.0, )"
+            },
+            "Grpc.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.37.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
