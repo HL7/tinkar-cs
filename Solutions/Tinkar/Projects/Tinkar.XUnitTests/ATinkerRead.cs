@@ -17,8 +17,35 @@ namespace Tinkar.XUnitTests
     public class ATinkarRead
     {
         const Int32 BlockSize = 100000;
-        const String ProtobufFile = @"C:\Development\Tinkar\tinkar-solor-us-export.pbin";
+        String ProtobufFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "DataFiles",
+            "tinkar-solor-us-export.pbin");
 
+        String TinkarZipFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "DataFiles",
+            "tinkar-solor-us-export.zip");
+
+        String TinkFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "DataFiles",
+            "tinkar-solor-us-export.tink");
+
+        public String FindParentDir(String dirName)
+        {
+            String servicePath = Path.GetFullPath(".");
+            while (true)
+            {
+                servicePath = Path.GetFullPath(servicePath);
+                String serviceDir = Path.Combine(servicePath, dirName);
+                if (Directory.Exists(serviceDir))
+                    return serviceDir;
+                String newPath = Path.Combine(servicePath, "..");
+                newPath = Path.GetFullPath(newPath);
+                if (String.Compare(newPath, servicePath, StringComparison.InvariantCulture) == 0)
+                    throw new Exception($"Parent directory {dirName} not found");
+                servicePath = newPath;
+            }
+        }
+ 
         [DoNotParallelize]
         [Fact]
         public void PBToDTOVertex()
@@ -280,11 +307,11 @@ namespace Tinkar.XUnitTests
 
         IEnumerable<IComponent> ReadConcepts(Int64 position = 0)
         {
-            const String ExportPath = @"C:\Development\Tinkar\export.tink";
+            String ExportPath = TinkFile;
 
             if (File.Exists(ExportPath) == false)
             {
-                using Stream zipFile = File.OpenRead(@"C:\Development\Tinkar\tinkar-solor-us-export.zip");
+                using Stream zipFile = File.OpenRead(TinkarZipFile);
                 using ZipArchive archive = new ZipArchive(zipFile);
                 ZipArchiveEntry entry = archive.GetEntry("export.tink");
                 Stream zipStream = entry.Open();
@@ -318,6 +345,8 @@ namespace Tinkar.XUnitTests
                     }
                 }
             }
+            if (File.Exists(TinkFile))
+                File.Delete(TinkFile);
         }
 
     }
