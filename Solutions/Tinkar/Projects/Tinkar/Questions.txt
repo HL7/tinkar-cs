@@ -1,7 +1,0 @@
-﻿1. should we add Versions number to Json input/output (like binary)?
-2. Java date time string.
-   a) Common format with c#? 
-   b) Can we dump milliseconds? 
-   c) How do we want to handle part error? Fail whole conversion?
-      Set to default date? (i.e. 1970/1/1 00:00:00)
-      Timezones?
