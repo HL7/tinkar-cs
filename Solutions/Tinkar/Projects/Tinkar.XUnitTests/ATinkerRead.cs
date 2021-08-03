@@ -19,7 +19,7 @@ namespace Tinkar.XUnitTests
         const Int32 BlockSize = 100000;
         String ProtobufFile => Path.Combine(FindParentDir("tinkar-cs"),
             "DataFiles",
-            "tinkar-solor-us-export.pbin");
+            "tinkar-solor-us-export.pb.zip");
 
         String TinkarZipFile => Path.Combine(FindParentDir("tinkar-cs"),
             "DataFiles",
@@ -319,35 +319,36 @@ namespace Tinkar.XUnitTests
                 zipStream.CopyTo(outFile);
                 outFile.Close();
             }
-
-            using FileStream tinkarStream = File.OpenRead(ExportPath);
-            using TinkarInput input = new TinkarInput(tinkarStream);
-
-            if (position > 0)
-                tinkarStream.Seek(position, SeekOrigin.Begin);
-
-            Int32 counter = 0;
-            bool done = false;
-            while (done == false)
             {
-                tinkarPosition = tinkarStream.Position;
-                IComponent c = (IComponent)input.GetField();
-                if (c == null)
-                    done = true;
-                else
+                using FileStream tinkarStream = File.OpenRead(ExportPath);
+                using TinkarInput input = new TinkarInput(tinkarStream);
+
+                if (position > 0)
+                    tinkarStream.Seek(position, SeekOrigin.Begin);
+
+                Int32 counter = 0;
+                bool done = false;
+                while (done == false)
                 {
-                    yield return c;
-                    counter += 1;
-                    if ((counter % BlockSize) == 0)
+                    tinkarPosition = tinkarStream.Position;
+                    IComponent c = (IComponent)input.GetField();
+                    if (c == null)
+                        done = true;
+                    else
                     {
-                        Trace.WriteLine($"{counter} {tinkarStream.Position}");
-                        GC.Collect(2, GCCollectionMode.Forced);
+                        yield return c;
+                        counter += 1;
+                        if ((counter % BlockSize) == 0)
+                        {
+                            Trace.WriteLine($"{counter} {tinkarStream.Position}");
+                            GC.Collect(2, GCCollectionMode.Forced);
+                        }
                     }
                 }
             }
+
             if (File.Exists(TinkFile))
                 File.Delete(TinkFile);
         }
-
     }
 }
