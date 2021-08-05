@@ -45,7 +45,7 @@ namespace Tinkar.XUnitTests
                 servicePath = newPath;
             }
         }
- 
+
         [DoNotParallelize]
         [Fact]
         public void PBToDTOVertex()
@@ -202,11 +202,47 @@ namespace Tinkar.XUnitTests
         //    Trace.WriteLine($"Read time {elapsed}");
         //}
 
+        /// <summary>
+        /// Read in each element in protobuf file
+        /// </summary>
         [DoNotParallelize]
         [Fact]
-        public void AProtobufReadConcepts()
+        public void AReadPB()
         {
-            PBTinkarMsg[] msgs = new PBTinkarMsg[8000000];
+            DateTime start = DateTime.Now;
+            DateTime current = start;
+            TimeSpan elapsed;
+            using FileStream input = File.OpenRead(ProtobufFile);
+            PBReader pbReader = new PBReader(input);
+            NativeMethods.PreventSleep();
+
+            Int32 i = 0;
+            while (pbReader.Read() != null)
+            { 
+                if ((i % BlockSize) == 0)
+                {
+                    elapsed = DateTime.Now - current;
+                    current = DateTime.Now;
+                    float itemsPerSec = (float)BlockSize / (float)elapsed.TotalSeconds;
+                    Trace.WriteLine($"{i} - Read time {elapsed.TotalSeconds} / {itemsPerSec.ToString("F2")}");
+                    GC.Collect(2, GCCollectionMode.Forced);
+                }
+                i += 1;
+            }
+
+            elapsed = DateTime.Now - start;
+            NativeMethods.AllowSleep();
+            Trace.WriteLine($"AProtobufReadConcepts time {elapsed}");
+        }
+
+        /// <summary>
+        /// Read in each element in protobuf file and dto file, and compare
+        /// them. Should be the same as the protobuf was created from dto file.
+        /// </summary>
+        [DoNotParallelize]
+        [Fact]
+        public void AReadPBAndDTOAndValidate()
+        {
             DateTime start = DateTime.Now;
             DateTime current = start;
             TimeSpan elapsed;
@@ -214,20 +250,23 @@ namespace Tinkar.XUnitTests
             Int32 i = 0;
             PBReader pbReader = new PBReader(input);
             NativeMethods.PreventSleep();
-            while (input.Position < input.Length)
+            foreach (IComponent component in this.ReadConcepts())
             {
-                msgs[i] = pbReader.Read();
-                //msgs[i] = null;
+                PBTinkarMsg pbMsg = pbReader.Read();
+                IComponent dto = ConvertPBToDTO.Convert(pbMsg);
+                Assert.True(component.CompareTo(dto) == 0);
                 if ((i % BlockSize) == 0)
                 {
                     elapsed = DateTime.Now - current;
                     current = DateTime.Now;
-                    float itemsPerSec = (float) BlockSize / (float) elapsed.TotalSeconds;
+                    float itemsPerSec = (float)BlockSize / (float)elapsed.TotalSeconds;
                     Trace.WriteLine($"{i} - Read time {elapsed.TotalSeconds} / {itemsPerSec.ToString("F2")}");
                     GC.Collect(2, GCCollectionMode.Forced);
                 }
                 i += 1;
             }
+            Assert.True(pbReader.Read() == null);
+
             elapsed = DateTime.Now - start;
             NativeMethods.AllowSleep();
             Trace.WriteLine($"AProtobufReadConcepts time {elapsed}");
@@ -235,22 +274,19 @@ namespace Tinkar.XUnitTests
 
         [DoNotParallelize]
         [Fact]
-        public void AConvertAndWriteAllConcepts()
+        public void AReadDTOAndWritePBAllConcepts()
         {
-            // start position is for debugging. Can restart at problem point for faster turnaround.
-            // should always be 0 for full test of all elements.
-            Int64 startPos = 0;
-
             DateTime start = DateTime.Now;
-            using FileStream output = File.Create(ProtobufFile);
-            PBWriter pbWriter = new PBWriter(output);
+            FileStream output = File.Create(ProtobufFile);
+            using PBWriter pbWriter = new PBWriter(output);
             NativeMethods.PreventSleep();
-            foreach (IComponent component in this.ReadConcepts(startPos))
+            Int32 i = 0;
+            foreach (IComponent component in this.ReadConcepts())
             {
                 PBTinkarMsg pb = ConvertDTOToPB.Convert(component);
                 pbWriter.Write(pb);
+                i += 1;
             }
-            output.Close();
             NativeMethods.AllowSleep();
             TimeSpan elapsed = DateTime.Now - start;
             Trace.WriteLine($"AConvertAndWriteAllConcepts time {elapsed}");
@@ -260,13 +296,10 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void AConvertAndVerifyAllConcepts()
         {
-            // start position is for debugging. Can restart at problem point for faster turnaround.
-            // should always be 0 for full test of all elements.
-            Int64 startPos = 0;
 
             NativeMethods.PreventSleep();
             DateTime start = DateTime.Now;
-            foreach (IComponent component in this.ReadConcepts(startPos))
+            foreach (IComponent component in this.ReadConcepts())
             {
                 PBTinkarMsg pb = ConvertDTOToPB.Convert(component);
                 if (pb != null)
@@ -284,15 +317,11 @@ namespace Tinkar.XUnitTests
         [Fact]
         public void ADTOReadAllConcepts()
         {
-            // start position is for debugging. Can restart at problem point for faster turnaround.
-            // should always be 0 for full test of all elements.
-            Int64 startPos = 0;
-
             IComponent[] msgs = new IComponent[8000000];
             DateTime start = DateTime.Now;
             Int32 i = 0;
             NativeMethods.PreventSleep();
-            foreach (IComponent component in this.ReadConcepts(startPos))
+            foreach (IComponent component in this.ReadConcepts())
             {
                 msgs[i] = component;
                 //msgs[i] = null;
@@ -300,37 +329,25 @@ namespace Tinkar.XUnitTests
             }
             NativeMethods.AllowSleep();
             TimeSpan elapsed = DateTime.Now - start;
-                Trace.WriteLine($"ADTOReadAllConcepts time {elapsed}");
+            Trace.WriteLine($"ADTOReadAllConcepts time {elapsed}");
         }
 
-        Int64 tinkarPosition = 0;
-
-        IEnumerable<IComponent> ReadConcepts(Int64 position = 0)
+        IEnumerable<IComponent> ReadConcepts()
         {
             String ExportPath = TinkFile;
 
-            if (File.Exists(ExportPath) == false)
-            {
-                using Stream zipFile = File.OpenRead(TinkarZipFile);
-                using ZipArchive archive = new ZipArchive(zipFile);
-                ZipArchiveEntry entry = archive.GetEntry("export.tink");
-                Stream zipStream = entry.Open();
-                using Stream outFile = File.OpenWrite(ExportPath);
-                zipStream.CopyTo(outFile);
-                outFile.Close();
-            }
-            {
-                using FileStream tinkarStream = File.OpenRead(ExportPath);
-                using TinkarInput input = new TinkarInput(tinkarStream);
+            using Stream zipFile = File.OpenRead(TinkarZipFile);
+            using ZipArchive archive = new ZipArchive(zipFile);
+            ZipArchiveEntry entry = archive.GetEntry("export.tink");
+            Stream zipStream = entry.Open();
 
-                if (position > 0)
-                    tinkarStream.Seek(position, SeekOrigin.Begin);
+            {
+                using TinkarInput input = new TinkarInput(zipStream);
 
                 Int32 counter = 0;
                 bool done = false;
                 while (done == false)
                 {
-                    tinkarPosition = tinkarStream.Position;
                     IComponent c = (IComponent)input.GetField();
                     if (c == null)
                         done = true;
@@ -339,16 +356,10 @@ namespace Tinkar.XUnitTests
                         yield return c;
                         counter += 1;
                         if ((counter % BlockSize) == 0)
-                        {
-                            Trace.WriteLine($"{counter} {tinkarStream.Position}");
                             GC.Collect(2, GCCollectionMode.Forced);
-                        }
                     }
                 }
             }
-
-            if (File.Exists(TinkFile))
-                File.Delete(TinkFile);
         }
     }
 }
