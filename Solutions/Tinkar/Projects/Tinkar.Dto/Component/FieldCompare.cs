@@ -154,7 +154,6 @@ namespace Tinkar.Dto
         /// Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
         /// items that are equal.
         /// </summary>
-        /// <typeparam name="TSeq">Sequence type to compare.</typeparam>
         /// <param name="a">First item to compare.</param>
         /// <param name="b">Second item to compare.</param>
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>

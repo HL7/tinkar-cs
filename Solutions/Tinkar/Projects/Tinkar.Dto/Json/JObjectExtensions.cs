@@ -248,7 +248,6 @@ namespace Tinkar.Dto
                     return SpatialPointDTO.Make(jObj);
                 case PlanarPointDTO.JSONCLASSNAME:
                     return PlanarPointDTO.Make(jObj);
-#warning ' add new classes'
                 default:
                     throw new NotImplementedException($"Class {actualClassName} not known");
             }

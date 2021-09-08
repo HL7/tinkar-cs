@@ -88,7 +88,6 @@ namespace Tinkar.Dto
         /// <typeparam name="T">Type of the property object</typeparam>
         /// <param name="propertyConcept">Property Concept</param>
         /// <returns>Property associated with concept</returns>
-#warning "How does java version of this handle a) not finding item or b) item is different type"
         public T Property<T>(IConcept propertyConcept)
         {
             if (this.Properties.TryGetValue(propertyConcept, out Object value) == false)
@@ -102,7 +101,6 @@ namespace Tinkar.Dto
         /// <typeparam name="T">Type of the property object</typeparam>
         /// <param name="propertyConcept">Property Concept</param>
         /// <returns>Property associated with concept</returns>
-#warning "How is this different from T Property() above"
         public T PropertyFast<T>(IConcept propertyConcept) => throw new NotImplementedException("xxyyz");
 
         //CEnum PropertyKeys<CEnum> { get; }

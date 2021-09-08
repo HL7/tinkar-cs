@@ -58,7 +58,7 @@ namespace Tinkar.Dto
         /// Create C# date time from jave serialized instant fields.
         /// </summary>
         /// <param name="epoch">Seconds since (or before) 1970.</param>
-        /// <param name="nanoSeconds">nanoseconds part of instant.</param>
+        /// <param name="milliSeconds">milliSeconds part of instant.</param>
         /// <returns>read DateTime value.</returns>
         public static DateTime FromInstant(
             Int64 epoch,

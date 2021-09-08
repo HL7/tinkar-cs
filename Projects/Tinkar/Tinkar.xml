@@ -33,7 +33,7 @@
             Create C# date time from jave serialized instant fields.
             </summary>
             <param name="epoch">Seconds since (or before) 1970.</param>
-            <param name="nanoSeconds">nanoseconds part of instant.</param>
+            <param name="milliSeconds">milliSeconds part of instant.</param>
             <returns>read DateTime value.</returns>
         </member>
         <member name="T:Tinkar.Dto.IMarshalable">
@@ -679,7 +679,6 @@
             Compare two IEnumerable&lt;IComparable&gt; instances and return true if list contains
             items that are equal.
             </summary>
-            <typeparam name="TSeq">Sequence type to compare.</typeparam>
             <param name="a">First item to compare.</param>
             <param name="b">Second item to compare.</param>
             <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
