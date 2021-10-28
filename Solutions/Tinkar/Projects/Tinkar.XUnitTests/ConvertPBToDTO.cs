@@ -248,10 +248,7 @@ namespace Tinkar.XUnitTests
         public static SemanticDTO ToSemantic(this PBSemantic c)
         {
             //# Tested
-            return new SemanticDTO(
-                c.PublicId.ToPublicId(),
-                c.PatternForSemantic.ToPublicId(),
-                c.ReferencedComponent.ToPublicId());
+            return new SemanticDTO(c.PublicId.ToPublicId());
         }
 
         public static SemanticVersionDTO ToSemanticVersion(this PBSemanticVersion c)
@@ -259,8 +256,6 @@ namespace Tinkar.XUnitTests
             //# Tested
             return new SemanticVersionDTO(
                 c.PublicId.ToPublicId(),
-                c.PatternForSemantic.ToPublicId(),
-                c.ReferencedComponent.ToPublicId(),
                 c.Stamp.ToStamp(),
                 c.FieldValues.ToObjects().ToImmutableArray()
                 );

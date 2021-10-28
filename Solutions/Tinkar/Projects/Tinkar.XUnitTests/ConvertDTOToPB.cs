@@ -276,9 +276,7 @@ namespace Tinkar.XUnitTests
             //# Tested
             return new PBSemantic
             {
-                PublicId = c.PublicId.ToPBPublicId(),
-                ReferencedComponent = c.ReferencedComponentPublicId.ToPBPublicId(),
-                PatternForSemantic = c.PatternForSemantic.ToPBPublicId()
+                PublicId = c.PublicId.ToPBPublicId()
             };
         }
 
@@ -289,8 +287,6 @@ namespace Tinkar.XUnitTests
             {
                 PublicId = c.PublicId.ToPBPublicId(),
                 Stamp = c.Stamp.ToPBStamp(),
-                ReferencedComponent = c.ReferencedComponentPublicId.ToPBPublicId(),
-                PatternForSemantic = c.PatternForSemantic.ToPBPublicId()
             };
             retVal.FieldValues.AddRange(c.Fields.ToPBFields());
             return retVal;

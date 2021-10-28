@@ -98,16 +98,12 @@ namespace Tinkar.XUnitTests
             );
 
         public static SemanticDTO CreateSemanticDTO => new SemanticDTO(
-            PublicIdG,
-            PublicIdH,
-            PublicIdI
+            PublicIdG
         );
 
         public static SemanticVersionDTO CreateSemanticVersionDTO =>
             new SemanticVersionDTO(
                 PublicIdG,
-                PublicIdH,
-                PublicIdI,
                 Misc.CreateStampDTO,
                 new Object[]
                 {

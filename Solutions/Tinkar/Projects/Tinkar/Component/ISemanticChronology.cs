@@ -30,5 +30,14 @@ namespace Tinkar
         where TSemanticVersion : ISemanticVersion
         where TComponent : IComponent
     {
+        /// <summary>
+        /// Gets component that this semantic references.
+        /// </summary>
+        IComponent ReferencedComponent { get; }
+
+        /// <summary>
+        /// Gets TypePattern.
+        /// </summary>
+        IPattern Pattern { get; }
     }
 }

@@ -209,14 +209,7 @@ namespace Tinkar.Dto
 
             JArray items = jObj.ReadToken<JArray>(fieldName);
             foreach (JObject item in items.Values<JObject>())
-            {
-                retVal.Add(SemanticVersionDTO.Make(
-                    item,
-                    publicId,
-                    definitionForSemanticPublicId,
-                    referencedComponentPublicId));
-            }
-
+                retVal.Add(SemanticVersionDTO.Make(item, publicId));
             return retVal;
         }
 

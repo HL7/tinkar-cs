@@ -41,26 +41,6 @@ namespace Tinkar.Dto
         public FieldDataType FieldDataType => FieldDataType.SemanticVersionType;
 
         /// <summary>
-        /// Gets PatternForSemantic UUID's.
-        /// </summary>
-        public IPublicId PatternForSemantic { get; init; }
-
-        /// <summary>
-        /// Gets ReferencedComponent Uuids.
-        /// </summary>
-        public IPublicId ReferencedComponentPublicId { get; init; }
-
-        /// <summary>
-        /// Gets ReferencedComponent.
-        /// </summary>
-        public IComponent ReferencedComponent => new ComponentDTO(this.ReferencedComponentPublicId);
-
-        /// <summary>
-        /// Gets PatternForSemantic.
-        /// </summary>
-        public IPattern Pattern => new PatternDTO(this.PatternForSemantic);
-
-        /// <summary>
         /// Gets Fields array.
         /// </summary>
         public ImmutableArray<Object> Fields { get; init; }
@@ -69,19 +49,13 @@ namespace Tinkar.Dto
         /// Initializes a new instance of the <see cref="SemanticVersionDTO"/> class.
         /// </summary>
         /// <param name = "componentPublicId" > Public id(component ids).</param>
-        /// <param name="patternForSemantic">PatternForSemanticUuids.</param>
-        /// <param name="referencedComponentUuids">ReferencedComponentUuids.</param>
         /// <param name="stampDTO">StampDTO.</param>
         /// <param name="fields">Fields.</param>
         public SemanticVersionDTO(
             IPublicId componentPublicId,
-            IPublicId patternForSemantic,
-            IPublicId referencedComponentUuids,
             StampDTO stampDTO,
             ImmutableArray<Object> fields) : base(componentPublicId, stampDTO)
         {
-            this.PatternForSemantic = patternForSemantic;
-            this.ReferencedComponentPublicId = referencedComponentUuids;
             this.Fields = fields;
         }
 
@@ -103,10 +77,6 @@ namespace Tinkar.Dto
             if (this == other)
                 return true;
 
-            if (this.PatternForSemantic.IsEquivalent(other.PatternForSemantic) == false)
-                return false;
-            if (this.ReferencedComponentPublicId.IsEquivalent(other.ReferencedComponentPublicId) == false)
-                return false;
             if (FieldCompare.Equivalent(this.Fields, other.Fields) == false)
                 return false;
             return true;
@@ -124,12 +94,6 @@ namespace Tinkar.Dto
                 return -1;
 
             Int32 cmp = base.CompareTo(other);
-            if (cmp != 0)
-                return cmp;
-            cmp = this.PatternForSemantic.CompareTo(other.PatternForSemantic);
-            if (cmp != 0)
-                return cmp;
-            cmp = this.ReferencedComponentPublicId.CompareTo(other.ReferencedComponentPublicId);
             if (cmp != 0)
                 return cmp;
             cmp = FieldCompare.CompareSequence(this.Fields, other.Fields);
@@ -155,9 +119,7 @@ namespace Tinkar.Dto
                         break;
 
                     case ISemantic item:
-                        convertedFields.Add(new SemanticDTO(item.PublicId,
-                            item.Pattern,
-                            item.ReferencedComponent));
+                        convertedFields.Add(new SemanticDTO(item.PublicId));
                         break;
 
                     case IComponent item:
@@ -182,8 +144,6 @@ namespace Tinkar.Dto
             } 
 
             return new SemanticVersionDTO(semanticVersion.PublicId,
-                    semanticVersion.Pattern.PublicId,
-                    semanticVersion.ReferencedComponent.PublicId,
                     StampDTO.Make(semanticVersion.Stamp), 
                     convertedFields.ToImmutableArray());
         }
@@ -192,18 +152,12 @@ namespace Tinkar.Dto
         /// Static method to Create DTO item from input stream.
         /// </summary>
         /// <param name="input">input data stream.</param>
-        /// <param name="componentPublicId">Public id (component ids).</param>
-        /// <param name="definitionForSemanticUuids">PatternForSemantic UUIDs.</param>
         /// <param name="referencedComponentUuids">ReferencedComponent UUIDs.</param>
         /// <returns>new DTO item.</returns>
         public static SemanticVersionDTO Make(
             TinkarInput input,
-            IPublicId componentPublicId,
-            IPublicId definitionForSemanticUuids,
             IPublicId referencedComponentUuids) =>
             new SemanticVersionDTO(
-                componentPublicId,
-                definitionForSemanticUuids,
                 referencedComponentUuids,
                 StampDTO.Make(input),
                 input.GetObjects().ToImmutableArray());
@@ -213,17 +167,11 @@ namespace Tinkar.Dto
         /// </summary>
         /// <param name="jsonObject">JSON parent container.</param>
         /// <param name="componentPublicId">Public id (component ids).</param>
-        /// <param name="definitionForSemanticPublicId">PatternForSemantic UUIDs.</param>
-        /// <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
         /// <returns>Deserialized SemanticVersion record.</returns>
         public static SemanticVersionDTO Make(
             JObject jsonObject,
-            IPublicId componentPublicId,
-            IPublicId definitionForSemanticPublicId,
-            IPublicId referencedComponentPublicId) =>
+            IPublicId componentPublicId) =>
             new SemanticVersionDTO(componentPublicId,
-                definitionForSemanticPublicId,
-                referencedComponentPublicId,
                 StampDTO.Make((JObject)jsonObject[ComponentFieldForJson.STAMP]),
                 jsonObject.AsObjects(ComponentFieldForJson.FIELDS).ToImmutableArray());
 

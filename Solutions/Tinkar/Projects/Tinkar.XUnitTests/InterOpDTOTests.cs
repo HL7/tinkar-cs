@@ -112,8 +112,6 @@ namespace Tinkar.XUnitTests
                     {
                         new SemanticVersionDTO(
                             componentPublicId,
-                            patternForSemanticPublicId,
-                            referencedComponentPublicId,
                             NextStamp(),
                             new Object[]
                             {
@@ -133,18 +131,13 @@ namespace Tinkar.XUnitTests
                 retVal.Add(dto);
             }
             {
-                SemanticDTO dto = new SemanticDTO(
-                    NextPublicId(4),
-                    NextPublicId(5),
-                    NextPublicId(4));
+                SemanticDTO dto = new SemanticDTO(NextPublicId(4));
                 retVal.Add(dto);
             }
             {
                 SemanticVersionDTO dto =
                     new SemanticVersionDTO(
                         NextPublicId(3),
-                        NextPublicId(2),
-                        NextPublicId(1),
                         NextStamp(),
                         new Object[]
                         {

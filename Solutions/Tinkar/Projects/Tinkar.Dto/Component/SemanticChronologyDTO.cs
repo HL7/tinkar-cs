@@ -191,7 +191,7 @@ namespace Tinkar.Dto
                 componentPublicId,
                 patternForSemanticPublicId,
                 referencedComponentPublicId,
-                input.ReadSemanticVersionList(componentPublicId, patternForSemanticPublicId, referencedComponentPublicId).ToImmutableArray()
+                input.ReadSemanticVersionList(componentPublicId).ToImmutableArray()
                 );
         }
 

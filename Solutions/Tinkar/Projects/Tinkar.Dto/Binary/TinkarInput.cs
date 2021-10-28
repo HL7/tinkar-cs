@@ -206,13 +206,9 @@ namespace Tinkar.Dto
         /// Read an array or SemanticVersionDTO items.
         /// </summary>
         /// <param name="publicId">Public id (component ids).</param>
-        /// <param name="patternForSemanticPublicId">TypePattern UUIDs.</param>
-        /// <param name="referencedComponentPublicId">ReferencedComponent UUIDs.</param>
         /// <returns>SemanticVersionDTO[].</returns>
         public SemanticVersionDTO[] ReadSemanticVersionList(
-            IPublicId publicId,
-            IPublicId patternForSemanticPublicId,
-            IPublicId referencedComponentPublicId)
+            IPublicId publicId)
         {
             Int32 length = this.GetInt32();
             SemanticVersionDTO[] retVal = new SemanticVersionDTO[length];
@@ -220,9 +216,7 @@ namespace Tinkar.Dto
             {
                 retVal[i] = SemanticVersionDTO.Make(
                     this,
-                    publicId,
-                    patternForSemanticPublicId,
-                    referencedComponentPublicId);
+                    publicId);
             }
 
             return retVal;

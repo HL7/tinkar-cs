@@ -17,8 +17,6 @@ namespace Tinkar.XUnitTests
         {
             SemanticDTO dtoStart = Misc.CreateSemanticDTO;
             Misc.Compare(dtoStart.PublicId, Misc.g1, Misc.g2, Misc.g3, Misc.g4);
-            Misc.Compare(dtoStart.Pattern.PublicId, Misc.h1, Misc.h2, Misc.h3, Misc.h4);
-            Misc.Compare(dtoStart.ReferencedComponent.PublicId, Misc.i1, Misc.i2, Misc.i3, Misc.i4);
         }
 
         [DoNotParallelize]
@@ -28,9 +26,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
-                    Misc.PublicIdI
+                    Misc.PublicIdG
                 );
                 Assert.True(a.IsEquivalent(b));
             }
@@ -38,29 +34,23 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    new PublicId(Misc.other),
-                    Misc.PublicIdH,
-                    Misc.PublicIdI
-                );
-                Assert.False(a.IsEquivalent(b));
-            }
-
-            {
-                SemanticDTO a = Misc.CreateSemanticDTO;
-                SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    new PublicId(Misc.other),
-                    Misc.PublicIdI
-                );
-                Assert.False(a.IsEquivalent(b));
-            }
-
-            {
-                SemanticDTO a = Misc.CreateSemanticDTO;
-                SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
                     new PublicId(Misc.other)
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    Misc.PublicIdG
+                );
+                Assert.False(a.IsEquivalent(b));
+            }
+
+            {
+                SemanticDTO a = Misc.CreateSemanticDTO;
+                SemanticDTO b = new SemanticDTO(
+                    Misc.PublicIdG
                 );
                 Assert.False(a.IsEquivalent(b));
             }
@@ -75,9 +65,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
-                    Misc.PublicIdI
+                    Misc.PublicIdG
                 );
                 Assert.True(a.CompareTo(b) == 0);
             }
@@ -85,9 +73,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4),
-                    Misc.PublicIdH,
-                    Misc.PublicIdI
+                    new PublicId(Misc.g2, Misc.g2, Misc.g3, Misc.g4)
                 );
                 Assert.False(a.CompareTo(b) == 0);
             }
@@ -95,9 +81,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    new PublicId(Misc.h1, Misc.h3, Misc.h3, Misc.h4),
-                    Misc.PublicIdI
+                    Misc.PublicIdG
                 );
                 Assert.False(a.CompareTo(b) == 0);
             }
@@ -105,9 +89,7 @@ namespace Tinkar.XUnitTests
             {
                 SemanticDTO a = Misc.CreateSemanticDTO;
                 SemanticDTO b = new SemanticDTO(
-                    Misc.PublicIdG,
-                    Misc.PublicIdH,
-                    new PublicId(Misc.i1, Misc.i2, Misc.i3, Misc.i3)
+                    Misc.PublicIdG
                 );
                 Assert.False(a.CompareTo(b) == 0);
             }
