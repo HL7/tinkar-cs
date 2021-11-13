@@ -39,17 +39,23 @@ namespace Tinkar.XUnitTests
             return retval;
         }
 
-        public static PBStamp ToPBStamp(this IStamp c)
+        public static PBStampChronology ToPBStamp(this IStamp c)
         {
             //# Tested
-            return new PBStamp
+            return new PBStampChronology
             {
                 PublicId = c.PublicId.ToPBPublicId(),
-                Status = c.Status.ToPBConcept(),
-                Author = c.Author.ToPBConcept(),
-                Module = c.Module.ToPBConcept(),
-                Path = c.Path.ToPBConcept(),
-                Time = Timestamp.FromDateTime(c.Time)
+                StampVersions =
+                {
+                    new PBStampVersion
+                    {
+                        Status = c.Status.ToPBConcept(),
+                        Author = c.Author.ToPBConcept(),
+                        Module = c.Module.ToPBConcept(),
+                        Path = c.Path.ToPBConcept(),
+                        Time = Timestamp.FromDateTime(c.Time)
+                    }
+                }
             };
         }
 

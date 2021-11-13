@@ -18,14 +18,17 @@ namespace Tinkar.XUnitTests
     {
         const Int32 BlockSize = 100000;
         String ProtobufFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "..",
             "DataFiles",
             "tinkar-solor-us-export.pb.zip");
 
         String TinkarZipFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "..",
             "DataFiles",
             "tinkar-solor-us-export.zip");
 
         String TinkFile => Path.Combine(FindParentDir("tinkar-cs"),
+            "..",
             "DataFiles",
             "tinkar-solor-us-export.tink");
 

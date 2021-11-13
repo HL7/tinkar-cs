@@ -35,16 +35,17 @@ namespace Tinkar.XUnitTests
             return new PublicId(tids);
         }
 
-        public static StampDTO ToStamp(this PBStamp c)
+        public static StampDTO ToStamp(this PBStampChronology c)
         {
             //# Tested
+            // This uses old STAMP format for DTO classes. They should be updated or removed...
             return new StampDTO(
                 c.PublicId.ToPublicId(),
-                c.Status.ToConcept().PublicId,
-                c.Time.ToDateTime(),
-                c.Author.ToConcept().PublicId,
-                c.Module.ToConcept().PublicId,
-                c.Path.ToConcept().PublicId);
+                c.StampVersions[0].Status.ToConcept().PublicId,
+                c.StampVersions[0].Time.ToDateTime(),
+                c.StampVersions[0].Author.ToConcept().PublicId,
+                c.StampVersions[0].Module.ToConcept().PublicId,
+                c.StampVersions[0].Path.ToConcept().PublicId);
         }
 
         static List<PublicId> ToPublicIdList(this PBPublicIdList value)
