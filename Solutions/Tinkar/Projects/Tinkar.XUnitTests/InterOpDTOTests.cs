@@ -184,6 +184,7 @@ namespace Tinkar.XUnitTests
                 Assert.True(readFields[i].CompareTo(compareFields[i]) == 0);
         }
 
+#if UNUSED
         [DoNotParallelize]
         [Fact]
         public void A_JsonWriteObjects()
@@ -218,5 +219,6 @@ namespace Tinkar.XUnitTests
             for (Int32 i = 0; i < readFields.Length; i++)
                 Assert.True(readFields[i].CompareTo(compareFields[i]) == 0);
         }
+#endif
     }
 }

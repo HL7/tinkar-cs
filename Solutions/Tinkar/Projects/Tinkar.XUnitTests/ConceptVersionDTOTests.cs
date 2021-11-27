@@ -107,6 +107,7 @@ namespace Tinkar.XUnitTests
                 new PublicId(Misc.g1, Misc.g2, Misc.g3, Misc.g4));
             Assert.True(dtoStart.CompareTo(dtoRead) == 0);
         }
+#if UNUSED
         [DoNotParallelize]
         [Fact]
         public void ConceptVersionDTOJsonMarshal()
@@ -128,5 +129,6 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
+#endif
     }
 }

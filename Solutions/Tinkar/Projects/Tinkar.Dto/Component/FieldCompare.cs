@@ -285,6 +285,22 @@ namespace Tinkar.Dto
         /// <returns>&lt; if a &lt; b, 0 if a == b, &gt; if a &gt; b.</returns>
         public static Int32 Compare(Object aObj, Object bObj)
         {
+            Object Normalize(Object obj)
+            {
+                switch (obj)
+                {
+                    case HashSet<IPublicId> hSet:
+                        List<PublicId> list = new List<PublicId>();
+                        foreach (IPublicId id in hSet)
+                            list.Add((PublicId)id);
+                        return list;
+                    default:
+                        return obj;
+                }
+            }
+
+            aObj = Normalize(aObj);
+            bObj = Normalize(bObj);
             Int32 cmp = aObj.GetType().Name.CompareTo(bObj.GetType().Name);
             if (cmp != 0)
                 return cmp;

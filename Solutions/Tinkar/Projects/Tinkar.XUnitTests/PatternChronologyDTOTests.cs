@@ -121,6 +121,7 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
+#if UNUSED
         [DoNotParallelize]
         [Fact]
         public void PatternChronologyDTOJsonMarshal()
@@ -141,5 +142,6 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
+#endif
     }
 }

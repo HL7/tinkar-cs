@@ -105,7 +105,7 @@ namespace Tinkar.XUnitTests
                     {
                         PBPublicIdList l = new PBPublicIdList();
                         l.PublicIds.AddRange(value.ToPBPublicIds());
-                        f.PublicIdHashValue = l;
+                        f.PublicIdListValue = l;
                     }
                     break;
 

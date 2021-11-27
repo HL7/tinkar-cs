@@ -302,6 +302,7 @@ namespace Tinkar.XUnitTests
 
             NativeMethods.PreventSleep();
             DateTime start = DateTime.Now;
+            Int32 i = 0;
             foreach (IComponent component in this.ReadConcepts())
             {
                 PBTinkarMsg pb = ConvertDTOToPB.Convert(component);
@@ -310,6 +311,7 @@ namespace Tinkar.XUnitTests
                     IComponent dto = ConvertPBToDTO.Convert(pb);
                     Assert.True(component.CompareTo(dto) == 0);
                 }
+                i += 1;
             }
             NativeMethods.AllowSleep();
             TimeSpan elapsed = DateTime.Now - start;

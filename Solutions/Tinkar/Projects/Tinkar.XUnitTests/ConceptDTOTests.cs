@@ -11,6 +11,7 @@ namespace Tinkar.XUnitTests
 {
     public class ConceptDTOTests
     {
+#if UNUSED
         [DoNotParallelize]
         [Fact]
         public void ConceptDTOJsonMarshal()
@@ -30,7 +31,7 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
-
+#endif
         [DoNotParallelize]
         [Fact]
         public void ConceptDTOConstructor()

@@ -176,9 +176,6 @@ namespace Tinkar.XUnitTests
                     return f.ConceptValue.ToConcept();
                 case PBField.ValueOneofCase.PublicIdListValue:
                     return f.PublicIdListValue.ToPublicIdList();
-                case PBField.ValueOneofCase.PublicIdHashValue:
-                    return f.PublicIdHashValue.ToPublicIdHash();
-
                 case PBField.ValueOneofCase.DiTreeValue:
                     return f.DiTreeValue.ToDiTree();
 

@@ -117,6 +117,7 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoRead) == 0);
             }
         }
+#if UNUSED
         [DoNotParallelize]
         [Fact]
         public void SemanticDTOJsonMarshal()
@@ -136,5 +137,6 @@ namespace Tinkar.XUnitTests
                 Assert.True(dtoStart.CompareTo(dtoEnd) == 0);
             }
         }
+#endif
     }
 }
